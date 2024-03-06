@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class UnitBase : MonoBehaviour
 {
-    public enum UnitState { Idle, Move, Fight, Attack, Damaged, Die}
+    public enum UnitState { Idle, Move, Fight, Attack, Hit, Die}
 
     [Header("# UnitState")]
     public UnitState unitState;
