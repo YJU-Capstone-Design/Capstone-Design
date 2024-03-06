@@ -5,13 +5,10 @@ using UnityEngine;
 public class PlayerUnit : UnitBase
 {
     Scanner scanner;
-    Rigidbody2D rigid;
 
     [Header("# Unit Setting")]
-    public LayerMask attackLayer;
-    Vector2 moveDir; //  방향
-    Vector2 disVec; // 거리
-    Vector2 nextVec; // 다음에 가야할 위치의 양
+    LayerMask targetLayer;
+    Vector3 moveVec; // 거리
     bool startMoveFinish = false;
     public UnitData unitData;
 
@@ -28,17 +25,16 @@ public class PlayerUnit : UnitBase
 
     void Awake()
     {
-        rigid = GetComponent<Rigidbody2D>();
         scanner = GetComponentInChildren<Scanner>();
 
-        StateSetting();
+        targetLayer = scanner.targetLayer;
     }
 
     void OnEnable()
     {
         StateSetting();
         unitState = UnitState.Move;
-        moveDir = Vector3.right;
+        moveVec = Vector3.right;
 
         StartCoroutine(
             lerpCoroutine(GameManager.Instance.unitSpawnPoint[0].position, GameManager.Instance.point, speed));
@@ -61,7 +57,7 @@ public class PlayerUnit : UnitBase
         health = unitData.Health;
         speed = unitData.Speed;
         power = unitData.Power;
-        attackTime = 0f;
+        attackTime = unitData.AttackTime;
     }
 
     void Scanner()
@@ -69,24 +65,20 @@ public class PlayerUnit : UnitBase
         if (scanner.nearestTarget)
         {
             // 위치 차이 = 타겟 위치 - 나의 위치
-            disVec = (Vector2)scanner.nearestTarget.position - rigid.position;
-            Enemy enemyLogic = scanner.nearestTarget.GetComponent<Enemy>();
+            moveVec = scanner.nearestTarget.position - transform.position;
 
             // 이동
-            nextVec = disVec.normalized * speed * Time.deltaTime;
-            transform.position += (Vector3)nextVec;
+            transform.position += moveVec.normalized * speed * Time.deltaTime;
             unitState = UnitState.Move;
 
             // 가는 방향에 따라 Sprite 방향 변경
-            if (disVec.x > 0)
+            if (moveVec.x > 0)
             {
                 transform.localScale = new Vector3(1f, 1f, 1f);
-                moveDir = Vector2.right;
             }
-            else if (disVec.x < 0)
+            else if (moveVec.x < 0)
             {
                 transform.localScale = new Vector3(-1f, 1f, 1f);
-                moveDir = Vector2.left;
             }
 
         }
@@ -94,7 +86,7 @@ public class PlayerUnit : UnitBase
         {
             if(startMoveFinish)
             {
-                moveDir = Vector2.zero;
+                moveVec = Vector2.zero;
                 transform.localScale = new Vector3(1f, 1f, 1f);
                 unitState = UnitState.Idle;
             }
@@ -103,34 +95,26 @@ public class PlayerUnit : UnitBase
 
     void AttackRay()
     {
-        Collider2D attackTarget = Physics2D.OverlapBox(transform.position + new Vector3(moveDir.x * 0.45f, 0.3f, 0), new Vector2(0.5f, 0.5f), 0, attackLayer);
+        Collider2D attackTarget = Physics2D.OverlapBox(transform.position + new Vector3((moveVec.x > 0 ? 0.5f : -0.5f), 0, 0), new Vector2(0.5f, 1f), 0, targetLayer);
 
         if (attackTarget != null)
         {
-            Enemy targetLogic = attackTarget.gameObject.GetComponent<Enemy>();
-
-            if (unitState != UnitState.Attack)
-            {
-                unitState = UnitState.Fight;
-            }
+            EnemyUnit targetLogic = attackTarget.gameObject.GetComponent<EnemyUnit>();
+            unitState = UnitState.Fight;
 
             startMoveFinish = true;
 
             // 적이 인식되면 attackTime 증가 및 공격 함수 실행
             attackTime += Time.deltaTime;
 
-            if (attackTime >= unitData.AttackTime && unitState != UnitState.Attack)
+            if (attackTime >= unitData.AttackTime)
             {
                 attackTime = 0;
-                StartCoroutine("Attack");
+                Attack();
             }
-
-            gameObject.layer = 8;
         }
         else
-        {
-            gameObject.layer = 6;
-            
+        {      
             // AttackRay 에 인식되는 오브젝트가 없는 경우, 다시 스캔 시작
             Scanner();
         }
@@ -140,7 +124,7 @@ public class PlayerUnit : UnitBase
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.blue;
-        Gizmos.DrawWireCube(transform.position + new Vector3(moveDir.x * 0.45f, 0.3f, 0), new Vector2(0.5f, 0.5f));
+        Gizmos.DrawWireCube(transform.position + new Vector3((moveVec.x > 0 ? 0.5f : -0.5f), 0, 0), new Vector2(0.5f, 1f));
     }
 
     //void Animation()
@@ -176,14 +160,9 @@ public class PlayerUnit : UnitBase
     //    _AsyncAnimation(AnimClip[animIndex], true, 1f);
     //}
 
-    IEnumerator Attack()
+    void Attack()
     {
         Debug.Log("Attack");
-        unitState = UnitState.Attack;
-
-        yield return new WaitForSeconds(3.5f);
-
-        unitState = UnitState.Fight;
     }
 
     void Damaged()
@@ -199,8 +178,7 @@ public class PlayerUnit : UnitBase
         unitState = UnitState.Die;
         attackTime = 0;
         startMoveFinish = false;
-        moveDir = Vector2.zero;
-        disVec = Vector2.zero;
+        moveVec = Vector2.zero;
     }
 
     IEnumerator lerpCoroutine(Vector3 current, Vector3 target, float speed)
