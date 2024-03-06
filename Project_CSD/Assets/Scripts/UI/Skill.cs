@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Skill : MonoBehaviour
+public class Skill : Singleton<Skill>
 {
     public static Skill instance;
     public bool skillRange = false;
@@ -27,7 +27,7 @@ public class Skill : MonoBehaviour
             mouse.color = new Color(1,1,1,1f);
             mouse.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
             Debug.Log("Range Skill Acivated");
-            UiManager.instance.ReDraw();
+            UiManager.Instance.ReDraw();
             skillRange = false;
             skillStop1 = false;
 

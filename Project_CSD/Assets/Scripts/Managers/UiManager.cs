@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UiManager : MonoBehaviour
+public class UiManager : Singleton<UiManager>
 {
-    public static UiManager instance;
-
     public GameObject block;
     public GameObject[] card;
     public GameObject speedUp;
@@ -26,7 +24,6 @@ public class UiManager : MonoBehaviour
 
     void Awake()
     {
-        instance = this;
         StartCard();
     }
 

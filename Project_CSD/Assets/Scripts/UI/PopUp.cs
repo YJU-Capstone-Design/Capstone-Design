@@ -21,13 +21,13 @@ public class PopUp : MonoBehaviour
     public void Show()
     {
 
-        UiManager.instance.Stop();
+        UiManager.Instance.Stop();
     }
 
     public void Hide()
     {
         pop.gameObject.SetActive(false);
         Skill.instance.uiMenu = false;
-        UiManager.instance.Resume();
+        UiManager.Instance.Resume();
     }
 }

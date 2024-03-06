@@ -41,7 +41,7 @@ public class PlayerUnit : UnitBase
         moveDir = Vector3.right;
 
         StartCoroutine(
-            lerpCoroutine(GameManager.instance.unitSpawnPoint[0].position, GameManager.instance.point, speed));
+            lerpCoroutine(GameManager.Instance.unitSpawnPoint[0].position, GameManager.Instance.point, speed));
     }
 
     void OnDisable()

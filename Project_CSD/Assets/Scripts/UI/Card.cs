@@ -34,44 +34,44 @@ public class Card : MonoBehaviour
         switch(name){
             case "RangeAttack":
                 
-                Skill.instance.skillRange = true;
-                Skill.instance.skillStop1 = true;
-                Skill.instance.OnRange();
+                Skill.Instance.skillRange = true;
+                Skill.Instance.skillStop1 = true;
+                Skill.Instance.OnRange();
                 Debug.Log("RANGE SKILL ATTACK");
                 //GameManager.instance.ReDraw();
                 break;
             case "AttackDamage":
                 Debug.Log("AttackDamage");
-                UiManager.instance.ReDraw();
+                UiManager.Instance.ReDraw();
                 break;
             case "AttackSpeed":
                 Debug.Log("AttackSpeed");
-                UiManager.instance.ReDraw();
+                UiManager.Instance.ReDraw();
                 break;
             case "UnitSpeed":
                 Debug.Log("UnitSpeed");
-                UiManager.instance.ReDraw();
+                UiManager.Instance.ReDraw();
                 break;
             case "Defense":
                 Debug.Log("Defense");
-                UiManager.instance.ReDraw();
+                UiManager.Instance.ReDraw();
                 break;
             case "Critical":
                 Debug.Log("Critical");
-                UiManager.instance.ReDraw();
+                UiManager.Instance.ReDraw();
                 break;
             case "BossAttack":
                 Debug.Log("BossAttack");
-                UiManager.instance.ReDraw();
+                UiManager.Instance.ReDraw();
                 break;
             case "UnitMaxHealth":
                 Debug.Log("UnitMaxHealth");
-                UiManager.instance.ReDraw();
+                UiManager.Instance.ReDraw();
                 break;
 
             case "Heal":   
                 Debug.Log("Heal");
-                UiManager.instance.ReDraw();
+                UiManager.Instance.ReDraw();
                 break;
         }
 

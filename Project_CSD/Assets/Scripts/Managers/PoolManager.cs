@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PoolManager : MonoBehaviour
+public class PoolManager : Singleton<PoolManager>
 {
     // ÇÁ¸®ÆÕ
     public GameObject[] prefabs;
@@ -51,11 +51,11 @@ public class PoolManager : MonoBehaviour
         switch(index)
         {
             case 0:
-                select.transform.position = GameManager.instance.unitSpawnPoint[0].position;
+                select.transform.position = GameManager.Instance.unitSpawnPoint[0].position;
                 break;
             case 1:
                 ran = Random.Range(1, 4);
-                select.transform.position = GameManager.instance.unitSpawnPoint[ran].position;
+                select.transform.position = GameManager.Instance.unitSpawnPoint[ran].position;
                 break;
         }
 

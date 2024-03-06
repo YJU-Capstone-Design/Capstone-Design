@@ -3,20 +3,13 @@ using System.Collections.Generic;
 using System.Drawing;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public class GameManager : Singleton<GameManager>
 {
-    public static GameManager instance;
-
     public PoolManager pool;
 
     public Transform[] unitSpawnPoint;
 
     public Vector3 point;
-
-    void Awake()
-    {
-        instance = this;
-    }
 
     
     void Update()
