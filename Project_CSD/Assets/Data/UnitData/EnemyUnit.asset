@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unitID: 1
   health: 8
-  speed: 2
+  speed: 4
   power: 2
   attackTime: 2

@@ -7,7 +7,7 @@ public class EnemyUnit : UnitBase
 {
     Scanner scanner;
 
-    public LayerMask targetLayer;
+    LayerMask targetLayer;
     Vector3 moveVec; // 이동 방향
     public UnitData unitData;
 
@@ -17,6 +17,7 @@ public class EnemyUnit : UnitBase
 
         unitState = UnitState.Move;
         moveVec = Vector3.left;
+        targetLayer = scanner.targetLayer;
     }
 
     void OnEnable()
