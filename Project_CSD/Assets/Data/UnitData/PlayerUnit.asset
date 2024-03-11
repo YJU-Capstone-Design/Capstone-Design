@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PlayerUnit
   m_EditorClassIdentifier: 
   unitID: 0
-  health: 10
-  speed: 4
+  health: 25
+  speed: 4.5
   power: 5
   attackTime: 2

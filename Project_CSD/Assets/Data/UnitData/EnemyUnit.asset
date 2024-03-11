@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: EnemyUnit
   m_EditorClassIdentifier: 
   unitID: 1
-  health: 8
+  health: 20
   speed: 4
-  power: 2
+  power: 3
   attackTime: 2
