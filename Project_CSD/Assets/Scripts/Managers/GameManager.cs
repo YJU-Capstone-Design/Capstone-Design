@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
@@ -11,7 +12,10 @@ public class GameManager : Singleton<GameManager>
 
     public Vector3 point;
 
+
     
+
+
     void Update()
     {
         // 플레이어 유닛 소환
@@ -30,4 +34,6 @@ public class GameManager : Singleton<GameManager>
             pool.Get(1);
         }
     }
+
+
 }
