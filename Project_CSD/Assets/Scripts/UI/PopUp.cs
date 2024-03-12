@@ -11,9 +11,7 @@ public class PopUp : MonoBehaviour
     [SerializeField] private GameObject pop;
     private void Awake()
     {
-        stop.SetActive(false);
-        menu.SetActive(false);
-        pop.SetActive(false);
+        Clear();
     }
     public void OpenMenu()
     {
@@ -32,6 +30,12 @@ public class PopUp : MonoBehaviour
             pop.SetActive(true);
         }
 
+    }
+    public void Clear()
+    {
+        stop.SetActive(false);
+        menu.SetActive(false);
+        pop.SetActive(false);
     }
 
     public void Close(GameObject other)
