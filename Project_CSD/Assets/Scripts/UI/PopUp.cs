@@ -17,6 +17,7 @@ public class PopUp : MonoBehaviour
     {
         stop.SetActive(true);
         menu.SetActive(true);
+        Time.timeScale = 0;
     }
     public void MenuBtn(string type)
     {
@@ -36,6 +37,7 @@ public class PopUp : MonoBehaviour
         stop.SetActive(false);
         menu.SetActive(false);
         pop.SetActive(false);
+        Time.timeScale = 1;
     }
 
     public void Close(GameObject other)

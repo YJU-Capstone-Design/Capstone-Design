@@ -4,5 +4,8 @@ using UnityEngine;
 
 public class BattleManager : MonoBehaviour
 {
-    
+    [SerializeField] private float hpBar;
+
+
+
 }
