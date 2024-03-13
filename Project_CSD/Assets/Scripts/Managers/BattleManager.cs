@@ -4,23 +4,35 @@ using UnityEngine;
 using UnityEngine.UI;
 public class BattleManager : MonoBehaviour
 {
+
+    public static BattleManager instance;
     [Header("HpVar")]
     [SerializeField] private float curHealth; //* 현재 체력
     [SerializeField] private float maxHealth; //* 최대 체력
+    public GameObject healthBar; //
     public Slider HpBarSlider;
 
     private void Awake()
     {
+        instance = this;
         curHealth = maxHealth;
+        UpdateHealthBar();
     }
-    private void Update()
+    
+    public void HpDamage()
     {
-        Invoke("HpCheck", 3f);
+        float damage = 300f;
+        curHealth -= damage;
+        UpdateHealthBar();
     }
-    public void HpCheck()
+    void UpdateHealthBar()
     {
-        curHealth -= 3f;
-        HpBarSlider.value = curHealth;
+        
+        float sliderValue = curHealth / maxHealth;
+        HpBarSlider.value = sliderValue;
+        if (curHealth <= 0)
+        {
+            healthBar.SetActive(false);
+        }
     }
-
 }
