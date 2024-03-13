@@ -4,12 +4,11 @@ using UnityEngine;
 
 public class EnemyUnit : UnitBase
 {
-    Scanner scanner;
-
     [Header("# Unit Setting")]
+    Scanner scanner;
+    public UnitData unitData;
     LayerMask targetLayer;
     Vector3 moveVec; // 이동 방향
-    public UnitData unitData;
     public LayerMask attackLayer;
     public Vector3 attackRayPos; // attackRay 위치 = 현재 위치 + attackRayPos
     public Vector2 attackRaySize;
