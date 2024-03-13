@@ -2,26 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-public class BattleManager : MonoBehaviour
+public class BattleManager :Singleton<BattleManager>
 {
-
-    public static BattleManager instance;
     [Header("HpVar")]
-    [SerializeField] private float curHealth; //* 현재 체력
-    [SerializeField] private float maxHealth; //* 최대 체력
+    public float curHealth; //* 현재 체력
+    public float maxHealth; //* 최대 체력
     public GameObject healthBar; //
     public Slider HpBarSlider;
 
     private void Awake()
     {
-        instance = this;
         curHealth = maxHealth;
         UpdateHealthBar();
     }
     
-    public void HpDamage()
+    public void HpDamage(float dmg)
     {
-        float damage = 300f;
+        float damage = dmg;
         curHealth -= damage;
         UpdateHealthBar();
     }

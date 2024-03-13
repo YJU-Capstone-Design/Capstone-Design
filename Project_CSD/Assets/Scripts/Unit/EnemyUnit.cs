@@ -4,23 +4,23 @@ using UnityEngine;
 
 public class EnemyUnit : UnitBase
 {
-    Scanner scanner;
-
     [Header("# Unit Setting")]
+    Scanner scanner;
+    public UnitData unitData;
     LayerMask targetLayer;
     Vector3 moveVec; // 이동 방향
+    public LayerMask attackLayer;
     public Vector3 attackRayPos; // attackRay 위치 = 현재 위치 + attackRayPos
     public Vector2 attackRaySize;
-    public UnitData unitData;
 
     [Header("# Unit Activity")]
-    new Collider2D collider;
+    Collider2D col;
     Collider2D attackTarget;
 
     void Awake()
     {
         scanner = GetComponentInChildren<Scanner>();
-        collider = GetComponent<Collider2D>();
+        col = GetComponent<Collider2D>();
 
         targetLayer = scanner.targetLayer;
     }
@@ -50,7 +50,7 @@ public class EnemyUnit : UnitBase
         attackTime = unitData.AttackTime;
 
         // 설정값
-        collider.enabled = true;
+        col.enabled = true;
         unitState = UnitState.Move;
         moveVec = Vector3.left;
     }
@@ -85,20 +85,17 @@ public class EnemyUnit : UnitBase
 
     void AttackRay()
     {
-        attackTarget = Physics2D.OverlapBox(transform.position + new Vector3(attackRayPos.x * Mathf.Sign(moveVec.x), attackRayPos.y * (moveVec.y > 0 ? -1 : 1), attackRayPos.z), attackRaySize, 0, targetLayer, 0, targetLayer);
+        attackTarget = Physics2D.OverlapBox(transform.position + new Vector3(attackRayPos.x * Mathf.Sign(moveVec.x), attackRayPos.y * (moveVec.y > 0 ? -1 : 1), attackRayPos.z), attackRaySize, 0, attackLayer);
 
         if (attackTarget != null)
         {
-            PlayerUnit targetLogic = attackTarget.gameObject.GetComponent<PlayerUnit>();
-
             unitState = UnitState.Fight;
 
-            // 적이 인식되면 attackTime 증가 및 공격 함수 실행
+            // 적(유닛, 벽)이 인식되면 attackTime 증가 및 공격 함수 실행
             attackTime += Time.deltaTime;
 
-            if (attackTime >= unitData.AttackTime && targetLogic.unitState != UnitState.Die)
+            if(attackTime >= unitData.AttackTime)
             {
-                attackTime = 0;
                 Attack();
             }
         }
@@ -118,14 +115,27 @@ public class EnemyUnit : UnitBase
 
     void Attack()
     {
-        PlayerUnit enemyLogic = attackTarget.gameObject.GetComponent<PlayerUnit>();
+        if (attackTarget.gameObject.CompareTag("Wall"))
+        {
+            /*MainWall wallLogic = attackTarget.gameObject.GetComponent<MainWall>();
 
-        enemyLogic.health -= power;
+            wallLogic.health -= power;*/
+            BattleManager.Instance.HpDamage(power);
+            attackTime = 0;
+
+            //Debug.Log(wallLogic.health);
+        } else
+        {
+            PlayerUnit enemyLogic = attackTarget.gameObject.GetComponent<PlayerUnit>();
+
+            enemyLogic.health -= power;
+            attackTime = 0;
+        }
     }
 
     IEnumerator Die()
     {
-        collider.enabled = false;
+        col.enabled = false;
         unitState = UnitState.Die;
         attackTime = 0;
         moveVec = Vector2.zero;
