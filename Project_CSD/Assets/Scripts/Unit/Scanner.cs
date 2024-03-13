@@ -33,6 +33,7 @@ public class Scanner : MonoBehaviour
         {
             UnitBase targetLogic = target.transform.gameObject.GetComponent<UnitBase>();
 
+            // 적이 싸우는 상태일 경우 다시 탐색
             if (targetLogic.unitState == UnitBase.UnitState.Fight)
                 continue;
 
@@ -48,12 +49,10 @@ public class Scanner : MonoBehaviour
         }
 
         // 모든 적이 싸우고 있으면 싸우고 있는 적 중에서 가장 가까운 적으로 다시 탐색
-        if(result == null)
+        if(result == null && gameObject.CompareTag("PlayerUnit"))
         {
             foreach (RaycastHit2D target in targets)
             {
-                UnitBase targetLogic = target.transform.gameObject.GetComponent<UnitBase>();
-
                 Vector3 myPos = transform.position; // 플레이어 위치
                 Vector3 targetPos = target.transform.position; // 인식된 오브젝트의 위치
                 float curDiff = Vector3.Distance(myPos, targetPos); // Distance(A,B) : 벡터 A 와 B 의 거리를 계산해주는 함수
