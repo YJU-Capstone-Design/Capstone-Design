@@ -7,15 +7,15 @@ public class PlayerUnit : UnitBase
     Scanner scanner;
 
     [Header("# Unit Setting")]
+    public UnitData unitData;
+    bool startMoveFinish = false;
     LayerMask targetLayer;
     Vector3 moveVec; // 거리
     public Vector3 attackRayPos; // attackRay 위치 = 현재 위치 + attackRayPos
     public Vector2 attackRaySize;
-    bool startMoveFinish = false;
-    public UnitData unitData;
 
     [Header("# Unit Activity")]
-    new Collider2D collider;
+    Collider2D col;
     Collider2D attackTarget;
 
     [Header("# Spine")]
@@ -32,7 +32,7 @@ public class PlayerUnit : UnitBase
     void Awake()
     {
         scanner = GetComponentInChildren<Scanner>();
-        collider = GetComponent<Collider2D>();
+        col = GetComponent<Collider2D>();
 
         targetLayer = scanner.targetLayer;
     }
@@ -66,7 +66,7 @@ public class PlayerUnit : UnitBase
         attackTime = unitData.AttackTime;
 
         // 설정값
-        collider.enabled = true;
+        col.enabled = true;
         unitState = UnitState.Move;
         moveVec = Vector3.right;
     }
@@ -147,7 +147,7 @@ public class PlayerUnit : UnitBase
 
     IEnumerator Die()
     {
-        collider.enabled = false;
+        col.enabled = false;
         unitState = UnitState.Die;
         attackTime = 0;
         moveVec = Vector2.zero;

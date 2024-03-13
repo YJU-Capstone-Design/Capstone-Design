@@ -15,13 +15,13 @@ public class EnemyUnit : UnitBase
     public Vector2 attackRaySize;
 
     [Header("# Unit Activity")]
-    new Collider2D collider;
+    Collider2D col;
     Collider2D attackTarget;
 
     void Awake()
     {
         scanner = GetComponentInChildren<Scanner>();
-        collider = GetComponent<Collider2D>();
+        col = GetComponent<Collider2D>();
 
         targetLayer = scanner.targetLayer;
     }
@@ -51,7 +51,7 @@ public class EnemyUnit : UnitBase
         attackTime = unitData.AttackTime;
 
         // 설정값
-        collider.enabled = true;
+        col.enabled = true;
         unitState = UnitState.Move;
         moveVec = Vector3.left;
     }
@@ -135,7 +135,7 @@ public class EnemyUnit : UnitBase
 
     IEnumerator Die()
     {
-        collider.enabled = false;
+        col.enabled = false;
         unitState = UnitState.Die;
         attackTime = 0;
         moveVec = Vector2.zero;
