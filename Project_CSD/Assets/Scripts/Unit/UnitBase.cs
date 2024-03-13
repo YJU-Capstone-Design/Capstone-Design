@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class UnitBase : MonoBehaviour
 {
-    public enum UnitState { Idle, Move, Fight, Attack, Hit, Die}
+    public enum UnitState { Idle, Move, Fight, Hit, Die}
 
     [Header("# UnitState")]
     public UnitState unitState;
@@ -12,4 +12,6 @@ public class UnitBase : MonoBehaviour
     public float speed;
     public float power;
     public float attackTime;
+
+
 }

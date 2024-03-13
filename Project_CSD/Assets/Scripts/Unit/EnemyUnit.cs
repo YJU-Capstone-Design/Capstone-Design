@@ -2,87 +2,109 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu]
 public class EnemyUnit : UnitBase
 {
     Scanner scanner;
-    Rigidbody2D rigid;
-    Animator anim;
-    SpriteRenderer renderer;
 
-    public LayerMask attackLayer;
-    Vector2 moveDir; //  πÊ«‚
-    Vector2 disVec; // ∞≈∏Æ
-    Vector2 nextVec; // ¥Ÿ¿Ωø° ∞°æﬂ«“ ¿ßƒ°¿« æÁ
+    [Header("# Unit Setting")]
+    LayerMask targetLayer;
+    Vector3 moveVec; // Ïù¥Îèô Î∞©Ìñ•
+    public Vector3 attackRayPos; // attackRay ÏúÑÏπò = ÌòÑÏû¨ ÏúÑÏπò + attackRayPos
+    public Vector2 attackRaySize;
+    public UnitData unitData;
+
+    [Header("# Unit Activity")]
+    new Collider2D collider;
+    Collider2D attackTarget;
 
     void Awake()
     {
-        rigid = GetComponent<Rigidbody2D>();
-        anim = GetComponent<Animator>();
-        renderer = GetComponent<SpriteRenderer>();
         scanner = GetComponentInChildren<Scanner>();
+        collider = GetComponent<Collider2D>();
 
-        unitState = UnitState.Move;
-        moveDir = Vector3.left;
+        targetLayer = scanner.targetLayer;
+    }
+
+    void OnEnable()
+    {
+        StateSetting();
     }
 
     void Update()
     {
         AttackRay();
+
+        if (health <= 0)
+        {
+            StartCoroutine(Die());
+        }
+    }
+
+    void StateSetting()
+    {
+        // ÏàòÏπòÍ∞í
+        unitID = unitData.UnitID;
+        health = unitData.Health;
+        speed = unitData.Speed;
+        power = unitData.Power;
+        attackTime = unitData.AttackTime;
+
+        // ÏÑ§Ï†ïÍ∞í
+        collider.enabled = true;
+        unitState = UnitState.Move;
+        moveVec = Vector3.left;
     }
 
     void Scanner()
     {
         if (scanner.nearestTarget)
         {
-            // ¿ßƒ° ¬˜¿Ã = ≈∏∞Ÿ ¿ßƒ° - ≥™¿« ¿ßƒ°
-            disVec = (Vector2)scanner.nearestTarget.position - rigid.position;
-
-            // ∞°¥¬ πÊ«‚ø° µ˚∂Û Sprite πÊ«‚ ∫Ø∞Ê
-            if (disVec.x > 0)
-            {
-                renderer.flipX = true;
-                moveDir = Vector2.right;
-            }
-            else if (disVec.x < 0)
-            {
-                renderer.flipX = false;
-                moveDir = Vector2.left;
-            }
+            // ÏúÑÏπò Ï∞®Ïù¥ = ÌÉÄÍ≤ü ÏúÑÏπò - ÎÇòÏùò ÏúÑÏπò  ->  (Î∞©Ìñ•) 
+            moveVec = scanner.nearestTarget.position - transform.position;
         }
         else
         {
-            disVec = Vector2.left;
-            renderer.flipX = false;
+            // Ïù∏ÏãùÎêú Ï†ÅÏù¥ ÏóÜÏùÑ ÏãúÏóêÎäî ÏôºÏ™ΩÏúºÎ°ú Ï†ÑÏßÑ
+            moveVec = Vector2.left;
         }
 
-        // ¿Ãµø
-        nextVec = disVec.normalized * speed * Time.fixedDeltaTime;
-        rigid.MovePosition(rigid.position + nextVec);
-        rigid.velocity = Vector2.zero; // π∞∏Æ º”µµ∞° MovePosition ¿Ãµøø° øµ«‚¿ª ¡÷¡ˆ æ µµ∑œ º”µµ ¡¶∞≈
+        // Î™©Ìëú ÏßÄÏ†êÏúºÎ°ú Ïù¥Îèô
+        transform.position += moveVec.normalized * speed * Time.deltaTime;
         unitState = UnitState.Move;
 
-        anim.SetInteger("AnimState", 2);
+        // Í∞ÄÎäî Î∞©Ìñ•Ïóê Îî∞Îùº Sprite Î∞©Ìñ• Î≥ÄÍ≤Ω
+        if (moveVec.x > 0)
+        {
+            transform.localScale = new Vector3(1f, 1f, 1f);
+        }
+        else if (moveVec.x < 0)
+        {
+            transform.localScale = new Vector3(-1f, 1f, 1f);
+        }
     }
 
     void AttackRay()
     {
-        Collider2D attackTarget = Physics2D.OverlapBox(transform.position + new Vector3(moveDir.x * 0.45f, 0.3f, 0), new Vector2(0.3f, 0.5f), 0, attackLayer);
+        attackTarget = Physics2D.OverlapBox(transform.position + new Vector3(attackRayPos.x * Mathf.Sign(moveVec.x), attackRayPos.y * (moveVec.y > 0 ? -1 : 1), attackRayPos.z), attackRaySize, 0, targetLayer, 0, targetLayer);
 
         if (attackTarget != null)
         {
             PlayerUnit targetLogic = attackTarget.gameObject.GetComponent<PlayerUnit>();
 
             unitState = UnitState.Fight;
-            anim.SetInteger("AnimState", 0);
 
-            gameObject.layer = 9;
+            // Ï†ÅÏù¥ Ïù∏ÏãùÎêòÎ©¥ attackTime Ï¶ùÍ∞Ä Î∞è Í≥µÍ≤© Ìï®Ïàò Ïã§Ìñâ
+            attackTime += Time.deltaTime;
+
+            if (attackTime >= unitData.AttackTime && targetLogic.unitState != UnitState.Die)
+            {
+                attackTime = 0;
+                Attack();
+            }
         }
         else
         {
-            gameObject.layer = 7;
-
-            // AttackRay ø° ¿ŒΩƒµ«¥¬ ø¿∫Í¡ß∆Æ∞° æ¯¥¬ ∞ÊøÏ, ¥ŸΩ√ Ω∫ƒµ Ω√¿€
+            // Attack Ray Ïóê Ïù∏ÏãùÎêú Ï†ÅÏù¥ ÏóÜÏùÑ Í≤ΩÏö∞Ïóê Scanner ÌôúÏÑ±Ìôî
             Scanner();
         }
 
@@ -91,7 +113,28 @@ public class EnemyUnit : UnitBase
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.blue;
-        Gizmos.DrawWireCube(transform.position + new Vector3(moveDir.x * 0.45f, 0.3f, 0), new Vector2(0.3f, 0.5f));
+        Gizmos.DrawWireCube(transform.position + new Vector3(attackRayPos.x * Mathf.Sign(moveVec.x), attackRayPos.y * (moveVec.y > 0 ? -1 : 1), attackRayPos.z), attackRaySize);
+    }
+
+    void Attack()
+    {
+        PlayerUnit enemyLogic = attackTarget.gameObject.GetComponent<PlayerUnit>();
+
+        enemyLogic.health -= power;
+    }
+
+    IEnumerator Die()
+    {
+        collider.enabled = false;
+        unitState = UnitState.Die;
+        attackTime = 0;
+        moveVec = Vector2.zero;
+        speed = 0;
+
+        yield return new WaitForSeconds(1f);
+
+        Debug.Log("Die");
+        gameObject.SetActive(false);
     }
 
 }

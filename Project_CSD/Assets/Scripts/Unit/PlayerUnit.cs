@@ -5,15 +5,18 @@ using UnityEngine;
 public class PlayerUnit : UnitBase
 {
     Scanner scanner;
-    Rigidbody2D rigid;
 
     [Header("# Unit Setting")]
-    public LayerMask attackLayer;
-    Vector2 moveDir; //  방향
-    Vector2 disVec; // 거리
-    Vector2 nextVec; // 다음에 가야할 위치의 양
+    LayerMask targetLayer;
+    Vector3 moveVec; // 거리
+    public Vector3 attackRayPos; // attackRay 위치 = 현재 위치 + attackRayPos
+    public Vector2 attackRaySize;
     bool startMoveFinish = false;
     public UnitData unitData;
+
+    [Header("# Unit Activity")]
+    new Collider2D collider;
+    Collider2D attackTarget;
 
     [Header("# Spine")]
     //스파인 애니메이션을 위한 것
@@ -28,40 +31,44 @@ public class PlayerUnit : UnitBase
 
     void Awake()
     {
-        rigid = GetComponent<Rigidbody2D>();
         scanner = GetComponentInChildren<Scanner>();
+        collider = GetComponent<Collider2D>();
 
-        StateSetting();
+        targetLayer = scanner.targetLayer;
     }
 
     void OnEnable()
     {
         StateSetting();
-        unitState = UnitState.Move;
-        moveDir = Vector3.right;
 
         StartCoroutine(
             lerpCoroutine(GameManager.Instance.unitSpawnPoint[0].position, GameManager.Instance.point, speed));
-    }
-
-    void OnDisable()
-    {
-        Die();
     }
 
     void Update()
     {
         AttackRay();
         // Animation();
+
+        if(health <= 0)
+        {
+            StartCoroutine(Die());
+        }
     }
 
     void StateSetting()
     {
+        // 수치값
         unitID = unitData.UnitID;
         health = unitData.Health;
         speed = unitData.Speed;
         power = unitData.Power;
-        attackTime = 0f;
+        attackTime = unitData.AttackTime;
+
+        // 설정값
+        collider.enabled = true;
+        unitState = UnitState.Move;
+        moveVec = Vector3.right;
     }
 
     void Scanner()
@@ -69,24 +76,20 @@ public class PlayerUnit : UnitBase
         if (scanner.nearestTarget)
         {
             // 위치 차이 = 타겟 위치 - 나의 위치
-            disVec = (Vector2)scanner.nearestTarget.position - rigid.position;
-            Enemy enemyLogic = scanner.nearestTarget.GetComponent<Enemy>();
+            moveVec = scanner.nearestTarget.position - transform.position;
 
             // 이동
-            nextVec = disVec.normalized * speed * Time.deltaTime;
-            transform.position += (Vector3)nextVec;
+            transform.position += moveVec.normalized * speed * Time.deltaTime;
             unitState = UnitState.Move;
 
             // 가는 방향에 따라 Sprite 방향 변경
-            if (disVec.x > 0)
+            if (moveVec.x > 0)
             {
                 transform.localScale = new Vector3(1f, 1f, 1f);
-                moveDir = Vector2.right;
             }
-            else if (disVec.x < 0)
+            else if (moveVec.x < 0)
             {
                 transform.localScale = new Vector3(-1f, 1f, 1f);
-                moveDir = Vector2.left;
             }
 
         }
@@ -94,7 +97,7 @@ public class PlayerUnit : UnitBase
         {
             if(startMoveFinish)
             {
-                moveDir = Vector2.zero;
+                moveVec = Vector2.zero;
                 transform.localScale = new Vector3(1f, 1f, 1f);
                 unitState = UnitState.Idle;
             }
@@ -103,34 +106,26 @@ public class PlayerUnit : UnitBase
 
     void AttackRay()
     {
-        Collider2D attackTarget = Physics2D.OverlapBox(transform.position + new Vector3(moveDir.x * 0.45f, 0.3f, 0), new Vector2(0.5f, 0.5f), 0, attackLayer);
+        attackTarget = Physics2D.OverlapBox(transform.position + new Vector3(attackRayPos.x * Mathf.Sign(moveVec.x), attackRayPos.y, attackRayPos.z), attackRaySize, 0, targetLayer);
 
         if (attackTarget != null)
         {
-            Enemy targetLogic = attackTarget.gameObject.GetComponent<Enemy>();
-
-            if (unitState != UnitState.Attack)
-            {
-                unitState = UnitState.Fight;
-            }
+            EnemyUnit targetLogic = attackTarget.gameObject.GetComponent<EnemyUnit>();
+            unitState = UnitState.Fight;
 
             startMoveFinish = true;
 
             // 적이 인식되면 attackTime 증가 및 공격 함수 실행
             attackTime += Time.deltaTime;
 
-            if (attackTime >= unitData.AttackTime && unitState != UnitState.Attack)
+            if (attackTime >= unitData.AttackTime)
             {
                 attackTime = 0;
-                StartCoroutine("Attack");
+                Attack();
             }
-
-            gameObject.layer = 8;
         }
         else
-        {
-            gameObject.layer = 6;
-            
+        {      
             // AttackRay 에 인식되는 오브젝트가 없는 경우, 다시 스캔 시작
             Scanner();
         }
@@ -140,7 +135,53 @@ public class PlayerUnit : UnitBase
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.blue;
-        Gizmos.DrawWireCube(transform.position + new Vector3(moveDir.x * 0.45f, 0.3f, 0), new Vector2(0.5f, 0.5f));
+        Gizmos.DrawWireCube(transform.position + new Vector3(attackRayPos.x * Mathf.Sign(moveVec.x), attackRayPos.y, attackRayPos.z), attackRaySize);
+    }
+
+    void Attack()
+    {
+        EnemyUnit enemyLogic = attackTarget.gameObject.GetComponent<EnemyUnit>();
+
+        enemyLogic.health -= power;
+    }
+
+    IEnumerator Die()
+    {
+        collider.enabled = false;
+        unitState = UnitState.Die;
+        attackTime = 0;
+        moveVec = Vector2.zero;
+        speed = 0;
+
+        yield return new WaitForSeconds(1f);
+
+        Debug.Log("Die");
+        gameObject.SetActive(false);
+    }
+
+    IEnumerator lerpCoroutine(Vector3 current, Vector3 target, float speed)
+    {
+        float distance = Vector3.Distance(current, target); // 거리(길이) 구하기
+        float time = distance / speed; // 거리(길이) 에 따라 이동하는 시간 설정
+
+        float elapsedTime = 0.0f;
+
+        this.transform.position = current;
+        while (elapsedTime < time && !scanner.nearestTarget)
+        {
+            elapsedTime += Time.deltaTime;
+
+            this.transform.position = Vector3.Lerp(current, target, elapsedTime / time);
+
+            yield return null;
+
+            unitState = UnitState.Move;
+
+        }
+
+        startMoveFinish = true;
+
+        yield return null;
     }
 
     //void Animation()
@@ -175,58 +216,6 @@ public class PlayerUnit : UnitBase
     //    //애니메이션 적용
     //    _AsyncAnimation(AnimClip[animIndex], true, 1f);
     //}
-
-    IEnumerator Attack()
-    {
-        Debug.Log("Attack");
-        unitState = UnitState.Attack;
-
-        yield return new WaitForSeconds(3.5f);
-
-        unitState = UnitState.Fight;
-    }
-
-    void Damaged()
-    {
-        if(health == 0)
-        {
-            Die();
-        }
-    }
-
-    void Die()
-    {
-        unitState = UnitState.Die;
-        attackTime = 0;
-        startMoveFinish = false;
-        moveDir = Vector2.zero;
-        disVec = Vector2.zero;
-    }
-
-    IEnumerator lerpCoroutine(Vector3 current, Vector3 target, float speed)
-    {
-        float distance = Vector3.Distance(current, target); // 거리(길이) 구하기
-        float time = distance / speed; // 거리(길이) 에 따라 이동하는 시간 설정
-
-        float elapsedTime = 0.0f;
-
-        this.transform.position = current;
-        while (elapsedTime < time && !scanner.nearestTarget)
-        {
-            elapsedTime += Time.deltaTime;
-
-            this.transform.position = Vector3.Lerp(current, target, elapsedTime / time);
-
-            yield return null;
-
-            unitState = UnitState.Move;
-
-        }
-
-        startMoveFinish = true;
-
-        yield return null;
-    }
 
     //private void _AsyncAnimation(AnimationReferenceAsset animClip, bool loop, float timeScale)
     //{
