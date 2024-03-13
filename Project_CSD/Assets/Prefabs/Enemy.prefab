@@ -168,5 +168,5 @@ MonoBehaviour:
   scanRange: 4
   targetLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   nearestTarget: {fileID: 0}
