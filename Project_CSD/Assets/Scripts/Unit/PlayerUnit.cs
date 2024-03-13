@@ -17,6 +17,7 @@ public class PlayerUnit : UnitBase
     [Header("# Unit Activity")]
     Collider2D col;
     Collider2D attackTarget;
+    Vector3 firstPos;
 
     [Header("# Spine")]
     //스파인 애니메이션을 위한 것
@@ -41,6 +42,7 @@ public class PlayerUnit : UnitBase
     {
         StateSetting();
 
+        // 클릭 지점으로 이동
         StartCoroutine(
             lerpCoroutine(GameManager.Instance.unitSpawnPoint[0].position, GameManager.Instance.point, speed));
     }
@@ -69,6 +71,7 @@ public class PlayerUnit : UnitBase
         col.enabled = true;
         unitState = UnitState.Move;
         moveVec = Vector3.right;
+        firstPos = GameManager.Instance.point;
     }
 
     void Scanner()
@@ -97,6 +100,10 @@ public class PlayerUnit : UnitBase
         {
             if(startMoveFinish)
             {
+                // 유닛의 처음 위치로 귀환
+                StartCoroutine(
+                    lerpCoroutine(transform.position, firstPos, speed));
+
                 moveVec = Vector2.zero;
                 transform.localScale = new Vector3(1f, 1f, 1f);
                 unitState = UnitState.Idle;
