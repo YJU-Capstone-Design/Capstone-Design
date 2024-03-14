@@ -4,6 +4,10 @@ using UnityEngine;
 using UnityEngine.UI;
 public class BattleManager :Singleton<BattleManager>
 {
+    [Header("Shop")]
+    [SerializeField] private Transform shopParent;
+    [SerializeField] private GameObject card;
+
     [Header("HpVar")]
     public float curHealth; //* 현재 체력
     public float maxHealth; //* 최대 체력
@@ -12,6 +16,7 @@ public class BattleManager :Singleton<BattleManager>
 
     private void Awake()
     {
+        CardMake();
         curHealth = maxHealth;
         UpdateHealthBar();
     }
@@ -22,6 +27,19 @@ public class BattleManager :Singleton<BattleManager>
         curHealth -= damage;
         UpdateHealthBar();
     }
+
+    private void CardMake()
+    {
+
+
+        for (int i = 0; i < 3; i++)
+        {
+            GameObject myInstance = Instantiate(card, shopParent);
+        }
+
+
+    }
+
     void UpdateHealthBar()
     {
         
