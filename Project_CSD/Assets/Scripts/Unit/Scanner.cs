@@ -48,7 +48,7 @@ public class Scanner : MonoBehaviour
             }
         }
 
-        // 모든 적이 싸우고 있으면 싸우고 있는 적 중에서 가장 가까운 적으로 다시 탐색
+        // 모든 적이 싸우고 있으면 싸우고 있는 적 중에서 가장 가까운 적으로 다시 탐색 -> enemy 는 벽으로 직진
         if(result == null && gameObject.CompareTag("PlayerUnit"))
         {
             foreach (RaycastHit2D target in targets)

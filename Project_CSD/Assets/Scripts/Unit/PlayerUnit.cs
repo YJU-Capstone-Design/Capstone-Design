@@ -4,35 +4,35 @@ using UnityEngine;
 
 public class PlayerUnit : UnitBase
 {
-    Scanner scanner;
 
     [Header("# Unit Setting")]
-    LayerMask targetLayer;
-    Vector3 moveVec; // °Å¸®
-    public Vector3 attackRayPos; // attackRay À§Ä¡ = ÇöÀç À§Ä¡ + attackRayPos
-    public Vector2 attackRaySize;
-    bool startMoveFinish = false;
+    Scanner scanner;
     public UnitData unitData;
+    bool startMoveFinish = false;
+    LayerMask targetLayer;
+    Vector3 moveVec; // ê±°ë¦¬
+    public Vector3 attackRayPos; // attackRay ìœ„ì¹˜ = í˜„ì¬ ìœ„ì¹˜ + attackRayPos
+    public Vector2 attackRaySize;
 
     [Header("# Unit Activity")]
-    new Collider2D collider;
+    Collider2D col;
     Collider2D attackTarget;
 
     [Header("# Spine")]
-    //½ºÆÄÀÎ ¾Ö´Ï¸ŞÀÌ¼ÇÀ» À§ÇÑ °Í
+    //ìŠ¤íŒŒì¸ ì• ë‹ˆë©”ì´ì…˜ì„ ìœ„í•œ ê²ƒ
     //public SkeletonAnimation skeletonAnimation;
     //public AnimationReferenceAsset[] AnimClip;
 
-    //ÇöÀç ¾Ö´Ï¸ŞÀÌ¼Ç Ã³¸®°¡ ¹«¾ùÀÎÁö¿¡ ´ëÇÑ º¯¼ö
+    //í˜„ì¬ ì• ë‹ˆë©”ì´ì…˜ ì²˜ë¦¬ê°€ ë¬´ì—‡ì¸ì§€ì— ëŒ€í•œ ë³€ìˆ˜
     //private AnimState _AnimState;
 
-    //ÇöÀç ¾î¶² ¾Ö´Ï¸ŞÀÌ¼ÇÀÌ Àç»ıµÇ°í ÀÖ´ÂÁö¿¡ ´ëÇÑ º¯¼ö
+    //í˜„ì¬ ì–´ë–¤ ì• ë‹ˆë©”ì´ì…˜ì´ ì¬ìƒë˜ê³  ìˆëŠ”ì§€ì— ëŒ€í•œ ë³€ìˆ˜
     private string CurrentAnimation;
 
     void Awake()
     {
         scanner = GetComponentInChildren<Scanner>();
-        collider = GetComponent<Collider2D>();
+        col = GetComponent<Collider2D>();
 
         targetLayer = scanner.targetLayer;
     }
@@ -58,15 +58,15 @@ public class PlayerUnit : UnitBase
 
     void StateSetting()
     {
-        // ¼öÄ¡°ª
+        // ìˆ˜ì¹˜ê°’
         unitID = unitData.UnitID;
         health = unitData.Health;
         speed = unitData.Speed;
         power = unitData.Power;
         attackTime = unitData.AttackTime;
 
-        // ¼³Á¤°ª
-        collider.enabled = true;
+        // ì„¤ì •ê°’
+        col.enabled = true;
         unitState = UnitState.Move;
         moveVec = Vector3.right;
     }
@@ -75,14 +75,14 @@ public class PlayerUnit : UnitBase
     {
         if (scanner.nearestTarget)
         {
-            // À§Ä¡ Â÷ÀÌ = Å¸°Ù À§Ä¡ - ³ªÀÇ À§Ä¡
+            // ìœ„ì¹˜ ì°¨ì´ = íƒ€ê²Ÿ ìœ„ì¹˜ - ë‚˜ì˜ ìœ„ì¹˜
             moveVec = scanner.nearestTarget.position - transform.position;
 
-            // ÀÌµ¿
+            // ì´ë™
             transform.position += moveVec.normalized * speed * Time.deltaTime;
             unitState = UnitState.Move;
 
-            // °¡´Â ¹æÇâ¿¡ µû¶ó Sprite ¹æÇâ º¯°æ
+            // ê°€ëŠ” ë°©í–¥ì— ë”°ë¼ Sprite ë°©í–¥ ë³€ê²½
             if (moveVec.x > 0)
             {
                 transform.localScale = new Vector3(1f, 1f, 1f);
@@ -115,7 +115,7 @@ public class PlayerUnit : UnitBase
 
             startMoveFinish = true;
 
-            // ÀûÀÌ ÀÎ½ÄµÇ¸é attackTime Áõ°¡ ¹× °ø°İ ÇÔ¼ö ½ÇÇà
+            // ì ì´ ì¸ì‹ë˜ë©´ attackTime ì¦ê°€ ë° ê³µê²© í•¨ìˆ˜ ì‹¤í–‰
             attackTime += Time.deltaTime;
 
             if (attackTime >= unitData.AttackTime)
@@ -126,7 +126,7 @@ public class PlayerUnit : UnitBase
         }
         else
         {      
-            // AttackRay ¿¡ ÀÎ½ÄµÇ´Â ¿ÀºêÁ§Æ®°¡ ¾ø´Â °æ¿ì, ´Ù½Ã ½ºÄµ ½ÃÀÛ
+            // AttackRay ì— ì¸ì‹ë˜ëŠ” ì˜¤ë¸Œì íŠ¸ê°€ ì—†ëŠ” ê²½ìš°, ë‹¤ì‹œ ìŠ¤ìº” ì‹œì‘
             Scanner();
         }
 
@@ -147,7 +147,7 @@ public class PlayerUnit : UnitBase
 
     IEnumerator Die()
     {
-        collider.enabled = false;
+        col.enabled = false;
         unitState = UnitState.Die;
         attackTime = 0;
         moveVec = Vector2.zero;
@@ -161,8 +161,8 @@ public class PlayerUnit : UnitBase
 
     IEnumerator lerpCoroutine(Vector3 current, Vector3 target, float speed)
     {
-        float distance = Vector3.Distance(current, target); // °Å¸®(±æÀÌ) ±¸ÇÏ±â
-        float time = distance / speed; // °Å¸®(±æÀÌ) ¿¡ µû¶ó ÀÌµ¿ÇÏ´Â ½Ã°£ ¼³Á¤
+        float distance = Vector3.Distance(current, target); // ê±°ë¦¬(ê¸¸ì´) êµ¬í•˜ê¸°
+        float time = distance / speed; // ê±°ë¦¬(ê¸¸ì´) ì— ë”°ë¼ ì´ë™í•˜ëŠ” ì‹œê°„ ì„¤ì •
 
         float elapsedTime = 0.0f;
 
@@ -213,24 +213,24 @@ public class PlayerUnit : UnitBase
 
     //    }
 
-    //    //¾Ö´Ï¸ŞÀÌ¼Ç Àû¿ë
+    //    //ì• ë‹ˆë©”ì´ì…˜ ì ìš©
     //    _AsyncAnimation(AnimClip[animIndex], true, 1f);
     //}
 
     //private void _AsyncAnimation(AnimationReferenceAsset animClip, bool loop, float timeScale)
     //{
-    //    //µ¿ÀÏÇÑ ¾Ö´Ï¸ŞÀÌ¼ÇÀ» Àç»ıÇÏ·Á°í ÇÑ´Ù¸é ¾Æ·¡ ÄÚµå ±¸¹® ½ÇÇà X
+    //    //ë™ì¼í•œ ì• ë‹ˆë©”ì´ì…˜ì„ ì¬ìƒí•˜ë ¤ê³  í•œë‹¤ë©´ ì•„ë˜ ì½”ë“œ êµ¬ë¬¸ ì‹¤í–‰ X
     //    if (animClip.name.Equals(CurrentAnimation))
     //    {
     //        return;
     //    }
 
-    //    //ÇØ´ç ¾Ö´Ï¸ŞÀÌ¼ÇÀ¸·Î º¯°æÇÑ´Ù.
+    //    //í•´ë‹¹ ì• ë‹ˆë©”ì´ì…˜ìœ¼ë¡œ ë³€ê²½í•œë‹¤.
     //    skeletonAnimation.state.SetAnimation(0, animClip, loop).TimeScale = timeScale;
     //    skeletonAnimation.loop = loop;
     //    skeletonAnimation.timeScale = timeScale;
 
-    //    //ÇöÀç Àç»ıµÇ°í ÀÖ´Â ¾Ö´Ï¸ŞÀÌ¼Ç °ªÀ» º¯°æ
+    //    //í˜„ì¬ ì¬ìƒë˜ê³  ìˆëŠ” ì• ë‹ˆë©”ì´ì…˜ ê°’ì„ ë³€ê²½
     //    CurrentAnimation = animClip.name;
     //}
 
@@ -246,7 +246,7 @@ public class PlayerUnit : UnitBase
     //            break;
     //    }
 
-    //    //Âª°Ô ÀÛ¼ºÇÑ´Ù ¿ä·¸°Ô..
+    //    //ì§§ê²Œ ì‘ì„±í•œë‹¤ ìš”ë ‡ê²Œ..
     //    //_AsyncAnimation(AnimClip[(int)AnimState], true, 1f);
     //}
 }
