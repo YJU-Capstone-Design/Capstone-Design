@@ -117,13 +117,15 @@ public class EnemyUnit : UnitBase
     {
         if (attackTarget.gameObject.CompareTag("Wall"))
         {
-            MainWall wallLogic = attackTarget.gameObject.GetComponent<MainWall>();
+            /*MainWall wallLogic = attackTarget.gameObject.GetComponent<MainWall>();
 
-            wallLogic.health -= power;
+            wallLogic.health -= power;*/
+            BattleManager.Instance.HpDamage(power);
             attackTime = 0;
 
-            Debug.Log(wallLogic.health);
-        } else
+            //Debug.Log(wallLogic.health);
+        }
+        else
         {
             PlayerUnit enemyLogic = attackTarget.gameObject.GetComponent<PlayerUnit>();
 
