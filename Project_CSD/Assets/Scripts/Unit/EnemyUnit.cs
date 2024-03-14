@@ -4,18 +4,7 @@ using UnityEngine;
 
 public class EnemyUnit : UnitBase
 {
-    [Header("# Unit Setting")]
-    Scanner scanner;
-    public UnitData unitData;
-    LayerMask targetLayer;
-    Vector3 moveVec; // 이동 방향
-    public LayerMask attackLayer;
-    public Vector3 attackRayPos; // attackRay 위치 = 현재 위치 + attackRayPos
-    public Vector2 attackRaySize;
-
-    [Header("# Unit Activity")]
-    Collider2D col;
-    Collider2D attackTarget;
+    e
 
     void Awake()
     {
