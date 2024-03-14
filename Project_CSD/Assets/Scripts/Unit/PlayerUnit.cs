@@ -173,6 +173,9 @@ public class PlayerUnit : UnitBase
 
         float elapsedTime = 0.0f;
 
+        // 경계선 범위 벗어나지 않게 설정
+        
+
         this.transform.position = current;
         while (elapsedTime < time && !scanner.nearestTarget)
         {
@@ -189,6 +192,14 @@ public class PlayerUnit : UnitBase
         startMoveFinish = true;
 
         yield return null;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.CompareTag("Boundary"))
+        {
+            moveVec.y = 0;
+        }
     }
 
     //void Animation()
