@@ -5,22 +5,23 @@ using UnityEngine;
 
 public class Scanner : MonoBehaviour
 {
-    public float scanRange; // 스캔 범위
+    public Vector3 scannerPos; // 스캐너 위치
+    public Vector2 scanRange; // 스캔 범위
     public LayerMask targetLayer; // 레이어
     public RaycastHit2D[] targets; // 스캔 결과 배열
     public Transform nearestTarget; // 가장 가까운 목표
 
     void FixedUpdate()
     {
-        // CircleCastAll(시작 위치, 반지름, 캐스팅 방향, 캐스팅 길이, 대상 레이어) : 원형의 캐스트를 쏘고 모든 결과를 반환하는 함수
-        targets = Physics2D.CircleCastAll(transform.position, scanRange, Vector2.zero, 0, targetLayer);
+        // BoxCastAll(시작 위치, 크기, 회전, 방향, 길이, 대상 레이어) : 사각형의 캐스트를 쏘고 모든 결과를 반환하는 함수
+        targets = Physics2D.BoxCastAll(transform.position + scannerPos, scanRange, 0, Vector2.zero, 0, targetLayer);
         nearestTarget = GetNearest();
     }
 
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, scanRange);
+        Gizmos.DrawWireCube(transform.position + scannerPos, scanRange);
     }
 
     Transform GetNearest()
@@ -49,7 +50,7 @@ public class Scanner : MonoBehaviour
         }
 
         // 모든 적이 싸우고 있으면 싸우고 있는 적 중에서 가장 가까운 적으로 다시 탐색 -> enemy 는 벽으로 직진
-        if(result == null && gameObject.CompareTag("PlayerUnit"))
+        if (result == null && gameObject.CompareTag("PlayerUnit"))
         {
             foreach (RaycastHit2D target in targets)
             {

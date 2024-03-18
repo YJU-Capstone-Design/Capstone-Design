@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnitBase;
 
 public class PlayerUnit : UnitBase
 {
@@ -52,7 +53,7 @@ public class PlayerUnit : UnitBase
         AttackRay();
         // Animation();
 
-        if(health <= 0)
+        if (health <= 0)
         {
             StartCoroutine(Die());
         }
@@ -79,13 +80,13 @@ public class PlayerUnit : UnitBase
         if (scanner.nearestTarget)
         {
             // 위치 차이(방향) = 타겟 위치 - 나의 위치
-            //moveVec = scanner.nearestTarget.position - transform.position;
+            moveVec = scanner.nearestTarget.position - transform.position;
             // 이동
-            //transform.position += moveVec.normalized * speed * Time.deltaTime;
+            transform.position += moveVec.normalized * speed * Time.deltaTime;
 
             // 이동
-            StartCoroutine(
-                lerpCoroutine(transform.position, scanner.nearestTarget.position, speed));
+            //StartCoroutine(
+                //lerpCoroutine(transform.position, scanner.nearestTarget.position, speed));
 
 
             // 가는 방향에 따라 Sprite 방향 변경
@@ -101,7 +102,7 @@ public class PlayerUnit : UnitBase
         }
         else
         {
-            if(startMoveFinish)
+            if (startMoveFinish)
             {
                 // 유닛의 처음 위치로 귀환
                 StartCoroutine(
@@ -135,7 +136,7 @@ public class PlayerUnit : UnitBase
             }
         }
         else
-        {      
+        {
             // AttackRay 에 인식되는 오브젝트가 없는 경우, 다시 스캔 시작
             Scanner();
         }
@@ -171,15 +172,15 @@ public class PlayerUnit : UnitBase
 
     IEnumerator lerpCoroutine(Vector3 current, Vector3 target, float speed)
     {
-        
+
         float distance = Vector3.Distance(current, target); // 거리(길이) 구하기
         float time = distance / speed; // 거리(길이) 에 따라 이동하는 시간 설정
 
         float elapsedTime = 0.0f;
 
         // 경계선 범위 벗어나지 않게 설정
-        if (target.y >= 2) { target.y = 2; } 
-        else if (target.y <= -2) { target.y = 2; }
+        if (target.y >= 2) { target.y = 2; }
+        else if (target.y <= -2) { target.y = -2; }
         else if (target.x >= 6) { target.x = 6; }
 
         this.transform.position = current;
@@ -202,7 +203,7 @@ public class PlayerUnit : UnitBase
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.CompareTag("Boundary"))
+        if (collision.gameObject.CompareTag("Boundary"))
         {
             moveVec.y = 0;
         }
