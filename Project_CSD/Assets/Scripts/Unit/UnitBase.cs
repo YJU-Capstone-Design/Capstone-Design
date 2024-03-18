@@ -13,5 +13,4 @@ public class UnitBase : MonoBehaviour
     public float power;
     public float attackTime;
 
-
 }

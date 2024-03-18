@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PlayerUnit : UnitBase
 {
-
     [Header("# Unit Setting")]
     Scanner scanner;
     public UnitData unitData;
@@ -25,8 +24,8 @@ public class PlayerUnit : UnitBase
     //public AnimationReferenceAsset[] AnimClip;
 
     //현재 애니메이션 처리가 무엇인지에 대한 변수
-    //private AnimState _AnimState;
 
+    //private AnimState _AnimState;
     //현재 어떤 애니메이션이 재생되고 있는지에 대한 변수
     private string CurrentAnimation;
 
