@@ -29,14 +29,7 @@ public class Arrow : MonoBehaviour
         transform.position = movePosition;
 
         // 쏘는 방향에 따라 Sprite 방향 변경
-        if (targetX > playerX)
-        {
-            transform.localScale = new Vector3(-1f, 1f, 1f);
-        }
-        else if (targetX < playerX)
-        {
-            transform.localScale = new Vector3(1f, 1f, 1f);
-        }
+        transform.localScale = new Vector3(-1f, 1f, 1f);
 
         if (movePosition == target.transform.position)
         {
