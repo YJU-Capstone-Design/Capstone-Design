@@ -66,7 +66,15 @@ public class PlayerUnit : UnitBase
         health = unitData.Health;
         speed = unitData.Speed;
         power = unitData.Power;
-        attackTime = unitData.AttackTime;
+
+        if (unitID == 2)
+        {
+            attackTime = 0;
+        }
+        else
+        {
+            attackTime = unitData.AttackTime - 1;
+        }
 
         // 설정값
         col.enabled = true;
@@ -132,7 +140,13 @@ public class PlayerUnit : UnitBase
             if (attackTime >= unitData.AttackTime)
             {
                 attackTime = 0;
-                Attack();
+                if(unitID == 2)
+                {
+                    Arrow();
+                } else
+                {
+                    Attack();
+                }
             }
         }
         else
@@ -154,6 +168,13 @@ public class PlayerUnit : UnitBase
         EnemyUnit enemyLogic = attackTarget.gameObject.GetComponent<EnemyUnit>();
 
         enemyLogic.health -= power;
+    }
+
+    void Arrow()
+    {
+        GameObject arrow = PoolManager.Instance.Get(3, transform.position); // 화살 가져오기
+        Arrow arrawLogic = arrow.GetComponent<Arrow>();
+        arrawLogic.target = attackTarget.gameObject;
     }
 
     IEnumerator Die()
