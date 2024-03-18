@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnitBase;
 
 public class PlayerUnit : UnitBase
 {
@@ -51,7 +52,7 @@ public class PlayerUnit : UnitBase
         AttackRay();
         // Animation();
 
-        if(health <= 0)
+        if (health <= 0)
         {
             StartCoroutine(Die());
         }
@@ -64,7 +65,15 @@ public class PlayerUnit : UnitBase
         health = unitData.Health;
         speed = unitData.Speed;
         power = unitData.Power;
-        attackTime = unitData.AttackTime;
+
+        if (unitID == 2)
+        {
+            attackTime = 0;
+        }
+        else
+        {
+            attackTime = unitData.AttackTime - 1;
+        }
 
         // 설정값
         col.enabled = true;
@@ -77,12 +86,15 @@ public class PlayerUnit : UnitBase
     {
         if (scanner.nearestTarget)
         {
-            // 위치 차이 = 타겟 위치 - 나의 위치
+            // 위치 차이(방향) = 타겟 위치 - 나의 위치
             moveVec = scanner.nearestTarget.position - transform.position;
-
             // 이동
             transform.position += moveVec.normalized * speed * Time.deltaTime;
-            unitState = UnitState.Move;
+
+            // 이동
+            //StartCoroutine(
+                //lerpCoroutine(transform.position, scanner.nearestTarget.position, speed));
+
 
             // 가는 방향에 따라 Sprite 방향 변경
             if (moveVec.x > 0)
@@ -97,7 +109,7 @@ public class PlayerUnit : UnitBase
         }
         else
         {
-            if(startMoveFinish)
+            if (startMoveFinish)
             {
                 // 유닛의 처음 위치로 귀환
                 StartCoroutine(
@@ -127,11 +139,17 @@ public class PlayerUnit : UnitBase
             if (attackTime >= unitData.AttackTime)
             {
                 attackTime = 0;
-                Attack();
+                if(unitID == 2)
+                {
+                    Arrow();
+                } else
+                {
+                    Attack();
+                }
             }
         }
         else
-        {      
+        {
             // AttackRay 에 인식되는 오브젝트가 없는 경우, 다시 스캔 시작
             Scanner();
         }
@@ -151,6 +169,13 @@ public class PlayerUnit : UnitBase
         enemyLogic.health -= power;
     }
 
+    void Arrow()
+    {
+        GameObject arrow = PoolManager.Instance.Get(3, transform.position); // 화살 가져오기
+        Arrow arrawLogic = arrow.GetComponent<Arrow>();
+        arrawLogic.target = attackTarget.gameObject;
+    }
+
     IEnumerator Die()
     {
         col.enabled = false;
@@ -167,10 +192,16 @@ public class PlayerUnit : UnitBase
 
     IEnumerator lerpCoroutine(Vector3 current, Vector3 target, float speed)
     {
+
         float distance = Vector3.Distance(current, target); // 거리(길이) 구하기
         float time = distance / speed; // 거리(길이) 에 따라 이동하는 시간 설정
 
         float elapsedTime = 0.0f;
+
+        // 경계선 범위 벗어나지 않게 설정
+        if (target.y >= 2) { target.y = 2; }
+        else if (target.y <= -2) { target.y = -2; }
+        else if (target.x >= 6) { target.x = 6; }
 
         this.transform.position = current;
         while (elapsedTime < time && !scanner.nearestTarget)
@@ -188,6 +219,14 @@ public class PlayerUnit : UnitBase
         startMoveFinish = true;
 
         yield return null;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Boundary"))
+        {
+            moveVec.y = 0;
+        }
     }
 
     //void Animation()

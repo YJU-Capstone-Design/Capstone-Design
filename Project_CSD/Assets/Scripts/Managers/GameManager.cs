@@ -27,6 +27,16 @@ public class GameManager : Singleton<GameManager>
         // 적 유닛 소환
         if (Input.GetMouseButtonDown(1))
         {
+            pool.Get(2);
+        }
+
+        // 적 유닛 소환
+        if (Input.GetMouseButtonDown(2))
+        {
+            // 마우스 좌클릭 한 곳의 위치값
+            point = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x,
+                Input.mousePosition.y, -Camera.main.transform.position.z));
+
             pool.Get(1);
         }
     }
