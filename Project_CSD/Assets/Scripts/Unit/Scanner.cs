@@ -2,6 +2,7 @@ using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnitBase;
 
 public class Scanner : MonoBehaviour
 {
@@ -35,7 +36,7 @@ public class Scanner : MonoBehaviour
             UnitBase targetLogic = target.transform.gameObject.GetComponent<UnitBase>();
 
             // 적이 싸우는 상태일 경우 다시 탐색
-            if (targetLogic.unitState == UnitBase.UnitState.Fight)
+            if (targetLogic.unitState == UnitBase.UnitState.Fight && targetLogic.unitActivity == UnitBase.UnitActivity.Hit)
                 continue;
 
             Vector3 myPos = transform.position; // 플레이어 위치
@@ -49,17 +50,20 @@ public class Scanner : MonoBehaviour
             }
         }
 
-        // 모든 적이 싸우고 있으면 싸우고 있는 적 중에서 가장 가까운 적으로 다시 탐색
-        foreach (RaycastHit2D target in targets)
+        // 모든 적이 싸우고 있으면 싸우고 있는 적 중에서 가장 가까운 적으로 다시 탐색 -> enemy 는 벽으로 직진
+        if (result == null && gameObject.CompareTag("PlayerUnit"))
         {
-            Vector3 myPos = transform.position; // 플레이어 위치
-            Vector3 targetPos = target.transform.position; // 인식된 오브젝트의 위치
-            float curDiff = Vector3.Distance(myPos, targetPos); // Distance(A,B) : 벡터 A 와 B 의 거리를 계산해주는 함수
-
-            if (curDiff < diff)
+            foreach (RaycastHit2D target in targets)
             {
-                diff = curDiff;
-                result = target.transform;
+                Vector3 myPos = transform.position; // 플레이어 위치
+                Vector3 targetPos = target.transform.position; // 인식된 오브젝트의 위치
+                float curDiff = Vector3.Distance(myPos, targetPos); // Distance(A,B) : 벡터 A 와 B 의 거리를 계산해주는 함수
+
+                if (curDiff < diff)
+                {
+                    diff = curDiff;
+                    result = target.transform;
+                }
             }
         }
 

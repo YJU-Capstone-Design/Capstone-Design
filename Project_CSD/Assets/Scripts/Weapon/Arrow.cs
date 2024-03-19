@@ -6,6 +6,7 @@ using DG.Tweening;
 public class Arrow : MonoBehaviour
 {
     public GameObject target;
+    public GameObject playerUnit;
     public float speed = 10f;
     public Vector3 movePosition;
     private float playerX;
@@ -18,6 +19,7 @@ public class Arrow : MonoBehaviour
 
     void Update()
     {
+        // 포물선 공식
         playerX = transform.position.x;
         targetX = target.transform.position.x;
         dist = targetX - playerX;
@@ -34,6 +36,11 @@ public class Arrow : MonoBehaviour
         if (movePosition == target.transform.position)
         {
             gameObject.SetActive(false);
+
+            // 일단 아군 유닛 기준
+            EnemyUnit enemy = target.GetComponent<EnemyUnit>();
+            PlayerUnit player = playerUnit.GetComponent<PlayerUnit>();
+            enemy.health -= player.power;
         }
     }
     public static Quaternion LookAtTarget(Vector2 r)

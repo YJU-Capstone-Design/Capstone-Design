@@ -50,12 +50,17 @@ public class PlayerUnit : UnitBase
 
     void Update()
     {
-        AttackRay();
         // Animation();
-
-        if (health <= 0)
+        if (unitState != UnitState.Die)
         {
-            StartCoroutine(Die());
+            if (health <= 0)
+            {
+                StartCoroutine(Die());
+            }
+            else
+            {
+                AttackRay();
+            }
         }
     }
 
@@ -79,6 +84,7 @@ public class PlayerUnit : UnitBase
         // 설정값
         col.enabled = true;
         unitState = UnitState.Move;
+        unitActivity = UnitActivity.Normal;
         moveVec = Vector3.right;
         firstPos = GameManager.Instance.point;
     }
@@ -129,21 +135,19 @@ public class PlayerUnit : UnitBase
 
             startMoveFinish = true;
 
-            EnemyUnit enemyLogic = attackTarget.gameObject.GetComponent<EnemyUnit>();
-            enemyLogic.isDamaged = true;
-
             // 적이 인식되면 attackTime 증가 및 공격 함수 실행
             attackTime += Time.deltaTime;
 
             if (attackTime >= unitData.AttackTime)
             {
                 attackTime = 0;
+
                 if(unitID == 2)
                 {
                     Arrow();
                 } else
                 {
-                    Attack();
+                    StartCoroutine(Attack());
                 }
             }
         }
@@ -161,18 +165,28 @@ public class PlayerUnit : UnitBase
         Gizmos.DrawWireCube(transform.position + new Vector3(attackRayPos.x * Mathf.Sign(moveVec.x), attackRayPos.y, attackRayPos.z), attackRaySize);
     }
 
-    void Attack()
+    IEnumerator Attack()
     {
+        yield return null; // 나중에 아마도 애니메이션 시간에 맞춰서 변경 필요
+
         EnemyUnit enemyLogic = attackTarget.gameObject.GetComponent<EnemyUnit>();
 
         enemyLogic.health -= power;
+        enemyLogic.unitActivity = UnitActivity.Hit;
+
+        yield return new WaitForSeconds(7f);
+
+        enemyLogic.unitActivity = UnitActivity.Normal;
+
     }
 
     void Arrow()
     {
         GameObject arrow = PoolManager.Instance.Get(3, transform.position); // 화살 가져오기
         Arrow arrawLogic = arrow.GetComponent<Arrow>();
+
         arrawLogic.target = attackTarget.gameObject;
+        arrawLogic.playerUnit = this.gameObject;
     }
 
     IEnumerator Die()
@@ -183,9 +197,18 @@ public class PlayerUnit : UnitBase
         moveVec = Vector2.zero;
         speed = 0;
 
+        if (attackTarget != null)
+        {
+            EnemyUnit enemyLogic = attackTarget.gameObject.GetComponent<EnemyUnit>();
+
+            if (enemyLogic != null)
+            {
+                enemyLogic.unitActivity = UnitActivity.Normal;
+            }
+        }
+
         yield return new WaitForSeconds(1f);
 
-        Debug.Log("Die");
         gameObject.SetActive(false);
     }
 
@@ -201,6 +224,7 @@ public class PlayerUnit : UnitBase
         if (target.y >= 2) { target.y = 2; }
         else if (target.y <= -2) { target.y = -2; }
         else if (target.x >= 6) { target.x = 6; }
+        else if (target.x <= -7) { target.x = -7; }
 
         this.transform.position = current;
         while (elapsedTime < time && !scanner.nearestTarget)

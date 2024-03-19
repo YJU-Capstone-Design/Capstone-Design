@@ -32,11 +32,15 @@ public class EnemyUnit : UnitBase
 
     void Update()
     {
-        AttackRay();
-
-        if (health <= 0)
+        if(unitState != UnitState.Die)
         {
-            StartCoroutine(Die());
+            if (health <= 0)
+            {
+                StartCoroutine(Die());
+            } else
+            {
+                AttackRay();
+            }
         }
     }
 
@@ -52,6 +56,7 @@ public class EnemyUnit : UnitBase
         // 설정값
         col.enabled = true;
         unitState = UnitState.Move;
+        unitActivity = UnitActivity.Normal;
         moveVec = Vector3.left;
     }
 
@@ -91,15 +96,13 @@ public class EnemyUnit : UnitBase
         {
             unitState = UnitState.Fight;
 
-            PlayerUnit enemyLogic = attackTarget.gameObject.GetComponent<PlayerUnit>();
-            enemyLogic.isDamaged = true;
-
             // 적(유닛, 벽)이 인식되면 attackTime 증가 및 공격 함수 실행
             attackTime += Time.deltaTime;
 
             if(attackTime >= unitData.AttackTime)
             {
-                Attack();
+                StartCoroutine(Attack());
+                attackTime = 0;
             }
         }
         else
@@ -116,7 +119,7 @@ public class EnemyUnit : UnitBase
         Gizmos.DrawWireCube(transform.position + new Vector3(attackRayPos.x * Mathf.Sign(moveVec.x), attackRayPos.y * (moveVec.y > 0 ? -1 : 1), attackRayPos.z), attackRaySize);
     }
 
-    void Attack()
+    IEnumerator Attack()
     {
         if (attackTarget.gameObject.CompareTag("Wall"))
         {
@@ -129,9 +132,12 @@ public class EnemyUnit : UnitBase
             PlayerUnit enemyLogic = attackTarget.gameObject.GetComponent<PlayerUnit>();
 
             enemyLogic.health -= power;
-        }
+            enemyLogic.unitActivity = UnitActivity.Hit;
 
-        attackTime = 0;
+            yield return new WaitForSeconds(7f);
+
+            enemyLogic.unitActivity = UnitActivity.Normal;
+        }
     }
 
     IEnumerator Die()
@@ -141,10 +147,19 @@ public class EnemyUnit : UnitBase
         attackTime = 0;
         moveVec = Vector2.zero;
         speed = 0;
+        
+        if(attackTarget != null)
+        {
+            PlayerUnit enemyLogic = attackTarget.gameObject.GetComponent<PlayerUnit>();
+
+            if (enemyLogic != null)
+            {
+                enemyLogic.unitActivity = UnitActivity.Normal;
+            }
+        }
 
         yield return new WaitForSeconds(1f);
 
-        Debug.Log("Die");
         gameObject.SetActive(false);
     }
 
