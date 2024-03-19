@@ -17,7 +17,8 @@ public class UiManager : MonoBehaviour
 
     private void Awake()
     {
-        costText.text = "10";
+        cost = 10;
+        costText.text = cost.ToString();
     }
     private void Update()
     {

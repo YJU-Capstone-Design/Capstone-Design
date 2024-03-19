@@ -1142,6 +1142,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameSpeed: {fileID: 1053705405}
+  cost: 0
+  costText: {fileID: 1477738116}
 --- !u!1 &418216608
 GameObject:
   m_ObjectHideFlags: 0
