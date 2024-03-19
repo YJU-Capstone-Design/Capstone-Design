@@ -44,5 +44,6 @@ public class PopUp : MonoBehaviour
     {
         other.SetActive(false);
         stop.SetActive(false);
+        Time.timeScale = 1;
     }
 }
