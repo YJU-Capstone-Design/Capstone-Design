@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
 
 public class EnemyUnit : UnitBase
@@ -16,11 +17,13 @@ public class EnemyUnit : UnitBase
     [Header("# Unit Activity")]
     Collider2D col;
     Collider2D attackTarget;
+    MonsterCharacterAnimation anim;
 
     void Awake()
     {
         scanner = GetComponentInChildren<Scanner>();
         col = GetComponent<Collider2D>();
+        anim = GetComponentInChildren<MonsterCharacterAnimation>();
 
         targetLayer = scanner.targetLayer;
     }
@@ -32,7 +35,7 @@ public class EnemyUnit : UnitBase
 
     void Update()
     {
-        if(unitState != UnitState.Die)
+        if (unitState != UnitState.Die)
         {
             if (health <= 0)
             {
@@ -80,12 +83,15 @@ public class EnemyUnit : UnitBase
         // 가는 방향에 따라 Sprite 방향 변경
         if (moveVec.x > 0)
         {
-            transform.localScale = new Vector3(1f, 1f, 1f);
+            transform.localScale = new Vector3(-1f, 1f, 1f);
         }
         else if (moveVec.x < 0)
         {
-            transform.localScale = new Vector3(-1f, 1f, 1f);
+            transform.localScale = new Vector3(1f, 1f, 1f);
         }
+
+        // 애니메이션
+        anim.Walk();
     }
 
     void AttackRay()
@@ -116,11 +122,14 @@ public class EnemyUnit : UnitBase
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.blue;
-        Gizmos.DrawWireCube(transform.position + new Vector3(attackRayPos.x * Mathf.Sign(moveVec.x), attackRayPos.y * (moveVec.y > 0 ? -1 : 1), attackRayPos.z), attackRaySize);
+        Gizmos.DrawWireCube(transform.position + new Vector3(attackRayPos.x * Mathf.Sign(moveVec.x), attackRayPos.y * (moveVec.y > 0 ? 2 : 1), attackRayPos.z), attackRaySize);
     }
 
     IEnumerator Attack()
     {
+        // 애니메이션
+        anim.Smash();
+
         if (attackTarget.gameObject.CompareTag("Wall"))
         {
             MainWall wallLogic = attackTarget.gameObject.GetComponent<MainWall>();
@@ -130,11 +139,12 @@ public class EnemyUnit : UnitBase
         } else
         {
             PlayerUnit enemyLogic = attackTarget.gameObject.GetComponent<PlayerUnit>();
-
-            enemyLogic.health -= power;
             enemyLogic.unitActivity = UnitActivity.Hit;
 
-            yield return new WaitForSeconds(7f);
+            yield return new WaitForSeconds(anim.GetTime());
+
+            enemyLogic.health -= power;
+            Debug.Log("attack");
 
             enemyLogic.unitActivity = UnitActivity.Normal;
         }
@@ -147,8 +157,11 @@ public class EnemyUnit : UnitBase
         attackTime = 0;
         moveVec = Vector2.zero;
         speed = 0;
-        
-        if(attackTarget != null)
+
+        // 애니메이션
+        anim.Die();
+
+        if (attackTarget != null)
         {
             PlayerUnit enemyLogic = attackTarget.gameObject.GetComponent<PlayerUnit>();
 
@@ -158,7 +171,7 @@ public class EnemyUnit : UnitBase
             }
         }
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(anim.GetTime());
 
         gameObject.SetActive(false);
     }

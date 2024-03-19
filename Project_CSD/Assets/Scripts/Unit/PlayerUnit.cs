@@ -95,6 +95,9 @@ public class PlayerUnit : UnitBase
         {
             // 위치 차이(방향) = 타겟 위치 - 나의 위치
             moveVec = scanner.nearestTarget.position - transform.position;
+            if(moveVec.y > 0) { moveVec.y += 0.5f; } 
+            else if(moveVec.y < 0) { moveVec.y -= 0.5f; }
+
             // 이동
             transform.position += moveVec.normalized * speed * Time.deltaTime;
 
