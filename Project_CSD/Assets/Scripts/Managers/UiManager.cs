@@ -8,6 +8,36 @@ public class UiManager : MonoBehaviour
     [Header("GameSpeed")]
     private int time = 1;
     [SerializeField] private TextMeshProUGUI gameSpeed;
+
+    [Header("Cost")]
+    public int cost = 0;
+    private float costTime = 0f;
+    private float timeInterver = 5f;
+    [SerializeField] private TextMeshProUGUI costText;
+
+    private void Awake()
+    {
+        costText.text = "10";
+    }
+    private void Update()
+    {
+        costTime += Time.deltaTime;
+        if (costTime >= timeInterver)
+        {
+            costTime = 0f;
+            cost += 2;
+            CostMgr(cost);
+        }
+        
+    }
+
+    public void CostMgr(int cost)
+    {
+
+        
+            costText.text = cost.ToString();
+        
+    }
     public void SpeedUp()
     {
         if (time == 3)
