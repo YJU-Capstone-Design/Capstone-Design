@@ -13,5 +13,7 @@ public class UnitBase : MonoBehaviour
     public float power;
     public float attackTime;
 
+    public bool isDamaged;
+
 
 }

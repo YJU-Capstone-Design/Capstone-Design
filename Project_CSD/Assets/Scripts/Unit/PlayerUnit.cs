@@ -92,10 +92,6 @@ public class PlayerUnit : UnitBase
             // 이동
             transform.position += moveVec.normalized * speed * Time.deltaTime;
 
-            // 이동
-            //StartCoroutine(
-                //lerpCoroutine(transform.position, scanner.nearestTarget.position, speed));
-
 
             // 가는 방향에 따라 Sprite 방향 변경
             if (moveVec.x > 0)
@@ -129,10 +125,12 @@ public class PlayerUnit : UnitBase
 
         if (attackTarget != null)
         {
-            EnemyUnit targetLogic = attackTarget.gameObject.GetComponent<EnemyUnit>();
             unitState = UnitState.Fight;
 
             startMoveFinish = true;
+
+            EnemyUnit enemyLogic = attackTarget.gameObject.GetComponent<EnemyUnit>();
+            enemyLogic.isDamaged = true;
 
             // 적이 인식되면 attackTime 증가 및 공격 함수 실행
             attackTime += Time.deltaTime;

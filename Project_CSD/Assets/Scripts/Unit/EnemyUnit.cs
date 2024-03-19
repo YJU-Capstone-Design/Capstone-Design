@@ -91,6 +91,9 @@ public class EnemyUnit : UnitBase
         {
             unitState = UnitState.Fight;
 
+            PlayerUnit enemyLogic = attackTarget.gameObject.GetComponent<PlayerUnit>();
+            enemyLogic.isDamaged = true;
+
             // 적(유닛, 벽)이 인식되면 attackTime 증가 및 공격 함수 실행
             attackTime += Time.deltaTime;
 
@@ -120,16 +123,15 @@ public class EnemyUnit : UnitBase
             MainWall wallLogic = attackTarget.gameObject.GetComponent<MainWall>();
 
             wallLogic.health -= power;
-            attackTime = 0;
 
-            Debug.Log(wallLogic.health);
         } else
         {
             PlayerUnit enemyLogic = attackTarget.gameObject.GetComponent<PlayerUnit>();
 
             enemyLogic.health -= power;
-            attackTime = 0;
         }
+
+        attackTime = 0;
     }
 
     IEnumerator Die()
