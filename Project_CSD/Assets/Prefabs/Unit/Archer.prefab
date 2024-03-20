@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 9019760990751808296}
   m_Layer: 6
   m_Name: Archer
-  m_TagString: PlayerUnit
+  m_TagString: Archer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -135,6 +135,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unitState: 0
+  unitActivity: 0
   unitID: 0
   health: 0
   speed: 0

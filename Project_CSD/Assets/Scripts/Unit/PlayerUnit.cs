@@ -145,7 +145,7 @@ public class PlayerUnit : UnitBase
             {
                 attackTime = 0;
 
-                if(unitID == 2)
+                if(gameObject.CompareTag("Archer"))
                 {
                     Arrow();
                 } else
