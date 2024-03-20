@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UIElements;
 
+
 public class MainLobby : MonoBehaviour
 {
     [SerializeField] private List<GameObject> menu = new List<GameObject>();
@@ -90,4 +91,6 @@ public class MainLobby : MonoBehaviour
             menu_Obj_Setting[i].gameObject.SetActive(false);
         }
     }
+
+    
 }

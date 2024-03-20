@@ -15,6 +15,10 @@ public class UiManager : MonoBehaviour
     private float timeInterver = 5f;
     [SerializeField] private TextMeshProUGUI costText;
 
+    [Header("BattleUiToggle")]
+    [SerializeField] private List<GameObject> battle_Btn = new List<GameObject>();
+    private int toggle=0;
+
     private void Awake()
     {
         cost = 10;
@@ -30,6 +34,27 @@ public class UiManager : MonoBehaviour
             CostMgr(cost);
         }
         
+    }
+
+    public void CloseToggle()
+    {
+        if (toggle == 0)
+        {
+            foreach(GameObject go in battle_Btn)
+            {
+                go.SetActive(false);
+                toggle = 1;
+            }
+
+        }
+        else
+        {
+            foreach (GameObject go in battle_Btn)
+            {
+                go.SetActive(true);
+                toggle = 0;
+            }
+        }
     }
 
     public void CostMgr(int cost)
