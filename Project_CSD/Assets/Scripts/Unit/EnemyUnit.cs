@@ -18,7 +18,7 @@ public class EnemyUnit : UnitBase
     [Header("# Unit Activity")]
     Collider2D col;
     Collider2D attackTarget; // 공격 목표
-    public MonsterCharacterAnimation anim;
+    MonsterCharacterAnimation anim;
 
     void Awake()
     {

@@ -15,12 +15,6 @@ public abstract class MonsterCharacterAnimation : MonoBehaviour
         SetAnimation(MonsterActing.Idle);
     }
 
-    protected void OnEnable()
-    {
-        SetAnimation(MonsterActing.Idle);
-    
-    }
-
     public float GetTime()
     {
         return Animator.GetCurrentAnimatorStateInfo(0).length - 0.5f;

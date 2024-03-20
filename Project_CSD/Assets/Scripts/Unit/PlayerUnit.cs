@@ -178,11 +178,6 @@ public class PlayerUnit : UnitBase
         enemyLogic.health -= power;
         enemyLogic.unitActivity = UnitActivity.Hit;
 
-        if (enemyLogic.health <= 0)
-        {
-            enemyLogic.anim.Die();
-        }
-
         yield return new WaitForSeconds(3f);
 
         // 맞은 직후 다시 상대의 UnitActivity 는 normal 상태로 변경
