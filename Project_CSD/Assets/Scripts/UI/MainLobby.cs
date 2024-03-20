@@ -7,6 +7,7 @@ using UnityEngine.UIElements;
 public class MainLobby : MonoBehaviour
 {
     [SerializeField] private List<GameObject> menu = new List<GameObject>();
+    [SerializeField] private List<GameObject> menu_Obj_Setting = new List<GameObject>();
     [SerializeField] private TextMeshProUGUI toggle;
     [SerializeField] private GameObject toggleMenu;
 
@@ -31,7 +32,7 @@ public class MainLobby : MonoBehaviour
         if(type == "Gacha")
         {
             openScene = 1;
-        }else if(type == "MyCard")
+        }else if(type == "TraningBtn")
         {
             openScene = 2;
         }
@@ -39,7 +40,7 @@ public class MainLobby : MonoBehaviour
         {
             openScene = 3;
         }
-        else if (type == "TraningBtn")
+        else if (type == "KitchenRoom") 
         {
             openScene = 4;
         }
@@ -51,12 +52,13 @@ public class MainLobby : MonoBehaviour
         {
             openScene = 6;
         }
-        foreach(GameObject go in menu)
+        for(int i=0; i<menu.Count; i++)
         {
-            go.SetActive(false);
-
+            menu[i].gameObject.SetActive(false);
+            menu_Obj_Setting[i].gameObject.SetActive(false);
         }
         menu[openScene].SetActive(true);
+        menu_Obj_Setting[openScene].SetActive(true);
     }
 
 
@@ -84,6 +86,7 @@ public class MainLobby : MonoBehaviour
         for(int i=1; i<menu.Count; i++)
         {
             menu[i].gameObject.SetActive(false);
+            menu_Obj_Setting[i].gameObject.SetActive(false);
         }
     }
 }
