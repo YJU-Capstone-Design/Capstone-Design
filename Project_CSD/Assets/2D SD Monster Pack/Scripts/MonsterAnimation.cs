@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class MonsterAnimation : MonsterCharacterAnimation
 {
-
     protected override void SetAnimation(MonsterActing Monsteracting)
     {
         if (IsDead)

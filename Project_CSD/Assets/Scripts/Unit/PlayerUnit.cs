@@ -17,7 +17,7 @@ public class PlayerUnit : UnitBase
 
     [Header("# Unit Activity")]
     Collider2D col;
-    Collider2D attackTarget;
+    Collider2D attackTarget; // 공격 목표
     Vector3 firstPos;
 
     [Header("# Spine")]
@@ -95,8 +95,8 @@ public class PlayerUnit : UnitBase
         {
             // 위치 차이(방향) = 타겟 위치 - 나의 위치
             moveVec = scanner.nearestTarget.position - transform.position;
-            if(moveVec.y > 0) { moveVec.y += 0.5f; } 
-            else if(moveVec.y < 0) { moveVec.y -= 0.5f; }
+            if (moveVec.y > 0) { moveVec.y += 0.5f; }
+            else if (moveVec.y < 0) { moveVec.y -= 0.5f; }
 
             // 이동
             transform.position += moveVec.normalized * speed * Time.deltaTime;
@@ -135,7 +135,6 @@ public class PlayerUnit : UnitBase
         if (attackTarget != null)
         {
             unitState = UnitState.Fight;
-
             startMoveFinish = true;
 
             // 적이 인식되면 attackTime 증가 및 공격 함수 실행
@@ -146,10 +145,11 @@ public class PlayerUnit : UnitBase
                 attackTime = 0;
 
                 // 유닛 별로 각각의 공격 함수 실행
-                if(gameObject.CompareTag("Archer"))
+                if (gameObject.CompareTag("Archer"))
                 {
-                    Arrow();
-                } else
+                    StartCoroutine(Arrow());
+                }
+                else
                 {
                     StartCoroutine(Attack());
                 }
@@ -178,39 +178,43 @@ public class PlayerUnit : UnitBase
         enemyLogic.health -= power;
         enemyLogic.unitActivity = UnitActivity.Hit;
 
-        yield return new WaitForSeconds(7f);
+        if (enemyLogic.health <= 0)
+        {
+            enemyLogic.anim.Die();
+        }
 
-        // 변수 제거 용도
+        yield return new WaitForSeconds(3f);
+
+        // 맞은 직후 다시 상대의 UnitActivity 는 normal 상태로 변경
         enemyLogic.unitActivity = UnitActivity.Normal;
 
     }
 
-    void Arrow()
+    IEnumerator Arrow()
     {
+        yield return null;
+
+        // 맞고 있는 적 유닛 상태 변경
+        EnemyUnit enemyLogic = attackTarget.gameObject.GetComponent<EnemyUnit>();
+        enemyLogic.unitActivity = UnitActivity.Hit;
+
         GameObject arrow = PoolManager.Instance.Get(3, transform.position); // 화살 가져오기
         Arrow arrawLogic = arrow.GetComponent<Arrow>();
 
+        // 화살 목표 오브젝트 설정
         arrawLogic.target = attackTarget.gameObject;
         arrawLogic.playerUnit = this.gameObject;
     }
 
     IEnumerator Die()
     {
-        col.enabled = false;
         unitState = UnitState.Die;
-        attackTime = 0;
         moveVec = Vector2.zero;
+        col.enabled = false;
+        unitActivity = UnitActivity.Normal;
+
         speed = 0;
-
-        if (attackTarget != null)
-        {
-            EnemyUnit enemyLogic = attackTarget.gameObject.GetComponent<EnemyUnit>();
-
-            if (enemyLogic != null)
-            {
-                enemyLogic.unitActivity = UnitActivity.Normal;
-            }
-        }
+        attackTime = 0;
 
         yield return new WaitForSeconds(1f);
 

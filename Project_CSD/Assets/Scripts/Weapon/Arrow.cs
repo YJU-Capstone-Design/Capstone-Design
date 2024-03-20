@@ -41,8 +41,10 @@ public class Arrow : MonoBehaviour
             EnemyUnit enemy = target.GetComponent<EnemyUnit>();
             PlayerUnit player = playerUnit.GetComponent<PlayerUnit>();
             enemy.health -= player.power;
+            enemy.unitActivity = UnitBase.UnitActivity.Normal;
         }
     }
+
     public static Quaternion LookAtTarget(Vector2 r)
     {
         return Quaternion.Euler(0, 0, Mathf.Atan2(r.y, r.x) * Mathf.Rad2Deg);

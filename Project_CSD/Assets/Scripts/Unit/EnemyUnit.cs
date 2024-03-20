@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class EnemyUnit : UnitBase
 {
@@ -16,8 +17,8 @@ public class EnemyUnit : UnitBase
 
     [Header("# Unit Activity")]
     Collider2D col;
-    Collider2D attackTarget;
-    MonsterCharacterAnimation anim;
+    Collider2D attackTarget; // 공격 목표
+    public MonsterCharacterAnimation anim;
 
     void Awake()
     {
@@ -39,8 +40,12 @@ public class EnemyUnit : UnitBase
         {
             if (health <= 0)
             {
+                health = 0;
                 StartCoroutine(Die());
-            } else
+                // Debug.Log("Die");
+                //gameObject.SetActive(false);
+            }
+            else
             {
                 AttackRay();
             }
@@ -61,6 +66,7 @@ public class EnemyUnit : UnitBase
         unitState = UnitState.Move;
         unitActivity = UnitActivity.Normal;
         moveVec = Vector3.left;
+        transform.GetChild(0).rotation = Quaternion.identity;
     }
 
     void Scanner()
@@ -97,7 +103,7 @@ public class EnemyUnit : UnitBase
     void AttackRay()
     {
         attackTarget = Physics2D.OverlapBox(transform.position + new Vector3(attackRayPos.x * Mathf.Sign(moveVec.x), attackRayPos.y * (moveVec.y > 0 ? -1 : 1), attackRayPos.z), attackRaySize, 0, attackLayer);
-
+        
         if (attackTarget != null)
         {
             unitState = UnitState.Fight;
@@ -105,10 +111,10 @@ public class EnemyUnit : UnitBase
             // 적(유닛, 벽)이 인식되면 attackTime 증가 및 공격 함수 실행
             attackTime += Time.deltaTime;
 
-            if(attackTime >= unitData.AttackTime)
+            if (attackTime >= unitData.AttackTime)
             {
-                StartCoroutine(Attack());
                 attackTime = 0;
+                StartCoroutine(Attack());
             }
         }
         else
@@ -134,6 +140,8 @@ public class EnemyUnit : UnitBase
         {
             MainWall wallLogic = attackTarget.gameObject.GetComponent<MainWall>();
 
+            yield return new WaitForSeconds(anim.GetTime());
+
             wallLogic.health -= power;
 
         } else
@@ -144,35 +152,28 @@ public class EnemyUnit : UnitBase
             yield return new WaitForSeconds(anim.GetTime());
 
             enemyLogic.health -= power;
-            Debug.Log("attack");
 
+            // 맞은 직후 다시 상대의 UnitActivity 는 normal 상태로 변경
             enemyLogic.unitActivity = UnitActivity.Normal;
         }
     }
 
-    IEnumerator Die()
+    public IEnumerator Die()
     {
-        col.enabled = false;
         unitState = UnitState.Die;
-        attackTime = 0;
         moveVec = Vector2.zero;
+        col.enabled = false;
+        unitActivity = UnitActivity.Normal;
+
         speed = 0;
+        attackTime = 0;
 
         // 애니메이션
         anim.Die();
 
-        if (attackTarget != null)
-        {
-            PlayerUnit enemyLogic = attackTarget.gameObject.GetComponent<PlayerUnit>();
-
-            if (enemyLogic != null)
-            {
-                enemyLogic.unitActivity = UnitActivity.Normal;
-            }
-        }
-
         yield return new WaitForSeconds(anim.GetTime());
 
+        StateSetting();
         gameObject.SetActive(false);
     }
 

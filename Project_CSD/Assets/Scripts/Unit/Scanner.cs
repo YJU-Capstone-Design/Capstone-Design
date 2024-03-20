@@ -6,6 +6,7 @@ using static UnitBase;
 
 public class Scanner : MonoBehaviour
 {
+    [Header("# Scanner")]
     public Vector3 scannerPos; // 스캐너 위치
     public Vector2 scanRange; // 스캔 범위
     public LayerMask targetLayer; // 레이어
