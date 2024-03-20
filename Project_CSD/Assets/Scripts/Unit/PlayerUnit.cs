@@ -253,7 +253,6 @@ public class PlayerUnit : UnitBase
         if (collision.gameObject.CompareTag("Boundary"))
         {
             moveVec.y = 0;
-            // 잉!
         }
     }
 
