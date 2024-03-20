@@ -145,6 +145,7 @@ public class PlayerUnit : UnitBase
             {
                 attackTime = 0;
 
+                // 유닛 별로 각각의 공격 함수 실행
                 if(gameObject.CompareTag("Archer"))
                 {
                     Arrow();
@@ -179,6 +180,7 @@ public class PlayerUnit : UnitBase
 
         yield return new WaitForSeconds(7f);
 
+        // 변수 제거 용도
         enemyLogic.unitActivity = UnitActivity.Normal;
 
     }
