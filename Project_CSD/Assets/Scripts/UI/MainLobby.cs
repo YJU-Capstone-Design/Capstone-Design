@@ -80,10 +80,11 @@ public class MainLobby : MonoBehaviour
     }
 
 
-    void Clear()
+    public void Clear()
     {
         menu[0].gameObject.SetActive(true);
-        for(int i=1; i<menu.Count; i++)
+        menu_Obj_Setting[0].gameObject.SetActive(true);
+        for (int i=1; i<menu.Count; i++)
         {
             menu[i].gameObject.SetActive(false);
             menu_Obj_Setting[i].gameObject.SetActive(false);
