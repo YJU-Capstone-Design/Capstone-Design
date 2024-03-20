@@ -121,6 +121,9 @@ public class EnemyUnit : UnitBase
         {
             // Attack Ray 에 인식된 적이 없을 경우에 Scanner 활성화
             Scanner();
+
+            // 다음에 attackRay 에 적 인식시, 바로 공격 가능하게 attackTime 초기화
+            attackTime = unitData.AttackTime - 0.5f;
         }
 
     }

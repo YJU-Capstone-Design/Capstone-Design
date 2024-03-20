@@ -72,14 +72,7 @@ public class PlayerUnit : UnitBase
         speed = unitData.Speed;
         power = unitData.Power;
 
-        if (unitID == 2)
-        {
-            attackTime = 0;
-        }
-        else
-        {
-            attackTime = unitData.AttackTime - 1;
-        }
+        attackTime = unitData.AttackTime - 0.5f;
 
         // 설정값
         col.enabled = true;
@@ -159,6 +152,9 @@ public class PlayerUnit : UnitBase
         {
             // AttackRay 에 인식되는 오브젝트가 없는 경우, 다시 스캔 시작
             Scanner();
+
+            // 다음에 attackRay 에 적 인식시, 바로 공격 가능하게 attackTime 초기화
+            attackTime = unitData.AttackTime - 0.5f;
         }
 
     }
@@ -191,7 +187,6 @@ public class PlayerUnit : UnitBase
 
         // 맞고 있는 적 유닛 상태 변경
         EnemyUnit enemyLogic = attackTarget.gameObject.GetComponent<EnemyUnit>();
-        enemyLogic.unitActivity = UnitActivity.Hit;
 
         GameObject arrow = PoolManager.Instance.Get(3, transform.position); // 화살 가져오기
         Arrow arrawLogic = arrow.GetComponent<Arrow>();

@@ -13,6 +13,7 @@ public class Scanner : MonoBehaviour
     public RaycastHit2D[] targets; // 스캔 결과 배열
     public Transform nearestTarget; // 가장 가까운 목표
 
+
     void FixedUpdate()
     {
         // BoxCastAll(시작 위치, 크기, 회전, 방향, 길이, 대상 레이어) : 사각형의 캐스트를 쏘고 모든 결과를 반환하는 함수
@@ -52,7 +53,7 @@ public class Scanner : MonoBehaviour
         }
 
         // 모든 적이 싸우고 있으면 싸우고 있는 적 중에서 가장 가까운 적으로 다시 탐색 -> enemy 는 벽으로 직진
-        if (result == null && gameObject.CompareTag("PlayerUnit"))
+        if (result == null && (gameObject.CompareTag("PlayerUnit") || gameObject.CompareTag("Archer")))
         {
             foreach (RaycastHit2D target in targets)
             {
