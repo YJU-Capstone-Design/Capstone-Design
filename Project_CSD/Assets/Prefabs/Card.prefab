@@ -138,8 +138,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 845502bca9875ad4c8045851515f69cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UpState: 0
-  ItemID: 2001001
+  itemTYPE: 0
+  ItemID: 0
   Heal: 0
   SpeedUp: 0
   PowerUp: 0

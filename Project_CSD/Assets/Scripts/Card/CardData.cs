@@ -4,7 +4,7 @@ using UnityEngine;
 using static CardBase;
 
 [CreateAssetMenu(fileName = "Card", menuName = "Scriptable Object/Card Data")]
-public class ItemData : ScriptableObject
+public class CardData : ScriptableObject
 {
     public enum ItemTYPE { ATK, CC, SP }
 
