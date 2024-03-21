@@ -30,7 +30,7 @@ public class Arrow : MonoBehaviour
         transform.rotation = LookAtTarget(movePosition - transform.position);
         transform.position = movePosition;
 
-        // 쏘는 방향에 따라 Sprite 방향 변경
+        // 쏘는 방향에 따라 Sprite 방향 
         transform.localScale = new Vector3(-1f, 1f, 1f);
 
         if (movePosition == target.transform.position)

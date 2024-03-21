@@ -17,7 +17,8 @@ public class EnemyUnit : UnitBase
 
     [Header("# Unit Activity")]
     Collider2D col;
-    Collider2D attackTarget; // 공격 목표
+    public RaycastHit2D[] attackTargets; // 스캔 결과 배열
+    public Transform nearestAttackTarget; // 가장 가까운 목표
     MonsterCharacterAnimation anim;
 
     void Awake()
@@ -52,6 +53,7 @@ public class EnemyUnit : UnitBase
         }
     }
 
+    // 기본 설정 초기화 함수
     void StateSetting()
     {
         // 수치값
@@ -66,9 +68,10 @@ public class EnemyUnit : UnitBase
         unitState = UnitState.Move;
         unitActivity = UnitActivity.Normal;
         moveVec = Vector3.left;
-        transform.GetChild(0).rotation = Quaternion.identity;
+        transform.GetChild(0).rotation = Quaternion.identity; // 애니메이션 각도 초기화를 위한 로직
     }
 
+    // 가까운 적을 찾는 Scanner 함수
     void Scanner()
     {
         if (scanner.nearestTarget)
@@ -100,11 +103,13 @@ public class EnemyUnit : UnitBase
         anim.Walk();
     }
 
+    // 실제 공격 범위 Ray 함수
     void AttackRay()
     {
-        attackTarget = Physics2D.OverlapBox(transform.position + new Vector3(attackRayPos.x * Mathf.Sign(moveVec.x), attackRayPos.y * (moveVec.y > 0 ? -1 : 1), attackRayPos.z), attackRaySize, 0, attackLayer);
-        
-        if (attackTarget != null)
+        attackTargets = Physics2D.BoxCastAll(transform.position + new Vector3(attackRayPos.x * Mathf.Sign(moveVec.x), attackRayPos.y * (moveVec.y > 0 ? -1 : 1), attackRayPos.z), attackRaySize, 0, Vector2.zero, 0, attackLayer);
+        nearestAttackTarget = scanner.GetNearestAttack(attackTargets);
+
+        if (nearestAttackTarget != null)
         {
             unitState = UnitState.Fight;
 
@@ -114,6 +119,10 @@ public class EnemyUnit : UnitBase
             if (attackTime >= unitData.AttackTime)
             {
                 attackTime = 0;
+
+                if (nearestAttackTarget == null)
+                    return;
+
                 StartCoroutine(Attack());
             }
         }
@@ -123,7 +132,7 @@ public class EnemyUnit : UnitBase
             Scanner();
 
             // 다음에 attackRay 에 적 인식시, 바로 공격 가능하게 attackTime 초기화
-            attackTime = unitData.AttackTime - 0.5f;
+            attackTime = unitData.AttackTime;
         }
 
     }
@@ -134,14 +143,15 @@ public class EnemyUnit : UnitBase
         Gizmos.DrawWireCube(transform.position + new Vector3(attackRayPos.x * Mathf.Sign(moveVec.x), attackRayPos.y * (moveVec.y > 0 ? 2 : 1), attackRayPos.z), attackRaySize);
     }
 
+    // 일반 근접 공격 함수
     IEnumerator Attack()
     {
         // 애니메이션
         anim.Smash();
 
-        if (attackTarget.gameObject.CompareTag("Wall"))
+        if (nearestAttackTarget.gameObject.CompareTag("Wall"))
         {
-            MainWall wallLogic = attackTarget.gameObject.GetComponent<MainWall>();
+            MainWall wallLogic = nearestAttackTarget.gameObject.GetComponent<MainWall>();
 
             yield return new WaitForSeconds(anim.GetTime());
 
@@ -149,12 +159,14 @@ public class EnemyUnit : UnitBase
 
         } else
         {
-            PlayerUnit enemyLogic = attackTarget.gameObject.GetComponent<PlayerUnit>();
+            PlayerUnit enemyLogic = nearestAttackTarget.gameObject.GetComponent<PlayerUnit>();
             enemyLogic.unitActivity = UnitActivity.Hit;
 
             yield return new WaitForSeconds(anim.GetTime());
 
             enemyLogic.health -= power;
+
+            yield return new WaitForSeconds(anim.GetTime() + 1f);
 
             // 맞은 직후 다시 상대의 UnitActivity 는 normal 상태로 변경
             enemyLogic.unitActivity = UnitActivity.Normal;

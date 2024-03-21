@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using static UnitBase;
 
@@ -17,7 +18,8 @@ public class PlayerUnit : UnitBase
 
     [Header("# Unit Activity")]
     Collider2D col;
-    Collider2D attackTarget; // 공격 목표
+    RaycastHit2D[] attackTargets; // 스캔 결과 배열
+    Transform nearestAttackTarget; // 가장 가까운 목표
     Vector3 firstPos;
 
     [Header("# Spine")]
@@ -64,6 +66,7 @@ public class PlayerUnit : UnitBase
         }
     }
 
+    // 기본 설정 초기화 함수
     void StateSetting()
     {
         // 수치값
@@ -71,8 +74,7 @@ public class PlayerUnit : UnitBase
         health = unitData.Health;
         speed = unitData.Speed;
         power = unitData.Power;
-
-        attackTime = unitData.AttackTime - 0.5f;
+        attackTime = unitData.AttackTime;
 
         // 설정값
         col.enabled = true;
@@ -82,6 +84,7 @@ public class PlayerUnit : UnitBase
         firstPos = GameManager.Instance.point;
     }
 
+    // 가까운 적을 찾는 Scanner 함수 (이동)
     void Scanner()
     {
         if (scanner.nearestTarget)
@@ -121,11 +124,15 @@ public class PlayerUnit : UnitBase
         }
     }
 
+    // 가까운 공격 목표를 찾는 Ray 함수 (공격)
+
     void AttackRay()
     {
-        attackTarget = Physics2D.OverlapBox(transform.position + new Vector3(attackRayPos.x * Mathf.Sign(moveVec.x), attackRayPos.y, attackRayPos.z), attackRaySize, 0, targetLayer);
+        // BoxCastAll(시작 위치, 크기, 회전, 방향, 길이, 대상 레이어) : 사각형의 캐스트를 쏘고 모든 결과를 반환하는 함수
+        attackTargets = Physics2D.BoxCastAll(transform.position + new Vector3(attackRayPos.x * Mathf.Sign(moveVec.x), attackRayPos.y, attackRayPos.z), attackRaySize, 0, Vector2.zero, 0, targetLayer);
+        nearestAttackTarget = scanner.GetNearestAttack(attackTargets);
 
-        if (attackTarget != null)
+        if (nearestAttackTarget != null)
         {
             unitState = UnitState.Fight;
             startMoveFinish = true;
@@ -136,6 +143,9 @@ public class PlayerUnit : UnitBase
             if (attackTime >= unitData.AttackTime)
             {
                 attackTime = 0;
+
+                if (nearestAttackTarget == null)
+                    return;
 
                 // 유닛 별로 각각의 공격 함수 실행
                 if (gameObject.CompareTag("Archer"))
@@ -154,7 +164,7 @@ public class PlayerUnit : UnitBase
             Scanner();
 
             // 다음에 attackRay 에 적 인식시, 바로 공격 가능하게 attackTime 초기화
-            attackTime = unitData.AttackTime - 0.5f;
+            attackTime = unitData.AttackTime;
         }
 
     }
@@ -165,11 +175,12 @@ public class PlayerUnit : UnitBase
         Gizmos.DrawWireCube(transform.position + new Vector3(attackRayPos.x * Mathf.Sign(moveVec.x), attackRayPos.y, attackRayPos.z), attackRaySize);
     }
 
+    // 일반 근접 공격 함수
     IEnumerator Attack()
     {
         yield return null; // 나중에 아마도 애니메이션 시간에 맞춰서 변경 필요
 
-        EnemyUnit enemyLogic = attackTarget.gameObject.GetComponent<EnemyUnit>();
+        EnemyUnit enemyLogic = nearestAttackTarget.gameObject.GetComponent<EnemyUnit>();
 
         enemyLogic.health -= power;
         enemyLogic.unitActivity = UnitActivity.Hit;
@@ -181,18 +192,20 @@ public class PlayerUnit : UnitBase
 
     }
 
+    // 화살 공격 함수
     IEnumerator Arrow()
     {
         yield return null;
 
         // 맞고 있는 적 유닛 상태 변경
-        EnemyUnit enemyLogic = attackTarget.gameObject.GetComponent<EnemyUnit>();
+        EnemyUnit enemyLogic = nearestAttackTarget.gameObject.GetComponent<EnemyUnit>();
+        enemyLogic.unitActivity = UnitBase.UnitActivity.Hit;
 
         GameObject arrow = PoolManager.Instance.Get(3, transform.position); // 화살 가져오기
         Arrow arrawLogic = arrow.GetComponent<Arrow>();
 
         // 화살 목표 오브젝트 설정
-        arrawLogic.target = attackTarget.gameObject;
+        arrawLogic.target = nearestAttackTarget.gameObject;
         arrawLogic.playerUnit = this.gameObject;
     }
 
@@ -211,6 +224,7 @@ public class PlayerUnit : UnitBase
         gameObject.SetActive(false);
     }
 
+    // 맨 처음 시작 이동 lerpCoroutine
     IEnumerator lerpCoroutine(Vector3 current, Vector3 target, float speed)
     {
 
@@ -243,13 +257,6 @@ public class PlayerUnit : UnitBase
         yield return null;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Boundary"))
-        {
-            moveVec.y = 0;
-        }
-    }
 
     //void Animation()
     //{
