@@ -16,6 +16,8 @@ public class Arrow : MonoBehaviour
     private float baseY;
     private float height;
 
+    public int unitType;
+    public float arrowPower;
 
     void Update()
     {
@@ -35,13 +37,31 @@ public class Arrow : MonoBehaviour
 
         if (movePosition == target.transform.position)
         {
-            gameObject.SetActive(false);
+            if (target.CompareTag("Wall"))
+            {
+                MainWall wallLogic = target.GetComponent<MainWall>();
+                wallLogic.health -= arrowPower;
+            } else
+            {
+                if(unitType == 1)
+                {
+                    // 아군 유닛 기준 로직
+                    EnemyUnit enemy = target.GetComponent<EnemyUnit>();
 
-            // 일단 아군 유닛 기준
-            EnemyUnit enemy = target.GetComponent<EnemyUnit>();
-            PlayerUnit player = playerUnit.GetComponent<PlayerUnit>();
-            enemy.health -= player.power;
-            enemy.unitActivity = UnitBase.UnitActivity.Normal;
+                    enemy.health -= arrowPower;
+                    enemy.unitActivity = UnitBase.UnitActivity.Normal;
+                } else
+                {
+                    // 적 유닛 기준 로직
+                    PlayerUnit enemy = target.GetComponent<PlayerUnit>();
+
+                    enemy.health -= arrowPower;
+                    enemy.unitActivity = UnitBase.UnitActivity.Normal;
+                }
+            }
+
+            // 화살 비활성화
+            gameObject.SetActive(false);
         }
     }
 

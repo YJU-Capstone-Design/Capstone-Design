@@ -12,6 +12,7 @@ public class Scanner : MonoBehaviour
     public LayerMask targetLayer; // 레이어
     public RaycastHit2D[] targets; // 스캔 결과 배열
     public Transform nearestTarget; // 가장 가까운 목표
+    public int unitType;
 
 
     void FixedUpdate()
@@ -54,9 +55,10 @@ public class Scanner : MonoBehaviour
         }
 
         // 모든 적이 싸우고 있으면 싸우고 있는 적 중에서 가장 가까운 적으로 다시 탐색 -> enemy 는 벽으로 직진
-        if (result == null && (gameObject.CompareTag("PlayerUnit") || gameObject.CompareTag("Archer")))
+        if (result == null && unitType == 1)
         {
-            GetNearestAttack(targets);
+            
+            result = GetNearestAttack(targets);
         }
 
         return result;

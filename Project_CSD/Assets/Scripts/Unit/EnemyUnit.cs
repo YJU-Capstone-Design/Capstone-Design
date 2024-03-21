@@ -69,6 +69,7 @@ public class EnemyUnit : UnitBase
         unitActivity = UnitActivity.Normal;
         moveVec = Vector3.left;
         transform.GetChild(0).rotation = Quaternion.identity; // 애니메이션 각도 초기화를 위한 로직
+        scanner.unitType = unitID / 10000;
     }
 
     // 가까운 적을 찾는 Scanner 함수
@@ -123,7 +124,15 @@ public class EnemyUnit : UnitBase
                 if (nearestAttackTarget == null)
                     return;
 
-                StartCoroutine(Attack());
+                // 유닛 별로 각각의 공격 함수 실행
+                if (gameObject.CompareTag("Archer"))
+                {
+                    StartCoroutine(Arrow());
+                }
+                else
+                {
+                    StartCoroutine(Attack());
+                }
             }
         }
         else
@@ -172,6 +181,33 @@ public class EnemyUnit : UnitBase
             enemyLogic.unitActivity = UnitActivity.Normal;
         }
     }
+
+    // 화살 공격 함수
+    IEnumerator Arrow()
+    {
+        // 애니메이션
+        anim.Bow();
+
+        yield return new WaitForSeconds(anim.GetTime() - 0.3f);
+
+        if (!nearestAttackTarget.gameObject.CompareTag("Wall"))
+        {
+            // 맞고 있는 적 유닛 상태 변경
+            PlayerUnit enemyLogic = nearestAttackTarget.gameObject.GetComponent<PlayerUnit>();
+            enemyLogic.unitActivity = UnitBase.UnitActivity.Hit;
+        }
+
+        GameObject arrow = PoolManager.Instance.Get(3, transform.position); // 화살 가져오기
+        Arrow arrawLogic = arrow.GetComponent<Arrow>();
+        arrawLogic.unitType = unitID / 10000;
+        arrawLogic.arrowPower = power;
+
+        // 화살 목표 오브젝트 설정
+        arrawLogic.target = nearestAttackTarget.gameObject;
+        arrawLogic.playerUnit = this.gameObject;
+    }
+
+
 
     public IEnumerator Die()
     {

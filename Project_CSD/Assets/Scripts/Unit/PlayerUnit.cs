@@ -82,6 +82,7 @@ public class PlayerUnit : UnitBase
         unitActivity = UnitActivity.Normal;
         moveVec = Vector3.right;
         firstPos = GameManager.Instance.point;
+        scanner.unitType = unitID / 10000;
     }
 
     // 가까운 적을 찾는 Scanner 함수 (이동)
@@ -203,6 +204,8 @@ public class PlayerUnit : UnitBase
 
         GameObject arrow = PoolManager.Instance.Get(3, transform.position); // 화살 가져오기
         Arrow arrawLogic = arrow.GetComponent<Arrow>();
+        arrawLogic.unitType = unitID / 10000;
+        arrawLogic.arrowPower = power;
 
         // 화살 목표 오브젝트 설정
         arrawLogic.target = nearestAttackTarget.gameObject;
