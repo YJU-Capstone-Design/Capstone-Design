@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 3148164937010508007}
   - component: {fileID: 239527638786203014}
   - component: {fileID: 6924558214924428078}
-  - component: {fileID: 2111534385557259008}
+  - component: {fileID: -5559452243374558313}
   m_Layer: 5
-  m_Name: Card
+  m_Name: Spell_Card
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -126,7 +126,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &2111534385557259008
+--- !u!114 &-5559452243374558313
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -135,7 +135,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 798610453738157305}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 845502bca9875ad4c8045851515f69cd, type: 3}
+  m_Script: {fileID: 11500000, guid: a3af5a3e031992541a1b2126ecad6124, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   itemTYPE: 0
@@ -145,6 +145,10 @@ MonoBehaviour:
   PowerUp: 0
   Critical: 0
   BuffTime: 0
+  cards:
+  - {fileID: 11400000, guid: 2abb238e61bae30429a911e6f92648f9, type: 2}
+  - {fileID: 11400000, guid: 654627b33bfba8046b2c7044eab43e8d, type: 2}
+  - {fileID: 11400000, guid: d29d624011d89064e8d51ee1138f4bd6, type: 2}
 --- !u!1 &2854145661760163395
 GameObject:
   m_ObjectHideFlags: 0

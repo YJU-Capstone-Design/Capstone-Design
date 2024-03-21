@@ -15,13 +15,4 @@ public class CardBase : MonoBehaviour
     public float Critical;
     public float BuffTime;
 
-    public void Awake()
-    {
-        
-    }
-
-    private void CallCardData()
-    {
-
-    }
 }
