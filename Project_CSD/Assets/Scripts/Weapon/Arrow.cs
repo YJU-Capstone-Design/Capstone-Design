@@ -21,6 +21,10 @@ public class Arrow : MonoBehaviour
 
     void Update()
     {
+        // 오류 방지
+        if (target == null)
+            return;
+
         // 포물선 공식
         playerX = transform.position.x;
         targetX = target.transform.position.x;

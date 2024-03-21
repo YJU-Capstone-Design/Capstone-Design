@@ -19,7 +19,7 @@ public class PlayerUnit : UnitBase
     [Header("# Unit Activity")]
     Collider2D col;
     RaycastHit2D[] attackTargets; // 스캔 결과 배열
-    Transform nearestAttackTarget; // 가장 가까운 목표
+    [SerializeField] Transform nearestAttackTarget; // 가장 가까운 목표
     Vector3 firstPos;
 
     [Header("# Spine")]

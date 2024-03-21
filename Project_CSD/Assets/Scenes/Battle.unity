@@ -289,7 +289,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1638824337002903132, guid: e814150df7352054c8910d04d62b3a90, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 5
+      value: 8.6
       objectReference: {fileID: 0}
     - target: {fileID: 1638824337002903132, guid: e814150df7352054c8910d04d62b3a90, type: 3}
       propertyPath: m_LocalPosition.y
@@ -327,9 +327,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2308123317353886547, guid: e814150df7352054c8910d04d62b3a90, type: 3}
+      propertyPath: m_labelHash
+      value: 0.009161512
+      objectReference: {fileID: 0}
+    - target: {fileID: 2308123317353886547, guid: e814150df7352054c8910d04d62b3a90, type: 3}
+      propertyPath: m_SpriteHash
+      value: 313957306
+      objectReference: {fileID: 0}
     - target: {fileID: 3261629212605270289, guid: e814150df7352054c8910d04d62b3a90, type: 3}
       propertyPath: m_Name
       value: Zombie_Archer
+      objectReference: {fileID: 0}
+    - target: {fileID: 3261629212605270289, guid: e814150df7352054c8910d04d62b3a90, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3261629212605270289, guid: e814150df7352054c8910d04d62b3a90, type: 3}
       propertyPath: m_TagString
@@ -343,6 +355,14 @@ PrefabInstance:
       propertyPath: scanRange.y
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 7457618201082416641, guid: e814150df7352054c8910d04d62b3a90, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 6778bf0b9f45c4fbe808c2a825e1145a, type: 3}
+    - target: {fileID: 8998006357501341322, guid: e814150df7352054c8910d04d62b3a90, type: 3}
+      propertyPath: unitData
+      value: 
+      objectReference: {fileID: 11400000, guid: 3ac2ab28f0aad2543b8189c4786aaab3, type: 2}
     - target: {fileID: 8998006357501341322, guid: e814150df7352054c8910d04d62b3a90, type: 3}
       propertyPath: attackRayPos.x
       value: -1
@@ -537,7 +557,7 @@ MonoBehaviour:
   - {fileID: 7010965689868943159, guid: 8af68fe3448ad004fb834eb3bc4c9680, type: 3}
   - {fileID: 7010965689868943159, guid: 4a36846c856c31d49bdc2da7193d76b4, type: 3}
   - {fileID: 2797091703419844058, guid: 3ea69bf29ca764f7099a7d978ac33e6a, type: 3}
-  - {fileID: 6210330584336132649, guid: c919eb96805e528478504aecdd6a24d7, type: 3}
+  - {fileID: 4274193337363202239, guid: e1f8b9f208103204da32d0891cadf0f5, type: 3}
 --- !u!4 &1383438279
 Transform:
   m_ObjectHideFlags: 0

@@ -18,7 +18,7 @@ public class EnemyUnit : UnitBase
     [Header("# Unit Activity")]
     Collider2D col;
     public RaycastHit2D[] attackTargets; // 스캔 결과 배열
-    public Transform nearestAttackTarget; // 가장 가까운 목표
+    [SerializeField] public Transform nearestAttackTarget; // 가장 가까운 목표
     MonsterCharacterAnimation anim;
 
     void Awake()
@@ -113,6 +113,7 @@ public class EnemyUnit : UnitBase
         if (nearestAttackTarget != null)
         {
             unitState = UnitState.Fight;
+            
 
             // 적(유닛, 벽)이 인식되면 attackTime 증가 및 공격 함수 실행
             attackTime += Time.deltaTime;
@@ -171,9 +172,12 @@ public class EnemyUnit : UnitBase
             PlayerUnit enemyLogic = nearestAttackTarget.gameObject.GetComponent<PlayerUnit>();
             enemyLogic.unitActivity = UnitActivity.Hit;
 
-            yield return new WaitForSeconds(anim.GetTime());
+            yield return new WaitForSeconds(anim.GetTime() + 0.5f);
 
             enemyLogic.health -= power;
+
+            // 애니메이션
+            anim.Idle();
 
             yield return new WaitForSeconds(anim.GetTime() + 1f);
 
@@ -188,7 +192,7 @@ public class EnemyUnit : UnitBase
         // 애니메이션
         anim.Bow();
 
-        yield return new WaitForSeconds(anim.GetTime() - 0.3f);
+        yield return new WaitForSeconds(0.3f);
 
         if (!nearestAttackTarget.gameObject.CompareTag("Wall"))
         {
@@ -205,6 +209,11 @@ public class EnemyUnit : UnitBase
         // 화살 목표 오브젝트 설정
         arrawLogic.target = nearestAttackTarget.gameObject;
         arrawLogic.playerUnit = this.gameObject;
+
+        yield return new WaitForSeconds(anim.GetTime() + 0.2f);
+
+        // 애니메이션
+        anim.Idle();
     }
 
 
