@@ -652,11 +652,11 @@ GameObject:
   - component: {fileID: 5487282326469977869}
   m_Layer: 7
   m_Name: Zombie_Archer
-  m_TagString: EnemyUnit
+  m_TagString: Archer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1638824337002903132
 Transform:
   m_ObjectHideFlags: 0
@@ -680,7 +680,7 @@ CapsuleCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3261629212605270289}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -727,12 +727,12 @@ MonoBehaviour:
   speed: 0
   power: 0
   attackTime: 0
-  unitData: {fileID: 11400000, guid: 6f6b8c80982c33644a8dc5b75539c971, type: 2}
+  unitData: {fileID: 11400000, guid: 3ac2ab28f0aad2543b8189c4786aaab3, type: 2}
   attackLayer:
     serializedVersion: 2
     m_Bits: 320
-  attackRayPos: {x: 0.6, y: 0.3, z: 0}
-  attackRaySize: {x: 0.5, y: 0.5}
+  attackRayPos: {x: -1, y: 0.3, z: 0}
+  attackRaySize: {x: 20, y: 6}
   nearestAttackTarget: {fileID: 0}
 --- !u!114 &5487282326469977869
 MonoBehaviour:
@@ -747,11 +747,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scannerPos: {x: -3, y: 0, z: 0}
-  scanRange: {x: 15, y: 6}
+  scanRange: {x: 25, y: 8}
   targetLayer:
     serializedVersion: 2
     m_Bits: 64
   nearestTarget: {fileID: 0}
+  unitType: 0
 --- !u!1 &3704987812081377231
 GameObject:
   m_ObjectHideFlags: 0

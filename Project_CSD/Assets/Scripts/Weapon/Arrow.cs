@@ -16,8 +16,9 @@ public class Arrow : MonoBehaviour
     private float baseY;
     private float height;
 
-    public int unitType;
-    public float arrowPower;
+    public int unitType; // 화살을 쏘는 Unit 의 유형
+    public float arrowPower; // 화살이 주는 데미지
+
 
     void Update()
     {
@@ -36,8 +37,6 @@ public class Arrow : MonoBehaviour
         transform.rotation = LookAtTarget(movePosition - transform.position);
         transform.position = movePosition;
 
-        // 쏘는 방향에 따라 Sprite 방향 
-        transform.localScale = new Vector3(-1f, 1f, 1f);
 
         if (movePosition == target.transform.position)
         {
@@ -51,18 +50,22 @@ public class Arrow : MonoBehaviour
                 {
                     // 아군 유닛 기준 로직
                     EnemyUnit enemy = target.GetComponent<EnemyUnit>();
+                    PlayerUnit player = target.GetComponent<PlayerUnit>();
 
                     enemy.health -= arrowPower;
                     enemy.unitActivity = UnitBase.UnitActivity.Normal;
+
                 } else
                 {
                     // 적 유닛 기준 로직
                     PlayerUnit enemy = target.GetComponent<PlayerUnit>();
+                    EnemyUnit player = target.GetComponent<EnemyUnit>();
 
                     enemy.health -= arrowPower;
                     enemy.unitActivity = UnitBase.UnitActivity.Normal;
                 }
             }
+
 
             // 화살 비활성화
             gameObject.SetActive(false);

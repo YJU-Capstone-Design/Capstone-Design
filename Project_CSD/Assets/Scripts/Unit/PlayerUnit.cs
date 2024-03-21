@@ -39,6 +39,8 @@ public class PlayerUnit : UnitBase
         col = GetComponent<Collider2D>();
 
         targetLayer = scanner.targetLayer;
+
+        StateSetting();
     }
 
     void OnEnable()
@@ -74,7 +76,7 @@ public class PlayerUnit : UnitBase
         health = unitData.Health;
         speed = unitData.Speed;
         power = unitData.Power;
-        attackTime = unitData.AttackTime;
+        attackTime = unitData.AttackTime - 0.5f;
 
         // 설정값
         col.enabled = true;
@@ -83,6 +85,7 @@ public class PlayerUnit : UnitBase
         moveVec = Vector3.right;
         firstPos = GameManager.Instance.point;
         scanner.unitType = unitID / 10000;
+        nearestAttackTarget = null;
     }
 
     // 가까운 적을 찾는 Scanner 함수 (이동)
@@ -131,27 +134,31 @@ public class PlayerUnit : UnitBase
     {
         // BoxCastAll(시작 위치, 크기, 회전, 방향, 길이, 대상 레이어) : 사각형의 캐스트를 쏘고 모든 결과를 반환하는 함수
         attackTargets = Physics2D.BoxCastAll(transform.position + new Vector3(attackRayPos.x * Mathf.Sign(moveVec.x), attackRayPos.y, attackRayPos.z), attackRaySize, 0, Vector2.zero, 0, targetLayer);
+
         nearestAttackTarget = scanner.GetNearestAttack(attackTargets);
+
+        Debug.Log(nearestAttackTarget);
 
         if (nearestAttackTarget != null)
         {
+            if (nearestAttackTarget == null) return;
+
             unitState = UnitState.Fight;
             startMoveFinish = true;
 
             // 적이 인식되면 attackTime 증가 및 공격 함수 실행
             attackTime += Time.deltaTime;
-
+            Debug.Log("적 인식");
             if (attackTime >= unitData.AttackTime)
             {
+                Debug.Log("attack");
                 attackTime = 0;
-
-                if (nearestAttackTarget == null)
-                    return;
 
                 // 유닛 별로 각각의 공격 함수 실행
                 if (gameObject.CompareTag("Archer"))
                 {
                     StartCoroutine(Arrow());
+                    Debug.Log("arrow 1");
                 }
                 else
                 {
@@ -165,7 +172,7 @@ public class PlayerUnit : UnitBase
             Scanner();
 
             // 다음에 attackRay 에 적 인식시, 바로 공격 가능하게 attackTime 초기화
-            attackTime = unitData.AttackTime;
+            attackTime = unitData.AttackTime - 0.5f;
         }
 
     }
@@ -181,12 +188,14 @@ public class PlayerUnit : UnitBase
     {
         yield return null; // 나중에 아마도 애니메이션 시간에 맞춰서 변경 필요
 
-        EnemyUnit enemyLogic = nearestAttackTarget.gameObject.GetComponent<EnemyUnit>();
+        if (nearestAttackTarget == null) StopCoroutine(Attack());
 
-        enemyLogic.health -= power;
+        EnemyUnit enemyLogic = nearestAttackTarget.gameObject.GetComponent<EnemyUnit>();
         enemyLogic.unitActivity = UnitActivity.Hit;
 
         yield return new WaitForSeconds(3f);
+        enemyLogic.health -= power;
+        yield return new WaitForSeconds(1f);
 
         // 맞은 직후 다시 상대의 UnitActivity 는 normal 상태로 변경
         enemyLogic.unitActivity = UnitActivity.Normal;
@@ -196,7 +205,10 @@ public class PlayerUnit : UnitBase
     // 화살 공격 함수
     IEnumerator Arrow()
     {
+        Debug.Log("arrow 2");
         yield return null;
+
+        if (nearestAttackTarget == null) StopCoroutine(Arrow());
 
         // 맞고 있는 적 유닛 상태 변경
         EnemyUnit enemyLogic = nearestAttackTarget.gameObject.GetComponent<EnemyUnit>();

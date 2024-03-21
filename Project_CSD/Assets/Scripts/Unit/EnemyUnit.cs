@@ -28,6 +28,8 @@ public class EnemyUnit : UnitBase
         anim = GetComponentInChildren<MonsterCharacterAnimation>();
 
         targetLayer = scanner.targetLayer;
+
+        StateSetting();
     }
 
     void OnEnable()
@@ -122,9 +124,6 @@ public class EnemyUnit : UnitBase
             {
                 attackTime = 0;
 
-                if (nearestAttackTarget == null)
-                    return;
-
                 // 유닛 별로 각각의 공격 함수 실행
                 if (gameObject.CompareTag("Archer"))
                 {
@@ -142,7 +141,7 @@ public class EnemyUnit : UnitBase
             Scanner();
 
             // 다음에 attackRay 에 적 인식시, 바로 공격 가능하게 attackTime 초기화
-            attackTime = unitData.AttackTime;
+            attackTime = unitData.AttackTime - 0.2f;
         }
 
     }
@@ -156,6 +155,8 @@ public class EnemyUnit : UnitBase
     // 일반 근접 공격 함수
     IEnumerator Attack()
     {
+        if (nearestAttackTarget == null) StopCoroutine(Attack());
+
         // 애니메이션
         anim.Smash();
 
@@ -189,6 +190,8 @@ public class EnemyUnit : UnitBase
     // 화살 공격 함수
     IEnumerator Arrow()
     {
+        if (nearestAttackTarget == null) StopCoroutine(Arrow());
+
         // 애니메이션
         anim.Bow();
 

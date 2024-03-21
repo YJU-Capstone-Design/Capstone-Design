@@ -57,6 +57,7 @@ public class PoolManager : Singleton<PoolManager>
             case 2:
                 ran = Random.Range(1, 4);
                 select.transform.position = GameManager.Instance.unitSpawnPoint[ran].position;
+                select.SetActive(true);
                 break;
         }
 

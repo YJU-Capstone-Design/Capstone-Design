@@ -103,6 +103,7 @@ MonoBehaviour:
   movePosition: {x: 0, y: 0, z: 0}
   unitType: 0
   arrowPower: 0
+  arrowPos: {x: 0, y: 0, z: 0}
 --- !u!1 &4274193337363202239
 GameObject:
   m_ObjectHideFlags: 0
@@ -154,3 +155,4 @@ MonoBehaviour:
   movePosition: {x: 0, y: 0, z: 0}
   unitType: 0
   arrowPower: 0
+  arrowPos: {x: 0, y: 0, z: 0}
