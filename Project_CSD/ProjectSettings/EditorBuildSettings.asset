@@ -14,4 +14,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/BattleUI.unity
     guid: 3b91232d975e5a54197106802789a774
+  - enabled: 1
+    path: Assets/Scenes/Lobby/Start.unity
+    guid: 83f1464eebcc7f647adfc740b3566309
+  - enabled: 1
+    path: Assets/Scenes/Lobby/Loding.unity
+    guid: 9eb4808b63560114dbc4bb2a29efd237
   m_configObjects: {}
