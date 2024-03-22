@@ -38,36 +38,10 @@ public class Arrow : MonoBehaviour
         transform.rotation = LookAtTarget(movePosition - transform.position);
         transform.position = movePosition;
 
+        // 목표 지점 도달
         if (movePosition == target.transform.position)
         {
-            if (target.CompareTag("Wall"))
-            {
-                MainWall wallLogic = target.GetComponent<MainWall>();
-                wallLogic.health -= arrowPower;
-            } else
-            {
-                if(unitType == 1)
-                {
-                    // 아군 유닛 기준 로직
-                    EnemyUnit enemy = target.GetComponent<EnemyUnit>();
-                    PlayerUnit player = target.GetComponent<PlayerUnit>();
-
-                    enemy.health -= arrowPower;
-                    enemy.unitActivity = UnitBase.UnitActivity.Normal;
-
-                } else
-                {
-                    // 적 유닛 기준 로직
-                    PlayerUnit enemy = target.GetComponent<PlayerUnit>();
-                    EnemyUnit player = target.GetComponent<EnemyUnit>();
-
-                    enemy.health -= arrowPower;
-                    enemy.unitActivity = UnitBase.UnitActivity.Normal;
-                }
-            }
-
-            // 화살 비활성화
-            gameObject.SetActive(false);
+            Arrived();
         }
     }
 
@@ -76,5 +50,40 @@ public class Arrow : MonoBehaviour
         return Quaternion.Euler(0, 0, Mathf.Atan2(r.y, r.x) * Mathf.Rad2Deg);
     }
 
-   
+    void Arrived()
+    {
+        if (target.CompareTag("Wall"))
+        {
+            MainWall wallLogic = target.GetComponent<MainWall>();
+            wallLogic.health -= arrowPower;
+        }
+        else
+        {
+            if (unitType == 1)
+            {
+                // 아군 유닛 기준 로직
+                EnemyUnit enemy = target.GetComponent<EnemyUnit>();
+                PlayerUnit player = target.GetComponent<PlayerUnit>();
+
+                enemy.health -= arrowPower;
+                enemy.unitActivity = UnitBase.UnitActivity.Normal;
+
+            }
+            else
+            {
+                // 적 유닛 기준 로직
+                PlayerUnit enemy = target.GetComponent<PlayerUnit>();
+                EnemyUnit player = target.GetComponent<EnemyUnit>();
+
+                enemy.health -= arrowPower;
+                enemy.unitActivity = UnitBase.UnitActivity.Normal;
+            }
+        }
+
+        // 오브젝트 비활성화
+        gameObject.SetActive(false);
+    }
+
+
+
 }
