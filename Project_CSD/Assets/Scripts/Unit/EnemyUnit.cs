@@ -133,6 +133,16 @@ public class EnemyUnit : UnitBase
                     StartCoroutine(Attack());
                 }
             }
+
+            // 적의 위치에 따라 Sprite 방향 변경 (Attary Ray 영역이 큰 Unit 변수 제거)
+            if (nearestAttackTarget.transform.position.x > transform.position.x)
+            {
+                transform.localScale = new Vector3(-1f, 1f, 1f);
+            }
+            else if (nearestAttackTarget.transform.position.x > transform.position.x)
+            {
+                transform.localScale = new Vector3(1f, 1f, 1f);
+            }
         }
         else
         {
@@ -203,7 +213,8 @@ public class EnemyUnit : UnitBase
             enemyLogic.unitActivity = UnitBase.UnitActivity.Hit;
         }
 
-        GameObject arrow = PoolManager.Instance.Get(3, transform.position); // 화살 가져오기
+        // 화살 가져오기
+        GameObject arrow = PoolManager.Instance.Get(3, transform.position + new Vector3(0, 0.5f, 0));
         Arrow arrawLogic = arrow.GetComponent<Arrow>();
         arrawLogic.unitType = unitID / 10000;
         arrawLogic.arrowPower = power;

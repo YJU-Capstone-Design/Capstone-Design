@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -159,6 +160,16 @@ public class PlayerUnit : UnitBase
                     StartCoroutine(Attack());
                 }
             }
+
+            // 적의 위치에 따라 Sprite 방향 변경 (Attary Ray 영역이 큰 Unit 변수 제거)
+            if (nearestAttackTarget.transform.position.x > transform.position.x)
+            {
+                transform.localScale = new Vector3(-1f, 1f, 1f);
+            }
+            else if (nearestAttackTarget.transform.position.x > transform.position.x)
+            {
+                transform.localScale = new Vector3(1f, 1f, 1f);
+            }
         }
         else
         {
@@ -207,14 +218,15 @@ public class PlayerUnit : UnitBase
         EnemyUnit enemyLogic = nearestAttackTarget.gameObject.GetComponent<EnemyUnit>();
         enemyLogic.unitActivity = UnitBase.UnitActivity.Hit;
 
-        GameObject arrow = PoolManager.Instance.Get(3, transform.position); // 화살 가져오기
-        Arrow arrawLogic = arrow.GetComponent<Arrow>();
-        arrawLogic.unitType = unitID / 10000;
-        arrawLogic.arrowPower = power;
+        // 화살 가져오기
+        GameObject arrow = PoolManager.Instance.Get(3, transform.position + new Vector3(0, 0.5f, 0));
+        Arrow arrowLogic = arrow.GetComponent<Arrow>();
+        arrowLogic.unitType = unitID / 10000;
+        arrowLogic.arrowPower = power;
 
         // 화살 목표 오브젝트 설정
-        arrawLogic.target = nearestAttackTarget.gameObject;
-        arrawLogic.playerUnit = this.gameObject;
+        arrowLogic.target = nearestAttackTarget.gameObject;
+        arrowLogic.playerUnit = this.gameObject;
     }
 
     IEnumerator Die()

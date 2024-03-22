@@ -2,12 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using System.Security.Cryptography;
 
 public class Arrow : MonoBehaviour
 {
     public GameObject target;
     public GameObject playerUnit;
-    public float speed = 10f;
+    public float speed;
     public Vector3 movePosition;
     private float playerX;
     private float targetX;
@@ -19,7 +20,6 @@ public class Arrow : MonoBehaviour
     public int unitType; // 화살을 쏘는 Unit 의 유형
     public float arrowPower; // 화살이 주는 데미지
 
-
     void Update()
     {
         // 오류 방지
@@ -29,6 +29,7 @@ public class Arrow : MonoBehaviour
         // 포물선 공식
         playerX = transform.position.x;
         targetX = target.transform.position.x;
+
         dist = targetX - playerX;
         nextX = Mathf.MoveTowards(transform.position.x, targetX, speed * Time.deltaTime);
         baseY = Mathf.Lerp(transform.position.y, target.transform.position.y, (nextX - playerX) / dist);
@@ -36,7 +37,6 @@ public class Arrow : MonoBehaviour
         movePosition = new Vector3(nextX, baseY + height, transform.position.z);
         transform.rotation = LookAtTarget(movePosition - transform.position);
         transform.position = movePosition;
-
 
         if (movePosition == target.transform.position)
         {
@@ -66,7 +66,6 @@ public class Arrow : MonoBehaviour
                 }
             }
 
-
             // 화살 비활성화
             gameObject.SetActive(false);
         }
@@ -76,4 +75,6 @@ public class Arrow : MonoBehaviour
     {
         return Quaternion.Euler(0, 0, Mathf.Atan2(r.y, r.x) * Mathf.Rad2Deg);
     }
+
+   
 }
