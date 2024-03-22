@@ -115,7 +115,6 @@ public class EnemyUnit : UnitBase
         if (nearestAttackTarget != null)
         {
             unitState = UnitState.Fight;
-            
 
             // 적(유닛, 벽)이 인식되면 attackTime 증가 및 공격 함수 실행
             attackTime += Time.deltaTime;
@@ -237,6 +236,7 @@ public class EnemyUnit : UnitBase
         yield return new WaitForSeconds(anim.GetTime());
 
         StateSetting();
+        transform.position = new Vector3(10, 0, 0); // 위치 초기화 (안해주면 다시 소환되는 순간  Unit 의 Ray 영역 안에 있으면 Ray 에 잠시 인식됨.)
         gameObject.SetActive(false);
     }
 

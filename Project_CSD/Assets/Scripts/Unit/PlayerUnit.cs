@@ -137,28 +137,22 @@ public class PlayerUnit : UnitBase
 
         nearestAttackTarget = scanner.GetNearestAttack(attackTargets);
 
-        Debug.Log(nearestAttackTarget);
-
         if (nearestAttackTarget != null)
         {
-            if (nearestAttackTarget == null) return;
-
             unitState = UnitState.Fight;
             startMoveFinish = true;
 
             // 적이 인식되면 attackTime 증가 및 공격 함수 실행
             attackTime += Time.deltaTime;
-            Debug.Log("적 인식");
+
             if (attackTime >= unitData.AttackTime)
             {
-                Debug.Log("attack");
                 attackTime = 0;
 
                 // 유닛 별로 각각의 공격 함수 실행
                 if (gameObject.CompareTag("Archer"))
                 {
                     StartCoroutine(Arrow());
-                    Debug.Log("arrow 1");
                 }
                 else
                 {
@@ -205,7 +199,6 @@ public class PlayerUnit : UnitBase
     // 화살 공격 함수
     IEnumerator Arrow()
     {
-        Debug.Log("arrow 2");
         yield return null;
 
         if (nearestAttackTarget == null) StopCoroutine(Arrow());
@@ -236,6 +229,7 @@ public class PlayerUnit : UnitBase
 
         yield return new WaitForSeconds(1f);
 
+        transform.position = GameManager.Instance.unitSpawnPoint[0].position; // 위치 초기화 (안해주면 다시 소환되는 순간  Unit 의 Ray 영역 안에 있으면 Ray 에 잠시 인식됨.)
         gameObject.SetActive(false);
     }
 
