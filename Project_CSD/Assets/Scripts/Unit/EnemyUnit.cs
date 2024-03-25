@@ -171,11 +171,9 @@ public class EnemyUnit : UnitBase
 
         if (nearestAttackTarget.gameObject.CompareTag("Wall"))
         {
-            MainWall wallLogic = nearestAttackTarget.gameObject.GetComponent<MainWall>();
-
             yield return new WaitForSeconds(anim.GetTime());
 
-            wallLogic.health -= power;
+            BattleManager.Instance.curHealth -= power;
 
         } else
         {

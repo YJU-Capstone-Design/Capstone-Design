@@ -55,8 +55,7 @@ public class Arrow : MonoBehaviour
     {
         if (target.CompareTag("Wall"))
         {
-            MainWall wallLogic = target.GetComponent<MainWall>();
-            wallLogic.health -= arrowPower;
+            BattleManager.Instance.curHealth -= arrowPower;
         }
         else
         {
