@@ -214,7 +214,7 @@ public class EnemyUnit : UnitBase
         }
 
         // 화살 가져오기
-        GameObject arrow = PoolManager.Instance.Get(3, transform.position + new Vector3(0, 0.5f, 0));
+        GameObject arrow = PoolManager.Instance.Get(3, 0, transform.position + new Vector3(0, 0.5f, 0));
         Arrow arrawLogic = arrow.GetComponent<Arrow>();
         arrawLogic.unitType = unitID / 10000;
         arrawLogic.arrowPower = power;
