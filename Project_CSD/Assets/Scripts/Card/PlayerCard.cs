@@ -9,11 +9,11 @@ public class PlayerCard : CardBase
     
     [Header("# Item Setting")]
     public List<CardData> cards = new List<CardData>();
+    public int value = 0;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        
     }
 
     // Update is called once per frame
@@ -28,7 +28,7 @@ public class PlayerCard : CardBase
         CallCardData(ran);
     }
 
-    private void CallCardData(int type)
+    public void CallCardData(int type)
     {
         // ¼öÄ¡°ª
         ItemID = cards[type].ItemID;
@@ -36,5 +36,8 @@ public class PlayerCard : CardBase
         SpeedUp = cards[type].SpeedUp;
         PowerUp = cards[type].PowerUp;
         BuffTime = cards[type].BuffTime;
+
+        value = ItemID;
+        Debug.Log(ItemID);
     }
 }

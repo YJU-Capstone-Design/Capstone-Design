@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Heal
   m_EditorClassIdentifier: 
   itemID: 22001
-  heal: 0
-  speedUp: 1
+  heal: 100
+  speedUp: 0
   powerUp: 0
-  buffTime: 100
+  buffTime: 0
   critical: -0
