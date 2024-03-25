@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 9019760990751808296}
   m_Layer: 6
   m_Name: Archer
-  m_TagString: PlayerUnit
+  m_TagString: Archer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -135,14 +135,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unitState: 0
+  unitActivity: 0
   unitID: 0
   health: 0
   speed: 0
   power: 0
   attackTime: 0
   unitData: {fileID: 11400000, guid: 7626b659007dc8144a43bce4062a94c6, type: 2}
-  attackRayPos: {x: 0, y: 0, z: 0}
-  attackRaySize: {x: 20, y: 6}
+  attackRayPos: {x: 0, y: 0.5, z: 0}
+  attackRaySize: {x: 20, y: 4.5}
 --- !u!114 &9019760990751808296
 MonoBehaviour:
   m_ObjectHideFlags: 0

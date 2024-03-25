@@ -2,11 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using System.Security.Cryptography;
 
 public class Arrow : MonoBehaviour
 {
     public GameObject target;
-    public float speed = 10f;
+    public GameObject playerUnit;
+    public float speed;
     public Vector3 movePosition;
     private float playerX;
     private float targetX;
@@ -15,11 +17,19 @@ public class Arrow : MonoBehaviour
     private float baseY;
     private float height;
 
+    public int unitType; // 화살을 쏘는 Unit 의 유형
+    public float arrowPower; // 화살이 주는 데미지
 
     void Update()
     {
+        // 오류 방지
+        if (target == null)
+            return;
+
+        // 포물선 공식
         playerX = transform.position.x;
         targetX = target.transform.position.x;
+
         dist = targetX - playerX;
         nextX = Mathf.MoveTowards(transform.position.x, targetX, speed * Time.deltaTime);
         baseY = Mathf.Lerp(transform.position.y, target.transform.position.y, (nextX - playerX) / dist);
@@ -28,23 +38,53 @@ public class Arrow : MonoBehaviour
         transform.rotation = LookAtTarget(movePosition - transform.position);
         transform.position = movePosition;
 
-        // 쏘는 방향에 따라 Sprite 방향 변경
-        if (targetX > playerX)
-        {
-            transform.localScale = new Vector3(-1f, 1f, 1f);
-        }
-        else if (targetX < playerX)
-        {
-            transform.localScale = new Vector3(1f, 1f, 1f);
-        }
-
+        // 목표 지점 도달
         if (movePosition == target.transform.position)
         {
-            gameObject.SetActive(false);
+            Arrived();
         }
     }
+
+    // Rotation 조정
     public static Quaternion LookAtTarget(Vector2 r)
     {
         return Quaternion.Euler(0, 0, Mathf.Atan2(r.y, r.x) * Mathf.Rad2Deg);
     }
+
+    void Arrived()
+    {
+        if (target.CompareTag("Wall"))
+        {
+            MainWall wallLogic = target.GetComponent<MainWall>();
+            wallLogic.health -= arrowPower;
+        }
+        else
+        {
+            if (unitType == 1)
+            {
+                // 아군 유닛 기준 로직
+                EnemyUnit enemy = target.GetComponent<EnemyUnit>();
+                PlayerUnit player = target.GetComponent<PlayerUnit>();
+
+                enemy.health -= arrowPower;
+                enemy.unitActivity = UnitBase.UnitActivity.Normal;
+
+            }
+            else
+            {
+                // 적 유닛 기준 로직
+                PlayerUnit enemy = target.GetComponent<PlayerUnit>();
+                EnemyUnit player = target.GetComponent<EnemyUnit>();
+
+                enemy.health -= arrowPower;
+                enemy.unitActivity = UnitBase.UnitActivity.Normal;
+            }
+        }
+
+        // 오브젝트 비활성화
+        gameObject.SetActive(false);
+    }
+
+
+
 }

@@ -1,5 +1,7 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using static UnitBase;
 
@@ -16,7 +18,8 @@ public class PlayerUnit : UnitBase
 
     [Header("# Unit Activity")]
     Collider2D col;
-    Collider2D attackTarget;
+    RaycastHit2D[] attackTargets; // 스캔 결과 배열
+    [SerializeField] Transform nearestAttackTarget; // 가장 가까운 목표
     Vector3 firstPos;
 
     [Header("# Spine")]
@@ -36,6 +39,8 @@ public class PlayerUnit : UnitBase
         col = GetComponent<Collider2D>();
 
         targetLayer = scanner.targetLayer;
+
+        StateSetting();
     }
 
     void OnEnable()
@@ -49,15 +54,21 @@ public class PlayerUnit : UnitBase
 
     void Update()
     {
-        AttackRay();
         // Animation();
-
-        if (health <= 0)
+        if (unitState != UnitState.Die)
         {
-            StartCoroutine(Die());
+            if (health <= 0)
+            {
+                StartCoroutine(Die());
+            }
+            else
+            {
+                AttackRay();
+            }
         }
     }
 
+    // 기본 설정 초기화 함수
     void StateSetting()
     {
         // 수치값
@@ -65,35 +76,30 @@ public class PlayerUnit : UnitBase
         health = unitData.Health;
         speed = unitData.Speed;
         power = unitData.Power;
-
-        if (unitID == 2)
-        {
-            attackTime = 0;
-        }
-        else
-        {
-            attackTime = unitData.AttackTime - 1;
-        }
+        attackTime = unitData.AttackTime - 0.5f;
 
         // 설정값
         col.enabled = true;
         unitState = UnitState.Move;
+        unitActivity = UnitActivity.Normal;
         moveVec = Vector3.right;
         firstPos = GameManager.Instance.point;
+        scanner.unitType = unitID / 10000;
+        nearestAttackTarget = null;
     }
 
+    // 가까운 적을 찾는 Scanner 함수 (이동)
     void Scanner()
     {
         if (scanner.nearestTarget)
         {
             // 위치 차이(방향) = 타겟 위치 - 나의 위치
             moveVec = scanner.nearestTarget.position - transform.position;
-            // 이동
-            transform.position += moveVec.normalized * speed * Time.deltaTime;
+            if (moveVec.y > 0) { moveVec.y += 0.5f; }
+            else if (moveVec.y < 0) { moveVec.y -= 0.5f; }
 
             // 이동
-            //StartCoroutine(
-                //lerpCoroutine(transform.position, scanner.nearestTarget.position, speed));
+            transform.position += moveVec.normalized * speed * Time.deltaTime;
 
 
             // 가는 방향에 따라 Sprite 방향 변경
@@ -122,15 +128,18 @@ public class PlayerUnit : UnitBase
         }
     }
 
+    // 가까운 공격 목표를 찾는 Ray 함수 (공격)
+
     void AttackRay()
     {
-        attackTarget = Physics2D.OverlapBox(transform.position + new Vector3(attackRayPos.x * Mathf.Sign(moveVec.x), attackRayPos.y, attackRayPos.z), attackRaySize, 0, targetLayer);
+        // BoxCastAll(시작 위치, 크기, 회전, 방향, 길이, 대상 레이어) : 사각형의 캐스트를 쏘고 모든 결과를 반환하는 함수
+        attackTargets = Physics2D.BoxCastAll(transform.position + new Vector3(attackRayPos.x * Mathf.Sign(moveVec.x), attackRayPos.y, attackRayPos.z), attackRaySize, 0, Vector2.zero, 0, targetLayer);
 
-        if (attackTarget != null)
+        nearestAttackTarget = scanner.GetNearestAttack(attackTargets);
+
+        if (nearestAttackTarget != null)
         {
-            EnemyUnit targetLogic = attackTarget.gameObject.GetComponent<EnemyUnit>();
             unitState = UnitState.Fight;
-
             startMoveFinish = true;
 
             // 적이 인식되면 attackTime 증가 및 공격 함수 실행
@@ -139,19 +148,35 @@ public class PlayerUnit : UnitBase
             if (attackTime >= unitData.AttackTime)
             {
                 attackTime = 0;
-                if(unitID == 2)
+
+                // 유닛 별로 각각의 공격 함수 실행
+                if (gameObject.CompareTag("Archer"))
                 {
-                    Arrow();
-                } else
-                {
-                    Attack();
+                    StartCoroutine(Arrow());
                 }
+                else
+                {
+                    StartCoroutine(Attack());
+                }
+            }
+
+            // 적의 위치에 따라 Sprite 방향 변경 (Attary Ray 영역이 큰 Unit 변수 제거)
+            if (nearestAttackTarget.transform.position.x > transform.position.x)
+            {
+                transform.localScale = new Vector3(-1f, 1f, 1f);
+            }
+            else if (nearestAttackTarget.transform.position.x > transform.position.x)
+            {
+                transform.localScale = new Vector3(1f, 1f, 1f);
             }
         }
         else
         {
             // AttackRay 에 인식되는 오브젝트가 없는 경우, 다시 스캔 시작
             Scanner();
+
+            // 다음에 attackRay 에 적 인식시, 바로 공격 가능하게 attackTime 초기화
+            attackTime = unitData.AttackTime - 0.5f;
         }
 
     }
@@ -162,34 +187,64 @@ public class PlayerUnit : UnitBase
         Gizmos.DrawWireCube(transform.position + new Vector3(attackRayPos.x * Mathf.Sign(moveVec.x), attackRayPos.y, attackRayPos.z), attackRaySize);
     }
 
-    void Attack()
+    // 일반 근접 공격 함수
+    IEnumerator Attack()
     {
-        EnemyUnit enemyLogic = attackTarget.gameObject.GetComponent<EnemyUnit>();
+        yield return null; // 나중에 아마도 애니메이션 시간에 맞춰서 변경 필요
 
+        if (nearestAttackTarget == null) StopCoroutine(Attack());
+
+        EnemyUnit enemyLogic = nearestAttackTarget.gameObject.GetComponent<EnemyUnit>();
+        enemyLogic.unitActivity = UnitActivity.Hit;
+
+        yield return new WaitForSeconds(3f);
         enemyLogic.health -= power;
+        yield return new WaitForSeconds(1f);
+
+        // 맞은 직후 다시 상대의 UnitActivity 는 normal 상태로 변경
+        enemyLogic.unitActivity = UnitActivity.Normal;
+
     }
 
-    void Arrow()
+    // 화살 공격 함수
+    IEnumerator Arrow()
     {
-        GameObject arrow = PoolManager.Instance.Get(3, transform.position); // 화살 가져오기
-        Arrow arrawLogic = arrow.GetComponent<Arrow>();
-        arrawLogic.target = attackTarget.gameObject;
+        yield return null;
+
+        if (nearestAttackTarget == null) StopCoroutine(Arrow());
+
+        // 맞고 있는 적 유닛 상태 변경
+        EnemyUnit enemyLogic = nearestAttackTarget.gameObject.GetComponent<EnemyUnit>();
+        enemyLogic.unitActivity = UnitBase.UnitActivity.Hit;
+
+        // 화살 가져오기
+        GameObject arrow = PoolManager.Instance.Get(3, 0, transform.position + new Vector3(0, 0.5f, 0));
+        Arrow arrowLogic = arrow.GetComponent<Arrow>();
+        arrowLogic.unitType = unitID / 10000;
+        arrowLogic.arrowPower = power;
+
+        // 화살 목표 오브젝트 설정
+        arrowLogic.target = nearestAttackTarget.gameObject;
+        arrowLogic.playerUnit = this.gameObject;
     }
 
     IEnumerator Die()
     {
-        col.enabled = false;
         unitState = UnitState.Die;
-        attackTime = 0;
         moveVec = Vector2.zero;
+        col.enabled = false;
+        unitActivity = UnitActivity.Normal;
+
         speed = 0;
+        attackTime = 0;
 
         yield return new WaitForSeconds(1f);
 
-        Debug.Log("Die");
+        transform.position = GameManager.Instance.unitSpawnPoint[0].position; // 위치 초기화 (안해주면 다시 소환되는 순간  Unit 의 Ray 영역 안에 있으면 Ray 에 잠시 인식됨.)
         gameObject.SetActive(false);
     }
 
+    // 맨 처음 시작 이동 lerpCoroutine
     IEnumerator lerpCoroutine(Vector3 current, Vector3 target, float speed)
     {
 
@@ -202,6 +257,7 @@ public class PlayerUnit : UnitBase
         if (target.y >= 2) { target.y = 2; }
         else if (target.y <= -2) { target.y = -2; }
         else if (target.x >= 6) { target.x = 6; }
+        else if (target.x <= -7) { target.x = -7; }
 
         this.transform.position = current;
         while (elapsedTime < time && !scanner.nearestTarget)
@@ -221,13 +277,6 @@ public class PlayerUnit : UnitBase
         yield return null;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Boundary"))
-        {
-            moveVec.y = 0;
-        }
-    }
 
     //void Animation()
     //{
