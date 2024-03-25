@@ -452,10 +452,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec4e3bb002d1b0a4cad28bbf0e737b9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabs:
+  unitPrefabs:
   - {fileID: 7010965689868943159, guid: 8af68fe3448ad004fb834eb3bc4c9680, type: 3}
   - {fileID: 7010965689868943159, guid: 4a36846c856c31d49bdc2da7193d76b4, type: 3}
+  spellPrefabs: []
+  enemyPrefabs:
   - {fileID: 2797091703419844058, guid: 3ea69bf29ca764f7099a7d978ac33e6a, type: 3}
+  - {fileID: 3261629212605270289, guid: e814150df7352054c8910d04d62b3a90, type: 3}
+  weaponPrefabs:
   - {fileID: 4274193337363202239, guid: e1f8b9f208103204da32d0891cadf0f5, type: 3}
 --- !u!4 &1383438279
 Transform:
