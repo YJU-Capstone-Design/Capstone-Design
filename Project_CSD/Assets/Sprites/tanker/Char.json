@@ -1,0 +1,325 @@
+{
+"skeleton": {
+	"hash": "CAPBJlAZooE",
+	"spine": "4.1.24",
+	"x": -266.94,
+	"y": -8.59,
+	"width": 537,
+	"height": 370,
+	"images": "./images/",
+	"audio": "C:/Users/admin/Desktop/영진 3-1/7. 캡스톤디자인 손슬기/Char"
+},
+"bones": [
+	{ "name": "root" },
+	{ "name": "center", "parent": "root" },
+	{ "name": "body1", "parent": "center", "length": 230.83, "rotation": 90, "x": -0.35, "y": 77.73 },
+	{ "name": "body2", "parent": "body1", "x": 242.89, "y": 0.93 },
+	{ "name": "eyeR", "parent": "body2", "x": -34.32, "y": 8.35 },
+	{ "name": "eyelibR", "parent": "eyeR", "x": 12.99, "y": 3.71 },
+	{ "name": "eyeL", "parent": "eyeR", "x": 4.64, "y": -130.8 },
+	{ "name": "eyelibL", "parent": "eyeL", "x": 17.62, "y": 2.78 },
+	{ "name": "mouse", "parent": "body2", "x": -50.09, "y": -62.15 },
+	{ "name": "mouselib", "parent": "mouse", "x": -14.84, "y": -5.57 },
+	{ "name": "armR", "parent": "body1", "length": 74.79, "rotation": 156.61, "x": 94.47, "y": 206.86 },
+	{ "name": "armL", "parent": "body1", "length": 73.02, "rotation": -152.78, "x": 100.03, "y": -221.7 },
+	{ "name": "legR", "parent": "body1", "length": 73.85, "rotation": 147.31, "x": -1.08, "y": 114.1 },
+	{ "name": "legL", "parent": "body1", "length": 67.16, "rotation": -147.41, "x": -10.36, "y": -99.26 }
+],
+"slots": [
+	{ "name": "legL", "bone": "legL", "attachment": "legL" },
+	{ "name": "legR", "bone": "legR", "attachment": "legR" },
+	{ "name": "armL", "bone": "armL", "attachment": "armL" },
+	{ "name": "body2B", "bone": "body2", "attachment": "body2B" },
+	{ "name": "body1", "bone": "body1", "attachment": "body1" },
+	{ "name": "armR", "bone": "armR", "attachment": "armR" },
+	{ "name": "body2", "bone": "body2", "attachment": "body2" },
+	{ "name": "mouse", "bone": "mouse", "attachment": "mouse" },
+	{ "name": "lips", "bone": "mouselib", "attachment": "lips" },
+	{ "name": "eye", "bone": "eyeR", "attachment": "eye" },
+	{ "name": "eyelid", "bone": "eyeR", "attachment": "eyelid" },
+	{ "name": "body1 attach", "bone": "body1", "attachment": "body1 attach" },
+	{ "name": "body2 attach", "bone": "body2", "attachment": "body2 attach" }
+],
+"skins": [
+	{
+		"name": "default",
+		"attachments": {
+			"armL": {
+				"armL": {
+					"type": "mesh",
+					"uvs": [ 1, 1, 0, 1, 0, 0, 1, 0 ],
+					"triangles": [ 1, 2, 3, 1, 3, 0 ],
+					"vertices": [ 104.4, 1.08, 72.84, -60.29, -31.2, -6.78, 0.36, 54.59 ],
+					"hull": 4,
+					"edges": [ 0, 2, 2, 4, 4, 6, 0, 6 ],
+					"width": 69,
+					"height": 117
+				}
+			},
+			"armR": {
+				"armR": {
+					"type": "mesh",
+					"uvs": [ 1, 1, 0, 1, 0, 0, 1, 0 ],
+					"triangles": [ 1, 2, 3, 1, 3, 0 ],
+					"vertices": [ 72.23, 64.21, 99.62, 0.88, -7.77, -45.56, -35.16, 17.77 ],
+					"hull": 4,
+					"edges": [ 0, 2, 2, 4, 4, 6, 0, 6 ],
+					"width": 69,
+					"height": 117
+				}
+			},
+			"body1": {
+				"body1": {
+					"type": "mesh",
+					"uvs": [ 1, 1, 0, 1, 0, 0, 1, 0 ],
+					"triangles": [ 1, 2, 3, 1, 3, 0 ],
+					"vertices": [ -50.32, -244.41, -50.32, 266.59, 267.68, 266.59, 267.68, -244.41 ],
+					"hull": 4,
+					"edges": [ 0, 2, 2, 4, 4, 6, 0, 6 ],
+					"width": 511,
+					"height": 318
+				}
+			},
+			"body1 attach": {
+				"body1 attach": {
+					"type": "boundingbox",
+					"vertexCount": 4,
+					"vertices": [ 268.37, 266.72, -49.41, 266.03, -50.77, -246.51, 266.32, -244.46 ]
+				}
+			},
+			"body2": {
+				"body2": {
+					"type": "mesh",
+					"uvs": [ 1, 1, 0, 1, 0, 0, 1, 0 ],
+					"triangles": [ 1, 2, 3, 1, 3, 0 ],
+					"vertices": [ -172.21, -238.34, -172.21, 255.66, 40.79, 255.66, 40.79, -238.34 ],
+					"hull": 4,
+					"edges": [ 0, 2, 2, 4, 4, 6, 0, 6 ],
+					"width": 494,
+					"height": 213
+				}
+			},
+			"body2 attach": {
+				"body2 attach": {
+					"type": "boundingbox",
+					"vertexCount": 4,
+					"vertices": [ 18.41, 254.38, -89.2, 255.25, -102.32, -234.66, 18.41, -236.41 ]
+				}
+			},
+			"body2B": {
+				"body2B": {
+					"type": "mesh",
+					"uvs": [ 1, 1, 0, 1, 0, 0, 1, 0 ],
+					"triangles": [ 1, 2, 3, 1, 3, 0 ],
+					"vertices": [ -109.21, -233.34, -109.21, 254.66, 11.79, 254.66, 11.79, -233.34 ],
+					"hull": 4,
+					"edges": [ 0, 2, 2, 4, 4, 6, 0, 6 ],
+					"width": 488,
+					"height": 121
+				}
+			},
+			"eye": {
+				"eye": {
+					"type": "mesh",
+					"uvs": [ 1, 1, 0, 1, 0, 0, 1, 0 ],
+					"triangles": [ 1, 2, 3, 1, 3, 0 ],
+					"vertices": [ -19.88, -158.68, -19.88, 26.32, 23.12, 26.32, 23.12, -158.68 ],
+					"hull": 4,
+					"edges": [ 0, 2, 2, 4, 4, 6, 0, 6 ],
+					"width": 185,
+					"height": 43
+				}
+			},
+			"eyelid": {
+				"eyelid": {
+					"type": "mesh",
+					"uvs": [ 1, 1, 0, 1, 0, 0, 1, 0 ],
+					"triangles": [ 1, 2, 3, 1, 3, 0 ],
+					"vertices": [ -2.88, -171.68, -2.88, 44.32, 40.12, 44.32, 40.12, -171.68 ],
+					"hull": 4,
+					"edges": [ 0, 2, 2, 4, 4, 6, 0, 6 ],
+					"width": 216,
+					"height": 43
+				}
+			},
+			"legL": {
+				"legL": {
+					"type": "mesh",
+					"uvs": [ 1, 1, 0, 1, 0, 0, 1, 0 ],
+					"triangles": [ 1, 2, 3, 1, 3, 0 ],
+					"vertices": [ 101.35, 26.78, 55.56, -44.84, 2.48, -10.9, 48.27, 60.71 ],
+					"hull": 4,
+					"edges": [ 0, 2, 2, 4, 4, 6, 0, 6 ],
+					"width": 85,
+					"height": 63
+				}
+			},
+			"legR": {
+				"legR": {
+					"type": "mesh",
+					"uvs": [ 1, 1, 0, 1, 0, 0, 1, 0 ],
+					"triangles": [ 1, 2, 3, 1, 3, 0 ],
+					"vertices": [ 67.68, 52.36, 113.59, -19.18, 60.57, -53.21, 14.66, 18.33 ],
+					"hull": 4,
+					"edges": [ 0, 2, 2, 4, 4, 6, 0, 6 ],
+					"width": 85,
+					"height": 63
+				}
+			},
+			"lips": {
+				"lips": {
+					"type": "mesh",
+					"uvs": [ 1, 1, 0, 1, 0, 0, 1, 0 ],
+					"triangles": [ 1, 2, 3, 1, 3, 0 ],
+					"vertices": [ -20.27, -35.62, -20.27, 45.38, 15.73, 45.38, 15.73, -35.62 ],
+					"hull": 4,
+					"edges": [ 0, 2, 2, 4, 4, 6, 0, 6 ],
+					"width": 81,
+					"height": 36
+				}
+			},
+			"mouse": {
+				"mouse": {
+					"type": "mesh",
+					"uvs": [ 1, 1, 0, 1, 0, 0, 1, 0 ],
+					"triangles": [ 1, 2, 3, 1, 3, 0 ],
+					"vertices": [ -28.11, -29.18, -28.11, 35.82, 16.89, 35.82, 16.89, -29.18 ],
+					"hull": 4,
+					"edges": [ 0, 2, 2, 4, 4, 6, 0, 6 ],
+					"width": 65,
+					"height": 45
+				}
+			}
+		}
+	}
+],
+"animations": {
+	"attack": {
+		"bones": {
+			"body2": {
+				"translate": [
+					{},
+					{ "time": 0.1667, "y": -108.64 },
+					{ "time": 0.3333 }
+				]
+			}
+		},
+		"attachments": {
+			"default": {
+				"body2 attach": {
+					"body2 attach": {
+						"deform": [
+							{},
+							{
+								"time": 0.1667,
+								"offset": 4,
+								"vertices": [ -196.84097, -25.36972, -16.62213, -29.74469 ]
+							},
+							{ "time": 0.3333 }
+						]
+					}
+				},
+				"mouse": {
+					"mouse": {
+						"deform": [
+							{
+								"vertices": [ 4.642, 0, 4.642, 0, -25.3884, 0, -25.38837 ]
+							},
+							{ "time": 0.1667 },
+							{
+								"time": 0.3333,
+								"vertices": [ 4.642, 0, 4.642, 0, -25.3884, 0, -25.38837 ]
+							}
+						]
+					}
+				}
+			}
+		}
+	},
+	"idle": {
+		"slots": {
+			"mouse": {
+				"rgba": [
+					{ "color": "ffffff00" }
+				]
+			}
+		},
+		"bones": {
+			"body1": {
+				"translate": [
+					{
+						"curve": [ 0.222, 0, 0.444, 0, 0.222, 0, 0.444, -13.2 ]
+					},
+					{
+						"time": 0.6667,
+						"y": -13.2,
+						"curve": [ 0.889, 0, 1.111, 0, 0.889, -13.2, 1.111, 0 ]
+					},
+					{ "time": 1.3333 }
+				]
+			},
+			"legL": {
+				"translate": [
+					{
+						"curve": [ 0.222, 0, 0.444, 13.2, 0.222, 0, 0.444, 0 ]
+					},
+					{
+						"time": 0.6667,
+						"x": 13.2,
+						"curve": [ 0.889, 13.2, 1.111, 0, 0.889, 0, 1.111, 0 ]
+					},
+					{ "time": 1.3333 }
+				]
+			},
+			"legR": {
+				"translate": [
+					{
+						"curve": [ 0.222, 0, 0.444, 13.2, 0.222, 0, 0.444, 0 ]
+					},
+					{
+						"time": 0.6667,
+						"x": 13.2,
+						"curve": [ 0.889, 13.2, 1.111, 0, 0.889, 0, 1.111, 0 ]
+					},
+					{ "time": 1.3333 }
+				]
+			}
+		}
+	},
+	"walk": {
+		"bones": {
+			"body1": {
+				"translate": [
+					{ "y": -13.2 },
+					{
+						"time": 0.3333,
+						"y": 31.18,
+						"curve": [ 0.444, 0, 0.556, 0, 0.444, 31.18, 0.556, -13.2 ]
+					},
+					{ "time": 0.6667, "y": -13.2 }
+				]
+			},
+			"legL": {
+				"translate": [
+					{ "x": 13.2 },
+					{
+						"time": 0.3333,
+						"curve": [ 0.444, 0, 0.556, 13.2, 0.444, 0, 0.556, 0 ]
+					},
+					{ "time": 0.6667, "x": 13.2 }
+				]
+			},
+			"legR": {
+				"translate": [
+					{ "x": 13.2 },
+					{
+						"time": 0.3333,
+						"curve": [ 0.444, 0, 0.556, 13.2, 0.444, 0, 0.556, 0 ]
+					},
+					{ "time": 0.6667, "x": 13.2 }
+				]
+			}
+		}
+	}
+}
+}
