@@ -20,18 +20,15 @@ public class PoolManager : Singleton<PoolManager>
         prefabs = new GameObject[4][];
         pools = new List<GameObject>[prefabs.Length];
 
-        for (int i = 0; i < pools.Length; i++)
-        {
-            pools[i] = new List<GameObject>();
-        }
-    }
-
-    void Start()
-    {
         prefabs[0] = unitPrefabs;
         prefabs[1] = spellPrefabs;
         prefabs[2] = enemyPrefabs;
         prefabs[3] = weaponPrefabs;
+
+        for (int i = 0; i < pools.Length; i++)
+        {
+            pools[i] = new List<GameObject>();
+        }
     }
 
     public GameObject Get(int prefabIndex,int objIndex)
