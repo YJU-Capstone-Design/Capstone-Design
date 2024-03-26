@@ -17,6 +17,8 @@ public class BattleManager :Singleton<BattleManager>
     [Header("BattleMgr")]
     [SerializeField] private GameObject battle;
     [SerializeField] private GameObject gameEnd;
+
+
     private void Awake()
     {
         battle.SetActive(true);
