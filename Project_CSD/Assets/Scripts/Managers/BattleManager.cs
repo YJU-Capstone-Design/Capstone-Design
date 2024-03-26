@@ -14,8 +14,13 @@ public class BattleManager :Singleton<BattleManager>
     public GameObject healthBar; //
     public Slider HpBarSlider;
 
+    [Header("BattleMgr")]
+    [SerializeField] private GameObject battle;
+    [SerializeField] private GameObject gameEnd;
     private void Awake()
     {
+        battle.SetActive(true);
+        gameEnd.SetActive(false);
         CardMake();
         curHealth = maxHealth;
         UpdateHealthBar();
@@ -48,6 +53,9 @@ public class BattleManager :Singleton<BattleManager>
         if (curHealth <= 0)
         {
             healthBar.SetActive(false);
+            battle.SetActive(false);
+            gameEnd.SetActive(true);
+
         }
     }
 }
