@@ -15,6 +15,6 @@ MonoBehaviour:
   itemID: 20000
   heal: 0
   speedUp: 0
-  powerUp: 10
-  buffTime: 3
+  powerUp: 0
+  buffTime: 0
   critical: -0

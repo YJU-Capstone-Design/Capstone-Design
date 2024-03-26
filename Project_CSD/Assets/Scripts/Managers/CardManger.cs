@@ -2,18 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CardManger : MonoBehaviour
+public class CardManger : Singleton<CardManger>
 {
     public static CardManger instance;
 
-    PlayerCard playerCard;
+    public List<GameObject> units;
+    public List<GameObject> enemys;
+
     [Header("Using Card")]
     public Transform poolObj;
+    PlayerCard playerCard;
     private void Awake()
     {
         instance = this;
 
         playerCard = GetComponent<PlayerCard>();
+        units = new List<GameObject>();
+        enemys = new List<GameObject>();
     }
 
 
@@ -24,10 +29,11 @@ public class CardManger : MonoBehaviour
         switch (value)
         {
             case 20000:
-                //ATK_UP();
+                ATK_UP();
+                Debug.Log("ATK_UP");
                 break;
             case 20001:
-                Debug.Log("SPD_UP");
+                Debug.Log("SPEED_UP");
                 break;
             case 22001:
                 Debug.Log("HEAL");
@@ -35,14 +41,13 @@ public class CardManger : MonoBehaviour
         }
     }
 
-    /*void ATK_UP()
+    void ATK_UP()
     {
-        foreach (Transform child in poolObj.transform)
+       foreach (GameObject obj in units)
         {
-            if (child.CompareTag("unit"))
-            {
-                child.GetComponent<GameObject>().power *= 0.5f;
-            }
+            PlayerUnit unitLogic = obj.GetComponent<PlayerUnit>();
+            unitLogic.power += (unitLogic.power * 0.05f);
+            Debug.Log(unitLogic.power);
         }
-    }*/
+    }
 }
