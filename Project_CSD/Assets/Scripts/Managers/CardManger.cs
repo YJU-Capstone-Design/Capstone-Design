@@ -23,7 +23,7 @@ public class CardManger : MonoBehaviour
         switch (value)
         {
             case 20000:
-                Debug.Log("ATK_UP");
+                ATK_UP();
                 break;
             case 20001:
                 Debug.Log("SPD_UP");
@@ -32,5 +32,11 @@ public class CardManger : MonoBehaviour
                 Debug.Log("HEAL");
                 break;
         }
+    }
+
+    void ATK_UP()
+    {
+        this.playerCard.PowerUp += (this.playerCard.PowerUp * 0.05f);
+        Debug.Log(this.playerCard.PowerUp);
     }
 }

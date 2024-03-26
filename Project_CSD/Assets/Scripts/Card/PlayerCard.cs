@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEngine;
 using static CardBase;
 using static UnityEditor.Progress;
@@ -9,7 +10,8 @@ public class PlayerCard : CardBase
     
     [Header("# Item Setting")]
     public List<CardData> cards = new List<CardData>();
-    public int value = 0;
+    public int value;
+    public float power;
 
     // Start is called before the first frame update
     void Awake()
