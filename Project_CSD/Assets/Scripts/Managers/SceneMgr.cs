@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class SceneMgr : Singleton<SceneMgr>
 {
+
     public void GoSceneSelect(string type)
     {
         if (type == "BattleModeSelect")

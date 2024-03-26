@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-public class Loading : MonoBehaviour
+public class Loading : Singleton<Loading>
 {
-
+   
     // Use this for initialization
     public void Loding(string type)
     {

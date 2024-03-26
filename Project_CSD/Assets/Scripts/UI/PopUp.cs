@@ -61,7 +61,7 @@ public class PopUp : MonoBehaviour
         Debug.Log(type);
         if(type == "로비로 이동하시겠습니까?")
         {
-            SceneMgr.Instance.GoSceneSelect("MainLobbySelect");
+            LodingSceneMgr.LoadScene("MainLobby");
         }
         else if (type == "게임을 재 시작하시겠습니까?")
         {
