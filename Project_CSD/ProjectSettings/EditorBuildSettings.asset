@@ -12,7 +12,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Lobby/BattleMode.unity
     guid: 3c18a67606ac5e64fa5787273440613b
   - enabled: 1
-    path: Assets/Scenes/BattleUI.unity
+    path: Assets/Scenes/NormalBattle.unity
     guid: 3b91232d975e5a54197106802789a774
   - enabled: 1
     path: Assets/Scenes/Lobby/Start.unity
