@@ -18,7 +18,7 @@ public class SceneMgr : Singleton<SceneMgr>
             SceneManager.LoadScene("MainLobby");
         }else if(type == "NomalMode")
         {
-            SceneManager.LoadScene("BattleUI");
+            SceneManager.LoadScene("NormalBattle");
         }
 
     }
