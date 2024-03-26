@@ -77,6 +77,7 @@ public class EnemyUnit : UnitBase
     // 가까운 적을 찾는 Scanner 함수
     void Scanner()
     {
+        Debug.Log("Scanner");
         if (scanner.nearestTarget)
         {
             // 위치 차이 = 타겟 위치 - 나의 위치  ->  (방향) 
@@ -109,7 +110,7 @@ public class EnemyUnit : UnitBase
     // 실제 공격 범위 Ray 함수
     void AttackRay()
     {
-        attackTargets = Physics2D.BoxCastAll(transform.position + new Vector3(attackRayPos.x * Mathf.Sign(moveVec.x), attackRayPos.y * (moveVec.y > 0 ? -1 : 1), attackRayPos.z), attackRaySize, 0, Vector2.zero, 0, attackLayer);
+        attackTargets = Physics2D.BoxCastAll(transform.position + new Vector3(attackRayPos.x * Mathf.Sign(moveVec.x), attackRayPos.y * (moveVec.y > 0 ? 2 : 1), attackRayPos.z), attackRaySize, 0, Vector2.zero, 0, attackLayer);
         nearestAttackTarget = scanner.GetNearestAttack(attackTargets);
 
         if (nearestAttackTarget != null)

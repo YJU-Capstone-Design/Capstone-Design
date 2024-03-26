@@ -161,15 +161,15 @@ public class PlayerUnit : UnitBase
                 }
             }
 
-            // 적의 위치에 따라 Sprite 방향 변경 (Attary Ray 영역이 큰 Unit 변수 제거)
-            if (nearestAttackTarget.transform.position.x > transform.position.x)
-            {
-                transform.localScale = new Vector3(-1f, 1f, 1f);
-            }
-            else if (nearestAttackTarget.transform.position.x > transform.position.x)
-            {
-                transform.localScale = new Vector3(1f, 1f, 1f);
-            }
+            //// 적의 위치에 따라 Sprite 방향 변경 (Attary Ray 영역이 큰 Unit 변수 제거)
+            //if (nearestAttackTarget.transform.position.x > transform.position.x)
+            //{
+            //    transform.localScale = new Vector3(1f, 1f, 1f);
+            //}
+            //else if (nearestAttackTarget.transform.position.x < transform.position.x)
+            //{
+            //    transform.localScale = new Vector3(-1f, 1f, 1f);
+            //}
         }
         else
         {
