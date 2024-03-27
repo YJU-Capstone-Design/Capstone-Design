@@ -17,8 +17,9 @@ public class MainLobby : MonoBehaviour
     [SerializeField] private GameObject closeToggleBtn;
     private Vector3 openToggleTr;//토클의 처음 위치
     private Vector3 closeToggleTr;//토클이 닫혔을 때의 위치
-   
 
+    [Header("SettingMenu")]
+    [SerializeField] private GameObject setMenu;
     private void Awake()
     {
         Clear();
@@ -85,12 +86,33 @@ public class MainLobby : MonoBehaviour
     {
         menu[0].gameObject.SetActive(true);
         menu_Obj_Setting[0].gameObject.SetActive(true);
+        setMenu.SetActive(false);
         for (int i=1; i<menu.Count; i++)
         {
             menu[i].gameObject.SetActive(false);
             menu_Obj_Setting[i].gameObject.SetActive(false);
         }
     }
+    public void SettingClose()
+    {
+        setMenu.SetActive(false);
+    }
+    public void GameSetting()
+    {
+        if (!setMenu.activeSelf)
+        {
+            setMenu.SetActive(true);
+        }
+        else
+        {
 
+        }
+    }
+
+
+    public void GameEscape()
+    {
+        Application.Quit();
+    }
     
 }
