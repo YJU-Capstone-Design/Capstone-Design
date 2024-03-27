@@ -105,7 +105,7 @@ public class PlayerUnit : UnitBase
             // 이동
             transform.position += moveVec.normalized * speed * Time.deltaTime;
 
-            // 애니메이션    -> AnimationState.SetAnimation(트랙넘버, 애니메이션이름, loop 여부, 딜레이)
+            // 애니메이션    -> AnimationState.SetAnimation(트랙넘버, 애니메이션이름, loop 여부)
             skeletonAnimation.AnimationState.SetAnimation(0, "walk", true);
 
             // 가는 방향에 따라 Sprite 방향 변경
