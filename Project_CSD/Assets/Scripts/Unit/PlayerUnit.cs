@@ -24,17 +24,13 @@ public class PlayerUnit : UnitBase
     RaycastHit2D[] attackTargets; // 스캔 결과 배열
     [SerializeField] Transform nearestAttackTarget; // 가장 가까운 목표
     Vector3 firstPos;
+    Coroutine smash;
+    Coroutine arrow;
+    Coroutine lerp;
 
     [Header("# Spine")]
-    //스파인 애니메이션을 위한 것
     SkeletonAnimation skeletonAnimation;
-    //public AnimationReferenceAsset[] AnimClip;
-
-    //현재 애니메이션 처리가 무엇인지에 대한 변수
-    //private AnimState _AnimState;
-
-    //현재 어떤 애니메이션이 재생되고 있는지에 대한 변수
-    private string CurrentAnimation;
+    string CurrentAnimation; //현재 어떤 애니메이션이 재생되고 있는지에 대한 변수
 
     void Awake()
     {
@@ -52,8 +48,7 @@ public class PlayerUnit : UnitBase
         StateSetting();
 
         // 클릭 지점으로 이동
-        StartCoroutine(
-            lerpCoroutine(GameManager.Instance.unitSpawnPoint[0].position, GameManager.Instance.point, speed));
+        lerp = StartCoroutine(lerpCoroutine(GameManager.Instance.unitSpawnPoint[0].position, GameManager.Instance.point, speed));
     }
 
     void Update()
@@ -72,6 +67,11 @@ public class PlayerUnit : UnitBase
         }
     }
 
+    void OnDisable()
+    {
+        transform.position = new Vector3(-10, 0, 0); // 위치 초기화 (안해주면 다시 소환되는 순간  Unit 의 Ray 영역 안에 있으면 Ray 에 잠시 인식됨.)
+    }
+
     // 기본 설정 초기화 함수
     void StateSetting()
     {
@@ -80,7 +80,7 @@ public class PlayerUnit : UnitBase
         health = unitData.Health;
         speed = unitData.Speed;
         power = unitData.Power;
-        attackTime = unitData.AttackTime - 0.5f;
+        attackTime = unitData.AttackTime;
 
         // 설정값
         col.enabled = true;
@@ -105,8 +105,8 @@ public class PlayerUnit : UnitBase
             // 이동
             transform.position += moveVec.normalized * speed * Time.deltaTime;
 
-            // 애니메이션    -> AnimationState.SetAnimation(트랙넘버, 애니메이션이름, loop 여부)
-            skeletonAnimation.AnimationState.SetAnimation(0, "walk", true);
+            // 애니메이션
+            StartAnimation("walk", true, 1.2f);
 
             // 가는 방향에 따라 Sprite 방향 변경
             SpriteDir(moveVec, Vector3.zero);
@@ -116,16 +116,17 @@ public class PlayerUnit : UnitBase
             if (startMoveFinish)
             {
                 // 유닛의 처음 위치로 귀환
-                StartCoroutine(
-                    lerpCoroutine(transform.position, firstPos, speed));
+                StartCoroutine(lerpCoroutine(transform.position, firstPos, speed));
 
-                moveVec = Vector3.zero;
-                unitState = UnitState.Idle;
+                if (transform.position == firstPos) {
 
-                if(transform.position == firstPos && moveVec == Vector3.zero) { transform.localScale = new Vector3(1f, 1f, 1f); }
+                    moveVec = Vector3.zero;
+                    unitState = UnitState.Idle;
+                    transform.localScale = new Vector3(1f, 1f, 1f);
 
-                // 애니메이션
-                skeletonAnimation.AnimationState.SetAnimation(0, "idle", true);
+                    // 애니메이션
+                    StartAnimation("idle", true, 1.5f);
+                }
             }
         }
     }
@@ -171,7 +172,7 @@ public class PlayerUnit : UnitBase
             Scanner();
 
             // 다음에 attackRay 에 적 인식시, 바로 공격 가능하게 attackTime 초기화
-            attackTime = unitData.AttackTime - 0.5f;
+            attackTime = unitData.AttackTime - 0.2f;
         }
 
     }
@@ -186,7 +187,7 @@ public class PlayerUnit : UnitBase
     IEnumerator Attack()
     {
         // 애니메이션
-        skeletonAnimation.AnimationState.SetAnimation(0, "attack melee", false);
+        StartAnimation("attack melee", false, 1f);
 
         if (nearestAttackTarget == null) StopCoroutine(Attack());
 
@@ -198,7 +199,7 @@ public class PlayerUnit : UnitBase
         enemyLogic.health -= power;
 
         // 애니메이션
-        skeletonAnimation.AnimationState.SetAnimation(0, "idle", true);
+        StartAnimation("idle", true, 1f);
 
         yield return new WaitForSeconds(1f);
 
@@ -211,7 +212,7 @@ public class PlayerUnit : UnitBase
     IEnumerator Arrow()
     {
         // 애니메이션
-        skeletonAnimation.AnimationState.SetAnimation(0, "attack range", false);
+        StartAnimation("attack range", false, 1f);
 
         yield return null;
 
@@ -242,12 +243,19 @@ public class PlayerUnit : UnitBase
         speed = 0;
         attackTime = 0;
 
+        // 진행중인 코루틴 함수 모두 중지
+        if (smash != null) { StopCoroutine(smash); smash = null; }
+        if (arrow != null) { StopCoroutine(arrow); arrow = null; }
+
         // 애니메이션
         // 아직 없음
 
+        // 작동중인 다른 Coroutine 함수 중지
+        StopCoroutine(Arrow());
+        StopCoroutine(Attack());
+
         yield return new WaitForSeconds(1f);
 
-        transform.position = GameManager.Instance.unitSpawnPoint[0].position; // 위치 초기화 (안해주면 다시 소환되는 순간  Unit 의 Ray 영역 안에 있으면 Ray 에 잠시 인식됨.)
         gameObject.SetActive(false);
     }
 
@@ -260,17 +268,9 @@ public class PlayerUnit : UnitBase
 
         float elapsedTime = 0.0f;
 
-        // 경계선 범위 벗어나지 않게 설정
-        if (target.y >= 2) { target.y = 2; }
-        else if (target.y <= -2) { target.y = -2; }
-        else if (target.x >= 6) { target.x = 6; }
-        else if (target.x <= -7) { target.x = -7; }
-
-        // 가는 방향에 따라 Sprite 방향 변경
-        SpriteDir(target, current);
-
         this.transform.position = current;
-        while (elapsedTime < time && !scanner.nearestTarget)
+
+        while (elapsedTime < time && !scanner.nearestTarget && current != target)
         {
             elapsedTime += Time.deltaTime;
 
@@ -280,6 +280,11 @@ public class PlayerUnit : UnitBase
 
             unitState = UnitState.Move;
 
+            // 가는 방향에 따라 Sprite 방향 변경
+            SpriteDir(target, current);
+
+            // 애니메이션
+            StartAnimation("walk", true, 1.2f);
         }
 
         startMoveFinish = true;
@@ -287,70 +292,21 @@ public class PlayerUnit : UnitBase
         yield return null;
     }
 
+    // 스파인 애니메이션 함수
+    private void StartAnimation(string animName, bool loop, float timeScale)
+    {
+        //동일한 애니메이션을 재생하려고 한다면 아래 코드 구문 실행 X
+        if (animName.Equals(CurrentAnimation))
+        {
+            return;
+        }
 
-    //void Animation()
-    //{
-    //    int animIndex = 0;
+        //해당 애니메이션으로 변경한다.
+        skeletonAnimation.state.SetAnimation(0, animName, loop).TimeScale = timeScale;
+        skeletonAnimation.loop = loop;
+        skeletonAnimation.timeScale = timeScale;
 
-    //    switch(unitState)
-    //    {
-    //        case UnitState.Idle:
-    //            _AnimState = AnimState.Idle;
-    //            animIndex = 0;
-    //            break;
-    //        case UnitState.Move:
-    //            _AnimState = AnimState.Run;
-    //            animIndex = 1;
-    //            break;
-    //        case UnitState.Fight:
-    //            Debug.Log("Fight Animation");
-    //            _AnimState = AnimState.Idle;
-    //            animIndex = 0;
-    //            break;
-    //        case UnitState.Attack:
-    //            Debug.Log("Attack Animation");
-    //            break;
-    //        case UnitState.Damaged:
-    //            break;
-    //        case UnitState.Die:
-    //            break;
-
-    //    }
-
-    //    //애니메이션 적용
-    //    _AsyncAnimation(AnimClip[animIndex], true, 1f);
-    //}
-
-    //private void _AsyncAnimation(AnimationReferenceAsset animClip, bool loop, float timeScale)
-    //{
-    //    //동일한 애니메이션을 재생하려고 한다면 아래 코드 구문 실행 X
-    //    if (animClip.name.Equals(CurrentAnimation))
-    //    {
-    //        return;
-    //    }
-
-    //    //해당 애니메이션으로 변경한다.
-    //    skeletonAnimation.state.SetAnimation(0, animClip, loop).TimeScale = timeScale;
-    //    skeletonAnimation.loop = loop;
-    //    skeletonAnimation.timeScale = timeScale;
-
-    //    //현재 재생되고 있는 애니메이션 값을 변경
-    //    CurrentAnimation = animClip.name;
-    //}
-
-    //private void SetCurrentAnimation(AnimState _state)
-    //{
-    //    switch (_state)
-    //    {
-    //        case AnimState.Idle:
-    //            _AsyncAnimation(AnimClip[(int)AnimState.Idle], true, 1f);
-    //            break;
-    //        case AnimState.Run:
-    //            _AsyncAnimation(AnimClip[(int)AnimState.Run], true, 1f);
-    //            break;
-    //    }
-
-    //    //짧게 작성한다 요렇게..
-    //    //_AsyncAnimation(AnimClip[(int)AnimState], true, 1f);
-    //}
+        //현재 재생되고 있는 애니메이션 값을 변경
+        CurrentAnimation = animName;
+    }
 }

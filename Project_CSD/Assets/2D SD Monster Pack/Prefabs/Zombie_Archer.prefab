@@ -680,7 +680,7 @@ CapsuleCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3261629212605270289}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -750,7 +750,7 @@ MonoBehaviour:
   scanRange: {x: 25, y: 8}
   targetLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   nearestTarget: {fileID: 0}
   unitType: 0
 --- !u!1 &3704987812081377231

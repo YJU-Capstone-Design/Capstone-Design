@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
@@ -20,6 +21,8 @@ public class EnemyUnit : UnitBase
     public RaycastHit2D[] attackTargets; // 스캔 결과 배열
     [SerializeField] public Transform nearestAttackTarget; // 가장 가까운 목표
     MonsterCharacterAnimation anim;
+    Coroutine smash; // 코루틴 값을 저장하기 위한 변수
+    Coroutine arrow;
 
     void Awake()
     {
@@ -51,6 +54,11 @@ public class EnemyUnit : UnitBase
                 AttackRay();
             }
         }
+    }
+
+    void OnDisable()
+    {
+        transform.position = new Vector3(10, 0, 0); // 위치 초기화 (안해주면 다시 소환되는 순간  Unit 의 Ray 영역 안에 있으면 Ray 에 잠시 인식됨.)
     }
 
     // 기본 설정 초기화 함수
@@ -121,7 +129,7 @@ public class EnemyUnit : UnitBase
                 }
                 else
                 {
-                    StartCoroutine(Attack());
+                    smash = StartCoroutine(Attack());
                 }
             }
 
@@ -149,7 +157,6 @@ public class EnemyUnit : UnitBase
     IEnumerator Attack()
     {
         if (nearestAttackTarget == null) StopCoroutine(Attack());
-
         // 애니메이션
         anim.Smash();
 
@@ -169,7 +176,7 @@ public class EnemyUnit : UnitBase
             yield return new WaitForSeconds(anim.GetTime() + 0.5f);
 
             enemyLogic.health -= power;
-
+            
             // 애니메이션
             anim.Idle();
 
@@ -215,12 +222,16 @@ public class EnemyUnit : UnitBase
 
 
 
-    public IEnumerator Die()
+    IEnumerator Die()
     {
         unitState = UnitState.Die;
         moveVec = Vector2.zero;
         col.enabled = false;
         unitActivity = UnitActivity.Normal;
+
+        // 작동중인 다른 Coroutine 함수 중지
+        if(smash != null) { StopCoroutine(smash); smash = null; }
+        if (arrow != null) { StopCoroutine(arrow); arrow = null; }
 
         speed = 0;
         attackTime = 0;
@@ -228,10 +239,10 @@ public class EnemyUnit : UnitBase
         // 애니메이션
         anim.Die();
 
+
         yield return new WaitForSeconds(anim.GetTime());
 
         StateSetting();
-        transform.position = new Vector3(10, 0, 0); // 위치 초기화 (안해주면 다시 소환되는 순간  Unit 의 Ray 영역 안에 있으면 Ray 에 잠시 인식됨.)
         gameObject.SetActive(false);
     }
 
