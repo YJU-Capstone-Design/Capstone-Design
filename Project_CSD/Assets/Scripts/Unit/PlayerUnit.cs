@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using static UnitBase;
+using Spine.Unity;
+using static UnityEngine.GraphicsBuffer;
 
 public class PlayerUnit : UnitBase
 {
@@ -25,7 +27,7 @@ public class PlayerUnit : UnitBase
 
     [Header("# Spine")]
     //스파인 애니메이션을 위한 것
-    //public SkeletonAnimation skeletonAnimation;
+    SkeletonAnimation skeletonAnimation;
     //public AnimationReferenceAsset[] AnimClip;
 
     //현재 애니메이션 처리가 무엇인지에 대한 변수
@@ -38,6 +40,7 @@ public class PlayerUnit : UnitBase
     {
         scanner = GetComponentInChildren<Scanner>();
         col = GetComponent<Collider2D>();
+        skeletonAnimation = GetComponent<SkeletonAnimation>();
 
         targetLayer = scanner.targetLayer;
 
@@ -102,17 +105,11 @@ public class PlayerUnit : UnitBase
             // 이동
             transform.position += moveVec.normalized * speed * Time.deltaTime;
 
+            // 애니메이션    -> AnimationState.SetAnimation(트랙넘버, 애니메이션이름, loop 여부, 딜레이)
+            skeletonAnimation.AnimationState.SetAnimation(0, "walk", true);
 
             // 가는 방향에 따라 Sprite 방향 변경
-            if (moveVec.x > 0)
-            {
-                transform.localScale = new Vector3(1f, 1f, 1f);
-            }
-            else if (moveVec.x < 0)
-            {
-                transform.localScale = new Vector3(-1f, 1f, 1f);
-            }
-
+            SpriteDir(moveVec, Vector3.zero);
         }
         else
         {
@@ -122,9 +119,13 @@ public class PlayerUnit : UnitBase
                 StartCoroutine(
                     lerpCoroutine(transform.position, firstPos, speed));
 
-                moveVec = Vector2.zero;
-                transform.localScale = new Vector3(1f, 1f, 1f);
+                moveVec = Vector3.zero;
                 unitState = UnitState.Idle;
+
+                if(transform.position == firstPos && moveVec == Vector3.zero) { transform.localScale = new Vector3(1f, 1f, 1f); }
+
+                // 애니메이션
+                skeletonAnimation.AnimationState.SetAnimation(0, "idle", true);
             }
         }
     }
@@ -161,15 +162,8 @@ public class PlayerUnit : UnitBase
                 }
             }
 
-            //// 적의 위치에 따라 Sprite 방향 변경 (Attary Ray 영역이 큰 Unit 변수 제거)
-            //if (nearestAttackTarget.transform.position.x > transform.position.x)
-            //{
-            //    transform.localScale = new Vector3(1f, 1f, 1f);
-            //}
-            //else if (nearestAttackTarget.transform.position.x < transform.position.x)
-            //{
-            //    transform.localScale = new Vector3(-1f, 1f, 1f);
-            //}
+            // 적의 위치에 따라 Sprite 방향 변경 (Attary Ray 영역이 큰 Unit 변수 제거 용도)
+            SpriteDir(nearestAttackTarget.transform.position, transform.position);
         }
         else
         {
@@ -191,15 +185,21 @@ public class PlayerUnit : UnitBase
     // 일반 근접 공격 함수
     IEnumerator Attack()
     {
-        yield return null; // 나중에 아마도 애니메이션 시간에 맞춰서 변경 필요
+        // 애니메이션
+        skeletonAnimation.AnimationState.SetAnimation(0, "attack melee", false);
 
         if (nearestAttackTarget == null) StopCoroutine(Attack());
 
         EnemyUnit enemyLogic = nearestAttackTarget.gameObject.GetComponent<EnemyUnit>();
         enemyLogic.unitActivity = UnitActivity.Hit;
 
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(0.1f);
+
         enemyLogic.health -= power;
+
+        // 애니메이션
+        skeletonAnimation.AnimationState.SetAnimation(0, "idle", true);
+
         yield return new WaitForSeconds(1f);
 
         // 맞은 직후 다시 상대의 UnitActivity 는 normal 상태로 변경
@@ -210,6 +210,9 @@ public class PlayerUnit : UnitBase
     // 화살 공격 함수
     IEnumerator Arrow()
     {
+        // 애니메이션
+        skeletonAnimation.AnimationState.SetAnimation(0, "attack range", false);
+
         yield return null;
 
         if (nearestAttackTarget == null) StopCoroutine(Arrow());
@@ -239,6 +242,9 @@ public class PlayerUnit : UnitBase
         speed = 0;
         attackTime = 0;
 
+        // 애니메이션
+        // 아직 없음
+
         yield return new WaitForSeconds(1f);
 
         transform.position = GameManager.Instance.unitSpawnPoint[0].position; // 위치 초기화 (안해주면 다시 소환되는 순간  Unit 의 Ray 영역 안에 있으면 Ray 에 잠시 인식됨.)
@@ -259,6 +265,9 @@ public class PlayerUnit : UnitBase
         else if (target.y <= -2) { target.y = -2; }
         else if (target.x >= 6) { target.x = 6; }
         else if (target.x <= -7) { target.x = -7; }
+
+        // 가는 방향에 따라 Sprite 방향 변경
+        SpriteDir(target, current);
 
         this.transform.position = current;
         while (elapsedTime < time && !scanner.nearestTarget)

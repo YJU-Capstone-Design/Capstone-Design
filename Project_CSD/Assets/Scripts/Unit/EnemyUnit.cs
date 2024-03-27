@@ -45,8 +45,6 @@ public class EnemyUnit : UnitBase
             {
                 health = 0;
                 StartCoroutine(Die());
-                // Debug.Log("Die");
-                //gameObject.SetActive(false);
             }
             else
             {
@@ -77,7 +75,6 @@ public class EnemyUnit : UnitBase
     // 가까운 적을 찾는 Scanner 함수
     void Scanner()
     {
-        Debug.Log("Scanner");
         if (scanner.nearestTarget)
         {
             // 위치 차이 = 타겟 위치 - 나의 위치  ->  (방향) 
@@ -86,7 +83,7 @@ public class EnemyUnit : UnitBase
         else
         {
             // 인식된 적이 없을 시에는 왼쪽으로 전진
-            moveVec = Vector2.left;
+            moveVec = Vector3.left;
         }
 
         // 목표 지점으로 이동
@@ -94,14 +91,7 @@ public class EnemyUnit : UnitBase
         unitState = UnitState.Move;
 
         // 가는 방향에 따라 Sprite 방향 변경
-        if (moveVec.x > 0)
-        {
-            transform.localScale = new Vector3(-1f, 1f, 1f);
-        }
-        else if (moveVec.x < 0)
-        {
-            transform.localScale = new Vector3(1f, 1f, 1f);
-        }
+        SpriteDir(Vector3.zero, moveVec);
 
         // 애니메이션
         anim.Walk();
@@ -136,14 +126,7 @@ public class EnemyUnit : UnitBase
             }
 
             // 적의 위치에 따라 Sprite 방향 변경 (Attary Ray 영역이 큰 Unit 변수 제거)
-            if (nearestAttackTarget.transform.position.x > transform.position.x)
-            {
-                transform.localScale = new Vector3(-1f, 1f, 1f);
-            }
-            else if (nearestAttackTarget.transform.position.x > transform.position.x)
-            {
-                transform.localScale = new Vector3(1f, 1f, 1f);
-            }
+            SpriteDir(transform.position, nearestAttackTarget.transform.position);
         }
         else
         {
