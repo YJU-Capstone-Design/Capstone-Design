@@ -491,7 +491,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   progressBar: {fileID: 53127020}
-  loadingSpeed: 0.1
   time: {fileID: 1675776969}
 --- !u!4 &1661964486
 Transform:
