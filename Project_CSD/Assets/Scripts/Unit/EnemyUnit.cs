@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
@@ -20,6 +21,8 @@ public class EnemyUnit : UnitBase
     public RaycastHit2D[] attackTargets; // 스캔 결과 배열
     [SerializeField] public Transform nearestAttackTarget; // 가장 가까운 목표
     MonsterCharacterAnimation anim;
+    Coroutine smash; // 코루틴 값을 저장하기 위한 변수
+    Coroutine arrow;
 
     void Awake()
     {
@@ -45,14 +48,17 @@ public class EnemyUnit : UnitBase
             {
                 health = 0;
                 StartCoroutine(Die());
-                // Debug.Log("Die");
-                //gameObject.SetActive(false);
             }
             else
             {
                 AttackRay();
             }
         }
+    }
+
+    void OnDisable()
+    {
+        transform.position = new Vector3(10, 0, 0); // 위치 초기화 (안해주면 다시 소환되는 순간  Unit 의 Ray 영역 안에 있으면 Ray 에 잠시 인식됨.)
     }
 
     // 기본 설정 초기화 함수
@@ -85,7 +91,7 @@ public class EnemyUnit : UnitBase
         else
         {
             // 인식된 적이 없을 시에는 왼쪽으로 전진
-            moveVec = Vector2.left;
+            moveVec = Vector3.left;
         }
 
         // 목표 지점으로 이동
@@ -93,14 +99,7 @@ public class EnemyUnit : UnitBase
         unitState = UnitState.Move;
 
         // 가는 방향에 따라 Sprite 방향 변경
-        if (moveVec.x > 0)
-        {
-            transform.localScale = new Vector3(-1f, 1f, 1f);
-        }
-        else if (moveVec.x < 0)
-        {
-            transform.localScale = new Vector3(1f, 1f, 1f);
-        }
+        SpriteDir(Vector3.zero, moveVec);
 
         // 애니메이션
         anim.Walk();
@@ -109,7 +108,7 @@ public class EnemyUnit : UnitBase
     // 실제 공격 범위 Ray 함수
     void AttackRay()
     {
-        attackTargets = Physics2D.BoxCastAll(transform.position + new Vector3(attackRayPos.x * Mathf.Sign(moveVec.x), attackRayPos.y * (moveVec.y > 0 ? -1 : 1), attackRayPos.z), attackRaySize, 0, Vector2.zero, 0, attackLayer);
+        attackTargets = Physics2D.BoxCastAll(transform.position + new Vector3(attackRayPos.x * Mathf.Sign(moveVec.x), attackRayPos.y * (moveVec.y > 0 ? 2 : 1), attackRayPos.z), attackRaySize, 0, Vector2.zero, 0, attackLayer);
         nearestAttackTarget = scanner.GetNearestAttack(attackTargets);
 
         if (nearestAttackTarget != null)
@@ -130,19 +129,12 @@ public class EnemyUnit : UnitBase
                 }
                 else
                 {
-                    StartCoroutine(Attack());
+                    smash = StartCoroutine(Attack());
                 }
             }
 
             // 적의 위치에 따라 Sprite 방향 변경 (Attary Ray 영역이 큰 Unit 변수 제거)
-            if (nearestAttackTarget.transform.position.x > transform.position.x)
-            {
-                transform.localScale = new Vector3(-1f, 1f, 1f);
-            }
-            else if (nearestAttackTarget.transform.position.x > transform.position.x)
-            {
-                transform.localScale = new Vector3(1f, 1f, 1f);
-            }
+            SpriteDir(transform.position, nearestAttackTarget.transform.position);
         }
         else
         {
@@ -165,7 +157,6 @@ public class EnemyUnit : UnitBase
     IEnumerator Attack()
     {
         if (nearestAttackTarget == null) StopCoroutine(Attack());
-
         // 애니메이션
         anim.Smash();
 
@@ -183,7 +174,7 @@ public class EnemyUnit : UnitBase
             yield return new WaitForSeconds(anim.GetTime() + 0.5f);
 
             enemyLogic.health -= power;
-
+            
             // 애니메이션
             anim.Idle();
 
@@ -229,12 +220,16 @@ public class EnemyUnit : UnitBase
 
 
 
-    public IEnumerator Die()
+    IEnumerator Die()
     {
         unitState = UnitState.Die;
         moveVec = Vector2.zero;
         col.enabled = false;
         unitActivity = UnitActivity.Normal;
+
+        // 작동중인 다른 Coroutine 함수 중지
+        if(smash != null) { StopCoroutine(smash); smash = null; }
+        if (arrow != null) { StopCoroutine(arrow); arrow = null; }
 
         speed = 0;
         attackTime = 0;
@@ -242,10 +237,10 @@ public class EnemyUnit : UnitBase
         // 애니메이션
         anim.Die();
 
+
         yield return new WaitForSeconds(anim.GetTime());
 
         StateSetting();
-        transform.position = new Vector3(10, 0, 0); // 위치 초기화 (안해주면 다시 소환되는 순간  Unit 의 Ray 영역 안에 있으면 Ray 에 잠시 인식됨.)
         gameObject.SetActive(false);
     }
 

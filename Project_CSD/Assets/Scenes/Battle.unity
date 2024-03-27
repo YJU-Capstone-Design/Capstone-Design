@@ -453,7 +453,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unitPrefabs:
-  - {fileID: 7010965689868943159, guid: 8af68fe3448ad004fb834eb3bc4c9680, type: 3}
+  - {fileID: 37614747400538005, guid: f50965ea47c82c64880738362a36e357, type: 3}
   - {fileID: 7010965689868943159, guid: 4a36846c856c31d49bdc2da7193d76b4, type: 3}
   spellPrefabs: []
   enemyPrefabs:
@@ -470,7 +470,7 @@ Transform:
   m_GameObject: {fileID: 1383438277}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 20, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

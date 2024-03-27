@@ -750,7 +750,7 @@ MonoBehaviour:
   scanRange: {x: 25, y: 8}
   targetLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   nearestTarget: {fileID: 0}
   unitType: 0
 --- !u!1 &3704987812081377231
