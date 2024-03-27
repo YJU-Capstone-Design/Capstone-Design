@@ -18,7 +18,7 @@ public class Loading : Singleton<Loading>
                 Debug.Log("BattleMode");
                 break;
             case "NomalMode":
-                LodingSceneMgr.LoadScene("BattleUI");
+                LodingSceneMgr.LoadScene("NormalBattle");
                 Debug.Log("BattleMode");
                 break;
         }
