@@ -15,6 +15,7 @@ public class MainLobby : MonoBehaviour
     [Header("toggle Transform")]
     [SerializeField] private GameObject toggleBtn;
     [SerializeField] private GameObject closeToggleBtn;
+    [SerializeField] private GameObject panel_Bg;
     private Vector3 openToggleTr;//토클의 처음 위치
     private Vector3 closeToggleTr;//토클이 닫혔을 때의 위치
 
@@ -69,13 +70,14 @@ public class MainLobby : MonoBehaviour
         if(toggle.text == "<")
         {
             toggleMenu.SetActive(false);
+            panel_Bg.SetActive(false);
             toggle.text = ">";
-            
             toggleBtn.transform.localPosition = closeToggleTr;
         }
         else
         {
             toggleMenu.SetActive(true);
+            panel_Bg.SetActive(true);
             toggle.text = "<";
             toggleBtn.transform.localPosition = openToggleTr;
         }
