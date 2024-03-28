@@ -37,6 +37,7 @@ public class EnemyUnit : UnitBase
 
     void OnEnable()
     {
+        CardManger.Instance.enemys.Add(gameObject);
         StateSetting();
     }
 
@@ -58,6 +59,7 @@ public class EnemyUnit : UnitBase
 
     void OnDisable()
     {
+
         transform.position = new Vector3(10, 0, 0); // 위치 초기화 (안해주면 다시 소환되는 순간  Unit 의 Ray 영역 안에 있으면 Ray 에 잠시 인식됨.)
     }
 
@@ -227,8 +229,10 @@ public class EnemyUnit : UnitBase
         col.enabled = false;
         unitActivity = UnitActivity.Normal;
 
+        CardManger.Instance.enemys.Remove(gameObject);
+
         // 작동중인 다른 Coroutine 함수 중지
-        if(smash != null) { StopCoroutine(smash); smash = null; }
+        if (smash != null) { StopCoroutine(smash); smash = null; }
         if (arrow != null) { StopCoroutine(arrow); arrow = null; }
 
         speed = 0;

@@ -47,6 +47,7 @@ public class PlayerUnit : UnitBase
     {
         StateSetting();
 
+        CardManger.Instance.units.Add(gameObject);
         // 클릭 지점으로 이동
         lerp = StartCoroutine(lerpCoroutine(GameManager.Instance.unitSpawnPoint[0].position, GameManager.Instance.point, speed));
     }
@@ -242,6 +243,8 @@ public class PlayerUnit : UnitBase
 
         speed = 0;
         attackTime = 0;
+
+        CardManger.Instance.units.Remove(gameObject);
 
         // 진행중인 코루틴 함수 모두 중지
         if (smash != null) { StopCoroutine(smash); smash = null; }
