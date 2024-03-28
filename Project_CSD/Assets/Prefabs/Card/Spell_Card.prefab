@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 239527638786203014}
   - component: {fileID: 6924558214924428078}
   - component: {fileID: -5559452243374558313}
+  - component: {fileID: -1360664583053988228}
   m_Layer: 5
   m_Name: Spell_Card
   m_TagString: Untagged
@@ -126,8 +127,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: CardManger, Assembly-CSharp
+      - m_Target: {fileID: -1360664583053988228}
+        m_TargetAssemblyTypeName: SkillManager, Assembly-CSharp
         m_MethodName: UsingCard
         m_Mode: 1
         m_Arguments:
@@ -163,6 +164,18 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d29d624011d89064e8d51ee1138f4bd6, type: 2}
   value: 0
   power: 0
+--- !u!114 &-1360664583053988228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 798610453738157305}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d4ce351618041c4e813f83497be7b6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2854145661760163395
 GameObject:
   m_ObjectHideFlags: 0

@@ -8,6 +8,8 @@ TagManager:
   - EnemyUnit
   - Wall
   - Archer
+  - FxTemporaire
+  - Buff
   layers:
   - Default
   - TransparentFX

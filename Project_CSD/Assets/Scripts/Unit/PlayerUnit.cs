@@ -9,6 +9,9 @@ using static UnityEngine.GraphicsBuffer;
 
 public class PlayerUnit : UnitBase
 {
+    [Header("# Unit Effect")]
+    public GameObject[] buffEffect;
+
 
     [Header("# Unit Setting")]
     Scanner scanner;
@@ -34,6 +37,7 @@ public class PlayerUnit : UnitBase
 
     void Awake()
     {
+        buffEffect = new GameObject[buffEffect.Length];
         scanner = GetComponentInChildren<Scanner>();
         col = GetComponent<Collider2D>();
         skeletonAnimation = GetComponent<SkeletonAnimation>();
@@ -311,5 +315,10 @@ public class PlayerUnit : UnitBase
 
         //현재 재생되고 있는 애니메이션 값을 변경
         CurrentAnimation = animName;
+    }
+
+    public void buff()
+    {
+        GameObject.FindWithTag("Buff").SetActive(true);
     }
 }

@@ -13,17 +13,6 @@ public class PlayerCard : CardBase
     public int value;
     public float power;
 
-    // Start is called before the first frame update
-    void Awake()
-    {
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void OnEnable()
     {
         int ran = Random.Range(0, cards.Count);

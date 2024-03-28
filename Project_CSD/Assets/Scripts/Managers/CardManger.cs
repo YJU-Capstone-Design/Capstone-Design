@@ -21,33 +21,15 @@ public class CardManger : Singleton<CardManger>
         enemys = new List<GameObject>();
     }
 
-
-    public void UsingCard()
-    {
-        int value = this.playerCard.value;
-
-        switch (value)
-        {
-            case 20000:
-                ATK_UP();
-                Debug.Log("ATK_UP");
-                break;
-            case 20001:
-                Debug.Log("SPEED_UP");
-                break;
-            case 22001:
-                Debug.Log("HEAL");
-                break;
-        }
-    }
-
-    void ATK_UP()
+    public void ATK_UP()
     {
        foreach (GameObject obj in units)
         {
             PlayerUnit unitLogic = obj.GetComponent<PlayerUnit>();
+            PlayerUnit unitBuff = obj.GetComponentInChildren<PlayerUnit>();
             unitLogic.power += (unitLogic.power * 0.05f);
             Debug.Log(unitLogic.power);
+            unitBuff.buff();
         }
     }
 }
