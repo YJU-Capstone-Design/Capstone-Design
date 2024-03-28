@@ -9,6 +9,9 @@ using static UnityEngine.GraphicsBuffer;
 
 public class PlayerUnit : UnitBase
 {
+    [Header("# Unit Effect")]
+    public List<GameObject> buffEffect = new List<GameObject>();
+
 
     [Header("# Unit Setting")]
     Scanner scanner;
@@ -34,6 +37,7 @@ public class PlayerUnit : UnitBase
 
     void Awake()
     {
+      
         scanner = GetComponentInChildren<Scanner>();
         col = GetComponent<Collider2D>();
         skeletonAnimation = GetComponent<SkeletonAnimation>();
@@ -47,6 +51,7 @@ public class PlayerUnit : UnitBase
     {
         StateSetting();
 
+        CardManger.Instance.units.Add(gameObject);
         // 클릭 지점으로 이동
         lerp = StartCoroutine(lerpCoroutine(GameManager.Instance.unitSpawnPoint[0].position, GameManager.Instance.point, speed));
     }
@@ -243,6 +248,8 @@ public class PlayerUnit : UnitBase
         speed = 0;
         attackTime = 0;
 
+        CardManger.Instance.units.Remove(gameObject);
+
         // 진행중인 코루틴 함수 모두 중지
         if (smash != null) { StopCoroutine(smash); smash = null; }
         if (arrow != null) { StopCoroutine(arrow); arrow = null; }
@@ -308,5 +315,10 @@ public class PlayerUnit : UnitBase
 
         //현재 재생되고 있는 애니메이션 값을 변경
         CurrentAnimation = animName;
+    }
+
+    public void buff()
+    {
+        buffEffect[0].SetActive(true);
     }
 }

@@ -1,150 +1,82 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using TMPro;
 
 public class UiManager : Singleton<UiManager>
 {
-    public GameObject block;
-    public GameObject[] card;
-    public GameObject speedUp;
-    public int gameSpeed = 1;
-    public Text speedText;
-    public GameObject speedReset;
-    public Transform cardPar;
-    public bool onCard = false;//카드 해금
+    [Header("GameSpeed")]
+    private int time = 1;
+    [SerializeField] private TextMeshProUGUI gameSpeed;
 
-    [Header("# Coin")]
-    public Text costCoin;
-    public Text ugCoin;
-    float timer = 0f;
-    int time = 0;
-    //임시
-    public bool enemy = false;
+    [Header("Cost")]
+    public int cost = 0;
+    private float costTime = 0f;
+    private float timeInterver = 5f;
+    [SerializeField] private TextMeshProUGUI costText;
 
-    void Awake()
+    [Header("BattleUiToggle")]
+    [SerializeField] private List<GameObject> battle_Btn = new List<GameObject>();
+    private int toggle=0;
+
+    private void Awake()
     {
-        StartCard();
+        cost = 10;
+        costText.text = cost.ToString();
     }
-
-
-
-    void Update()
+    private void Update()
     {
-        Coin();
-    }
-
-
-
-    public void ReDraw()
-    {
-        Transform[] childList = cardPar.GetComponentsInChildren<Transform>();
-        for (int index = 1; index < childList.Length; index++)
+        costTime += Time.deltaTime;
+        if (costTime >= timeInterver)
         {
-            if (childList[index] != transform)
-            {
-                Destroy(childList[index].gameObject);
-            }
+            costTime = 0f;
+            cost += 2;
+            CostMgr(cost);
         }
-        StartCard();
+        
     }
 
-
-    public void StartCard()
+    public void CloseToggle()
     {
-
-
-
-        for (int index = 0; index < 5; index++)
+        if (toggle == 0)
         {
-            int ran = Random.Range(0, card.Length);
-            GameObject myInstance = Instantiate(card[ran], cardPar);
-            if (!onCard && index == 4)
+            foreach(GameObject go in battle_Btn)
             {
-                Card.instance.BlackCard();
+                go.SetActive(false);
+                toggle = 1;
             }
 
         }
-
+        else
+        {
+            foreach (GameObject go in battle_Btn)
+            {
+                go.SetActive(true);
+                toggle = 0;
+            }
+        }
     }
 
+    public void CostMgr(int cost)
+    {
+
+        
+            costText.text = cost.ToString();
+        
+    }
     public void SpeedUp()
     {
-        gameSpeed += 1;
-        if (gameSpeed >= 4)
-            gameSpeed = 1;
-        switch (gameSpeed)
+        if (time == 3)
         {
-            case 1:
-                Time.timeScale = 1;
-                speedText.text = "X1";
-                Debug.Log("nomarSpeed");
-                break;
-            case 2:
-                Time.timeScale = 2;
-                speedText.text = "X2";
-                Debug.Log("highSpeed");
-                break;
-            case 3:
-                Time.timeScale = 3;
-                speedText.text = "X3";
-                Debug.Log("hyperSpeed");
-                break;
+            time = 1;
+            Time.timeScale = 1;
+            gameSpeed.text = "1X";
         }
-
-    }
-
-    public void SpeedReset()
-    {
-        speedReset.gameObject.SetActive(false);
-        speedUp.gameObject.SetActive(true);
-        Time.timeScale = 1;
-    }
-
-    public void Stop()
-    {
-        Time.timeScale = 0;
-    }
-
-    public void Resume()
-    {
-        Time.timeScale = 1;
-    }
-
-    void Coin()
-    {
-        //시간이 10초 경과시 마다 1에서 10사이의 코스트 획득
-        timer += Time.deltaTime;
-
-        if (timer >= 10f)
+        else
         {
-            costCoin.text = (int.Parse(costCoin.text) + Random.Range(1, 11)).ToString();
-            timer = 0f;
+            time++;
+            if (time == 2) { Time.timeScale = 2; gameSpeed.text = "2X"; }
+            else if (time == 3) { Time.timeScale = 3; gameSpeed.text = "3X"; }
         }
-
-
     }
-
-    public void EnemyCoin(string enemType)
-    {
-        //죽인 개체의 등급에 따라 랜덤으로 코스트 증가
-        //에너미 코드에서 죽을 때 이 함수 실행 하면 될껄?
-
-        switch (enemType)
-        {
-            case "nomar":
-                ugCoin.text += Random.Range(1, 5).ToString();
-                break;
-            case "middle":
-                ugCoin.text += Random.Range(5, 10).ToString();
-                break;
-            case "boss":
-                ugCoin.text += Random.Range(10, 15).ToString();
-                break;
-        }
-
-
-
-    }
-
 }
