@@ -10,7 +10,7 @@ using static UnityEngine.GraphicsBuffer;
 public class PlayerUnit : UnitBase
 {
     [Header("# Unit Effect")]
-    public GameObject[] buffEffect;
+    public List<GameObject> buffEffect = new List<GameObject>();
 
 
     [Header("# Unit Setting")]
@@ -37,7 +37,7 @@ public class PlayerUnit : UnitBase
 
     void Awake()
     {
-        buffEffect = new GameObject[buffEffect.Length];
+      
         scanner = GetComponentInChildren<Scanner>();
         col = GetComponent<Collider2D>();
         skeletonAnimation = GetComponent<SkeletonAnimation>();
@@ -319,6 +319,6 @@ public class PlayerUnit : UnitBase
 
     public void buff()
     {
-        GameObject.FindWithTag("Buff").SetActive(true);
+        buffEffect[0].SetActive(true);
     }
 }
