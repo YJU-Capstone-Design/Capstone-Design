@@ -31,16 +31,28 @@ public class GameManager : Singleton<GameManager>
         }
 
 
-        // 적 근접 유닛 소환
+        // 적 좀비(근접) 유닛 소환
         if (Input.GetKeyDown("1"))
         {
             pool.Get(2, 0);
         }
 
-        // 적 궁수 유닛 소환
-        if(Input.GetKeyDown("2"))
+        // 적 좀비(궁수) 유닛 소환
+        if (Input.GetKeyDown("2"))
         {
             pool.Get(2, 1);
+        }
+
+        // 적 키클롭스(탱커) 유닛 소환
+        if (Input.GetKeyDown("3"))
+        {
+            pool.Get(2, 2);
+        }
+
+        // 적 스켈레톤(근접) 유닛 소환
+        if (Input.GetKeyDown("4"))
+        {
+            pool.Get(2, 3);
         }
     }
 

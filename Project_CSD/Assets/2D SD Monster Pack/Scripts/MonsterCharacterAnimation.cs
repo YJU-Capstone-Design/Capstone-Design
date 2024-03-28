@@ -17,7 +17,7 @@ public abstract class MonsterCharacterAnimation : MonoBehaviour
 
     public float GetTime()
     {
-        return Animator.GetCurrentAnimatorStateInfo(0).length - 0.5f;
+        return Animator.GetCurrentAnimatorStateInfo(0).length;
     }
 
     public void Attack() => SetAnimation(MonsterActing.Attack);

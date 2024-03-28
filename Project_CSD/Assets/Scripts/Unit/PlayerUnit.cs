@@ -160,11 +160,11 @@ public class PlayerUnit : UnitBase
                 // 유닛 별로 각각의 공격 함수 실행
                 if (gameObject.CompareTag("Archer"))
                 {
-                    StartCoroutine(Arrow());
+                    arrow = StartCoroutine(Arrow());
                 }
                 else
                 {
-                    StartCoroutine(Attack());
+                    smash = StartCoroutine(Attack());
                 }
             }
 
