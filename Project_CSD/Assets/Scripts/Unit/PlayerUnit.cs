@@ -53,7 +53,7 @@ public class PlayerUnit : UnitBase
 
         CardManger.Instance.units.Add(gameObject);
         // 클릭 지점으로 이동
-        lerp = StartCoroutine(lerpCoroutine(GameManager.Instance.unitSpawnPoint[0].position, GameManager.Instance.point, speed));
+        lerp = StartCoroutine(lerpCoroutine(BattleManager.Instance.unitSpawnPoint[0].position, GameManager.Instance.point, speed));
     }
 
     void Update()

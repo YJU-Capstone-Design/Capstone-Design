@@ -9,8 +9,6 @@ public class GameManager : Singleton<GameManager>
 {
     public PoolManager pool;
 
-    public Transform[] unitSpawnPoint;
-
     public Vector3 point;
 
     
