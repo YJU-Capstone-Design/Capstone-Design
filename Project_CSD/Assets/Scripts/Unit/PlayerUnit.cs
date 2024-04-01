@@ -207,7 +207,7 @@ public class PlayerUnit : UnitBase
         }
         else
         {
-            PlayerUnit enemyLogic = nearestAttackTarget.gameObject.GetComponent<PlayerUnit>();
+            EnemyUnit enemyLogic = nearestAttackTarget.gameObject.GetComponent<EnemyUnit>();
             enemyLogic.unitActivity = UnitActivity.Hit;
         }
 
@@ -231,7 +231,7 @@ public class PlayerUnit : UnitBase
 
     void Hit(Transform target)
     {
-        PlayerUnit enemyLogic = target.gameObject.GetComponent<PlayerUnit>();
+        EnemyUnit enemyLogic = target.gameObject.GetComponent<EnemyUnit>();
 
         enemyLogic.health -= power;
 
