@@ -84,4 +84,31 @@ public class Scanner : MonoBehaviour
         }
         return result;
     }
+
+    // 다수 공격 목표 찾기
+    public Transform[] GetAttackTargets(RaycastHit2D[] targets, int count)
+    {
+        Transform[] results = null;
+
+        if(targets.Length < count)
+        {
+            results = new Transform[targets.Length];
+
+            for (int i = 0; i < targets.Length; i++)
+            {
+                results[i] = targets[i].transform;
+            }
+
+        } else
+        {
+            results = new Transform[count];
+
+            for (int i = 0; i < count; i++)
+            {
+                results[i] = targets[i].transform;
+            }
+        }
+
+        return results;
+    }
 }

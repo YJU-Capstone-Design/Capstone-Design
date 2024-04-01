@@ -26,6 +26,7 @@ public class PlayerUnit : UnitBase
     Collider2D col;
     RaycastHit2D[] attackTargets; // 스캔 결과 배열
     [SerializeField] Transform nearestAttackTarget; // 가장 가까운 목표
+    public Transform[] multipleAttackTargets; // 다수 공격 목표
     Vector3 firstPos;
     Coroutine smash;
     Coroutine arrow;
@@ -143,7 +144,8 @@ public class PlayerUnit : UnitBase
         // BoxCastAll(시작 위치, 크기, 회전, 방향, 길이, 대상 레이어) : 사각형의 캐스트를 쏘고 모든 결과를 반환하는 함수
         attackTargets = Physics2D.BoxCastAll(transform.position + new Vector3(attackRayPos.x * Mathf.Sign(moveVec.x), attackRayPos.y, attackRayPos.z), attackRaySize, 0, Vector2.zero, 0, targetLayer);
 
-        nearestAttackTarget = scanner.GetNearestAttack(attackTargets);
+        nearestAttackTarget = scanner.GetNearestAttack(attackTargets); // 단일 공격
+        multipleAttackTargets = scanner.GetAttackTargets(attackTargets, 5); // 다수 공격
 
         if (nearestAttackTarget != null)
         {
@@ -191,26 +193,51 @@ public class PlayerUnit : UnitBase
     // 일반 근접 공격 함수
     IEnumerator Attack()
     {
+        if (nearestAttackTarget == null) StopCoroutine(smash);
+
         // 애니메이션
         StartAnimation("attack melee", false, 1f);
 
-        if (nearestAttackTarget == null) StopCoroutine(Attack());
+        if ((unitID % 10000) / 1000 == 2) // 탱커 -> 다수 공격
+        {
+            foreach (Transform enemy in multipleAttackTargets)
+            {
+                EnemyUnit enemyLogic = enemy.gameObject.GetComponent<EnemyUnit>();
+                enemyLogic.unitActivity = UnitActivity.Hit;
+            }
+        }
+        else
+        {
+            PlayerUnit enemyLogic = nearestAttackTarget.gameObject.GetComponent<PlayerUnit>();
+            enemyLogic.unitActivity = UnitActivity.Hit;
+        }
 
-        EnemyUnit enemyLogic = nearestAttackTarget.gameObject.GetComponent<EnemyUnit>();
-        enemyLogic.unitActivity = UnitActivity.Hit;
+        yield return new WaitForSeconds(0.1f); // 애니메이션 시간
 
-        yield return new WaitForSeconds(0.1f);
-
-        enemyLogic.health -= power;
+        if ((unitID % 10000) / 1000 == 2) // 탱커 -> 다수 공격
+        {
+            foreach (Transform enemy in multipleAttackTargets)
+            {
+                Hit(enemy);
+            }
+        }
+        else // 단일 공격
+        {
+            Hit(nearestAttackTarget);
+        }
 
         // 애니메이션
         StartAnimation("idle", true, 1f);
+    }
 
-        yield return new WaitForSeconds(1f);
+    void Hit(Transform target)
+    {
+        PlayerUnit enemyLogic = target.gameObject.GetComponent<PlayerUnit>();
+
+        enemyLogic.health -= power;
 
         // 맞은 직후 다시 상대의 UnitActivity 는 normal 상태로 변경
         enemyLogic.unitActivity = UnitActivity.Normal;
-
     }
 
     // 화살 공격 함수

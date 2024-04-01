@@ -29,26 +29,26 @@ public class BattleManager :Singleton<BattleManager>
 
     private void Awake()
     {
-        battle.SetActive(true);
-        gameEnd.SetActive(false);
-        CardMake();
-        curHealth = maxHealth;
-        UpdateHealthBar();
+        //battle.SetActive(true);
+        //gameEnd.SetActive(false);
+        //CardMake();
+        //curHealth = maxHealth;
+        //UpdateHealthBar();
 
         spawnList = new List<Spawn>();
 
-        ReadSpawnFile();
+        //ReadSpawnFile();
     }
 
     void Update()
     {
         curSpawnTime += Time.deltaTime;
 
-        if(curSpawnTime > nextSpawnDelay && !spawnEnd)
-        {
-            SpawnEnemy();
-            curSpawnTime = 0;
-        }
+        //if(curSpawnTime > nextSpawnDelay && !spawnEnd)
+        //{
+        //    SpawnEnemy();
+        //    curSpawnTime = 0;
+        //}
     }
 
     public void HpDamage(float dmg)

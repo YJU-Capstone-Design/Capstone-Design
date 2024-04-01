@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst.CompilerServices;
 using Unity.VisualScripting;
 using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
@@ -19,7 +20,8 @@ public class EnemyUnit : UnitBase
     [Header("# Unit Activity")]
     Collider2D col;
     public RaycastHit2D[] attackTargets; // 스캔 결과 배열
-    [SerializeField] public Transform nearestAttackTarget; // 가장 가까운 목표
+    public Transform nearestAttackTarget; // 가장 가까운 목표
+    public Transform[] multipleAttackTargets; // 다수 공격 목표
     MonsterCharacterAnimation anim;
     Coroutine smash; // 코루틴 값을 저장하기 위한 변수
     Coroutine arrow;
@@ -111,7 +113,9 @@ public class EnemyUnit : UnitBase
     void AttackRay()
     {
         attackTargets = Physics2D.BoxCastAll(transform.position + new Vector3(attackRayPos.x * Mathf.Sign(moveVec.x), attackRayPos.y * (moveVec.y > 0 ? 2 : 1), attackRayPos.z), attackRaySize, 0, Vector2.zero, 0, attackLayer);
-        nearestAttackTarget = scanner.GetNearestAttack(attackTargets);
+        nearestAttackTarget = scanner.GetNearestAttack(attackTargets); // 단일 공격
+        multipleAttackTargets = scanner.GetAttackTargets(attackTargets, 5); // 다수 공격
+
 
         if (nearestAttackTarget != null)
         {
@@ -182,27 +186,49 @@ public class EnemyUnit : UnitBase
 
         } else
         {
-            PlayerUnit enemyLogic = nearestAttackTarget.gameObject.GetComponent<PlayerUnit>();
-            enemyLogic.unitActivity = UnitActivity.Hit;
-
-            // Cyclope 만 첫번째 공격이 도중에 끊겨서 일단 문제를 찾기 전까지 분류해서 시간 나눔.
-            if (gameObject.name.Contains("Cyclope"))
+            if ((unitID % 10000) / 1000 == 2) // 탱커 -> 다수 공격
             {
-                yield return new WaitForSeconds(anim.GetTime() + 0.3f);
-            } else
+                foreach (Transform enemy in multipleAttackTargets)
+                {
+                    PlayerUnit enemyLogic = enemy.gameObject.GetComponent<PlayerUnit>();
+                    enemyLogic.unitActivity = UnitActivity.Hit;
+                }
+            }
+            else
             {
-                yield return new WaitForSeconds(anim.GetTime());
+                PlayerUnit enemyLogic = nearestAttackTarget.gameObject.GetComponent<PlayerUnit>();
+                enemyLogic.unitActivity = UnitActivity.Hit;
             }
 
-            enemyLogic.health -= power;
+            // Cyclope 만 첫번째 공격이 도중에 끊겨서 일단 문제를 찾기 전까지 분류해서 시간 나눔.
+            if (gameObject.name.Contains("Cyclope")) { yield return new WaitForSeconds(anim.GetTime() + 0.3f); }
+            else { yield return new WaitForSeconds(anim.GetTime()); }
 
-            // 맞은 직후 다시 상대의 UnitActivity 는 normal 상태로 변경
-            enemyLogic.unitActivity = UnitActivity.Normal;
+            if ((unitID % 10000) / 1000 == 2) // 탱커 -> 다수 공격
+            {
+                foreach(Transform enemy in multipleAttackTargets)
+                {
+                    Hit(enemy);
+                }
+            } 
+            else // 단일 공격
+            {
+                Hit(nearestAttackTarget);
+            }
         }
 
         // 애니메이션
         anim.Idle();
-        Debug.Log("Idle attack");
+    }
+
+    void Hit(Transform target)
+    {
+        PlayerUnit enemyLogic = target.gameObject.GetComponent<PlayerUnit>();
+
+        enemyLogic.health -= power;
+
+        // 맞은 직후 다시 상대의 UnitActivity 는 normal 상태로 변경
+        enemyLogic.unitActivity = UnitActivity.Normal;
     }
 
     // 화살 공격 함수
