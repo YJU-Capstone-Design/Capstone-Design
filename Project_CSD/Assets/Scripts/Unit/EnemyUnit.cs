@@ -127,7 +127,7 @@ public class EnemyUnit : UnitBase
                 // 유닛 별로 각각의 공격 함수 실행
                 if (gameObject.CompareTag("Archer"))
                 {
-                    arrow = StartCoroutine(Arrow());
+                    StartCoroutine(Arrow());
                 }
                 else
                 {
@@ -159,20 +159,8 @@ public class EnemyUnit : UnitBase
     IEnumerator Attack()
     {
         if (nearestAttackTarget == null) StopCoroutine(Attack());
-
-        // 유닛 종류 별 애니메이션
-        switch (gameObject.name)
-        {
-            case string name when name.Contains("Zombie") || name.Contains("Cyclope"):
-                anim.Smash();
-                break;
-            case string name when name.Contains("Skeleton"):
-                anim.Stab();
-                break;
-            default:
-                anim.Attack();
-                break;
-        }
+        // 애니메이션
+        anim.Smash();
 
         if (nearestAttackTarget.gameObject.CompareTag("Wall"))
         {
@@ -185,24 +173,18 @@ public class EnemyUnit : UnitBase
             PlayerUnit enemyLogic = nearestAttackTarget.gameObject.GetComponent<PlayerUnit>();
             enemyLogic.unitActivity = UnitActivity.Hit;
 
-            // Cyclope 만 첫번째 공격이 도중에 끊겨서 일단 문제를 찾기 전까지 분류해서 시간 나눔.
-            if (gameObject.name.Contains("Cyclope"))
-            {
-                yield return new WaitForSeconds(anim.GetTime() + 0.3f);
-            } else
-            {
-                yield return new WaitForSeconds(anim.GetTime());
-            }
+            yield return new WaitForSeconds(anim.GetTime() + 0.5f);
 
             enemyLogic.health -= power;
+            
+            // 애니메이션
+            anim.Idle();
+
+            yield return new WaitForSeconds(anim.GetTime() + 1f);
 
             // 맞은 직후 다시 상대의 UnitActivity 는 normal 상태로 변경
             enemyLogic.unitActivity = UnitActivity.Normal;
         }
-
-        // 애니메이션
-        anim.Idle();
-        Debug.Log("Idle attack");
     }
 
     // 화살 공격 함수
@@ -232,11 +214,10 @@ public class EnemyUnit : UnitBase
         arrawLogic.target = nearestAttackTarget.gameObject;
         arrawLogic.playerUnit = this.gameObject;
 
-        yield return new WaitForSeconds(anim.GetTime());
+        yield return new WaitForSeconds(anim.GetTime() + 0.2f);
 
         // 애니메이션
         anim.Idle();
-        Debug.Log("idle bow");
     }
 
 

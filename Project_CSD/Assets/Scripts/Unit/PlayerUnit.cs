@@ -53,7 +53,7 @@ public class PlayerUnit : UnitBase
 
         CardManger.Instance.units.Add(gameObject);
         // 클릭 지점으로 이동
-        lerp = StartCoroutine(lerpCoroutine(BattleManager.Instance.unitSpawnPoint[0].position, GameManager.Instance.point, speed));
+        lerp = StartCoroutine(lerpCoroutine(GameManager.Instance.unitSpawnPoint[0].position, GameManager.Instance.point, speed));
     }
 
     void Update()
@@ -160,11 +160,11 @@ public class PlayerUnit : UnitBase
                 // 유닛 별로 각각의 공격 함수 실행
                 if (gameObject.CompareTag("Archer"))
                 {
-                    arrow = StartCoroutine(Arrow());
+                    StartCoroutine(Arrow());
                 }
                 else
                 {
-                    smash = StartCoroutine(Attack());
+                    StartCoroutine(Attack());
                 }
             }
 

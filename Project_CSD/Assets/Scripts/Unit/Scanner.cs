@@ -40,8 +40,8 @@ public class Scanner : MonoBehaviour
             UnitBase targetLogic = target.transform.gameObject.GetComponent<UnitBase>();
 
             // 적이 싸우는 상태일 경우 다시 탐색 -> 다양하게 분포 시키기 위한 로직
-            if (targetLogic.unitState == UnitBase.UnitState.Fight && targetLogic.unitActivity == UnitBase.UnitActivity.Hit)
-                continue;
+            //if (targetLogic.unitState == UnitBase.UnitState.Fight && targetLogic.unitActivity == UnitBase.UnitActivity.Hit)
+            //    continue;
 
             Vector3 myPos = transform.position; // 플레이어 위치
             Vector3 targetPos = target.transform.position; // 인식된 오브젝트의 위치
@@ -55,10 +55,10 @@ public class Scanner : MonoBehaviour
         }
 
         // 모든 적이 싸우고 있으면 싸우고 있는 적 중에서 가장 가까운 적으로 다시 탐색 -> enemy 는 벽으로 직진
-        if (result == null && unitType == 1)
-        {
-            result = GetNearestAttack(targets);
-        }
+        //if (result == null && unitType == 1)
+        //{
+        //    //result = GetNearestAttack(targets);
+        //}
 
         return result;
     }
