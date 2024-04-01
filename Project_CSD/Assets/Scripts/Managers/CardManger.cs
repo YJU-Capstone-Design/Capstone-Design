@@ -31,5 +31,6 @@ public class CardManger : Singleton<CardManger>
             Debug.Log(unitLogic.power);
             unitBuff.buff(value);
         }
+        BattleManager.Instance.CardShuffle();
     }
 }

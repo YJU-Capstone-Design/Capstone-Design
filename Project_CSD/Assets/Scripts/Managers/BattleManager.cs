@@ -9,6 +9,7 @@ public class BattleManager :Singleton<BattleManager>
     [Header("Shop")]
     [SerializeField] private Transform shopParent;
     [SerializeField] private GameObject card;
+    public List<GameObject> cardObj = new List<GameObject>();
 
     [Header("HpVar")]
     public float curHealth; //* 현재 체력
@@ -120,9 +121,22 @@ public class BattleManager :Singleton<BattleManager>
         for (int i = 0; i < 3; i++)
         {
             GameObject myInstance = Instantiate(card, shopParent);
+            cardObj.Add(myInstance);
         }
 
 
+    }
+
+    public void CardShuffle()
+    {
+       
+        foreach(GameObject card in cardObj)
+        {
+            Destroy(card);
+        }
+        cardObj.Clear();
+        CardMake();
+        Debug.Log("Shuffle");
     }
 
     void UpdateHealthBar()
