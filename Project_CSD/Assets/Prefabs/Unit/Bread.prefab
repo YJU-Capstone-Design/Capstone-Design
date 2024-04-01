@@ -34,10 +34,14 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
+<<<<<<< HEAD
   m_Children:
   - {fileID: 6234973519316229437}
   - {fileID: 4611949361598997966}
   - {fileID: 8956507468778043324}
+=======
+  m_Children: []
+>>>>>>> 5a1c9ae6d9117ef3480d7abccbf10ff2689c1cf6
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &2029379575463312711
@@ -194,10 +198,13 @@ MonoBehaviour:
   speed: 0
   power: 0
   attackTime: 0
+<<<<<<< HEAD
   buffEffect:
   - {fileID: 6532179798957671144}
   - {fileID: 8334768739635237813}
   - {fileID: 8100301845587601513}
+=======
+>>>>>>> 5a1c9ae6d9117ef3480d7abccbf10ff2689c1cf6
   unitData: {fileID: 11400000, guid: ffe17753e345f7e4488c21c32a792c45, type: 2}
   attackRayPos: {x: 0.6, y: 0.7, z: 0}
   attackRaySize: {x: 0.5, y: 0.5}
@@ -215,12 +222,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scannerPos: {x: -3, y: 0, z: 0}
-  scanRange: {x: 11111, y: 8}
+  scanRange: {x: 35, y: 8}
   targetLayer:
     serializedVersion: 2
     m_Bits: 128
   nearestTarget: {fileID: 0}
   unitType: 0
+<<<<<<< HEAD
 --- !u!1001 &958852320578530894
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -454,3 +462,5 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7155335147208632822, guid: 97c43495f80a3244fad1301dfafbe252, type: 3}
   m_PrefabInstance: {fileID: 4173198088055696158}
   m_PrefabAsset: {fileID: 0}
+=======
+>>>>>>> 5a1c9ae6d9117ef3480d7abccbf10ff2689c1cf6

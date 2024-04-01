@@ -31,15 +31,15 @@ public class PoolManager : Singleton<PoolManager>
         }
     }
 
+    // 기본 Pool
     public GameObject Get(int prefabIndex,int objIndex)
     {
-        int ran;
         GameObject select = null;
 
         // 선택한 풀이 놀고 (비활성화 된) 있는 게임 오브젝트 접근
         foreach (GameObject item in pools[prefabIndex])
         {
-            if (!item.activeSelf)
+            if (!item.activeSelf && item == prefabs[prefabIndex][objIndex])
             {
                 // 발견하면 select 변수에 할당
                 select = item;
@@ -63,25 +63,35 @@ public class PoolManager : Singleton<PoolManager>
         {
             case 0:
             case 1:
-                select.transform.position = GameManager.Instance.unitSpawnPoint[0].position;
+                select.transform.position = BattleManager.Instance.unitSpawnPoint[0].position;
                 break;
             case 2:
-                ran = UnityEngine.Random.Range(1, 4);
-                select.transform.position = GameManager.Instance.unitSpawnPoint[ran].position;
-                select.SetActive(true);
+                int ran = UnityEngine.Random.Range(1, 4);
+                select.transform.position = BattleManager.Instance.unitSpawnPoint[ran].position;
                 break;
         }
 
         return select;
     }
     
-    // 포지션 값이 다른 아이템 때문에 추가    ex) 화살
+    // 시작 포지션 값이 다른 아이템 Pool    ex) 화살
     public GameObject Get(int prefabIndex, int objIndex, Vector3 startPos)
     {
         GameObject select = Get(prefabIndex, objIndex);
 
         // 스폰 포인트
         select.transform.position = startPos;
+
+        return select;
+    }
+
+    // Enemy Unit 생성 Pool
+    public GameObject Get(int prefabIndex, int objIndex, int spawnPoint)
+    {
+        GameObject select = Get(prefabIndex, objIndex);
+
+        // 스폰 포인트
+        select.transform.position = BattleManager.Instance.unitSpawnPoint[spawnPoint+1].position;
 
         return select;
     }

@@ -291,7 +291,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 72
+  m_fontSize: 22.2
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -1476,7 +1476,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 72
+  m_fontSize: 21.05
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -1938,11 +1938,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pool: {fileID: 513461668}
-  unitSpawnPoint:
-  - {fileID: 605274320}
-  - {fileID: 1582974061}
-  - {fileID: 308611781}
-  - {fileID: 1588485322}
   point: {x: 0, y: 0, z: 0}
 --- !u!4 &309302074
 Transform:
@@ -2232,6 +2227,13 @@ MonoBehaviour:
   HpBarSlider: {fileID: 442939622}
   battle: {fileID: 2016165685}
   gameEnd: {fileID: 1964115668}
+  unitSpawnPoint:
+  - {fileID: 605274320}
+  - {fileID: 1582974061}
+  - {fileID: 308611781}
+  - {fileID: 1588485322}
+  spawnIndex: 0
+  spawnEnd: 0
 --- !u!4 &418216610
 Transform:
   m_ObjectHideFlags: 0
@@ -2592,6 +2594,8 @@ MonoBehaviour:
   enemyPrefabs:
   - {fileID: 2797091703419844058, guid: 3ea69bf29ca764f7099a7d978ac33e6a, type: 3}
   - {fileID: 3261629212605270289, guid: e814150df7352054c8910d04d62b3a90, type: 3}
+  - {fileID: 4373878531874603118, guid: 043ce7cd9aa2640cb8a66468599e4d4d, type: 3}
+  - {fileID: 3288908098828608227, guid: 085263d3a6e384dea9546a651ff53427, type: 3}
   weaponPrefabs:
   - {fileID: 4274193337363202239, guid: e1f8b9f208103204da32d0891cadf0f5, type: 3}
 --- !u!4 &513461669
@@ -4584,7 +4588,11 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
+<<<<<<< HEAD
   m_fontSize: 39.75
+=======
+  m_fontSize: 10
+>>>>>>> 5a1c9ae6d9117ef3480d7abccbf10ff2689c1cf6
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -4945,7 +4953,11 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
+<<<<<<< HEAD
   m_fontSize: 72
+=======
+  m_fontSize: 18
+>>>>>>> 5a1c9ae6d9117ef3480d7abccbf10ff2689c1cf6
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -5266,7 +5278,11 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
+<<<<<<< HEAD
   m_fontSize: 54.1
+=======
+  m_fontSize: 13.5
+>>>>>>> 5a1c9ae6d9117ef3480d7abccbf10ff2689c1cf6
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -6413,7 +6429,11 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
+<<<<<<< HEAD
   m_fontSize: 49.35
+=======
+  m_fontSize: 18
+>>>>>>> 5a1c9ae6d9117ef3480d7abccbf10ff2689c1cf6
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -7778,7 +7798,11 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
+<<<<<<< HEAD
   m_fontSize: 52.3
+=======
+  m_fontSize: 13
+>>>>>>> 5a1c9ae6d9117ef3480d7abccbf10ff2689c1cf6
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
