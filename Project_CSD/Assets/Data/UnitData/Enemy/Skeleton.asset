@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a845f90d0e6947f41a945dcd5a979615, type: 3}
-  m_Name: PlayerUnit
+  m_Name: Skeleton
   m_EditorClassIdentifier: 
-  unitID: 11001
-  health: 25
-  speed: 2
-  power: 5
+  unitID: 31003
+  health: 10
+  speed: 1.3
+  power: 2
   attackTime: 2

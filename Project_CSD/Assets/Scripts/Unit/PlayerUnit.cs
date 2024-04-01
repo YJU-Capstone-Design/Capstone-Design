@@ -26,6 +26,7 @@ public class PlayerUnit : UnitBase
     Collider2D col;
     RaycastHit2D[] attackTargets; // 스캔 결과 배열
     [SerializeField] Transform nearestAttackTarget; // 가장 가까운 목표
+    [SerializeField] Transform[] multipleAttackTargets; // 다수 공격 목표
     Vector3 firstPos;
     Coroutine smash;
     Coroutine arrow;
@@ -37,7 +38,6 @@ public class PlayerUnit : UnitBase
 
     void Awake()
     {
-      
         scanner = GetComponentInChildren<Scanner>();
         col = GetComponent<Collider2D>();
         skeletonAnimation = GetComponent<SkeletonAnimation>();
@@ -53,7 +53,7 @@ public class PlayerUnit : UnitBase
 
         CardManger.Instance.units.Add(gameObject);
         // 클릭 지점으로 이동
-        lerp = StartCoroutine(lerpCoroutine(GameManager.Instance.unitSpawnPoint[0].position, GameManager.Instance.point, speed));
+        lerp = StartCoroutine(lerpCoroutine(BattleManager.Instance.unitSpawnPoint[0].position, BattleManager.Instance.point, speed));
     }
 
     void Update()
@@ -92,7 +92,7 @@ public class PlayerUnit : UnitBase
         unitState = UnitState.Move;
         unitActivity = UnitActivity.Normal;
         moveVec = Vector3.right;
-        firstPos = GameManager.Instance.point;
+        firstPos = BattleManager.Instance.point;
         scanner.unitType = unitID / 10000;
         nearestAttackTarget = null;
     }
@@ -143,7 +143,8 @@ public class PlayerUnit : UnitBase
         // BoxCastAll(시작 위치, 크기, 회전, 방향, 길이, 대상 레이어) : 사각형의 캐스트를 쏘고 모든 결과를 반환하는 함수
         attackTargets = Physics2D.BoxCastAll(transform.position + new Vector3(attackRayPos.x * Mathf.Sign(moveVec.x), attackRayPos.y, attackRayPos.z), attackRaySize, 0, Vector2.zero, 0, targetLayer);
 
-        nearestAttackTarget = scanner.GetNearestAttack(attackTargets);
+        nearestAttackTarget = scanner.GetNearestAttack(attackTargets); // 단일 공격
+        multipleAttackTargets = scanner.GetAttackTargets(attackTargets, 5); // 다수 공격
 
         if (nearestAttackTarget != null)
         {
@@ -160,11 +161,11 @@ public class PlayerUnit : UnitBase
                 // 유닛 별로 각각의 공격 함수 실행
                 if (gameObject.CompareTag("Archer"))
                 {
-                    StartCoroutine(Arrow());
+                    arrow = StartCoroutine(Arrow());
                 }
                 else
                 {
-                    StartCoroutine(Attack());
+                    smash = StartCoroutine(Attack());
                 }
             }
 
@@ -191,45 +192,77 @@ public class PlayerUnit : UnitBase
     // 일반 근접 공격 함수
     IEnumerator Attack()
     {
+        if (nearestAttackTarget == null) {
+            if (smash != null) { StopCoroutine(smash); smash = null; }
+        }
+
         // 애니메이션
         StartAnimation("attack melee", false, 1f);
 
-        if (nearestAttackTarget == null) StopCoroutine(Attack());
+        if ((unitID % 10000) / 1000 == 2) // 탱커 -> 다수 공격
+        {
+            foreach (Transform enemy in multipleAttackTargets)
+            {
+                EnemyUnit enemyLogic = enemy.gameObject.GetComponent<EnemyUnit>();
+                enemyLogic.unitActivity = UnitActivity.Hit;
+            }
+        }
+        else
+        {
+            EnemyUnit enemyLogic = nearestAttackTarget.gameObject.GetComponent<EnemyUnit>();
+            enemyLogic.unitActivity = UnitActivity.Hit;
+        }
 
-        EnemyUnit enemyLogic = nearestAttackTarget.gameObject.GetComponent<EnemyUnit>();
-        enemyLogic.unitActivity = UnitActivity.Hit;
+        yield return new WaitForSeconds(0.1f); // 애니메이션 시간
 
-        yield return new WaitForSeconds(0.1f);
-
-        enemyLogic.health -= power;
+        if ((unitID % 10000) / 1000 == 2) // 탱커 -> 다수 공격
+        {
+            foreach (Transform enemy in multipleAttackTargets)
+            {
+                Hit(enemy);
+            }
+        }
+        else // 단일 공격
+        {
+            Hit(nearestAttackTarget);
+        }
 
         // 애니메이션
         StartAnimation("idle", true, 1f);
+    }
 
-        yield return new WaitForSeconds(1f);
+    void Hit(Transform target)
+    {
+        if(target == null)
+            return;
+
+        EnemyUnit enemyLogic = target.gameObject.GetComponent<EnemyUnit>();
+
+        enemyLogic.health -= power;
 
         // 맞은 직후 다시 상대의 UnitActivity 는 normal 상태로 변경
         enemyLogic.unitActivity = UnitActivity.Normal;
-
     }
 
     // 화살 공격 함수
     IEnumerator Arrow()
     {
+        if (nearestAttackTarget == null) {
+            if (arrow != null) { StopCoroutine(arrow); arrow = null; }
+        }
+
         // 애니메이션
         StartAnimation("attack range", false, 1f);
 
         yield return null;
-
-        if (nearestAttackTarget == null) StopCoroutine(Arrow());
 
         // 맞고 있는 적 유닛 상태 변경
         EnemyUnit enemyLogic = nearestAttackTarget.gameObject.GetComponent<EnemyUnit>();
         enemyLogic.unitActivity = UnitBase.UnitActivity.Hit;
 
         // 화살 가져오기
-        GameObject arrow = PoolManager.Instance.Get(3, 0, transform.position + new Vector3(0, 0.5f, 0));
-        Arrow arrowLogic = arrow.GetComponent<Arrow>();
+        GameObject arrowObj = PoolManager.Instance.Get(3, 0, transform.position + new Vector3(0, 0.5f, 0));
+        Arrow arrowLogic = arrowObj.GetComponent<Arrow>();
         arrowLogic.unitType = unitID / 10000;
         arrowLogic.arrowPower = power;
 
@@ -256,10 +289,6 @@ public class PlayerUnit : UnitBase
 
         // 애니메이션
         // 아직 없음
-
-        // 작동중인 다른 Coroutine 함수 중지
-        StopCoroutine(Arrow());
-        StopCoroutine(Attack());
 
         yield return new WaitForSeconds(1f);
 
@@ -317,30 +346,8 @@ public class PlayerUnit : UnitBase
         CurrentAnimation = animName;
     }
 
-    public void buff(int value)
+    public void buff()
     {
-        int i = 0;
-        switch (value)
-        {
-            case 20000:
-                buffEffect[0].SetActive(true);
-                break;
-            case 20001:
-                buffEffect[1].SetActive(true);
-                break;
-            case 22001:
-                buffEffect[2].SetActive(true);
-                break;
-        }
-                StartCoroutine(temp(buffEffect[i]));
-
+        buffEffect[0].SetActive(true);
     }
-    IEnumerator temp(GameObject go) //몇초뒤에 버프이팩트가 사라지는 코루틴
-    {
-        yield return new WaitForSeconds(1f);
-    }
-/*    public void duration(float)
-    {
-
-    }*/
 }

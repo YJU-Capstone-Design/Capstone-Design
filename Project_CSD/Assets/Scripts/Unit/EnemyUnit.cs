@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst.CompilerServices;
 using Unity.VisualScripting;
 using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
@@ -19,7 +20,8 @@ public class EnemyUnit : UnitBase
     [Header("# Unit Activity")]
     Collider2D col;
     public RaycastHit2D[] attackTargets; // 스캔 결과 배열
-    [SerializeField] public Transform nearestAttackTarget; // 가장 가까운 목표
+    [SerializeField] Transform nearestAttackTarget; // 가장 가까운 목표
+    [SerializeField] Transform[] multipleAttackTargets; // 다수 공격 목표
     MonsterCharacterAnimation anim;
     Coroutine smash; // 코루틴 값을 저장하기 위한 변수
     Coroutine arrow;
@@ -59,7 +61,6 @@ public class EnemyUnit : UnitBase
 
     void OnDisable()
     {
-
         transform.position = new Vector3(10, 0, 0); // 위치 초기화 (안해주면 다시 소환되는 순간  Unit 의 Ray 영역 안에 있으면 Ray 에 잠시 인식됨.)
     }
 
@@ -111,7 +112,9 @@ public class EnemyUnit : UnitBase
     void AttackRay()
     {
         attackTargets = Physics2D.BoxCastAll(transform.position + new Vector3(attackRayPos.x * Mathf.Sign(moveVec.x), attackRayPos.y * (moveVec.y > 0 ? 2 : 1), attackRayPos.z), attackRaySize, 0, Vector2.zero, 0, attackLayer);
-        nearestAttackTarget = scanner.GetNearestAttack(attackTargets);
+        nearestAttackTarget = scanner.GetNearestAttack(attackTargets); // 단일 공격
+        multipleAttackTargets = scanner.GetAttackTargets(attackTargets, 5); // 다수 공격
+
 
         if (nearestAttackTarget != null)
         {
@@ -127,7 +130,7 @@ public class EnemyUnit : UnitBase
                 // 유닛 별로 각각의 공격 함수 실행
                 if (gameObject.CompareTag("Archer"))
                 {
-                    StartCoroutine(Arrow());
+                    arrow = StartCoroutine(Arrow());
                 }
                 else
                 {
@@ -158,9 +161,24 @@ public class EnemyUnit : UnitBase
     // 일반 근접 공격 함수
     IEnumerator Attack()
     {
-        if (nearestAttackTarget == null) StopCoroutine(Attack());
-        // 애니메이션
-        anim.Smash();
+        if (nearestAttackTarget == null)
+        {
+            if (smash != null) { StopCoroutine(smash); smash = null; }
+        }
+
+        // 유닛 종류 별 애니메이션
+        switch (gameObject.name)
+        {
+            case string name when name.Contains("Zombie") || name.Contains("Cyclope"):
+                anim.Smash();
+                break;
+            case string name when name.Contains("Skeleton"):
+                anim.Stab();
+                break;
+            default:
+                anim.Attack();
+                break;
+        }
 
         if (nearestAttackTarget.gameObject.CompareTag("Wall"))
         {
@@ -170,27 +188,60 @@ public class EnemyUnit : UnitBase
 
         } else
         {
-            PlayerUnit enemyLogic = nearestAttackTarget.gameObject.GetComponent<PlayerUnit>();
-            enemyLogic.unitActivity = UnitActivity.Hit;
+            if ((unitID % 10000) / 1000 == 2) // 탱커 -> 다수 공격
+            {
+                foreach (Transform enemy in multipleAttackTargets)
+                {
+                    PlayerUnit enemyLogic = enemy.gameObject.GetComponent<PlayerUnit>();
+                    enemyLogic.unitActivity = UnitActivity.Hit;
+                }
+            }
+            else
+            {
+                PlayerUnit enemyLogic = nearestAttackTarget.gameObject.GetComponent<PlayerUnit>();
+                enemyLogic.unitActivity = UnitActivity.Hit;
+            }
 
-            yield return new WaitForSeconds(anim.GetTime() + 0.5f);
+            // Cyclope 만 첫번째 공격이 도중에 끊겨서 일단 문제를 찾기 전까지 분류해서 시간 나눔.
+            if (gameObject.name.Contains("Cyclope")) { yield return new WaitForSeconds(anim.GetTime() + 0.3f); }
+            else { yield return new WaitForSeconds(anim.GetTime()); }
 
-            enemyLogic.health -= power;
-            
-            // 애니메이션
-            anim.Idle();
-
-            yield return new WaitForSeconds(anim.GetTime() + 1f);
-
-            // 맞은 직후 다시 상대의 UnitActivity 는 normal 상태로 변경
-            enemyLogic.unitActivity = UnitActivity.Normal;
+            if ((unitID % 10000) / 1000 == 2) // 탱커 -> 다수 공격
+            {
+                foreach(Transform enemy in multipleAttackTargets)
+                {
+                    Hit(enemy);
+                }
+            } 
+            else // 단일 공격
+            {
+                Hit(nearestAttackTarget);
+            }
         }
+
+        // 애니메이션
+        anim.Idle();
+    }
+
+    void Hit(Transform target)
+    {
+        if (target == null)
+            return;
+
+        PlayerUnit enemyLogic = target.gameObject.GetComponent<PlayerUnit>();
+
+        enemyLogic.health -= power;
+
+        // 맞은 직후 다시 상대의 UnitActivity 는 normal 상태로 변경
+        enemyLogic.unitActivity = UnitActivity.Normal;
     }
 
     // 화살 공격 함수
     IEnumerator Arrow()
     {
-        if (nearestAttackTarget == null) StopCoroutine(Arrow());
+        if (nearestAttackTarget == null){
+            if (arrow != null) { StopCoroutine(arrow); arrow = null; }
+        }
 
         // 애니메이션
         anim.Bow();
@@ -205,8 +256,8 @@ public class EnemyUnit : UnitBase
         }
 
         // 화살 가져오기
-        GameObject arrow = PoolManager.Instance.Get(3, 0, transform.position + new Vector3(0, 0.5f, 0));
-        Arrow arrawLogic = arrow.GetComponent<Arrow>();
+        GameObject arrowObj = PoolManager.Instance.Get(3, 0, transform.position + new Vector3(0, 0.5f, 0));
+        Arrow arrawLogic = arrowObj.GetComponent<Arrow>();
         arrawLogic.unitType = unitID / 10000;
         arrawLogic.arrowPower = power;
 
@@ -214,7 +265,7 @@ public class EnemyUnit : UnitBase
         arrawLogic.target = nearestAttackTarget.gameObject;
         arrawLogic.playerUnit = this.gameObject;
 
-        yield return new WaitForSeconds(anim.GetTime() + 0.2f);
+        yield return new WaitForSeconds(anim.GetTime());
 
         // 애니메이션
         anim.Idle();

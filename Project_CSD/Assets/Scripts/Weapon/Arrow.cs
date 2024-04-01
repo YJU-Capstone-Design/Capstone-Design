@@ -59,11 +59,13 @@ public class Arrow : MonoBehaviour
         }
         else
         {
+            if (target == null)
+                return;
+
             if (unitType == 1)
             {
                 // 아군 유닛 기준 로직
                 EnemyUnit enemy = target.GetComponent<EnemyUnit>();
-                PlayerUnit player = target.GetComponent<PlayerUnit>();
 
                 enemy.health -= arrowPower;
                 enemy.unitActivity = UnitBase.UnitActivity.Normal;
@@ -73,7 +75,6 @@ public class Arrow : MonoBehaviour
             {
                 // 적 유닛 기준 로직
                 PlayerUnit enemy = target.GetComponent<PlayerUnit>();
-                EnemyUnit player = target.GetComponent<EnemyUnit>();
 
                 enemy.health -= arrowPower;
                 enemy.unitActivity = UnitBase.UnitActivity.Normal;
@@ -83,7 +84,4 @@ public class Arrow : MonoBehaviour
         // 오브젝트 비활성화
         gameObject.SetActive(false);
     }
-
-
-
 }
