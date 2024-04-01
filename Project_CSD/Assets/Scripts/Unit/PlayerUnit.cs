@@ -346,7 +346,7 @@ public class PlayerUnit : UnitBase
         CurrentAnimation = animName;
     }
 
-    public void buff()
+    public void buff(int value)
     {
         buffEffect[0].SetActive(true);
     }

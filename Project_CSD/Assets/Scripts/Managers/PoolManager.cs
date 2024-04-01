@@ -63,11 +63,11 @@ public class PoolManager : Singleton<PoolManager>
         {
             case 0:
             case 1:
-                select.transform.position = GameManager.Instance.unitSpawnPoint[0].position;
+                select.transform.position = BattleManager.Instance.unitSpawnPoint[0].position;
                 break;
             case 2:
                 ran = UnityEngine.Random.Range(1, 4);
-                select.transform.position = GameManager.Instance.unitSpawnPoint[ran].position;
+                select.transform.position = BattleManager.Instance.unitSpawnPoint[ran].position;
                 select.SetActive(true);
                 break;
         }
