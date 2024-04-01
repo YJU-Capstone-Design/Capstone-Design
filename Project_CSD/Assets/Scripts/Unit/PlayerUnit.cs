@@ -231,6 +231,9 @@ public class PlayerUnit : UnitBase
 
     void Hit(Transform target)
     {
+        if(target == null)
+            return;
+
         EnemyUnit enemyLogic = target.gameObject.GetComponent<EnemyUnit>();
 
         enemyLogic.health -= power;
@@ -242,12 +245,12 @@ public class PlayerUnit : UnitBase
     // 화살 공격 함수
     IEnumerator Arrow()
     {
+        if (nearestAttackTarget == null) StopCoroutine(Arrow());
+
         // 애니메이션
         StartAnimation("attack range", false, 1f);
 
         yield return null;
-
-        if (nearestAttackTarget == null) StopCoroutine(Arrow());
 
         // 맞고 있는 적 유닛 상태 변경
         EnemyUnit enemyLogic = nearestAttackTarget.gameObject.GetComponent<EnemyUnit>();

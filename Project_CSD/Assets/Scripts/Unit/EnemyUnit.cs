@@ -222,6 +222,9 @@ public class EnemyUnit : UnitBase
 
     void Hit(Transform target)
     {
+        if (target == null)
+            return;
+
         PlayerUnit enemyLogic = target.gameObject.GetComponent<PlayerUnit>();
 
         enemyLogic.health -= power;
@@ -261,7 +264,6 @@ public class EnemyUnit : UnitBase
 
         // 애니메이션
         anim.Idle();
-        Debug.Log("idle bow");
     }
 
 
