@@ -12,6 +12,8 @@ public class PopUp : MonoBehaviour
     [SerializeField] private GameObject pop;
     [SerializeField] private TextMeshProUGUI popUp_text;
 
+    private bool goLobby;
+
     private void Awake()
     {
         Clear();
@@ -32,11 +34,13 @@ public class PopUp : MonoBehaviour
         else if (type.Equals("Title"))
         {
             popUp_text.text = "로비로 이동하시겠습니까?";
+            goLobby = true;
             pop.SetActive(true);
         }
         else if (type.Equals("Restart"))
         {
             popUp_text.text = "게임을 재 시작하시겠습니까?";
+            goLobby = false;
             pop.SetActive(true);
         }
     }
@@ -57,13 +61,13 @@ public class PopUp : MonoBehaviour
 
     public void MoveScene()
     {
-        string type = popUp_text.text.ToString();
-        Debug.Log(type);
-        if(type == "로비로 이동하시겠습니까?")
+       
+       
+        if(goLobby)
         {
             LodingSceneMgr.LoadScene("MainLobby");
         }
-        else if (type == "게임을 재 시작하시겠습니까?")
+        else if (!goLobby)
         {
             SceneMgr.Instance.GoSceneSelect("NomalMode");
         }

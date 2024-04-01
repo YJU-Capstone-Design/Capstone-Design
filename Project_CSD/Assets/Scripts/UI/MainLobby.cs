@@ -18,14 +18,22 @@ public class MainLobby : MonoBehaviour
     [SerializeField] private GameObject panel_Bg;
     private Vector3 openToggleTr;//토클의 처음 위치
     private Vector3 closeToggleTr;//토클이 닫혔을 때의 위치
+    Animator anim;
 
     [Header("SettingMenu")]
     [SerializeField] private GameObject setMenu;
+
+
+    [Header("BattleModeSelect")]
+    [SerializeField] private GameObject battleMode;
+
+
     private void Awake()
     {
         Clear();
         openToggleTr = toggleBtn.transform.localPosition;
         closeToggleTr = closeToggleBtn.transform.localPosition;
+        anim = toggleBtn.GetComponent<Animator>();
         
     }
 
@@ -72,23 +80,43 @@ public class MainLobby : MonoBehaviour
             toggleMenu.SetActive(false);
             panel_Bg.SetActive(false);
             toggle.text = ">";
-            toggleBtn.transform.localPosition = closeToggleTr;
+            //toggleBtn.transform.localPosition = closeToggleTr;
+            anim.SetBool("ToggleSet",false);
         }
         else
         {
-            toggleMenu.SetActive(true);
-            panel_Bg.SetActive(true);
-            toggle.text = "<";
-            toggleBtn.transform.localPosition = openToggleTr;
+            anim.SetBool("ToggleSet", true);
+            Invoke("OnToggle", 1f);
+            //toggleBtn.transform.localPosition = openToggleTr;
+
         }
     }
 
+    public void BtlModeSelect()
+    {
+        if (!battleMode.activeSelf)
+        {
+            battleMode.SetActive(true);
+        }
+        else if (battleMode.activeSelf)
+        {
+            battleMode.SetActive(false);
+        }
+    }
+    public void OnToggle()
+    {
+        toggleMenu.SetActive(true);
+        panel_Bg.SetActive(true);
+        toggle.text = "<";
+
+    }
 
     public void Clear()
     {
         menu[0].gameObject.SetActive(true);
         menu_Obj_Setting[0].gameObject.SetActive(true);
         setMenu.SetActive(false);
+        battleMode.SetActive(false);
         for (int i=1; i<menu.Count; i++)
         {
             menu[i].gameObject.SetActive(false);
