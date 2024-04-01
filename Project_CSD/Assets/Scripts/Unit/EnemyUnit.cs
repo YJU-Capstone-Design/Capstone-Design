@@ -161,7 +161,10 @@ public class EnemyUnit : UnitBase
     // 일반 근접 공격 함수
     IEnumerator Attack()
     {
-        if (nearestAttackTarget == null) StopCoroutine(Attack());
+        if (nearestAttackTarget == null)
+        {
+            if (smash != null) { StopCoroutine(smash); smash = null; }
+        }
 
         // 유닛 종류 별 애니메이션
         switch (gameObject.name)
@@ -236,7 +239,9 @@ public class EnemyUnit : UnitBase
     // 화살 공격 함수
     IEnumerator Arrow()
     {
-        if (nearestAttackTarget == null) StopCoroutine(Arrow());
+        if (nearestAttackTarget == null){
+            if (arrow != null) { StopCoroutine(arrow); arrow = null; }
+        }
 
         // 애니메이션
         anim.Bow();
@@ -251,8 +256,8 @@ public class EnemyUnit : UnitBase
         }
 
         // 화살 가져오기
-        GameObject arrow = PoolManager.Instance.Get(3, 0, transform.position + new Vector3(0, 0.5f, 0));
-        Arrow arrawLogic = arrow.GetComponent<Arrow>();
+        GameObject arrowObj = PoolManager.Instance.Get(3, 0, transform.position + new Vector3(0, 0.5f, 0));
+        Arrow arrawLogic = arrowObj.GetComponent<Arrow>();
         arrawLogic.unitType = unitID / 10000;
         arrawLogic.arrowPower = power;
 

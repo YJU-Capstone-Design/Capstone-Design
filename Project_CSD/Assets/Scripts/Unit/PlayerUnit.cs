@@ -192,7 +192,9 @@ public class PlayerUnit : UnitBase
     // 일반 근접 공격 함수
     IEnumerator Attack()
     {
-        if (nearestAttackTarget == null) StopCoroutine(smash);
+        if (nearestAttackTarget == null) {
+            if (smash != null) { StopCoroutine(smash); smash = null; }
+        }
 
         // 애니메이션
         StartAnimation("attack melee", false, 1f);
@@ -245,7 +247,9 @@ public class PlayerUnit : UnitBase
     // 화살 공격 함수
     IEnumerator Arrow()
     {
-        if (nearestAttackTarget == null) StopCoroutine(Arrow());
+        if (nearestAttackTarget == null) {
+            if (arrow != null) { StopCoroutine(arrow); arrow = null; }
+        }
 
         // 애니메이션
         StartAnimation("attack range", false, 1f);
@@ -257,8 +261,8 @@ public class PlayerUnit : UnitBase
         enemyLogic.unitActivity = UnitBase.UnitActivity.Hit;
 
         // 화살 가져오기
-        GameObject arrow = PoolManager.Instance.Get(3, 0, transform.position + new Vector3(0, 0.5f, 0));
-        Arrow arrowLogic = arrow.GetComponent<Arrow>();
+        GameObject arrowObj = PoolManager.Instance.Get(3, 0, transform.position + new Vector3(0, 0.5f, 0));
+        Arrow arrowLogic = arrowObj.GetComponent<Arrow>();
         arrowLogic.unitType = unitID / 10000;
         arrowLogic.arrowPower = power;
 
@@ -285,10 +289,6 @@ public class PlayerUnit : UnitBase
 
         // 애니메이션
         // 아직 없음
-
-        // 작동중인 다른 Coroutine 함수 중지
-        StopCoroutine(Arrow());
-        StopCoroutine(Attack());
 
         yield return new WaitForSeconds(1f);
 

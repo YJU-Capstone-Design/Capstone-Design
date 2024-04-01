@@ -15,5 +15,5 @@ MonoBehaviour:
   unitID: 31003
   health: 10
   speed: 1.3
-  power: 5
+  power: 2
   attackTime: 2

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Cyclope
   m_EditorClassIdentifier: 
   unitID: 32001
-  health: 50
+  health: 100
   speed: 1
-  power: 3
+  power: 1
   attackTime: 3
