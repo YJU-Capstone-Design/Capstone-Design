@@ -26,7 +26,7 @@ public class PlayerUnit : UnitBase
     Collider2D col;
     RaycastHit2D[] attackTargets; // 스캔 결과 배열
     [SerializeField] Transform nearestAttackTarget; // 가장 가까운 목표
-    public Transform[] multipleAttackTargets; // 다수 공격 목표
+    [SerializeField] Transform[] multipleAttackTargets; // 다수 공격 목표
     Vector3 firstPos;
     Coroutine smash;
     Coroutine arrow;
@@ -38,7 +38,6 @@ public class PlayerUnit : UnitBase
 
     void Awake()
     {
-      
         scanner = GetComponentInChildren<Scanner>();
         col = GetComponent<Collider2D>();
         skeletonAnimation = GetComponent<SkeletonAnimation>();
@@ -54,7 +53,7 @@ public class PlayerUnit : UnitBase
 
         CardManger.Instance.units.Add(gameObject);
         // 클릭 지점으로 이동
-        lerp = StartCoroutine(lerpCoroutine(BattleManager.Instance.unitSpawnPoint[0].position, GameManager.Instance.point, speed));
+        lerp = StartCoroutine(lerpCoroutine(BattleManager.Instance.unitSpawnPoint[0].position, BattleManager.Instance.point, speed));
     }
 
     void Update()
@@ -93,7 +92,7 @@ public class PlayerUnit : UnitBase
         unitState = UnitState.Move;
         unitActivity = UnitActivity.Normal;
         moveVec = Vector3.right;
-        firstPos = GameManager.Instance.point;
+        firstPos = BattleManager.Instance.point;
         scanner.unitType = unitID / 10000;
         nearestAttackTarget = null;
     }

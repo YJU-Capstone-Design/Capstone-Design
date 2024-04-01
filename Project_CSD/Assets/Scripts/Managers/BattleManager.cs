@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
+using System.Drawing;
 public class BattleManager :Singleton<BattleManager>
 {
     [Header("Shop")]
@@ -20,35 +21,89 @@ public class BattleManager :Singleton<BattleManager>
     [SerializeField] private GameObject gameEnd;
 
     [Header("Spawn")]
+    public PoolManager pool;
+    public Vector3 point;
     public Transform[] unitSpawnPoint; // 기본 spawn point
-    public List<Spawn> spawnList;
-    public int spawnIndex; // 스폰 로직 순서
-    public bool spawnEnd; // 스폰 로직 마지막
+    [SerializeField] List<Spawn> spawnList;
+    int spawnIndex; // 스폰 로직 순서
+    bool spawnEnd; // 스폰 로직 마지막
     float curSpawnTime;
     float nextSpawnDelay;
 
     private void Awake()
     {
-        //battle.SetActive(true);
-        //gameEnd.SetActive(false);
-        //CardMake();
-        //curHealth = maxHealth;
-        //UpdateHealthBar();
+        battle.SetActive(true);
+        gameEnd.SetActive(false);
+        CardMake();
+        curHealth = maxHealth;
+        UpdateHealthBar();
 
         spawnList = new List<Spawn>();
 
-        //ReadSpawnFile();
+        ReadSpawnFile();
     }
 
     void Update()
     {
         curSpawnTime += Time.deltaTime;
 
-        //if(curSpawnTime > nextSpawnDelay && !spawnEnd)
-        //{
-        //    SpawnEnemy();
-        //    curSpawnTime = 0;
-        //}
+        if (curSpawnTime > nextSpawnDelay && !spawnEnd)
+        {
+            SpawnEnemy();
+            curSpawnTime = 0;
+        }
+
+        // 플레이어 근접/궁수 유닛 소환
+        if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1))
+        {
+            // 마우스 좌클릭 한 곳의 위치값
+            point = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x,
+                Input.mousePosition.y, -Camera.main.transform.position.z));
+
+            // 클릭한 곳 범위 조정
+            point = MoveRange(point);
+
+            if (Input.GetMouseButtonDown(0)) { pool.Get(0, 0); }
+            else if (Input.GetMouseButtonDown(1)) { pool.Get(0, 1); }
+        }
+
+
+        // 적 좀비(근접) 유닛 소환
+        if (Input.GetKeyDown("1"))
+        {
+            pool.Get(2, 0);
+        }
+
+        // 적 좀비(궁수) 유닛 소환
+        if (Input.GetKeyDown("2"))
+        {
+            pool.Get(2, 1);
+        }
+
+        // 적 키클롭스(탱커) 유닛 소환
+        if (Input.GetKeyDown("3"))
+        {
+            pool.Get(2, 2);
+        }
+
+        // 적 스켈레톤(근접) 유닛 소환
+        if (Input.GetKeyDown("4"))
+        {
+            pool.Get(2, 3);
+        }
+    }
+
+    // 경계선 범위 벗어나지 않게 이동 범위 조정
+    Vector3 MoveRange(Vector3 vec)
+    {
+        // 마우스로 클릭한 곳 범위 조정
+        // 경계선 범위 벗어나지 않게 설정
+        if (vec.y >= 2) { vec.y = 2; }
+        else if (vec.y <= -2) { vec.y = -2; }
+        else if (vec.x >= 6) { vec.x = 6; }
+        else if (vec.x <= -7) { vec.x = -7; }
+
+        return vec;
     }
 
     public void HpDamage(float dmg)

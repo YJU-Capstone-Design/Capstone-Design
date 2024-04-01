@@ -20,8 +20,8 @@ public class EnemyUnit : UnitBase
     [Header("# Unit Activity")]
     Collider2D col;
     public RaycastHit2D[] attackTargets; // 스캔 결과 배열
-    public Transform nearestAttackTarget; // 가장 가까운 목표
-    public Transform[] multipleAttackTargets; // 다수 공격 목표
+    [SerializeField] Transform nearestAttackTarget; // 가장 가까운 목표
+    [SerializeField] Transform[] multipleAttackTargets; // 다수 공격 목표
     MonsterCharacterAnimation anim;
     Coroutine smash; // 코루틴 값을 저장하기 위한 변수
     Coroutine arrow;
@@ -61,7 +61,6 @@ public class EnemyUnit : UnitBase
 
     void OnDisable()
     {
-
         transform.position = new Vector3(10, 0, 0); // 위치 초기화 (안해주면 다시 소환되는 순간  Unit 의 Ray 영역 안에 있으면 Ray 에 잠시 인식됨.)
     }
 

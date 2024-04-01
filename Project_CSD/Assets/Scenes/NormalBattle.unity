@@ -1937,8 +1937,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a1f9eef7ceba084ebfaaf9daeb9d0a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pool: {fileID: 513461668}
-  point: {x: 0, y: 0, z: 0}
 --- !u!4 &309302074
 Transform:
   m_ObjectHideFlags: 0
@@ -2227,13 +2225,13 @@ MonoBehaviour:
   HpBarSlider: {fileID: 442939622}
   battle: {fileID: 2016165685}
   gameEnd: {fileID: 1964115668}
+  pool: {fileID: 513461668}
+  point: {x: 0, y: 0, z: 0}
   unitSpawnPoint:
   - {fileID: 605274320}
   - {fileID: 1582974061}
   - {fileID: 308611781}
   - {fileID: 1588485322}
-  spawnIndex: 0
-  spawnEnd: 0
 --- !u!4 &418216610
 Transform:
   m_ObjectHideFlags: 0
