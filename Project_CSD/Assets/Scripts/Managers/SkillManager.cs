@@ -20,13 +20,15 @@ public class SkillManager : MonoBehaviour
         switch (value)
         {
             case 20000:
-                CardManger.Instance.ATK_UP();
+                CardManger.Instance.Buff(value);
                 Debug.Log("ATK_UP");
                 break;
             case 20001:
+                CardManger.Instance.Buff(value);
                 Debug.Log("SPEED_UP");
                 break;
             case 22001:
+                CardManger.Instance.Buff(value);
                 Debug.Log("HEAL");
                 break;
         }

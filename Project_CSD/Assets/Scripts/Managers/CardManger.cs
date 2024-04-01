@@ -21,7 +21,7 @@ public class CardManger : Singleton<CardManger>
         enemys = new List<GameObject>();
     }
 
-    public void ATK_UP()
+    public void Buff(int value)
     {
        foreach (GameObject obj in units)
         {
@@ -29,7 +29,7 @@ public class CardManger : Singleton<CardManger>
             PlayerUnit unitBuff = obj.GetComponentInChildren<PlayerUnit>();
             unitLogic.power += (unitLogic.power * 0.05f);
             Debug.Log(unitLogic.power);
-            unitBuff.buff();
+            unitBuff.buff(value);
         }
     }
 }

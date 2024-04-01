@@ -317,8 +317,30 @@ public class PlayerUnit : UnitBase
         CurrentAnimation = animName;
     }
 
-    public void buff()
+    public void buff(int value)
     {
-        buffEffect[0].SetActive(true);
+        int i = 0;
+        switch (value)
+        {
+            case 20000:
+                buffEffect[0].SetActive(true);
+                break;
+            case 20001:
+                buffEffect[1].SetActive(true);
+                break;
+            case 22001:
+                buffEffect[2].SetActive(true);
+                break;
+        }
+                StartCoroutine(temp(buffEffect[i]));
+
     }
+    IEnumerator temp(GameObject go) //몇초뒤에 버프이팩트가 사라지는 코루틴
+    {
+        yield return new WaitForSeconds(1f);
+    }
+/*    public void duration(float)
+    {
+
+    }*/
 }
