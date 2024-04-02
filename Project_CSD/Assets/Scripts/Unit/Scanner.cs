@@ -39,7 +39,7 @@ public class Scanner : MonoBehaviour
         {
             UnitBase targetLogic = target.transform.gameObject.GetComponent<UnitBase>();
 
-            // 적이 싸우는 상태일 경우 다시 탐색 -> 다양하게 분포 시키기 위한 로직, Hit 는 Enemy 가 궁수 유닛을 지나치기고 벽으로 향하기에 추가
+            // 적이 싸우는 상태일 경우 다시 탐색 -> 다양하게 분포 시키기 위한 로직
             if (targetLogic.unitState == UnitBase.UnitState.Fight && targetLogic.unitActivity == UnitBase.UnitActivity.Hit)
                 continue;
 
