@@ -9,7 +9,6 @@ public class MainLobby : MonoBehaviour
 {
     [SerializeField] private List<GameObject> menu = new List<GameObject>();
     [SerializeField] private List<GameObject> menu_Obj_Setting = new List<GameObject>();
-    [SerializeField] private TextMeshProUGUI toggle;
     [SerializeField] private GameObject toggleMenu;
     private int toogleState = 0;
 
@@ -20,8 +19,8 @@ public class MainLobby : MonoBehaviour
     [SerializeField] private GameObject panel_Bg;
     private Vector3 openToggleTr;//토클의 처음 위치
     private Vector3 closeToggleTr;//토클이 닫혔을 때의 위치
-    Animator anim;
-   
+    Animator toggle_anim;
+    Animator toggle_BG_anim;
     [Header("SettingMenu")]
     [SerializeField] private GameObject setMenu;
 
@@ -35,8 +34,8 @@ public class MainLobby : MonoBehaviour
         Clear();
         openToggleTr = toggleBtn.transform.localPosition;
         closeToggleTr = closeToggleBtn.transform.localPosition;
-        anim = toggleBtn.GetComponent<Animator>();
-     
+        toggle_anim = toggleBtn.GetComponent<Animator>();
+        toggle_BG_anim = panel_Bg.GetComponent<Animator>();
     }
 
     public void OpenScene(string type)
@@ -72,6 +71,7 @@ public class MainLobby : MonoBehaviour
         }
         menu[openScene].SetActive(true);
         menu_Obj_Setting[openScene].SetActive(true);
+       
     }
 
 
@@ -81,20 +81,22 @@ public class MainLobby : MonoBehaviour
         {
 
             toggleMenu.SetActive(false);
-            panel_Bg.SetActive(false);
+            //panel_Bg.SetActive(false);
             
             toogleState = 1;
             //toggleBtn.transform.localPosition = closeToggleTr;
-            
-            anim.SetInteger("ToggleState", 0);
-            anim.SetBool("ToggleSet",false);
+            toggle_BG_anim.SetInteger("ToggleState", 0);
+            toggle_BG_anim.SetBool("ToggleSet", false);
+            toggle_anim.SetInteger("ToggleState", 0);
+            toggle_anim.SetBool("ToggleSet",false);
         }
-        else
+        else if(toogleState==1)
         {
-            
-            anim.SetInteger("ToggleState", 1);
-            anim.SetBool("ToggleSet", true);
-            Invoke("OnToggle", 1f);
+            toggle_BG_anim.SetInteger("ToggleState", 1);
+            toggle_BG_anim.SetBool("ToggleSet", true);
+            toggle_anim.SetInteger("ToggleState", 1);
+            toggle_anim.SetBool("ToggleSet", true);
+            Invoke("OnToggle", 0.5f);
             toogleState = 0;
             //toggleBtn.transform.localPosition = openToggleTr;
 
@@ -115,8 +117,7 @@ public class MainLobby : MonoBehaviour
     public void OnToggle()
     {
         toggleMenu.SetActive(true);
-        panel_Bg.SetActive(true);
-        toggle.text = "<";
+        
 
     }
 

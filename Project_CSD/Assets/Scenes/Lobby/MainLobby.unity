@@ -2541,7 +2541,7 @@ Animator:
   m_GameObject: {fileID: 216153964}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: b464729660e39c24a99ca2926550e7be, type: 2}
+  m_Controller: {fileID: 9100000, guid: b6c8b60843e7f1849b6e73e9ea9d4afb, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -15299,7 +15299,6 @@ MonoBehaviour:
   - {fileID: 334528561}
   - {fileID: 860621581}
   - {fileID: 109472978}
-  toggle: {fileID: 2082458794}
   toggleMenu: {fileID: 297503876}
   toggleBtn: {fileID: 1428108232}
   closeToggleBtn: {fileID: 1937393960}
