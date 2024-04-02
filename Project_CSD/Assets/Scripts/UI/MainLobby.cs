@@ -11,15 +11,17 @@ public class MainLobby : MonoBehaviour
     [SerializeField] private List<GameObject> menu_Obj_Setting = new List<GameObject>();
     [SerializeField] private TextMeshProUGUI toggle;
     [SerializeField] private GameObject toggleMenu;
+    private int toogleState = 0;
 
     [Header("toggle Transform")]
     [SerializeField] private GameObject toggleBtn;
     [SerializeField] private GameObject closeToggleBtn;
+    [SerializeField] private GameObject toggleBG;
     [SerializeField] private GameObject panel_Bg;
     private Vector3 openToggleTr;//토클의 처음 위치
     private Vector3 closeToggleTr;//토클이 닫혔을 때의 위치
     Animator anim;
-
+   
     [Header("SettingMenu")]
     [SerializeField] private GameObject setMenu;
 
@@ -34,7 +36,7 @@ public class MainLobby : MonoBehaviour
         openToggleTr = toggleBtn.transform.localPosition;
         closeToggleTr = closeToggleBtn.transform.localPosition;
         anim = toggleBtn.GetComponent<Animator>();
-        
+     
     }
 
     public void OpenScene(string type)
@@ -75,18 +77,25 @@ public class MainLobby : MonoBehaviour
 
     public void ToggleOnOff()
     {
-        if(toggle.text == "<")
+        if(toogleState==0)
         {
+
             toggleMenu.SetActive(false);
             panel_Bg.SetActive(false);
-            toggle.text = ">";
+            
+            toogleState = 1;
             //toggleBtn.transform.localPosition = closeToggleTr;
+            
+            anim.SetInteger("ToggleState", 0);
             anim.SetBool("ToggleSet",false);
         }
         else
         {
+            
+            anim.SetInteger("ToggleState", 1);
             anim.SetBool("ToggleSet", true);
             Invoke("OnToggle", 1f);
+            toogleState = 0;
             //toggleBtn.transform.localPosition = openToggleTr;
 
         }
