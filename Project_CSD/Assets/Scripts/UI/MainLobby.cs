@@ -122,6 +122,7 @@ public class MainLobby : MonoBehaviour
 
     public void Clear()
     {
+        toogleState = 0;
         menu[0].gameObject.SetActive(true);
         menu_Obj_Setting[0].gameObject.SetActive(true);
         setMenu.SetActive(false);

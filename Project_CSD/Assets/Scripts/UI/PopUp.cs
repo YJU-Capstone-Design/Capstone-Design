@@ -65,10 +65,12 @@ public class PopUp : MonoBehaviour
        
         if(goLobby)
         {
+            Time.timeScale = 1;
             LodingSceneMgr.LoadScene("MainLobby");
         }
         else if (!goLobby)
         {
+            Time.timeScale = 1;
             SceneMgr.Instance.GoSceneSelect("NomalMode");
         }
     }
