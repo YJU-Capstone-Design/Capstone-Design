@@ -12,15 +12,14 @@ public class PlayerUnit : UnitBase
     [Header("# Unit Effect")]
     public List<GameObject> buffEffect = new List<GameObject>();
 
-
     [Header("# Unit Setting")]
     public Scanner scanner;
     public UnitData unitData;
     bool startMoveFinish = false;
     LayerMask targetLayer;
     Vector3 moveVec; // 거리
-    public Vector3 attackRayPos; // attackRay 위치 = 현재 위치 + attackRayPos
-    public Vector2 attackRaySize;
+    [SerializeField] Vector3 attackRayPos; // attackRay 위치 = 현재 위치 + attackRayPos
+    [SerializeField] Vector2 attackRaySize;
 
     [Header("# Unit Activity")]
     Collider2D col;
@@ -95,7 +94,6 @@ public class PlayerUnit : UnitBase
         // 설정값
         col.enabled = true;
         unitState = UnitState.Move;
-        unitActivity = UnitActivity.Normal;
         moveVec = Vector3.right;
         firstPos = BattleManager.Instance.point;
         scanner.unitType = unitID / 10000;
@@ -156,11 +154,10 @@ public class PlayerUnit : UnitBase
 
         if (nearestAttackTarget != null)
         {
-            //unitState = UnitState.Fight;
             startMoveFinish = true;
 
             // 적이 인식되면 attackTime 증가 및 공격 함수 실행
-                        attackTime += Time.deltaTime;
+            attackTime += Time.deltaTime;
 
             // 적 상태 변경
             if ((unitID % 10000) / 1000 == 2) // 탱커 -> 다수 공격
@@ -195,10 +192,6 @@ public class PlayerUnit : UnitBase
 
             // 적의 위치에 따라 Sprite 방향 변경 (Attary Ray 영역이 큰 Unit 변수 제거 용도)
             SpriteDir(nearestAttackTarget.transform.position, transform.position);
-
-            // 싸우던 적이 사망했을 시 상태 변경 
-            EnemyUnit enemyLogic = nearestAttackTarget.GetComponent<EnemyUnit>();
-            if(enemyLogic.health <= 0) { unitActivity = UnitActivity.Normal; }
         }
         else
         {
@@ -227,20 +220,6 @@ public class PlayerUnit : UnitBase
         // 애니메이션
         StartAnimation("attack melee", false, 1f);
 
-        //if ((unitID % 10000) / 1000 == 2) // 탱커 -> 다수 공격
-        //{
-        //    foreach (Transform enemy in multipleAttackTargets)
-        //    {
-        //        EnemyUnit enemyLogic = enemy.gameObject.GetComponent<EnemyUnit>();
-        //        enemyLogic.unitActivity = UnitActivity.Hit;
-        //    }
-        //}
-        //else
-        //{
-        //    EnemyUnit enemyLogic = nearestAttackTarget.gameObject.GetComponent<EnemyUnit>();
-        //    enemyLogic.unitActivity = UnitActivity.Hit;
-        //}
-
         yield return new WaitForSeconds(1f); // 애니메이션 시간
 
         if ((unitID % 10000) / 1000 == 2) // 탱커 -> 다수 공격
@@ -266,14 +245,7 @@ public class PlayerUnit : UnitBase
 
         EnemyUnit enemyLogic = target.gameObject.GetComponent<EnemyUnit>();
 
-        if (smash != null)
-        {
-            enemyLogic.health -= power;
-        }
-        else // 죽었을 때
-        {
-            enemyLogic.unitActivity = UnitActivity.Normal; // 적 상태 초기화
-        }
+        enemyLogic.health -= power;
     }
 
     // 화살 공격 함수
@@ -290,7 +262,6 @@ public class PlayerUnit : UnitBase
 
         // 맞고 있는 적 유닛 상태 변경
         EnemyUnit enemyLogic = nearestAttackTarget.gameObject.GetComponent<EnemyUnit>();
-        //enemyLogic.unitActivity = UnitBase.UnitActivity.Hit;
 
         // 화살 가져오기
         GameObject arrowObj = PoolManager.Instance.Get(3, 0, transform.position + new Vector3(0, 0.5f, 0));
@@ -308,7 +279,6 @@ public class PlayerUnit : UnitBase
         unitState = UnitState.Die;
         moveVec = Vector2.zero;
         col.enabled = false;
-        unitActivity = UnitActivity.Normal;
 
         speed = 0;
         attackTime = 0;
@@ -318,18 +288,6 @@ public class PlayerUnit : UnitBase
         // 진행중인 코루틴 함수 모두 중지
         if (smash != null) { StopCoroutine(smash); smash = null; }
         if (arrow != null) { StopCoroutine(arrow); arrow = null; }
-
-        if ((unitID % 10000) / 1000 == 2) // 탱커 -> 다수 공격
-        {
-            foreach (Transform enemy in multipleAttackTargets)
-            {
-                SetEnemyState(enemy);
-            }
-        }
-        else // 단일 공격
-        {
-            SetEnemyState(nearestAttackTarget);
-        }
 
         // 애니메이션
         // 아직 없음

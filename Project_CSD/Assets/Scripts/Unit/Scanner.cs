@@ -39,8 +39,8 @@ public class Scanner : MonoBehaviour
         // 인식된 오브젝트마다 플에이어와의 거리 계산
         foreach (RaycastHit2D target in targets)
         {
-            // 적이 싸우는 상태일 경우 다시 탐색 -> 다양하게 분포 시키기 위한 로직
-            if(unitType == 1)
+            // 적이 싸우는 상태일 경우와 목표가 자신과 1 대 1 매칭이 아닐 경우 다시 탐색 -> 다양하게 분포 시키기 위한 로직
+            if(unitType == 1) // 아군 
             {
                 EnemyUnit targetLogic = target.transform.gameObject.GetComponent<EnemyUnit>();
                 if (targetLogic.unitState == UnitBase.UnitState.Fight)
@@ -54,7 +54,7 @@ public class Scanner : MonoBehaviour
                     }
                 }
             } 
-            else if(unitType == 3)
+            else if(unitType == 3) // 적
             {
                 PlayerUnit targetLogic = target.transform.gameObject.GetComponent<PlayerUnit>();
                 if (targetLogic.unitState == UnitBase.UnitState.Fight)

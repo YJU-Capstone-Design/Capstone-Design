@@ -11,11 +11,10 @@ public class EnemyUnit : UnitBase
     [Header("# Unit Setting")]
     public Scanner scanner;
     public UnitData unitData;
-    LayerMask targetLayer;
     Vector3 moveVec; // 이동 방향
-    public LayerMask attackLayer;
-    public Vector3 attackRayPos; // attackRay 위치 = 현재 위치 + attackRayPos
-    public Vector2 attackRaySize;
+    LayerMask attackLayer;
+    [SerializeField] Vector3 attackRayPos; // attackRay 위치 = 현재 위치 + attackRayPos
+    [SerializeField] Vector2 attackRaySize;
 
     [Header("# Unit Activity")]
     Collider2D col;
@@ -32,7 +31,7 @@ public class EnemyUnit : UnitBase
         col = GetComponent<Collider2D>();
         anim = GetComponentInChildren<MonsterCharacterAnimation>();
 
-        targetLayer = LayerMask.GetMask("PlayerUnit", "Wall");
+        attackLayer = LayerMask.GetMask("PlayerUnit", "Wall");
 
         StateSetting();
     }
@@ -77,7 +76,6 @@ public class EnemyUnit : UnitBase
         // 설정값
         col.enabled = true;
         unitState = UnitState.Move;
-        unitActivity = UnitActivity.Normal;
         moveVec = Vector3.left;
         transform.GetChild(0).rotation = Quaternion.identity; // 애니메이션 각도 초기화를 위한 로직
         scanner.unitType = unitID / 10000;
@@ -93,9 +91,6 @@ public class EnemyUnit : UnitBase
 
             if (transform.position.y != moveVec.y) { moveVec.x *= 0.5f; moveVec.y *= 2f; } // y 축 먼저 빠르게 이동
             else { moveVec.x *= 1f; moveVec.y *= 1f; } // 정상화
-
-            // 상태 변경
-            //unitActivity = UnitActivity.FindEnemy;
         }
         else
         {
@@ -162,10 +157,6 @@ public class EnemyUnit : UnitBase
 
             // 적의 위치에 따라 Sprite 방향 변경 (Attary Ray 영역이 큰 Unit 변수 제거)
             SpriteDir(transform.position, nearestAttackTarget.transform.position);
-
-            // 싸우던 적이 사망했을 시 상태 변경
-            PlayerUnit enemyLogic = nearestAttackTarget.GetComponent<PlayerUnit>();
-            if (enemyLogic.health <= 0) { unitActivity = UnitActivity.Normal; }
         }
         else
         {
@@ -214,20 +205,6 @@ public class EnemyUnit : UnitBase
 
         } else
         {
-            //if ((unitID % 10000) / 1000 == 2) // 탱커 -> 다수 공격
-            //{
-            //    foreach (Transform enemy in multipleAttackTargets)
-            //    {
-            //        PlayerUnit enemyLogic = enemy.gameObject.GetComponent<PlayerUnit>();
-            //        enemyLogic.unitActivity = UnitActivity.Hit;
-            //    }
-            //}
-            //else
-            //{
-            //    PlayerUnit enemyLogic = nearestAttackTarget.gameObject.GetComponent<PlayerUnit>();
-            //    enemyLogic.unitActivity = UnitActivity.Hit;
-            //}
-
             // Cyclope 만 첫번째 공격이 도중에 끊겨서 일단 문제를 찾기 전까지 분류해서 시간 나눔.
             if (gameObject.name.Contains("Cyclope")) { yield return new WaitForSeconds(anim.GetTime() + 0.3f); }
             else { yield return new WaitForSeconds(anim.GetTime()); }
@@ -256,13 +233,7 @@ public class EnemyUnit : UnitBase
 
         PlayerUnit enemyLogic = target.gameObject.GetComponent<PlayerUnit>();
 
-        if(smash != null)
-        {
-            enemyLogic.health -= power;
-        } else // 죽었을 때
-        {
-            enemyLogic.unitActivity = UnitActivity.Normal; // 적 상태 초기화
-        }
+        enemyLogic.health -= power;
     }
 
     // 화살 공격 함수
@@ -281,7 +252,6 @@ public class EnemyUnit : UnitBase
         {
             // 맞고 있는 적 유닛 상태 변경
             PlayerUnit enemyLogic = nearestAttackTarget.gameObject.GetComponent<PlayerUnit>();
-            //enemyLogic.unitActivity = UnitBase.UnitActivity.Hit;
         }
 
         // 화살 가져오기
@@ -307,7 +277,6 @@ public class EnemyUnit : UnitBase
         unitState = UnitState.Die;
         moveVec = Vector2.zero;
         col.enabled = false;
-        unitActivity = UnitActivity.Normal; // 상태 초기화
 
         // 작동중인 다른 Coroutine 함수 중지
         if (smash != null) { StopCoroutine(smash); smash = null; }
@@ -315,18 +284,6 @@ public class EnemyUnit : UnitBase
 
         speed = 0;
         attackTime = 0;
-
-        if ((unitID % 10000) / 1000 == 2) // 탱커 -> 다수 공격
-        {
-            foreach (Transform enemy in multipleAttackTargets)
-            {
-                SetEnemyState(enemy);
-            }
-        }
-        else // 단일 공격
-        {
-            SetEnemyState(nearestAttackTarget);
-        }
 
         CardManger.Instance.enemys.Remove(gameObject);
 
