@@ -45,7 +45,7 @@ public class BattleManager :Singleton<BattleManager>
 
     void Update()
     {
-        //curSpawnTime += Time.deltaTime;
+        curSpawnTime += Time.deltaTime;
 
         if (curSpawnTime > nextSpawnDelay && !spawnEnd)
         {
