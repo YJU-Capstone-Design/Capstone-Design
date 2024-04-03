@@ -4,7 +4,7 @@ using UnityEngine;
 public class UnitBase : MonoBehaviour
 {
     public enum UnitState { Idle, Move, Fight, Die}
-    public enum UnitActivity { Normal, Hit }
+    public enum UnitActivity { Normal, FindEnemy }
 
     [Header("# UnitState")]
     public UnitState unitState;

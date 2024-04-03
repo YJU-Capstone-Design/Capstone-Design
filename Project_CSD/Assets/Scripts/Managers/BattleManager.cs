@@ -100,8 +100,8 @@ public class BattleManager :Singleton<BattleManager>
         // 경계선 범위 벗어나지 않게 설정
         if (vec.y >= 2) { vec.y = 2; }
         else if (vec.y <= -2) { vec.y = -2; }
-        else if (vec.x >= 6) { vec.x = 6; }
-        else if (vec.x <= -7) { vec.x = -7; }
+        if (vec.x >= 6) { vec.x = 6; }
+        else if (vec.x <= -6) { vec.x = -6; }
 
         return vec;
     }

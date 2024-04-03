@@ -14,7 +14,7 @@ public class PlayerUnit : UnitBase
 
 
     [Header("# Unit Setting")]
-    Scanner scanner;
+    public Scanner scanner;
     public UnitData unitData;
     bool startMoveFinish = false;
     LayerMask targetLayer;
@@ -52,8 +52,13 @@ public class PlayerUnit : UnitBase
         StateSetting();
 
         CardManger.Instance.units.Add(gameObject);
-        // 클릭 지점으로 이동
-        lerp = StartCoroutine(lerpCoroutine(BattleManager.Instance.unitSpawnPoint[0].position, BattleManager.Instance.point, speed));
+
+        Vector3 startPos = BattleManager.Instance.unitSpawnPoint[0].position;
+        Vector3 targetPos = BattleManager.Instance.point;
+        float xPos = startPos.x + targetPos.x * (targetPos.x < 0 ? -0.4f : 0.4f);
+
+        // 클릭 지점으로 이동 -> 나머지는 Scanner 함수 에서 실행 (y 축만 먼저 빠르게 이동)
+        lerp = StartCoroutine(lerpCoroutine(startPos,new Vector3((xPos > targetPos.x ? targetPos.x : xPos), targetPos.y, 0), speed)); // y 축 먼저 이동
     }
 
     void Update()
@@ -104,17 +109,20 @@ public class PlayerUnit : UnitBase
         {
             // 위치 차이(방향) = 타겟 위치 - 나의 위치
             moveVec = scanner.nearestTarget.position - transform.position;
-            if (moveVec.y > 0) { moveVec.y += 0.5f; }
-            else if (moveVec.y < 0) { moveVec.y -= 0.5f; }
+            if(transform.position.y != moveVec.y) { moveVec.x *= 0.5f; moveVec.y *= 2f; } // y 축 먼저 빠르게 이동
+            else { moveVec.x *= 1f; moveVec.y *= 1f; } // 정상화
 
             // 이동
             transform.position += moveVec.normalized * speed * Time.deltaTime;
+            unitState = UnitState.Move;
 
             // 애니메이션
             StartAnimation("walk", true, 1.2f);
 
             // 가는 방향에 따라 Sprite 방향 변경
             SpriteDir(moveVec, Vector3.zero);
+
+            //unitActivity = UnitActivity.FindEnemy;
         }
         else
         {
@@ -148,12 +156,28 @@ public class PlayerUnit : UnitBase
 
         if (nearestAttackTarget != null)
         {
-            unitState = UnitState.Fight;
+            //unitState = UnitState.Fight;
             startMoveFinish = true;
 
             // 적이 인식되면 attackTime 증가 및 공격 함수 실행
-            attackTime += Time.deltaTime;
+                        attackTime += Time.deltaTime;
 
+            // 적 상태 변경
+            if ((unitID % 10000) / 1000 == 2) // 탱커 -> 다수 공격
+            {
+                foreach (Transform enemy in multipleAttackTargets)
+                {
+                    UnitBase enemyState = enemy.gameObject.GetComponent<UnitBase>();
+                    enemyState.unitState = UnitState.Fight;
+                }
+            }
+            else
+            {
+                UnitBase enemyState = nearestAttackTarget.gameObject.GetComponent<UnitBase>();
+                enemyState.unitState = UnitState.Fight;
+            }         
+
+            // 공격
             if (attackTime >= unitData.AttackTime)
             {
                 attackTime = 0;
@@ -171,6 +195,10 @@ public class PlayerUnit : UnitBase
 
             // 적의 위치에 따라 Sprite 방향 변경 (Attary Ray 영역이 큰 Unit 변수 제거 용도)
             SpriteDir(nearestAttackTarget.transform.position, transform.position);
+
+            // 싸우던 적이 사망했을 시 상태 변경 
+            EnemyUnit enemyLogic = nearestAttackTarget.GetComponent<EnemyUnit>();
+            if(enemyLogic.health <= 0) { unitActivity = UnitActivity.Normal; }
         }
         else
         {
@@ -199,49 +227,53 @@ public class PlayerUnit : UnitBase
         // 애니메이션
         StartAnimation("attack melee", false, 1f);
 
+        //if ((unitID % 10000) / 1000 == 2) // 탱커 -> 다수 공격
+        //{
+        //    foreach (Transform enemy in multipleAttackTargets)
+        //    {
+        //        EnemyUnit enemyLogic = enemy.gameObject.GetComponent<EnemyUnit>();
+        //        enemyLogic.unitActivity = UnitActivity.Hit;
+        //    }
+        //}
+        //else
+        //{
+        //    EnemyUnit enemyLogic = nearestAttackTarget.gameObject.GetComponent<EnemyUnit>();
+        //    enemyLogic.unitActivity = UnitActivity.Hit;
+        //}
+
+        yield return new WaitForSeconds(1f); // 애니메이션 시간
+
         if ((unitID % 10000) / 1000 == 2) // 탱커 -> 다수 공격
         {
             foreach (Transform enemy in multipleAttackTargets)
             {
-                EnemyUnit enemyLogic = enemy.gameObject.GetComponent<EnemyUnit>();
-                enemyLogic.unitActivity = UnitActivity.Hit;
-            }
-        }
-        else
-        {
-            EnemyUnit enemyLogic = nearestAttackTarget.gameObject.GetComponent<EnemyUnit>();
-            enemyLogic.unitActivity = UnitActivity.Hit;
-        }
-
-        yield return new WaitForSeconds(0.1f); // 애니메이션 시간
-
-        if ((unitID % 10000) / 1000 == 2) // 탱커 -> 다수 공격
-        {
-            foreach (Transform enemy in multipleAttackTargets)
-            {
-                Hit(enemy);
+                SetEnemyState(enemy);
             }
         }
         else // 단일 공격
         {
-            Hit(nearestAttackTarget);
+            SetEnemyState(nearestAttackTarget);
         }
 
         // 애니메이션
         StartAnimation("idle", true, 1f);
     }
 
-    void Hit(Transform target)
+    void SetEnemyState(Transform target)
     {
         if(target == null)
             return;
 
         EnemyUnit enemyLogic = target.gameObject.GetComponent<EnemyUnit>();
 
-        enemyLogic.health -= power;
-
-        // 맞은 직후 다시 상대의 UnitActivity 는 normal 상태로 변경
-        enemyLogic.unitActivity = UnitActivity.Normal;
+        if (smash != null)
+        {
+            enemyLogic.health -= power;
+        }
+        else // 죽었을 때
+        {
+            enemyLogic.unitActivity = UnitActivity.Normal; // 적 상태 초기화
+        }
     }
 
     // 화살 공격 함수
@@ -258,7 +290,7 @@ public class PlayerUnit : UnitBase
 
         // 맞고 있는 적 유닛 상태 변경
         EnemyUnit enemyLogic = nearestAttackTarget.gameObject.GetComponent<EnemyUnit>();
-        enemyLogic.unitActivity = UnitBase.UnitActivity.Hit;
+        //enemyLogic.unitActivity = UnitBase.UnitActivity.Hit;
 
         // 화살 가져오기
         GameObject arrowObj = PoolManager.Instance.Get(3, 0, transform.position + new Vector3(0, 0.5f, 0));
@@ -286,6 +318,18 @@ public class PlayerUnit : UnitBase
         // 진행중인 코루틴 함수 모두 중지
         if (smash != null) { StopCoroutine(smash); smash = null; }
         if (arrow != null) { StopCoroutine(arrow); arrow = null; }
+
+        if ((unitID % 10000) / 1000 == 2) // 탱커 -> 다수 공격
+        {
+            foreach (Transform enemy in multipleAttackTargets)
+            {
+                SetEnemyState(enemy);
+            }
+        }
+        else // 단일 공격
+        {
+            SetEnemyState(nearestAttackTarget);
+        }
 
         // 애니메이션
         // 아직 없음
