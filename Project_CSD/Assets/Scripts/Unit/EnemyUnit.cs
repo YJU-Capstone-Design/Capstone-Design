@@ -184,7 +184,7 @@ public class EnemyUnit : UnitBase
         {
             yield return new WaitForSeconds(anim.GetTime());
 
-            BattleManager.Instance.curHealth -= power;
+            BattleManager.Instance.HpDamage(power);
 
         } else
         {
@@ -231,6 +231,7 @@ public class EnemyUnit : UnitBase
         PlayerUnit enemyLogic = target.gameObject.GetComponent<PlayerUnit>();
 
         enemyLogic.health -= power;
+        
 
         // 맞은 직후 다시 상대의 UnitActivity 는 normal 상태로 변경
         enemyLogic.unitActivity = UnitActivity.Normal;
