@@ -15307,7 +15307,7 @@ MonoBehaviour:
   setMenu: {fileID: 1894124263}
   battleMode: {fileID: 804946117}
   mainLobby: {fileID: 2016165685}
-  mainLobbyObj: {fileID: 0}
+  mainLobbyObj: {fileID: 581485262}
 --- !u!4 &1723423946
 Transform:
   m_ObjectHideFlags: 0
