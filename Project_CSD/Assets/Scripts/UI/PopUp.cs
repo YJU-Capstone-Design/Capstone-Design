@@ -10,9 +10,13 @@ public class PopUp : MonoBehaviour
     [Header("PoPMenu")]
     [SerializeField] private GameObject menu;
     [SerializeField] private GameObject pop;
+    [SerializeField] private GameObject soundSetting;
     [SerializeField] private TextMeshProUGUI popUp_text;
 
     private bool goLobby;
+
+
+
 
     private void Awake()
     {
@@ -29,7 +33,7 @@ public class PopUp : MonoBehaviour
         
         if (type.Equals("Setting"))
         {
-
+            soundSetting.SetActive(true);
         }
         else if (type.Equals("Title"))
         {

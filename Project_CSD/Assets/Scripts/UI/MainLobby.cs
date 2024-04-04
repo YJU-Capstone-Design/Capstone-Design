@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 
-public class MainLobby : MonoBehaviour
+public class MainLobby : Singleton<MainLobby>
 {
     [SerializeField] private List<GameObject> menu = new List<GameObject>();
     [SerializeField] private List<GameObject> menu_Obj_Setting = new List<GameObject>();
@@ -18,31 +18,31 @@ public class MainLobby : MonoBehaviour
     [SerializeField] private GameObject toggleBG;
     [SerializeField] private GameObject panel_Bg;
     private int toggleCheck = 0;
-    private Vector3 openToggleTr;//토클의 처음 위치
-    private Vector3 closeToggleTr;//토클이 닫혔을 때의 위치
+ 
     Animator toggle_anim;
     Animator toggle_BG_anim;
     [Header("SettingMenu")]
     [SerializeField] private GameObject setMenu;
-
+    
 
     [Header("BattleModeSelect")]
     [SerializeField] private GameObject battleMode;
+    public bool modeCheck = false;//배틀씬에서 모드선택으로 이동할떄 판별값
 
     [Header("Lobby")]
-    [SerializeField] private GameObject mainLobby;
-    [SerializeField] private GameObject mainLobbyObj;
+    [SerializeField] private GameObject mainLobby;//메인로비 UI(캔버스)
+    [SerializeField] private GameObject mainLobbyObj;//메인로비 필드 오브젝트
 
     private void Awake()
     {
         
-        openToggleTr = toggleBtn.transform.localPosition;
-        closeToggleTr = closeToggleBtn.transform.localPosition;
+       
         toggle_anim = toggleBtn.GetComponent<Animator>();
         toggle_BG_anim = panel_Bg.GetComponent<Animator>();
         Clear();
     }
 
+  
     public void OpenScene(string type)
     {
         int openScene = 0;
@@ -147,6 +147,7 @@ public class MainLobby : MonoBehaviour
             menu[i].gameObject.SetActive(false);
             menu_Obj_Setting[i].gameObject.SetActive(false);
         }
+        
     }
     public void SettingClose()
     {

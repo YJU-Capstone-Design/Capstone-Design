@@ -5,14 +5,14 @@ using TMPro;
 
 public class UiManager : Singleton<UiManager>
 {
-    [Header("GameSpeed")]
+    [Header("GameSpeed")]   //게임 속도 배속
     private int time = 1;
     [SerializeField] private TextMeshProUGUI gameSpeed;
 
     [Header("Cost")]
     public int cost = 0;
     private float costTime = 0f;
-    private float timeInterver = 5f;
+    [SerializeField]private float timeInterver = 3f;
     [SerializeField] private TextMeshProUGUI costText;
 
     [Header("BattleUiToggle")]
@@ -64,7 +64,7 @@ public class UiManager : Singleton<UiManager>
             costText.text = cost.ToString();
         
     }
-    public void SpeedUp()
+    public void SpeedUp() //속도 최대 3배까지 설정
     {
         if (time == 3)
         {
