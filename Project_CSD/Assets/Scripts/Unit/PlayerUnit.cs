@@ -114,7 +114,7 @@ public class PlayerUnit : UnitBase
             unitState = UnitState.Move;
 
             // 애니메이션
-            StartAnimation("walk", true, 1.2f);
+            StartAnimation("Walk", true, 1.2f);
 
             // 가는 방향에 따라 Sprite 방향 변경
             SpriteDir(moveVec, Vector3.zero);
@@ -135,7 +135,7 @@ public class PlayerUnit : UnitBase
                     transform.localScale = new Vector3(1f, 1f, 1f);
 
                     // 애니메이션
-                    StartAnimation("idle", true, 1.5f);
+                    StartAnimation("Idle", true, 1.5f);
                 }
             }
         }
@@ -220,9 +220,11 @@ public class PlayerUnit : UnitBase
         }
 
         // 애니메이션
-        StartAnimation("attack melee", false, 1f);
+        StartAnimation("Attack", false, 1f);
 
-        yield return new WaitForSeconds(1f); // 애니메이션 시간
+        yield return new WaitForSeconds(0.6f); // 애니메이션 시간
+
+        Debug.Log("attack");
 
         if ((unitID % 10000) / 1000 == 2) // 탱커 -> 다수 공격
         {
@@ -236,8 +238,10 @@ public class PlayerUnit : UnitBase
             SetEnemyState(nearestAttackTarget);
         }
 
+        yield return new WaitForSeconds(0.4f); // 애니메이션 시간
+
         // 애니메이션
-        StartAnimation("idle", true, 1f);
+        StartAnimation("Idle", true, 1f);
     }
 
     void SetEnemyState(Transform target)
@@ -258,15 +262,15 @@ public class PlayerUnit : UnitBase
         }
 
         // 애니메이션
-        StartAnimation("attack range", false, 1f);
+        StartAnimation("Attack", false, 1f);
 
-        yield return null;
+        yield return new WaitForSeconds(0.6f); // 애니메이션 시간
 
         // 맞고 있는 적 유닛 상태 변경
         EnemyUnit enemyLogic = nearestAttackTarget.gameObject.GetComponent<EnemyUnit>();
 
         // 화살 가져오기
-        GameObject arrowObj = PoolManager.Instance.Get(3, 0, transform.position + new Vector3(0, 0.5f, 0));
+        GameObject arrowObj = PoolManager.Instance.Get(3, 1, transform.position + new Vector3(0, 1f, 0));
         Arrow arrowLogic = arrowObj.GetComponent<Arrow>();
         arrowLogic.unitType = unitID / 10000;
         arrowLogic.arrowPower = power;
@@ -274,6 +278,11 @@ public class PlayerUnit : UnitBase
         // 화살 목표 오브젝트 설정
         arrowLogic.target = nearestAttackTarget.gameObject;
         arrowLogic.playerUnit = this.gameObject;
+
+        yield return new WaitForSeconds(0.4f); // 애니메이션 시간
+
+        // 애니메이션
+        StartAnimation("Idle", true, 1f);
     }
 
     IEnumerator Die()
@@ -324,7 +333,7 @@ public class PlayerUnit : UnitBase
             SpriteDir(target, current);
 
             // 애니메이션
-            StartAnimation("walk", true, 1.2f);
+            StartAnimation("Walk", true, 1.2f);
         }
 
         startMoveFinish = true;
