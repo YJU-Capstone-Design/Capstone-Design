@@ -30,6 +30,9 @@ public class BattleManager :Singleton<BattleManager>
     float curSpawnTime;
     float nextSpawnDelay;
 
+    enum UnitType {Bread, Pupnut, Kitchu, Ramo}; // 테스트(제작)용
+    UnitType unitType;
+
     private void Awake()
     {
         battle.SetActive(true);
@@ -41,6 +44,8 @@ public class BattleManager :Singleton<BattleManager>
         spawnList = new List<Spawn>();
 
         ReadSpawnFile();
+
+        unitType = UnitType.Bread; // 테스트(제작)용
     }
 
     void Update()
@@ -53,8 +58,25 @@ public class BattleManager :Singleton<BattleManager>
             curSpawnTime = 0;
         }
 
-        // 플레이어 근접/궁수 유닛 소환
-        if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1))
+        // 플레이어 유닛 소환 -> 테스트(제작)용
+        if (Input.GetKeyDown(KeyCode.Keypad0))
+        {
+            unitType = UnitType.Bread;
+        } 
+        else if(Input.GetKey(KeyCode.Keypad1))
+        {
+            unitType= UnitType.Pupnut;
+        }
+        else if (Input.GetKey(KeyCode.Keypad2))
+        {
+            unitType = UnitType.Kitchu;
+        }
+        else if (Input.GetKey(KeyCode.Keypad3))
+        {
+            unitType = UnitType.Ramo;
+        }
+
+        if (Input.GetMouseButtonDown(0))
         {
             // 마우스 좌클릭 한 곳의 위치값
             point = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x,
@@ -63,8 +85,21 @@ public class BattleManager :Singleton<BattleManager>
             // 클릭한 곳 범위 조정
             point = MoveRange(point);
 
-            if (Input.GetMouseButtonDown(0)) { pool.Get(0, 0); }
-            else if (Input.GetMouseButtonDown(1)) { pool.Get(0, 1); }
+            switch (unitType)
+            {
+                case UnitType.Bread:
+                    pool.Get(0, 0);
+                    break;
+                case UnitType.Pupnut:
+                    pool.Get(0, 1);
+                    break;
+                case UnitType.Kitchu:
+                    pool.Get(0, 2);
+                    break;
+                case UnitType.Ramo:
+                    pool.Get(0, 3);
+                    break;
+            }
         }
 
 
