@@ -114,7 +114,7 @@ public class PlayerUnit : UnitBase
             unitState = UnitState.Move;
 
             // 애니메이션
-            StartAnimation("Walk", true, 1.2f);
+            StartAnimation("Walk", true, 1f);
 
             // 가는 방향에 따라 Sprite 방향 변경
             SpriteDir(moveVec, Vector3.zero);
@@ -153,7 +153,11 @@ public class PlayerUnit : UnitBase
 
         if (nearestAttackTarget != null)
         {
-            startMoveFinish = true;
+            if(!startMoveFinish)
+            {
+                StopCoroutine(lerp);
+                startMoveFinish = true;
+            }
 
             // 적이 인식되면 attackTime 증가 및 공격 함수 실행
             attackTime += Time.deltaTime;
@@ -241,7 +245,7 @@ public class PlayerUnit : UnitBase
         yield return new WaitForSeconds(0.4f); // 애니메이션 시간
 
         // 애니메이션
-        StartAnimation("Idle", true, 1f);
+        StartAnimation("Idle", true, 1.5f);
     }
 
     void SetEnemyState(Transform target)
@@ -282,7 +286,7 @@ public class PlayerUnit : UnitBase
         yield return new WaitForSeconds(0.4f); // 애니메이션 시간
 
         // 애니메이션
-        StartAnimation("Idle", true, 1f);
+        StartAnimation("Idle", true, 1.5f);
     }
 
     IEnumerator Die()

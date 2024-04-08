@@ -189,7 +189,7 @@ public class EnemyUnit : UnitBase
         // 유닛 종류 별 애니메이션
         switch (gameObject.name)
         {
-            case string name when name.Contains("Zombie") || name.Contains("Cyclope"):
+            case string name when name.Contains("Zombie") || name.Contains("Cyclope") || name.Contains("Orc"):
                 anim.Smash();
                 break;
             case string name when name.Contains("Skeleton"):
@@ -208,8 +208,8 @@ public class EnemyUnit : UnitBase
 
         } else
         {
-            // Cyclope 만 첫번째 공격이 도중에 끊겨서 일단 문제를 찾기 전까지 분류해서 시간 나눔.
-            if (gameObject.name.Contains("Cyclope")) { yield return new WaitForSeconds(anim.GetTime() + 0.3f); }
+            // Cyclope 랑 Orc 만 첫번째 공격이 도중에 끊겨서 일단 문제를 찾기 전까지 분류해서 시간 나눔.
+            if (gameObject.name.Contains("Cyclope") || gameObject.name.Contains("Orc")) { yield return new WaitForSeconds(anim.GetTime() + 0.3f); }
             else { yield return new WaitForSeconds(anim.GetTime()); }
 
             if ((unitID % 10000) / 1000 == 2) // 탱커 -> 다수 공격
