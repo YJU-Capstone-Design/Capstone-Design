@@ -1,4 +1,4 @@
-Char.png
+Bread.png
 	size: 394, 263
 	filter: Linear, Linear
 	pma: true

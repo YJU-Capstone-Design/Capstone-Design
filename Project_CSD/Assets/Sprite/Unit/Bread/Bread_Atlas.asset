@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a6b194f808b1af6499c93410e504af42, type: 3}
-  m_Name: Char_Atlas
+  m_Name: Bread_Atlas
   m_EditorClassIdentifier: 
   textureLoadingMode: 0
   onDemandTextureLoader: {fileID: 0}
-  atlasFile: {fileID: 4900000, guid: e1a523d0e9c64fe4ba2404ec3f09e1b7, type: 3}
+  atlasFile: {fileID: 4900000, guid: d7f27ee4f447bfc43972ae3879a53174, type: 3}
   materials:
-  - {fileID: 2100000, guid: 22f352218c85b9d44a48f1d38eb8d0fe, type: 2}
+  - {fileID: 2100000, guid: 8a396e25cf76378499370a3a809dce10, type: 2}
