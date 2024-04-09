@@ -68,8 +68,6 @@ public class Arrow : MonoBehaviour
                 EnemyUnit enemy = target.GetComponent<EnemyUnit>();
 
                 enemy.health -= arrowPower;
-                enemy.unitActivity = UnitBase.UnitActivity.Normal;
-
             }
             else
             {
@@ -77,7 +75,6 @@ public class Arrow : MonoBehaviour
                 PlayerUnit enemy = target.GetComponent<PlayerUnit>();
 
                 enemy.health -= arrowPower;
-                enemy.unitActivity = UnitBase.UnitActivity.Normal;
             }
         }
 

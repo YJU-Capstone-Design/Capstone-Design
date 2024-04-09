@@ -9,13 +9,12 @@ using static UnityEngine.GraphicsBuffer;
 public class EnemyUnit : UnitBase
 {
     [Header("# Unit Setting")]
-    Scanner scanner;
+    public Scanner scanner;
     public UnitData unitData;
-    LayerMask targetLayer;
     Vector3 moveVec; // 이동 방향
-    public LayerMask attackLayer;
-    public Vector3 attackRayPos; // attackRay 위치 = 현재 위치 + attackRayPos
-    public Vector2 attackRaySize;
+    LayerMask attackLayer;
+    [SerializeField] Vector3 attackRayPos; // attackRay 위치 = 현재 위치 + attackRayPos
+    [SerializeField] Vector2 attackRaySize;
 
     [Header("# Unit Activity")]
     Collider2D col;
@@ -32,7 +31,7 @@ public class EnemyUnit : UnitBase
         col = GetComponent<Collider2D>();
         anim = GetComponentInChildren<MonsterCharacterAnimation>();
 
-        targetLayer = scanner.targetLayer;
+        attackLayer = LayerMask.GetMask("PlayerUnit", "Wall");
 
         StateSetting();
     }
@@ -77,7 +76,6 @@ public class EnemyUnit : UnitBase
         // 설정값
         col.enabled = true;
         unitState = UnitState.Move;
-        unitActivity = UnitActivity.Normal;
         moveVec = Vector3.left;
         transform.GetChild(0).rotation = Quaternion.identity; // 애니메이션 각도 초기화를 위한 로직
         scanner.unitType = unitID / 10000;
@@ -90,6 +88,9 @@ public class EnemyUnit : UnitBase
         {
             // 위치 차이 = 타겟 위치 - 나의 위치  ->  (방향) 
             moveVec = scanner.nearestTarget.position - transform.position;
+
+            if (transform.position.y != moveVec.y) { moveVec.x *= 0.5f; moveVec.y *= 2f; } // y 축 먼저 빠르게 이동
+            else { moveVec.x *= 1f; moveVec.y *= 1f; } // 정상화
         }
         else
         {
@@ -118,11 +119,30 @@ public class EnemyUnit : UnitBase
 
         if (nearestAttackTarget != null)
         {
-            unitState = UnitState.Fight;
+            //unitState = UnitState.Fight;
 
             // 적(유닛, 벽)이 인식되면 attackTime 증가 및 공격 함수 실행
             attackTime += Time.deltaTime;
 
+            // 적 상태 변경
+            if ((unitID % 10000) / 1000 == 2) // 탱커 -> 다수 공격
+            {
+                if (multipleAttackTargets == null) return;
+                foreach (Transform enemy in multipleAttackTargets)
+                {
+                    if (enemy == null) continue;
+                    UnitBase enemyState = enemy.gameObject.GetComponent<UnitBase>();
+                    enemyState.unitState = UnitState.Fight;
+                }
+            }
+            else
+            {
+                if (nearestAttackTarget == null) return;
+                UnitBase enemyState = nearestAttackTarget.gameObject.GetComponent<UnitBase>();
+                enemyState.unitState = UnitState.Fight;
+            }
+
+            // 공격
             if (attackTime >= unitData.AttackTime)
             {
                 attackTime = 0;
@@ -169,7 +189,7 @@ public class EnemyUnit : UnitBase
         // 유닛 종류 별 애니메이션
         switch (gameObject.name)
         {
-            case string name when name.Contains("Zombie") || name.Contains("Cyclope"):
+            case string name when name.Contains("Zombie") || name.Contains("Cyclope") || name.Contains("Orc"):
                 anim.Smash();
                 break;
             case string name when name.Contains("Skeleton"):
@@ -184,38 +204,24 @@ public class EnemyUnit : UnitBase
         {
             yield return new WaitForSeconds(anim.GetTime());
 
-            BattleManager.Instance.HpDamage(power);
+            BattleManager.Instance.curHealth -= power;
 
         } else
         {
-            if ((unitID % 10000) / 1000 == 2) // 탱커 -> 다수 공격
-            {
-                foreach (Transform enemy in multipleAttackTargets)
-                {
-                    PlayerUnit enemyLogic = enemy.gameObject.GetComponent<PlayerUnit>();
-                    enemyLogic.unitActivity = UnitActivity.Hit;
-                }
-            }
-            else
-            {
-                PlayerUnit enemyLogic = nearestAttackTarget.gameObject.GetComponent<PlayerUnit>();
-                enemyLogic.unitActivity = UnitActivity.Hit;
-            }
-
-            // Cyclope 만 첫번째 공격이 도중에 끊겨서 일단 문제를 찾기 전까지 분류해서 시간 나눔.
-            if (gameObject.name.Contains("Cyclope")) { yield return new WaitForSeconds(anim.GetTime() + 0.3f); }
+            // Cyclope 랑 Orc 만 첫번째 공격이 도중에 끊겨서 일단 문제를 찾기 전까지 분류해서 시간 나눔.
+            if (gameObject.name.Contains("Cyclope") || gameObject.name.Contains("Orc")) { yield return new WaitForSeconds(anim.GetTime() + 0.3f); }
             else { yield return new WaitForSeconds(anim.GetTime()); }
 
             if ((unitID % 10000) / 1000 == 2) // 탱커 -> 다수 공격
             {
                 foreach(Transform enemy in multipleAttackTargets)
                 {
-                    Hit(enemy);
+                    SetEnemyState(enemy);
                 }
             } 
             else // 단일 공격
             {
-                Hit(nearestAttackTarget);
+                SetEnemyState(nearestAttackTarget);
             }
         }
 
@@ -223,7 +229,7 @@ public class EnemyUnit : UnitBase
         anim.Idle();
     }
 
-    void Hit(Transform target)
+    void SetEnemyState(Transform target)
     {
         if (target == null)
             return;
@@ -231,10 +237,6 @@ public class EnemyUnit : UnitBase
         PlayerUnit enemyLogic = target.gameObject.GetComponent<PlayerUnit>();
 
         enemyLogic.health -= power;
-        
-
-        // 맞은 직후 다시 상대의 UnitActivity 는 normal 상태로 변경
-        enemyLogic.unitActivity = UnitActivity.Normal;
     }
 
     // 화살 공격 함수
@@ -253,7 +255,6 @@ public class EnemyUnit : UnitBase
         {
             // 맞고 있는 적 유닛 상태 변경
             PlayerUnit enemyLogic = nearestAttackTarget.gameObject.GetComponent<PlayerUnit>();
-            enemyLogic.unitActivity = UnitBase.UnitActivity.Hit;
         }
 
         // 화살 가져오기
@@ -279,9 +280,6 @@ public class EnemyUnit : UnitBase
         unitState = UnitState.Die;
         moveVec = Vector2.zero;
         col.enabled = false;
-        unitActivity = UnitActivity.Normal;
-
-        CardManger.Instance.enemys.Remove(gameObject);
 
         // 작동중인 다른 Coroutine 함수 중지
         if (smash != null) { StopCoroutine(smash); smash = null; }
@@ -289,6 +287,8 @@ public class EnemyUnit : UnitBase
 
         speed = 0;
         attackTime = 0;
+
+        CardManger.Instance.enemys.Remove(gameObject);
 
         // 애니메이션
         anim.Die();

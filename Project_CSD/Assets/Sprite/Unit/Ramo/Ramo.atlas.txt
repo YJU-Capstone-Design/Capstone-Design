@@ -1,0 +1,33 @@
+Ramo.png
+	size: 126, 132
+	filter: Linear, Linear
+	pma: true
+	scale: 0.5
+arrow
+	bounds: 78, 43, 40, 46
+	rotate: 90
+body1
+	bounds: 2, 58, 74, 72
+body2
+	bounds: 105, 5, 20, 13
+	rotate: 90
+earL
+	bounds: 2, 2, 35, 54
+earR
+	bounds: 78, 85, 46, 45
+eye
+	bounds: 53, 23, 33, 23
+	rotate: 90
+eye2
+	bounds: 78, 27, 39, 14
+eye3
+	bounds: 39, 11, 45, 12
+	rotate: 90
+legL
+	bounds: 53, 8, 13, 24
+	offsets: 0, 0, 13, 25
+	rotate: 90
+legR
+	bounds: 79, 12, 13, 24
+	offsets: 0, 0, 13, 25
+	rotate: 90

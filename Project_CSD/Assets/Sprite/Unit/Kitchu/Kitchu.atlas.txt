@@ -1,0 +1,36 @@
+Kitchu.png
+	size: 126, 142
+	filter: Linear, Linear
+	pma: true
+	scale: 0.5
+body1
+	bounds: 2, 68, 74, 72
+body2
+	bounds: 2, 5, 63, 61
+	offsets: 0, 0, 63, 62
+earL
+	bounds: 93, 84, 24, 31
+	rotate: 90
+earR
+	bounds: 93, 110, 30, 31
+	offsets: 0, 0, 31, 31
+	rotate: 90
+eye
+	bounds: 93, 49, 33, 23
+	rotate: 90
+eye2
+	bounds: 81, 8, 39, 14
+	rotate: 90
+eye3
+	bounds: 67, 2, 45, 12
+	rotate: 90
+fur
+	bounds: 78, 49, 91, 13
+	rotate: 90
+legL
+	bounds: 97, 23, 13, 24
+	offsets: 0, 0, 13, 25
+legR
+	bounds: 97, 8, 13, 24
+	offsets: 0, 0, 13, 25
+	rotate: 90
