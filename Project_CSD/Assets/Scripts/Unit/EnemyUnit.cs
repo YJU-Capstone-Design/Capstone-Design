@@ -204,9 +204,10 @@ public class EnemyUnit : UnitBase
         {
             yield return new WaitForSeconds(anim.GetTime());
 
-            BattleManager.Instance.curHealth -= power;
+            BattleManager.Instance.HpDamage(power);
 
-        } else
+        }
+        else
         {
             // Cyclope 랑 Orc 만 첫번째 공격이 도중에 끊겨서 일단 문제를 찾기 전까지 분류해서 시간 나눔.
             if (gameObject.name.Contains("Cyclope") || gameObject.name.Contains("Orc")) { yield return new WaitForSeconds(anim.GetTime() + 0.3f); }
