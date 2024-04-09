@@ -124,22 +124,25 @@ public class EnemyUnit : UnitBase
             // 적(유닛, 벽)이 인식되면 attackTime 증가 및 공격 함수 실행
             attackTime += Time.deltaTime;
 
-            // 적 상태 변경
-            if ((unitID % 10000) / 1000 == 2) // 탱커 -> 다수 공격
+            if (!nearestAttackTarget.CompareTag("Wall"))
             {
-                if (multipleAttackTargets == null) return;
-                foreach (Transform enemy in multipleAttackTargets)
+                // 적 상태 변경
+                if ((unitID % 10000) / 1000 == 2) // 탱커 -> 다수 공격
                 {
-                    if (enemy == null) continue;
-                    UnitBase enemyState = enemy.gameObject.GetComponent<UnitBase>();
+                    if (multipleAttackTargets == null) return;
+                    foreach (Transform enemy in multipleAttackTargets)
+                    {
+                        if (enemy == null || !enemy.CompareTag("Wall")) continue;
+                        UnitBase enemyState = enemy.gameObject.GetComponent<UnitBase>();
+                        enemyState.unitState = UnitState.Fight;
+                    }
+                }
+                else
+                {
+                    if (nearestAttackTarget == null) return;
+                    UnitBase enemyState = nearestAttackTarget.gameObject.GetComponent<UnitBase>();
                     enemyState.unitState = UnitState.Fight;
                 }
-            }
-            else
-            {
-                if (nearestAttackTarget == null) return;
-                UnitBase enemyState = nearestAttackTarget.gameObject.GetComponent<UnitBase>();
-                enemyState.unitState = UnitState.Fight;
             }
 
             // 공격
