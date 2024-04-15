@@ -11,7 +11,7 @@ public class BattleManager :Singleton<BattleManager>
     [SerializeField] private GameObject card;
     public List<GameObject> cardObj = new List<GameObject>();
 
-    [Header("HpVar")]
+    [Header("HpBar")]
     public float curHealth; //* 현재 체력
     public float maxHealth; //* 최대 체력
     public GameObject healthBar; //
@@ -20,6 +20,7 @@ public class BattleManager :Singleton<BattleManager>
     [Header("BattleMgr")]
     [SerializeField] private GameObject battle;
     [SerializeField] private GameObject gameEnd;
+    public GameObject hpBarParent;
 
     [Header("Spawn")]
     public PoolManager pool;
@@ -184,7 +185,6 @@ public class BattleManager :Singleton<BattleManager>
             healthBar.SetActive(false);
             battle.SetActive(false);
             gameEnd.SetActive(true);
-
         }
     }
 

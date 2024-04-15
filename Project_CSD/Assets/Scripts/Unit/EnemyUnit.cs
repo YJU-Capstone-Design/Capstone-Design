@@ -15,6 +15,7 @@ public class EnemyUnit : UnitBase
     LayerMask attackLayer;
     [SerializeField] Vector3 attackRayPos; // attackRay 위치 = 현재 위치 + attackRayPos
     [SerializeField] Vector2 attackRaySize;
+    GameObject hpBar; // 체력바
 
     [Header("# Unit Activity")]
     Collider2D col;
@@ -32,8 +33,6 @@ public class EnemyUnit : UnitBase
         anim = GetComponentInChildren<MonsterCharacterAnimation>();
 
         attackLayer = LayerMask.GetMask("PlayerUnit", "Wall");
-
-        StateSetting();
     }
 
     void OnEnable()
@@ -46,6 +45,10 @@ public class EnemyUnit : UnitBase
     {
         if (unitState != UnitState.Die)
         {
+            // 체력 실시간 적용
+            HpBar hpBarLogic = hpBar.GetComponent<HpBar>();
+            hpBarLogic.nowHp = health;
+
             if (health <= 0)
             {
                 health = 0;
@@ -79,6 +82,13 @@ public class EnemyUnit : UnitBase
         moveVec = Vector3.left;
         transform.GetChild(0).rotation = Quaternion.identity; // 애니메이션 각도 초기화를 위한 로직
         scanner.unitType = unitID / 10000;
+
+        // 체력바
+        hpBar = PoolManager.Instance.Get(1, 0);
+        HpBar hpBarLogic = hpBar.GetComponent<HpBar>();
+        hpBarLogic.owner = this.gameObject.transform;
+        hpBarLogic.nowHp = health;
+        hpBarLogic.maxHp = health;
     }
 
     // 가까운 적을 찾는 Scanner 함수
@@ -301,6 +311,7 @@ public class EnemyUnit : UnitBase
         yield return new WaitForSeconds(anim.GetTime());
 
         StateSetting();
+        hpBar.SetActive(false);
         gameObject.SetActive(false);
     }
 

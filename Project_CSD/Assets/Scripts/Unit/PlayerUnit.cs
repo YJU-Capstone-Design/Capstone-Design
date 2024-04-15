@@ -20,6 +20,7 @@ public class PlayerUnit : UnitBase
     Vector3 moveVec; // 거리
     [SerializeField] Vector3 attackRayPos; // attackRay 위치 = 현재 위치 + attackRayPos
     [SerializeField] Vector2 attackRaySize;
+    GameObject hpBar; // 체력바
 
     [Header("# Unit Activity")]
     Collider2D col;
@@ -42,8 +43,6 @@ public class PlayerUnit : UnitBase
         skeletonAnimation = GetComponent<SkeletonAnimation>();
 
         targetLayer = scanner.targetLayer;
-
-        StateSetting();
     }
 
     void OnEnable()
@@ -64,6 +63,10 @@ public class PlayerUnit : UnitBase
     {
         if (unitState != UnitState.Die)
         {
+            // 체력 실시간 적용
+            HpBar hpBarLogic = hpBar.GetComponent<HpBar>();
+            hpBarLogic.nowHp = health;
+
             if (health <= 0)
             {
                 StartCoroutine(Die());
@@ -97,6 +100,13 @@ public class PlayerUnit : UnitBase
         firstPos = BattleManager.Instance.point;
         scanner.unitType = unitID / 10000;
         nearestAttackTarget = null;
+
+        // 체력바
+        hpBar = PoolManager.Instance.Get(1,0);
+        HpBar hpBarLogic = hpBar.GetComponent<HpBar>();
+        hpBarLogic.owner = this.gameObject.transform; // 주인 설정
+        hpBarLogic.nowHp = health;
+        hpBarLogic.maxHp = health;
     }
 
     // 가까운 적을 찾는 Scanner 함수 (이동)
@@ -303,10 +313,11 @@ public class PlayerUnit : UnitBase
         if (arrow != null) { StopCoroutine(arrow); arrow = null; }
 
         // 애니메이션
-        // 아직 없음
+        StartAnimation("Die", true, 1f);
 
         yield return new WaitForSeconds(1f);
 
+        hpBar.SetActive(false);
         gameObject.SetActive(false);
     }
 
