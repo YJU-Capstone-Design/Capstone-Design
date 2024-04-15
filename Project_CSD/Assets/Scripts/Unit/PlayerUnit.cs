@@ -363,6 +363,6 @@ public class PlayerUnit : UnitBase
 
     public void buff(int value)
     {
-        buffEffect[0].SetActive(true);
+        buffEffect[value].SetActive(true);
     }
 }
