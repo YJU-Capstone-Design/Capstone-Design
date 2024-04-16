@@ -23,7 +23,7 @@ public class CardManger : Singleton<CardManger>
 
     public void Buff(int value)
     {
-       foreach (GameObject obj in units)
+        foreach (GameObject obj in units)
         {
             PlayerUnit unitLogic = obj.GetComponent<PlayerUnit>();
             PlayerUnit unitBuff = obj.GetComponentInChildren<PlayerUnit>();

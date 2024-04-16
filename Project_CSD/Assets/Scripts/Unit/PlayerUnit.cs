@@ -374,6 +374,18 @@ public class PlayerUnit : UnitBase
 
     public void buff(int value)
     {
-        buffEffect[0].SetActive(true);
+        switch (value)
+        {
+            case 20000:
+                buffEffect[0].SetActive(true);
+                break;
+            case 20001:
+                buffEffect[1].SetActive(true);
+                break;
+            case 22001:
+                buffEffect[2].SetActive(true);
+                break;
+        }
     }
+
 }
