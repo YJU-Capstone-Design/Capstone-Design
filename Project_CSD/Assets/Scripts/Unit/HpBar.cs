@@ -11,6 +11,7 @@ public class HpBar : MonoBehaviour
     public float nowHp;
     public float maxHp;
     public Vector3 hpBarPos;
+    public Vector3 hpBarDir;
 
     private void OnEnable()
     {
@@ -22,13 +23,13 @@ public class HpBar : MonoBehaviour
         switch (owner.gameObject.name)
         {
             case string name when name.Contains("Cyclope") || name.Contains("Orc") || name.Contains("Orc"):
-                hpBarPos = new Vector3(-0.2f, 3.5f);
+                hpBarPos = new Vector3((hpBarDir.x < 0 ? -0.2f : 0f), 3.5f);
                 break;
             case string name when name.Contains("Skeleton") || name.Contains("Zombie"):
-                hpBarPos = new Vector3(-0.2f, 1.8f);
+                hpBarPos = new Vector3((hpBarDir.x < 0 ? -0.2f : 0f), 1.8f);
                 break;
             default:
-                hpBarPos = new Vector3(-0.2f, 1.5f);
+                hpBarPos = new Vector3((hpBarDir.x < 0 ? -0.2f : 0f), 1.5f);
                 break;
         }
 
