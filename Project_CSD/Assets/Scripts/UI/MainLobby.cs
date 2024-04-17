@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 
-public class MainLobby : Singleton<MainLobby>
+public class MainLobby : MonoBehaviour
 {
     [SerializeField] private List<GameObject> menu = new List<GameObject>();
     [SerializeField] private List<GameObject> menu_Obj_Setting = new List<GameObject>();
@@ -27,13 +27,17 @@ public class MainLobby : Singleton<MainLobby>
 
     [Header("BattleModeSelect")]
     [SerializeField] private GameObject battleMode;
-    public bool modeCheck = false;//배틀씬에서 모드선택으로 이동할떄 판별값
+    
 
     [Header("Lobby")]
     [SerializeField] private GameObject mainLobby;//메인로비 UI(캔버스)
     [SerializeField] private GameObject mainLobbyObj;//메인로비 필드 오브젝트
 
-    private void Awake()
+
+    
+
+   
+    private void Start()
     {
         
        
@@ -141,7 +145,7 @@ public class MainLobby : Singleton<MainLobby>
         menu[0].gameObject.SetActive(true);
         menu_Obj_Setting[0].gameObject.SetActive(true);
         setMenu.SetActive(false);
-        battleMode.SetActive(false);
+        
         for (int i=1; i<menu.Count; i++)
         {
             menu[i].gameObject.SetActive(false);

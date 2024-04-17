@@ -5,14 +5,12 @@ using UnityEngine.SceneManagement;
 
 public class SceneMgr : Singleton<SceneMgr>
 {
+
     
-
-
     public void GoSceneSelect(string type)
     {
         if (type == "BattleModeSelect")
         {
-            MainLobby.Instance.modeCheck = true;
             SceneManager.LoadScene("MainLobby");
         }
         else if (type == "MainLobbySelect")

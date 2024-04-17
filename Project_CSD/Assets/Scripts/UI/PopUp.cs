@@ -20,6 +20,7 @@ public class PopUp : MonoBehaviour
 
     private void Awake()
     {
+        
         Clear();
     }
     public void OpenMenu()
@@ -70,6 +71,7 @@ public class PopUp : MonoBehaviour
         if(goLobby)
         {
             Time.timeScale = 1;
+          
             LodingSceneMgr.LoadScene("MainLobby");
         }
         else if (!goLobby)
