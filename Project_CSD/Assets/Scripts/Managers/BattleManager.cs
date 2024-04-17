@@ -6,37 +6,45 @@ using System.IO;
 using System.Drawing;
 public class BattleManager :Singleton<BattleManager>
 {
+    public enum BattleState { Start, Win, Lose }
+    public BattleState battleState;
+
     [Header("Shop")]
     [SerializeField] private Transform shopParent;
     [SerializeField] private GameObject card;
     public List<GameObject> cardObj = new List<GameObject>();
 
-    [Header("HpBar")]
+    [Header("HpBar")] // 메인 집
     public float curHealth; //* 현재 체력
     public float maxHealth; //* 최대 체력
-    public GameObject healthBar; //
-    public Slider HpBarSlider;
+    public GameObject healthBar; // 벽 체력바
+    public Slider HpBarSlider; 
 
     [Header("BattleMgr")]
     [SerializeField] private GameObject battle;
     [SerializeField] private GameObject gameEnd;
-    public GameObject hpBarParent;
 
     [Header("Spawn")]
     public PoolManager pool;
-    public Vector3 point;
+    public Vector3 point; // 마우스 클릭 포인트
     public Transform[] unitSpawnPoint; // 기본 spawn point
     [SerializeField] List<Spawn> spawnList;
     int spawnIndex; // 스폰 로직 순서
     bool spawnEnd; // 스폰 로직 마지막
-    float curSpawnTime;
+    float curSpawnTime;  
     float nextSpawnDelay;
+    public GameObject hpBarParent; // 유닛 체력바 부모 (canvas 오브젝트)
+    public GameObject unitSpawnRange; // 유닛 스폰 범위 (canvas 오브젝트)
 
     enum UnitType {Bread, Pupnut, Kitchu, Ramo}; // 테스트(제작)용
     UnitType unitType;
 
     private void Awake()
     {
+        // 전투 시작
+        battleState = BattleState.Start;
+
+        // 전투 기본 세팅
         battle.SetActive(true);
         gameEnd.SetActive(false);
         CardMake();
@@ -45,15 +53,25 @@ public class BattleManager :Singleton<BattleManager>
 
         spawnList = new List<Spawn>();
 
-        ReadSpawnFile();
+        ReadSpawnFile(); // 적 유닛 스폰 파일 가져오기
 
         unitType = UnitType.Bread; // 테스트(제작)용
     }
 
     void Update()
     {
-        curSpawnTime += Time.deltaTime;
+        if (battleState != BattleState.Start)
+            return;
 
+        if(!spawnEnd) { curSpawnTime += Time.deltaTime; }
+
+        // 모든 적이 소환된 후, 필드에 남아있는 적이 없고, 벽의 hp가 남아 있으면 Win
+        if(spawnEnd && CardManger.Instance.enemys.Count == 0 && curHealth > 0)
+        {
+            battleState = BattleState.Win;
+        }
+
+        // 몬스터 스폰
         if (curSpawnTime > nextSpawnDelay && !spawnEnd)
         {
             SpawnEnemy();
@@ -78,69 +96,37 @@ public class BattleManager :Singleton<BattleManager>
             unitType = UnitType.Ramo;
         }
 
-        if (Input.GetMouseButtonDown(0))
-        {
-            // 마우스 좌클릭 한 곳의 위치값
-            point = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x,
-                Input.mousePosition.y, -Camera.main.transform.position.z));
-
-            // 클릭한 곳 범위 조정
-            point = MoveRange(point);
-
-            switch (unitType)
-            {
-                case UnitType.Bread:
-                    pool.Get(0, 0);
-                    break;
-                case UnitType.Pupnut:
-                    pool.Get(0, 1);
-                    break;
-                case UnitType.Kitchu:
-                    pool.Get(0, 2);
-                    break;
-                case UnitType.Ramo:
-                    pool.Get(0, 3);
-                    break;
-            }
-        }
-
-
-        // 적 좀비(근접) 유닛 소환
+        // 유닛 소환 영역 활성화
         if (Input.GetKeyDown("1"))
         {
-            pool.Get(2, 0);
-        }
-
-        // 적 좀비(궁수) 유닛 소환
-        if (Input.GetKeyDown("2"))
-        {
-            pool.Get(2, 1);
-        }
-
-        // 적 키클롭스(탱커) 유닛 소환
-        if (Input.GetKeyDown("3"))
-        {
-            pool.Get(2, 2);
-        }
-
-        // 적 스켈레톤(근접) 유닛 소환
-        if (Input.GetKeyDown("4"))
-        {
-            pool.Get(2, 3);
+            unitSpawnRange.SetActive(true);
         }
     }
 
-    // 경계선 범위 벗어나지 않게 이동 범위 조정
-    Vector3 MoveRange(Vector3 vec)
+    // 유닛 스폰 버튼
+    public void UnitSpawn()
     {
-        // 마우스로 클릭한 곳 범위 조정
-        // 경계선 범위 벗어나지 않게 설정
-        if (vec.y >= 2) { vec.y = 2; }
-        else if (vec.y <= -2) { vec.y = -2; }
-        if (vec.x >= 6) { vec.x = 6; }
-        else if (vec.x <= -6) { vec.x = -6; }
+        // 마우스 좌클릭 한 곳의 위치값
+        point = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x,
+            Input.mousePosition.y, -Camera.main.transform.position.z));
 
-        return vec;
+        switch (unitType)
+        {
+            case UnitType.Bread:
+                pool.Get(0, 0);
+                break;
+            case UnitType.Pupnut:
+                pool.Get(0, 1);
+                break;
+            case UnitType.Kitchu:
+                pool.Get(0, 2);
+                break;
+            case UnitType.Ramo:
+                pool.Get(0, 3);
+                break;
+        }
+
+        unitSpawnRange.SetActive(false);
     }
 
     public void HpDamage(float dmg)

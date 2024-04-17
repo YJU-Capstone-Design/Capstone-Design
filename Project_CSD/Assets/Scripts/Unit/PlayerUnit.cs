@@ -6,6 +6,7 @@ using UnityEngine;
 using static UnitBase;
 using Spine.Unity;
 using static UnityEngine.GraphicsBuffer;
+using UnityEngine.SocialPlatforms;
 
 public class PlayerUnit : UnitBase
 {
@@ -68,9 +69,15 @@ public class PlayerUnit : UnitBase
             hpBarLogic.nowHp = health;
             hpBarLogic.hpBarDir = moveVec;
 
-            if (health <= 0)
+            if (health <= 0 || BattleManager.Instance.battleState == BattleManager.BattleState.Lose) // hp 가 0 이 되거나 게임에서 졌을 경우
             {
+                Debug.Log("Die1");
                 StartCoroutine(Die());
+            } 
+            else if(BattleManager.Instance.battleState == BattleManager.BattleState.Win) // 승리 시
+            {
+                unitState = UnitState.Win;
+                StartAnimation("Win", true, 1);
             }
             else
             {
@@ -300,6 +307,7 @@ public class PlayerUnit : UnitBase
 
     IEnumerator Die()
     {
+        Debug.Log("Die2");
         unitState = UnitState.Die;
         moveVec = Vector2.zero;
         col.enabled = false;

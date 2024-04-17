@@ -43,6 +43,7 @@ public class EnemyUnit : UnitBase
 
     void Update()
     {
+        
         if (unitState != UnitState.Die)
         {
             // 체력 실시간 적용

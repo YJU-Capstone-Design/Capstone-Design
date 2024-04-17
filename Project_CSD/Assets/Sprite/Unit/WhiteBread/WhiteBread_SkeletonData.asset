@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f1b3b4b945939a54ea0b23d3396115fb, type: 3}
-  m_Name: Ramo_SkeletonData
+  m_Name: WhiteBread_SkeletonData
   m_EditorClassIdentifier: 
   atlasAssets:
-  - {fileID: 11400000, guid: 0d10ba76e0e000d4996916e333a32d11, type: 2}
-  scale: 0.006
-  skeletonJSON: {fileID: 4900000, guid: 1cae03c0f74fc6544b6d1b564dffada6, type: 3}
+  - {fileID: 11400000, guid: 1de24e0c1cf582e4ab8c4682d2e9e398, type: 2}
+  scale: 0.008
+  skeletonJSON: {fileID: 4900000, guid: d23f5d6195c9a1843909bd3e42bb2f69, type: 3}
   isUpgradingBlendModeMaterials: 0
   blendModeMaterials:
     requiresBlendModeMaterials: 0
@@ -27,5 +27,5 @@ MonoBehaviour:
   fromAnimation: []
   toAnimation: []
   duration: []
-  defaultMix: 0
+  defaultMix: 0.2
   controller: {fileID: 0}

@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class CardManger : Singleton<CardManger>
 {
-    public static CardManger instance;
-
     public List<GameObject> units;
     public List<GameObject> enemys;
 
@@ -14,8 +12,6 @@ public class CardManger : Singleton<CardManger>
     PlayerCard playerCard;
     private void Awake()
     {
-        instance = this;
-
         playerCard = GetComponent<PlayerCard>();
         units = new List<GameObject>();
         enemys = new List<GameObject>();

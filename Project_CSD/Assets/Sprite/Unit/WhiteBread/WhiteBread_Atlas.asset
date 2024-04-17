@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a6b194f808b1af6499c93410e504af42, type: 3}
-  m_Name: Ramo_Atlas
+  m_Name: WhiteBread_Atlas
   m_EditorClassIdentifier: 
   textureLoadingMode: 0
   onDemandTextureLoader: {fileID: 0}
-  atlasFile: {fileID: 4900000, guid: 3eb7727a2690e1f4097ef00418651f8c, type: 3}
+  atlasFile: {fileID: 4900000, guid: f7b9461d37e5404468de547d27d1e771, type: 3}
   materials:
-  - {fileID: 2100000, guid: 90d5a12874ae7764caaac12ec30fc555, type: 2}
+  - {fileID: 2100000, guid: 66a07f142150e6f4c98aef21c353d054, type: 2}

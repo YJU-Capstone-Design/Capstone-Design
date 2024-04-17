@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 4530167558469826965}
   - component: {fileID: 3703596864262432604}
   m_Layer: 6
-  m_Name: Bread
+  m_Name: WhiteBread
   m_TagString: PlayerUnit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -60,7 +60,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 8a396e25cf76378499370a3a809dce10, type: 2}
+  - {fileID: 2100000, guid: 66a07f142150e6f4c98aef21c353d054, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -94,7 +94,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d247ba06193faa74d9335f5481b2b56c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skeletonDataAsset: {fileID: 11400000, guid: 31c0c063ff107db4d9129af4ba4f6e05, type: 2}
+  skeletonDataAsset: {fileID: 11400000, guid: 665751ad89929914d8b350f6585e40dd, type: 2}
   initialSkinName: 
   fixPrefabOverrideViaMeshFilter: 2
   initialFlipX: 0
@@ -191,8 +191,8 @@ MonoBehaviour:
   - {fileID: 8874215935305071327}
   scanner: {fileID: 0}
   unitData: {fileID: 11400000, guid: ffe17753e345f7e4488c21c32a792c45, type: 2}
-  attackRayPos: {x: 0.5, y: 0.35, z: 0}
-  attackRaySize: {x: 0.7, y: 0.35}
+  attackRayPos: {x: 0.6, y: 0.35, z: 0}
+  attackRaySize: {x: 1, y: 0.35}
   nearestAttackTarget: {fileID: 0}
   multipleAttackTargets: []
 --- !u!114 &4530167558469826965
