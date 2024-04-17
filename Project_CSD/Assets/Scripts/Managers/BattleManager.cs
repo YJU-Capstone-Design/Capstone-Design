@@ -23,6 +23,7 @@ public class BattleManager :Singleton<BattleManager>
     [Header("BattleMgr")]
     [SerializeField] private GameObject battle;
     [SerializeField] private GameObject gameEnd;
+    [SerializeField] Transform mainCamera;
 
     [Header("Spawn")]
     public PoolManager pool;
@@ -60,16 +61,18 @@ public class BattleManager :Singleton<BattleManager>
 
     void Update()
     {
+        // 적 좀비 소환 -> 테스트 용
+        if (Input.GetKeyDown("2")) { pool.Get(2, 0); }
+
+        if(CardManger.Instance.enemys.Count > 0 && curHealth > 0)
+        {
+            battleState = BattleState.Start;
+        }
+
         if (battleState != BattleState.Start)
             return;
 
-        if(!spawnEnd) { curSpawnTime += Time.deltaTime; }
-
-        // 모든 적이 소환된 후, 필드에 남아있는 적이 없고, 벽의 hp가 남아 있으면 Win
-        if(spawnEnd && CardManger.Instance.enemys.Count == 0 && curHealth > 0)
-        {
-            battleState = BattleState.Win;
-        }
+        if (!spawnEnd) { curSpawnTime += Time.deltaTime; } // 스폰이 끝났을 경우 스폰 타임은 증가 X
 
         // 몬스터 스폰
         if (curSpawnTime > nextSpawnDelay && !spawnEnd)
@@ -77,6 +80,19 @@ public class BattleManager :Singleton<BattleManager>
             SpawnEnemy();
             curSpawnTime = 0;
         }
+
+        // 모든 적이 소환된 후, 필드에 남아있는 적이 없고, 벽의 hp가 남아 있으면 Win
+        if (spawnEnd && CardManger.Instance.enemys.Count == 0 && curHealth > 0)
+        {
+            battleState = BattleState.Win;
+        } 
+
+        // 이겼거나 졌을 경우 결과창 띄우기
+        if (battleState == BattleState.Win || battleState == BattleState.Lose) 
+        { 
+            // 결과 PopUp 창
+        }
+
 
         // 플레이어 유닛 소환 -> 테스트(제작)용
         if (Input.GetKeyDown(KeyCode.Keypad0))
@@ -99,6 +115,20 @@ public class BattleManager :Singleton<BattleManager>
         // 유닛 소환 영역 활성화
         if (Input.GetKeyDown("1"))
         {
+            GameObject spawnArea = unitSpawnRange.transform.GetChild(1).gameObject;
+            RectTransform spawnAreaAnchors = spawnArea.GetComponent<RectTransform>();
+
+            // 메인 카메라의 위치에 따라 스폰 가능 영역 범위 변경
+            if (mainCamera.position.x >= 3)
+            {
+                spawnAreaAnchors.anchorMin = new Vector2(0, 0.1f);
+                spawnAreaAnchors.anchorMax = new Vector2(1, 0.5f);
+            } 
+            else
+            {
+                spawnAreaAnchors.anchorMin = new Vector2(0.15f, 0.1f);
+                spawnAreaAnchors.anchorMax = new Vector2(1, 0.5f);
+            }
             unitSpawnRange.SetActive(true);
         }
     }
@@ -219,6 +249,8 @@ public class BattleManager :Singleton<BattleManager>
         if (spawnIndex == spawnList.Count)
         {
             spawnEnd = true;
+            curSpawnTime = 0;
+            spawnIndex = 0;
             return;
         }
 

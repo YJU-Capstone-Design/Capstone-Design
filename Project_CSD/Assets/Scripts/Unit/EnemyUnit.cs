@@ -16,6 +16,7 @@ public class EnemyUnit : UnitBase
     [SerializeField] Vector3 attackRayPos; // attackRay 위치 = 현재 위치 + attackRayPos
     [SerializeField] Vector2 attackRaySize;
     GameObject hpBar; // 체력바
+    [SerializeField] Transform[] allChildren;
 
     [Header("# Unit Activity")]
     Collider2D col;
@@ -31,6 +32,8 @@ public class EnemyUnit : UnitBase
         scanner = GetComponentInChildren<Scanner>();
         col = GetComponent<Collider2D>();
         anim = GetComponentInChildren<MonsterCharacterAnimation>();
+
+        allChildren = GetComponentsInChildren<Transform>();
 
         attackLayer = LayerMask.GetMask("PlayerUnit", "Wall");
     }
@@ -59,6 +62,20 @@ public class EnemyUnit : UnitBase
             else
             {
                 AttackRay();
+            }
+        }
+
+        // 모든 Sprite 자식 오브젝트 Order Layer 조정
+        foreach (Transform child in allChildren)
+        {
+            SpriteRenderer bodySprite = child.GetComponent<SpriteRenderer>();
+
+            // SpriteRenderer 가 있을 경우에는 본체의 y 축 값의 소수점을 제외한 값을 Order Layer 에 적용
+            if(bodySprite != null)
+            {
+                int yPos = Mathf.FloorToInt(transform.position.y);
+                int orderLayer = (yPos < 0 ? yPos * yPos : yPos); // 음수일 경우에는 제곱처리
+                bodySprite.sortingOrder = orderLayer;
             }
         }
     }
