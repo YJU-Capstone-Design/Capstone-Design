@@ -162,6 +162,7 @@ MonoBehaviour:
   HpBarSlider: {fileID: 1296852062}
   battle: {fileID: 54076158}
   gameEnd: {fileID: 707246039}
+  mainCamera: {fileID: 350576899}
   pool: {fileID: 1383438278}
   point: {x: 0, y: 0, z: 0}
   unitSpawnPoint:

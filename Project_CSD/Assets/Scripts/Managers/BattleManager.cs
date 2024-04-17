@@ -23,6 +23,7 @@ public class BattleManager :Singleton<BattleManager>
     [Header("BattleMgr")]
     [SerializeField] private GameObject battle;
     [SerializeField] private GameObject gameEnd;
+    [SerializeField] Transform mainCamera;
 
     [Header("Spawn")]
     public PoolManager pool;
@@ -99,6 +100,20 @@ public class BattleManager :Singleton<BattleManager>
         // 유닛 소환 영역 활성화
         if (Input.GetKeyDown("1"))
         {
+            GameObject spawnArea = unitSpawnRange.transform.GetChild(1).gameObject;
+            RectTransform spawnAreaAnchors = spawnArea.GetComponent<RectTransform>();
+
+            // 메인 카메라의 위치에 따라 스폰 가능 영역 범위 변경
+            if (mainCamera.position.x >= 3)
+            {
+                spawnAreaAnchors.anchorMin = new Vector2(0, 0.1f);
+                spawnAreaAnchors.anchorMax = new Vector2(1, 0.5f);
+            } 
+            else
+            {
+                spawnAreaAnchors.anchorMin = new Vector2(0.15f, 0.1f);
+                spawnAreaAnchors.anchorMax = new Vector2(1, 0.5f);
+            }
             unitSpawnRange.SetActive(true);
         }
     }
