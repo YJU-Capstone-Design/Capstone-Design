@@ -103,7 +103,7 @@ public class PlayerUnit : UnitBase
         nearestAttackTarget = null;
 
         // 체력바
-        hpBar = PoolManager.Instance.Get(1,0);
+        hpBar = PoolManager.Instance.Get(1,3);
         HpBar hpBarLogic = hpBar.GetComponent<HpBar>();
         hpBarLogic.owner = this.gameObject.transform; // 주인 설정
         hpBarLogic.nowHp = health;

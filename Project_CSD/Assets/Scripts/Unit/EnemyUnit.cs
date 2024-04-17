@@ -85,7 +85,7 @@ public class EnemyUnit : UnitBase
         scanner.unitType = unitID / 10000;
 
         // 체력바
-        hpBar = PoolManager.Instance.Get(1, 0);
+        hpBar = PoolManager.Instance.Get(1, 3);
         HpBar hpBarLogic = hpBar.GetComponent<HpBar>();
         hpBarLogic.owner = this.gameObject.transform;
         hpBarLogic.nowHp = health;
