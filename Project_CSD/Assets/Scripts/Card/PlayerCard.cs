@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using UnityEngine;
 using static CardBase;
-using static UnityEditor.Progress;
+//using static UnityEditor.Progress;
 
 public class PlayerCard : CardBase
 {

@@ -11,7 +11,7 @@ public class BattleManager :Singleton<BattleManager>
 
     [Header("Shop")]
     [SerializeField] private Transform shopParent;
-    [SerializeField] private GameObject card;
+    [SerializeField] private GameObject[] card;
     public List<GameObject> cardObj = new List<GameObject>();
 
     [Header("HpBar")] // ¸ÞÀÎ Áý
@@ -169,10 +169,15 @@ public class BattleManager :Singleton<BattleManager>
     private void CardMake()
     {
 
-
+        
         for (int i = 0; i < 3; i++)
         {
-            GameObject myInstance = Instantiate(card, shopParent);
+            int ran_card = Random.Range(0, card.Length);
+            GameObject myInstance;
+           
+            myInstance = Instantiate(card[ran_card], shopParent);
+                
+            
             cardObj.Add(myInstance);
         }
 
@@ -201,6 +206,7 @@ public class BattleManager :Singleton<BattleManager>
             healthBar.SetActive(false);
             battle.SetActive(false);
             gameEnd.SetActive(true);
+            Time.timeScale = 0f;
         }
     }
 
