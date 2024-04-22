@@ -18,42 +18,43 @@ public class MainLobby : MonoBehaviour
     [SerializeField] private GameObject toggleBG;
     [SerializeField] private GameObject panel_Bg;
     private int toggleCheck = 0;
- 
+
     Animator toggle_anim;
     Animator toggle_BG_anim;
     [Header("SettingMenu")]
     [SerializeField] private GameObject setMenu;
-    
+
 
     [Header("BattleModeSelect")]
     [SerializeField] private GameObject battleMode;
-    
+
 
     [Header("Lobby")]
     [SerializeField] private GameObject mainLobby;//메인로비 UI(캔버스)
     [SerializeField] private GameObject mainLobbyObj;//메인로비 필드 오브젝트
 
 
-    
 
-   
+
+
     private void Start()
     {
-        
-       
+
+
         toggle_anim = toggleBtn.GetComponent<Animator>();
         toggle_BG_anim = panel_Bg.GetComponent<Animator>();
         Clear();
     }
 
-  
+
     public void OpenScene(string type)
     {
         int openScene = 0;
-        if(type == "Gacha")
+        if (type == "Gacha")
         {
             openScene = 1;
-        }else if(type == "TraningBtn")
+        }
+        else if (type == "TraningBtn")
         {
             openScene = 2;
         }
@@ -61,7 +62,7 @@ public class MainLobby : MonoBehaviour
         {
             openScene = 3;
         }
-        else if (type == "KitchenRoom") 
+        else if (type == "KitchenRoom")
         {
             openScene = 4;
         }
@@ -73,7 +74,7 @@ public class MainLobby : MonoBehaviour
         {
             openScene = 6;
         }
-        for(int i=1; i<menu.Count; i++)
+        for (int i = 1; i < menu.Count; i++)
         {
             menu[i].gameObject.SetActive(false);
             menu_Obj_Setting[i].gameObject.SetActive(false);
@@ -82,31 +83,31 @@ public class MainLobby : MonoBehaviour
         }
         menu[openScene].SetActive(true);
         menu_Obj_Setting[openScene].SetActive(true);
-        if(openScene == 0)
+        if (openScene == 0)
         {
             mainLobby.transform.localScale = Vector3.one;
             mainLobbyObj.transform.localScale = Vector3.one;
         }
-       
+
     }
 
 
     public void ToggleOnOff()
     {
-        if(toogleState==0 )
+        if (toogleState == 0)
         {
 
             toggleMenu.SetActive(false);
             //panel_Bg.SetActive(false);
-            
+
             toogleState = 1;
             //toggleBtn.transform.localPosition = closeToggleTr;
             toggle_BG_anim.SetInteger("ToggleState", 0);
             toggle_BG_anim.SetBool("ToggleSet", false);
             toggle_anim.SetInteger("ToggleState", 0);
-            toggle_anim.SetBool("ToggleSet",false);
+            toggle_anim.SetBool("ToggleSet", false);
         }
-        else if(toogleState==1 )
+        else if (toogleState == 1)
         {
             toggle_BG_anim.SetInteger("ToggleState", 1);
             toggle_BG_anim.SetBool("ToggleSet", true);
@@ -114,7 +115,7 @@ public class MainLobby : MonoBehaviour
             toggle_anim.SetBool("ToggleSet", true);
             Invoke("OnToggle", 0.5f);
             toogleState = 0;
-         
+
             //toggleBtn.transform.localPosition = openToggleTr;
 
         }
@@ -134,7 +135,7 @@ public class MainLobby : MonoBehaviour
     public void OnToggle()
     {
         toggleMenu.SetActive(true);
-        
+
 
     }
 
@@ -145,13 +146,13 @@ public class MainLobby : MonoBehaviour
         menu[0].gameObject.SetActive(true);
         menu_Obj_Setting[0].gameObject.SetActive(true);
         setMenu.SetActive(false);
-        
-        for (int i=1; i<menu.Count; i++)
+
+        for (int i = 1; i < menu.Count; i++)
         {
             menu[i].gameObject.SetActive(false);
             menu_Obj_Setting[i].gameObject.SetActive(false);
         }
-        
+
     }
     public void SettingClose()
     {
@@ -174,5 +175,5 @@ public class MainLobby : MonoBehaviour
     {
         Application.Quit();
     }
-    
+
 }
