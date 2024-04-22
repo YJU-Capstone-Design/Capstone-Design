@@ -10,17 +10,13 @@ public class PopUp : MonoBehaviour
     [Header("PoPMenu")]
     [SerializeField] private GameObject menu;
     [SerializeField] private GameObject pop;
-    [SerializeField] private GameObject soundSetting;
+    [SerializeField] private GameObject result_Lobby;
     [SerializeField] private TextMeshProUGUI popUp_text;
 
     private bool goLobby;
 
-
-
-
     private void Awake()
     {
-        
         Clear();
     }
     public void OpenMenu()
@@ -34,17 +30,17 @@ public class PopUp : MonoBehaviour
         
         if (type.Equals("Setting"))
         {
-            soundSetting.SetActive(true);
+
         }
         else if (type.Equals("Title"))
         {
-            popUp_text.text = "로비로 이동하시겠습니까?";
+            popUp_text.text = "로비로 이동  하시 겠습니까?";
             goLobby = true;
             pop.SetActive(true);
         }
         else if (type.Equals("Restart"))
         {
-            popUp_text.text = "게임을 재 시작하시겠습니까?";
+            popUp_text.text = "게임을 재시작   하시겠습니까?";
             goLobby = false;
             pop.SetActive(true);
         }
@@ -61,23 +57,38 @@ public class PopUp : MonoBehaviour
     {
         other.SetActive(false);
         stop.SetActive(false);
+        
+       
+    }
+    public void ScenceEscape()
+    {
         Time.timeScale = 1;
+    }
+    public void Continue()
+    {
+        UiManager.Instance.time = 3;
+        UiManager.Instance.SpeedUp();
     }
 
     public void MoveScene()
     {
-       
+        
        
         if(goLobby)
         {
-            Time.timeScale = 1;
-          
             LodingSceneMgr.LoadScene("MainLobby");
+            Time.timeScale = 1;
         }
         else if (!goLobby)
         {
-            Time.timeScale = 1;
             SceneMgr.Instance.GoSceneSelect("NomalMode");
         }
+    }
+    public void MoveScene2()
+    {
+        
+            LodingSceneMgr.LoadScene("MainLobby");
+            Time.timeScale = 1;
+        
     }
 }

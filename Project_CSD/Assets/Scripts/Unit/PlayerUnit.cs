@@ -6,21 +6,23 @@ using UnityEngine;
 using static UnitBase;
 using Spine.Unity;
 using static UnityEngine.GraphicsBuffer;
+using UnityEngine.SocialPlatforms;
 
 public class PlayerUnit : UnitBase
 {
     [Header("# Unit Effect")]
     public List<GameObject> buffEffect = new List<GameObject>();
 
-
     [Header("# Unit Setting")]
-    Scanner scanner;
+    public Scanner scanner;
     public UnitData unitData;
+    SpriteRenderer bodySprite;
     bool startMoveFinish = false;
     LayerMask targetLayer;
     Vector3 moveVec; // 거리
-    public Vector3 attackRayPos; // attackRay 위치 = 현재 위치 + attackRayPos
-    public Vector2 attackRaySize;
+    [SerializeField] Vector3 attackRayPos; // attackRay 위치 = 현재 위치 + attackRayPos
+    [SerializeField] Vector2 attackRaySize;
+    GameObject hpBar; // 체력바
 
     [Header("# Unit Activity")]
     Collider2D col;
@@ -41,10 +43,9 @@ public class PlayerUnit : UnitBase
         scanner = GetComponentInChildren<Scanner>();
         col = GetComponent<Collider2D>();
         skeletonAnimation = GetComponent<SkeletonAnimation>();
+        bodySprite = GetComponent<SpriteRenderer>();
 
         targetLayer = scanner.targetLayer;
-
-        StateSetting();
     }
 
     void OnEnable()
@@ -52,23 +53,47 @@ public class PlayerUnit : UnitBase
         StateSetting();
 
         CardManger.Instance.units.Add(gameObject);
-        // 클릭 지점으로 이동
-        lerp = StartCoroutine(lerpCoroutine(BattleManager.Instance.unitSpawnPoint[0].position, BattleManager.Instance.point, speed));
+
+        Vector3 startPos = BattleManager.Instance.unitSpawnPoint[0].position;
+        Vector3 targetPos = BattleManager.Instance.point;
+        float xPos = startPos.x + targetPos.x * (targetPos.x < 0 ? -0.4f : 0.4f);
+
+        // 클릭 지점으로 이동 -> 나머지는 Scanner 함수 에서 실행 (y 축만 먼저 빠르게 이동)
+        lerp = StartCoroutine(lerpCoroutine(startPos,new Vector3((xPos > targetPos.x ? targetPos.x : xPos), targetPos.y, 0), speed)); // y 축 먼저 이동
     }
 
     void Update()
     {
-        // Animation();
         if (unitState != UnitState.Die)
         {
-            if (health <= 0)
+            // 체력 실시간 적용
+            HpBar hpBarLogic = hpBar.GetComponent<HpBar>();
+            hpBarLogic.nowHp = health;
+            hpBarLogic.hpBarDir = moveVec;
+
+            if (health <= 0 || BattleManager.Instance.battleState == BattleManager.BattleState.Lose) // hp 가 0 이 되거나 게임에서 졌을 경우
             {
+                Debug.Log("Die1");
                 StartCoroutine(Die());
+            } 
+            else if(BattleManager.Instance.battleState == BattleManager.BattleState.Win) // 승리 시
+            {
+                unitState = UnitState.Win;
+                StartAnimation("Win", true, 1);
             }
             else
             {
                 AttackRay();
             }
+        }
+
+        // Order Layer 조정
+        // SpriteRenderer 가 있을 경우에는 본체의 y 축 값의 소수점을 제외한 값을 Order Layer 에 적용
+        if (bodySprite != null)
+        {
+            int yPos = Mathf.FloorToInt(transform.position.y);
+            int orderLayer = (yPos < 0 ? yPos * yPos : yPos); // 음수일 경우에는 제곱처리
+            bodySprite.sortingOrder = orderLayer;
         }
     }
 
@@ -90,11 +115,17 @@ public class PlayerUnit : UnitBase
         // 설정값
         col.enabled = true;
         unitState = UnitState.Move;
-        unitActivity = UnitActivity.Normal;
         moveVec = Vector3.right;
         firstPos = BattleManager.Instance.point;
         scanner.unitType = unitID / 10000;
         nearestAttackTarget = null;
+
+        // 체력바
+        hpBar = PoolManager.Instance.Get(1,3);
+        HpBar hpBarLogic = hpBar.GetComponent<HpBar>();
+        hpBarLogic.owner = this.gameObject.transform; // 주인 설정
+        hpBarLogic.nowHp = health;
+        hpBarLogic.maxHp = health;
     }
 
     // 가까운 적을 찾는 Scanner 함수 (이동)
@@ -104,17 +135,20 @@ public class PlayerUnit : UnitBase
         {
             // 위치 차이(방향) = 타겟 위치 - 나의 위치
             moveVec = scanner.nearestTarget.position - transform.position;
-            if (moveVec.y > 0) { moveVec.y += 0.5f; }
-            else if (moveVec.y < 0) { moveVec.y -= 0.5f; }
+            if(transform.position.y != moveVec.y) { moveVec.x *= 0.5f; moveVec.y *= 2f; } // y 축 먼저 빠르게 이동
+            else { moveVec.x *= 1f; moveVec.y *= 1f; } // 정상화
 
             // 이동
             transform.position += moveVec.normalized * speed * Time.deltaTime;
+            unitState = UnitState.Move;
 
             // 애니메이션
-            StartAnimation("walk", true, 1.2f);
+            StartAnimation("Walk", true, 1f);
 
             // 가는 방향에 따라 Sprite 방향 변경
             SpriteDir(moveVec, Vector3.zero);
+
+            //unitActivity = UnitActivity.FindEnemy;
         }
         else
         {
@@ -130,7 +164,7 @@ public class PlayerUnit : UnitBase
                     transform.localScale = new Vector3(1f, 1f, 1f);
 
                     // 애니메이션
-                    StartAnimation("idle", true, 1.5f);
+                    StartAnimation("Idle", true, 1.5f);
                 }
             }
         }
@@ -148,12 +182,34 @@ public class PlayerUnit : UnitBase
 
         if (nearestAttackTarget != null)
         {
-            unitState = UnitState.Fight;
-            startMoveFinish = true;
+            if(!startMoveFinish)
+            {
+                StopCoroutine(lerp);
+                startMoveFinish = true;
+            }
 
             // 적이 인식되면 attackTime 증가 및 공격 함수 실행
             attackTime += Time.deltaTime;
 
+            // 적 상태 변경
+            if ((unitID % 10000) / 1000 == 2) // 탱커 -> 다수 공격
+            {
+                if (multipleAttackTargets == null) return;
+                foreach (Transform enemy in multipleAttackTargets)
+                {
+                    if (enemy == null) return;
+                    UnitBase enemyState = enemy.gameObject.GetComponent<UnitBase>();
+                    enemyState.unitState = UnitState.Fight;
+                }
+            }
+            else
+            {
+                if (nearestAttackTarget == null) return;
+                UnitBase enemyState = nearestAttackTarget.gameObject.GetComponent<UnitBase>();
+                enemyState.unitState = UnitState.Fight;
+            }         
+
+            // 공격
             if (attackTime >= unitData.AttackTime)
             {
                 attackTime = 0;
@@ -197,41 +253,29 @@ public class PlayerUnit : UnitBase
         }
 
         // 애니메이션
-        StartAnimation("attack melee", false, 1f);
+        StartAnimation("Attack", false, 1f);
+
+        yield return new WaitForSeconds(0.6f); // 애니메이션 시간
 
         if ((unitID % 10000) / 1000 == 2) // 탱커 -> 다수 공격
         {
             foreach (Transform enemy in multipleAttackTargets)
             {
-                EnemyUnit enemyLogic = enemy.gameObject.GetComponent<EnemyUnit>();
-                enemyLogic.unitActivity = UnitActivity.Hit;
-            }
-        }
-        else
-        {
-            EnemyUnit enemyLogic = nearestAttackTarget.gameObject.GetComponent<EnemyUnit>();
-            enemyLogic.unitActivity = UnitActivity.Hit;
-        }
-
-        yield return new WaitForSeconds(0.1f); // 애니메이션 시간
-
-        if ((unitID % 10000) / 1000 == 2) // 탱커 -> 다수 공격
-        {
-            foreach (Transform enemy in multipleAttackTargets)
-            {
-                Hit(enemy);
+                SetEnemyState(enemy);
             }
         }
         else // 단일 공격
         {
-            Hit(nearestAttackTarget);
+            SetEnemyState(nearestAttackTarget);
         }
 
+        yield return new WaitForSeconds(0.4f); // 애니메이션 시간
+
         // 애니메이션
-        StartAnimation("idle", true, 1f);
+        StartAnimation("Idle", true, 1.5f);
     }
 
-    void Hit(Transform target)
+    void SetEnemyState(Transform target)
     {
         if(target == null)
             return;
@@ -239,9 +283,6 @@ public class PlayerUnit : UnitBase
         EnemyUnit enemyLogic = target.gameObject.GetComponent<EnemyUnit>();
 
         enemyLogic.health -= power;
-
-        // 맞은 직후 다시 상대의 UnitActivity 는 normal 상태로 변경
-        enemyLogic.unitActivity = UnitActivity.Normal;
     }
 
     // 화살 공격 함수
@@ -252,16 +293,15 @@ public class PlayerUnit : UnitBase
         }
 
         // 애니메이션
-        StartAnimation("attack range", false, 1f);
+        StartAnimation("Attack", false, 1f);
 
-        yield return null;
+        yield return new WaitForSeconds(0.6f); // 애니메이션 시간
 
         // 맞고 있는 적 유닛 상태 변경
         EnemyUnit enemyLogic = nearestAttackTarget.gameObject.GetComponent<EnemyUnit>();
-        enemyLogic.unitActivity = UnitBase.UnitActivity.Hit;
 
         // 화살 가져오기
-        GameObject arrowObj = PoolManager.Instance.Get(3, 0, transform.position + new Vector3(0, 0.5f, 0));
+        GameObject arrowObj = PoolManager.Instance.Get(3, 1, transform.position + new Vector3(0, 1f, 0));
         Arrow arrowLogic = arrowObj.GetComponent<Arrow>();
         arrowLogic.unitType = unitID / 10000;
         arrowLogic.arrowPower = power;
@@ -269,14 +309,19 @@ public class PlayerUnit : UnitBase
         // 화살 목표 오브젝트 설정
         arrowLogic.target = nearestAttackTarget.gameObject;
         arrowLogic.playerUnit = this.gameObject;
+
+        yield return new WaitForSeconds(0.4f); // 애니메이션 시간
+
+        // 애니메이션
+        StartAnimation("Idle", true, 1.5f);
     }
 
     IEnumerator Die()
     {
+        Debug.Log("Die2");
         unitState = UnitState.Die;
         moveVec = Vector2.zero;
         col.enabled = false;
-        unitActivity = UnitActivity.Normal;
 
         speed = 0;
         attackTime = 0;
@@ -288,10 +333,11 @@ public class PlayerUnit : UnitBase
         if (arrow != null) { StopCoroutine(arrow); arrow = null; }
 
         // 애니메이션
-        // 아직 없음
+        StartAnimation("Die", true, 1f);
 
         yield return new WaitForSeconds(1f);
 
+        hpBar.SetActive(false);
         gameObject.SetActive(false);
     }
 
@@ -320,7 +366,7 @@ public class PlayerUnit : UnitBase
             SpriteDir(target, current);
 
             // 애니메이션
-            StartAnimation("walk", true, 1.2f);
+            StartAnimation("Walk", true, 1.2f);
         }
 
         startMoveFinish = true;
@@ -348,6 +394,18 @@ public class PlayerUnit : UnitBase
 
     public void buff(int value)
     {
-        buffEffect[0].SetActive(true);
+        switch (value)
+        {
+            case 20000:
+                buffEffect[0].SetActive(true);
+                break;
+            case 20001:
+                buffEffect[1].SetActive(true);
+                break;
+            case 22001:
+                buffEffect[2].SetActive(true);
+                break;
+        }
     }
+
 }

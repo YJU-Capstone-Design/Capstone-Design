@@ -27,13 +27,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 415813465113695328}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: 0.843417, w: 0.53725946}
+  m_LocalRotation: {x: 0, y: 0, z: 0.5, w: 0.8660254}
   m_LocalPosition: {x: -0.292, y: -0.374, z: 0.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 377215035399941836}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 115.005}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 60}
 --- !u!212 &8412976053762306505
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -705,8 +705,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.6}
-  m_Size: {x: 0.8, y: 1.3}
+  m_Offset: {x: 0, y: 0.35}
+  m_Size: {x: 0.6, y: 0.2}
   m_Direction: 0
 --- !u!114 &8998006357501341322
 MonoBehaviour:
@@ -721,19 +721,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unitState: 0
-  unitActivity: 0
   unitID: 0
   health: 0
   speed: 0
   power: 0
   attackTime: 0
+  scanner: {fileID: 0}
   unitData: {fileID: 11400000, guid: 3ac2ab28f0aad2543b8189c4786aaab3, type: 2}
-  attackLayer:
-    serializedVersion: 2
-    m_Bits: 320
   attackRayPos: {x: 0, y: 0.3, z: 0}
-  attackRaySize: {x: 20, y: 6}
+  attackRaySize: {x: 25, y: 6}
   nearestAttackTarget: {fileID: 0}
+  multipleAttackTargets: []
 --- !u!114 &5487282326469977869
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -747,7 +745,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scannerPos: {x: 0, y: 0, z: 0}
-  scanRange: {x: 25, y: 8}
+  scanRange: {x: 30, y: 8}
   targetLayer:
     serializedVersion: 2
     m_Bits: 64
