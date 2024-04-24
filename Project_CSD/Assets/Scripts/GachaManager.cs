@@ -33,7 +33,8 @@ public class GachaManager : MonoBehaviour
 
         for (int i = 1;  i <= number; i++)
         {
-            int randomValue = Random.Range(1, 100);
+            System.Random random = new System.Random();
+            int randomValue = random.Next(1, 100);
 
             if (randomValue <= 3) // Epic 3%
             {
@@ -55,7 +56,9 @@ public class GachaManager : MonoBehaviour
     {
         int[] pick = unitList;
 
-        int randomValue = Random.Range(0, pick.Length);
+        System.Random random = new System.Random();
+        int randomValue = random.Next(1, pick.Length);
+
         result.Add(pick[randomValue]);
     }
 
