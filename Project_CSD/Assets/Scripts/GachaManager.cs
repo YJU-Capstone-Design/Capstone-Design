@@ -38,21 +38,21 @@ public class GachaManager : MonoBehaviour
 
             if (randomValue <= 3) // Epic 3%
             {
-                Gacha_Unit(unitList_Epic);
+                Gacha_Unit(unitList_Epic, "Epic");
             }
             else if (randomValue <= 24) // Rare 21%
             {
-                Gacha_Unit(unitList_Rare);
+                Gacha_Unit(unitList_Rare, "Rare");
             }
             else // Common 76%
             {
-                Gacha_Unit(unitList_Common);
+                Gacha_Unit(unitList_Common, "Common");
             }
         }
         Gacha_Result(result.Count);
     }
 
-    void Gacha_Unit(int[] unitList)
+    void Gacha_Unit(int[] unitList, string rarity)
     {
         int[] pick = unitList;
 
@@ -60,6 +60,8 @@ public class GachaManager : MonoBehaviour
         int randomValue = random.Next(1, pick.Length);
 
         result.Add(pick[randomValue]);
+
+        // rarity : UI Color Change
     }
 
     void Gacha_Result(int count)
