@@ -6,6 +6,7 @@ using UnityEngine;
 using static UnitBase;
 using Spine.Unity;
 using static UnityEngine.GraphicsBuffer;
+using UnityEngine.SocialPlatforms;
 
 public class PlayerUnit : UnitBase
 {
@@ -15,11 +16,13 @@ public class PlayerUnit : UnitBase
     [Header("# Unit Setting")]
     public Scanner scanner;
     public UnitData unitData;
+    SpriteRenderer bodySprite;
     bool startMoveFinish = false;
     LayerMask targetLayer;
     Vector3 moveVec; // 거리
     [SerializeField] Vector3 attackRayPos; // attackRay 위치 = 현재 위치 + attackRayPos
     [SerializeField] Vector2 attackRaySize;
+    GameObject hpBar; // 체력바
 
     [Header("# Unit Activity")]
     Collider2D col;
@@ -40,10 +43,9 @@ public class PlayerUnit : UnitBase
         scanner = GetComponentInChildren<Scanner>();
         col = GetComponent<Collider2D>();
         skeletonAnimation = GetComponent<SkeletonAnimation>();
+        bodySprite = GetComponent<SpriteRenderer>();
 
         targetLayer = scanner.targetLayer;
-
-        StateSetting();
     }
 
     void OnEnable()
@@ -64,14 +66,34 @@ public class PlayerUnit : UnitBase
     {
         if (unitState != UnitState.Die)
         {
-            if (health <= 0)
+            // 체력 실시간 적용
+            HpBar hpBarLogic = hpBar.GetComponent<HpBar>();
+            hpBarLogic.nowHp = health;
+            hpBarLogic.hpBarDir = moveVec;
+
+            if (health <= 0 || BattleManager.Instance.battleState == BattleManager.BattleState.Lose) // hp 가 0 이 되거나 게임에서 졌을 경우
             {
+                Debug.Log("Die1");
                 StartCoroutine(Die());
+            } 
+            else if(BattleManager.Instance.battleState == BattleManager.BattleState.Win) // 승리 시
+            {
+                unitState = UnitState.Win;
+                StartAnimation("Win", true, 1);
             }
             else
             {
                 AttackRay();
             }
+        }
+
+        // Order Layer 조정
+        // SpriteRenderer 가 있을 경우에는 본체의 y 축 값의 소수점을 제외한 값을 Order Layer 에 적용
+        if (bodySprite != null)
+        {
+            int yPos = Mathf.FloorToInt(transform.position.y);
+            int orderLayer = (yPos < 0 ? yPos * yPos : yPos); // 음수일 경우에는 제곱처리
+            bodySprite.sortingOrder = orderLayer;
         }
     }
 
@@ -97,6 +119,13 @@ public class PlayerUnit : UnitBase
         firstPos = BattleManager.Instance.point;
         scanner.unitType = unitID / 10000;
         nearestAttackTarget = null;
+
+        // 체력바
+        hpBar = PoolManager.Instance.Get(1,3);
+        HpBar hpBarLogic = hpBar.GetComponent<HpBar>();
+        hpBarLogic.owner = this.gameObject.transform; // 주인 설정
+        hpBarLogic.nowHp = health;
+        hpBarLogic.maxHp = health;
     }
 
     // 가까운 적을 찾는 Scanner 함수 (이동)
@@ -289,6 +318,7 @@ public class PlayerUnit : UnitBase
 
     IEnumerator Die()
     {
+        Debug.Log("Die2");
         unitState = UnitState.Die;
         moveVec = Vector2.zero;
         col.enabled = false;
@@ -303,10 +333,11 @@ public class PlayerUnit : UnitBase
         if (arrow != null) { StopCoroutine(arrow); arrow = null; }
 
         // 애니메이션
-        // 아직 없음
+        StartAnimation("Die", true, 1f);
 
         yield return new WaitForSeconds(1f);
 
+        hpBar.SetActive(false);
         gameObject.SetActive(false);
     }
 
@@ -363,6 +394,18 @@ public class PlayerUnit : UnitBase
 
     public void buff(int value)
     {
-        buffEffect[0].SetActive(true);
+        switch (value)
+        {
+            case 20000:
+                buffEffect[0].SetActive(true);
+                break;
+            case 20001:
+                buffEffect[1].SetActive(true);
+                break;
+            case 22001:
+                buffEffect[2].SetActive(true);
+                break;
+        }
     }
+
 }

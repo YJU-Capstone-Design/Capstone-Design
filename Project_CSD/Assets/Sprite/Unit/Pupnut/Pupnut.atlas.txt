@@ -1,38 +1,30 @@
 Pupnut.png
-	size: 249, 78
+	size: 250, 75
 	filter: Linear, Linear
 	pma: true
 	scale: 0.5
 body1
-	bounds: 2, 2, 74, 72
-	rotate: 90
+	bounds: 2, 2, 73, 71
 body2
-	bounds: 76, 5, 71, 70
-	offsets: 1, 0, 72, 70
-	rotate: 90
+	bounds: 77, 4, 71, 69
 earL
-	bounds: 162, 37, 32, 39
+	bounds: 150, 35, 31, 38
 earR
-	bounds: 196, 37, 32, 39
+	bounds: 183, 35, 31, 38
 eye
-	bounds: 173, 2, 33, 23
-	rotate: 90
+	bounds: 216, 51, 32, 22
 eye2
-	bounds: 230, 37, 39, 14
-	rotate: 90
+	bounds: 150, 7, 38, 13
 eye3
-	bounds: 148, 31, 45, 12
-	rotate: 90
+	bounds: 150, 22, 44, 11
 legL
-	bounds: 223, 22, 13, 24
-	offsets: 0, 0, 13, 25
-	rotate: 90
+	bounds: 196, 10, 12, 23
+	offsets: 0, 0, 12, 24
 legR
-	bounds: 223, 7, 13, 24
-	offsets: 0, 0, 13, 25
-	rotate: 90
+	bounds: 235, 2, 12, 23
+	offsets: 0, 0, 12, 24
 mouse1
-	bounds: 148, 5, 24, 23
-	rotate: 90
+	bounds: 216, 27, 23, 22
 mouse2
-	bounds: 198, 11, 23, 24
+	bounds: 210, 3, 22, 23
+	rotate: 90

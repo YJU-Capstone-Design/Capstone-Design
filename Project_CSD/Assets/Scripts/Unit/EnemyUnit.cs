@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Burst.CompilerServices;
 using Unity.VisualScripting;
-using UnityEditorInternal.Profiling.Memory.Experimental;
+//using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
 
@@ -15,6 +15,8 @@ public class EnemyUnit : UnitBase
     LayerMask attackLayer;
     [SerializeField] Vector3 attackRayPos; // attackRay 위치 = 현재 위치 + attackRayPos
     [SerializeField] Vector2 attackRaySize;
+    GameObject hpBar; // 체력바
+    [SerializeField] Transform[] allChildren;
 
     [Header("# Unit Activity")]
     Collider2D col;
@@ -31,9 +33,9 @@ public class EnemyUnit : UnitBase
         col = GetComponent<Collider2D>();
         anim = GetComponentInChildren<MonsterCharacterAnimation>();
 
-        attackLayer = LayerMask.GetMask("PlayerUnit", "Wall");
+        allChildren = GetComponentsInChildren<Transform>();
 
-        StateSetting();
+        attackLayer = LayerMask.GetMask("PlayerUnit", "Wall");
     }
 
     void OnEnable()
@@ -44,8 +46,14 @@ public class EnemyUnit : UnitBase
 
     void Update()
     {
+        
         if (unitState != UnitState.Die)
         {
+            // 체력 실시간 적용
+            HpBar hpBarLogic = hpBar.GetComponent<HpBar>();
+            hpBarLogic.nowHp = health;
+            hpBarLogic.hpBarDir = moveVec;
+
             if (health <= 0)
             {
                 health = 0;
@@ -54,6 +62,20 @@ public class EnemyUnit : UnitBase
             else
             {
                 AttackRay();
+            }
+        }
+
+        // 모든 Sprite 자식 오브젝트 Order Layer 조정
+        foreach (Transform child in allChildren)
+        {
+            SpriteRenderer bodySprite = child.GetComponent<SpriteRenderer>();
+
+            // SpriteRenderer 가 있을 경우에는 본체의 y 축 값의 소수점을 제외한 값을 Order Layer 에 적용
+            if(bodySprite != null)
+            {
+                int yPos = Mathf.FloorToInt(transform.position.y);
+                int orderLayer = (yPos < 0 ? yPos * yPos : yPos); // 음수일 경우에는 제곱처리
+                bodySprite.sortingOrder = orderLayer;
             }
         }
     }
@@ -79,6 +101,13 @@ public class EnemyUnit : UnitBase
         moveVec = Vector3.left;
         transform.GetChild(0).rotation = Quaternion.identity; // 애니메이션 각도 초기화를 위한 로직
         scanner.unitType = unitID / 10000;
+
+        // 체력바
+        hpBar = PoolManager.Instance.Get(1, 3);
+        HpBar hpBarLogic = hpBar.GetComponent<HpBar>();
+        hpBarLogic.owner = this.gameObject.transform;
+        hpBarLogic.nowHp = health;
+        hpBarLogic.maxHp = health;
     }
 
     // 가까운 적을 찾는 Scanner 함수
@@ -301,6 +330,7 @@ public class EnemyUnit : UnitBase
         yield return new WaitForSeconds(anim.GetTime());
 
         StateSetting();
+        hpBar.SetActive(false);
         gameObject.SetActive(false);
     }
 

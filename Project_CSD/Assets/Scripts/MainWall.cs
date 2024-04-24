@@ -24,7 +24,10 @@ public class MainWall : MonoBehaviour
     {
         // 이 자리에는 애니메이션 필요
 
+        BattleManager.Instance.battleState = BattleManager.BattleState.Lose;
+
         yield return new WaitForSeconds(1f);
+
 
         Debug.Log("Break");
         col.enabled = false;
