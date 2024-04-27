@@ -144,6 +144,7 @@ public class MainLobby : MonoBehaviour
 
     public void Clear()
     {
+        
         toogleState = 0;
         mainLobby.transform.localScale = Vector3.one;
         menu[0].gameObject.SetActive(true);
@@ -176,7 +177,17 @@ public class MainLobby : MonoBehaviour
 
     public void GameEscape()
     {
-        Application.Quit();
+        if (roomNum == 0)
+        {
+
+            Application.Quit();
+            Debug.Log("Game End");
+        }
+        else
+        {
+            Clear();
+        }
+      
     }
 
 }
