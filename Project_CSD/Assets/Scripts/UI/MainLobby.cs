@@ -11,6 +11,7 @@ public class MainLobby : MonoBehaviour
     [SerializeField] private List<GameObject> menu_Obj_Setting = new List<GameObject>();
     [SerializeField] private GameObject toggleMenu;
     private int toogleState = 0;
+    private int roomNum = 0;//·ë¹øÈ£
 
     [Header("toggle Transform")]
     [SerializeField] private GameObject toggleBtn;
@@ -83,10 +84,12 @@ public class MainLobby : MonoBehaviour
         }
         menu[openScene].SetActive(true);
         menu_Obj_Setting[openScene].SetActive(true);
+        roomNum = 1;
         if (openScene == 0)
         {
             mainLobby.transform.localScale = Vector3.one;
             mainLobbyObj.transform.localScale = Vector3.one;
+            roomNum = 0;
         }
 
     }
