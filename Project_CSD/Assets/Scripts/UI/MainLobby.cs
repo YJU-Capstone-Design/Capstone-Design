@@ -150,7 +150,7 @@ public class MainLobby : MonoBehaviour
         menu[0].gameObject.SetActive(true);
         menu_Obj_Setting[0].gameObject.SetActive(true);
         setMenu.SetActive(false);
-
+        roomNum = 0;
         for (int i = 1; i < menu.Count; i++)
         {
             menu[i].gameObject.SetActive(false);
