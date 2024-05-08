@@ -44,6 +44,15 @@ public class EnemyUnit : UnitBase
         StateSetting();
     }
 
+    private void Start()
+    {
+        // 초기 데이터 저장
+        initialHealth = unitData.Health;
+        initialSpeed = unitData.Speed;
+        initialPower = unitData.Power;
+        initialAttackTime = unitData.AttackTime;
+    }
+
     void Update()
     {
         
