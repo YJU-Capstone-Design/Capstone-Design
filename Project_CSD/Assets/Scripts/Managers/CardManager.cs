@@ -36,14 +36,14 @@ public class CardManager : Singleton<CardManager>
     public IEnumerator Buff_Logic(GameObject unit, Spell spell)
     {
         PlayerUnit status = unit.GetComponent<PlayerUnit>();
-        // float maxHpUpPoint = status.health * (spell.maxHpUp * 0.01f);
-        float powerUpPoint = status.power * (spell.maxHpUp * 0.01f);
-        float speedUpPoint = status.speed * (spell.maxHpUp * 0.01f);
+        float maxHpUpPoint = status.initialHealth * (spell.maxHpUp * 0.01f);
+        float powerUpPoint = status.initialPower * (spell.powerUp * 0.01f);
+        float speedUpPoint = status.initialSpeed * (spell.speedUp * 0.01f);
 
         // status.health += maxHpUpPoint;
         status.power += powerUpPoint;
         status.speed += speedUpPoint;
-        Debug.Log("power = " + status.power + ", speed = " + status.speed);
+        Debug.Log("power = " + status.power + ", speed = " + status.speed + ", spellID = " + spell.spellID);
         unit.GetComponent<PlayerUnit>().Buff_Effect(spell.spellType, true);
 
         float time = 0;
