@@ -62,6 +62,15 @@ public class PlayerUnit : UnitBase
         lerp = StartCoroutine(lerpCoroutine(startPos,new Vector3((xPos > targetPos.x ? targetPos.x : xPos), targetPos.y, 0), speed)); // y 축 먼저 이동
     }
 
+    private void Start()
+    {
+        // 초기 데이터 저장
+        initialHealth = unitData.Health;
+        initialSpeed = unitData.Speed;
+        initialPower = unitData.Power;
+        initialAttackTime = unitData.AttackTime;
+    }
+
     void Update()
     {
         if (unitState != UnitState.Die)
