@@ -64,7 +64,8 @@ public class BattleManager :Singleton<BattleManager>
         // 적 좀비 소환 -> 테스트 용
         if (Input.GetKeyDown("2")) { pool.Get(2, 0); }
 
-        if(CardManger.Instance.enemys.Count > 0 && curHealth > 0)
+
+        if(CardManager.Instance.enemys.Count > 0 && curHealth > 0)
         {
             battleState = BattleState.Start;
         }
@@ -82,7 +83,7 @@ public class BattleManager :Singleton<BattleManager>
         }
 
         // 모든 적이 소환된 후, 필드에 남아있는 적이 없고, 벽의 hp가 남아 있으면 Win
-        if (spawnEnd && CardManger.Instance.enemys.Count == 0 && curHealth > 0)
+        if (spawnEnd && CardManager.Instance.enemys.Count == 0 && curHealth > 0)
         {
             battleState = BattleState.Win;
         } 

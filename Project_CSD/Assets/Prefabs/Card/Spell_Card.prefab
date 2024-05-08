@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 3148164937010508007}
   - component: {fileID: 239527638786203014}
   - component: {fileID: 6924558214924428078}
-  - component: {fileID: -5559452243374558313}
-  - component: {fileID: -1360664583053988228}
+  - component: {fileID: -490538339673414988}
+  - component: {fileID: 5121889740425968333}
   m_Layer: 5
   m_Name: Spell_Card
   m_TagString: Untagged
@@ -128,8 +128,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: -1360664583053988228}
-        m_TargetAssemblyTypeName: SkillManager, Assembly-CSharp
+      - m_Target: {fileID: 5121889740425968333}
+        m_TargetAssemblyTypeName: SpellManager, Assembly-CSharp
         m_MethodName: UsingCard
         m_Mode: 1
         m_Arguments:
@@ -140,7 +140,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &-5559452243374558313
+--- !u!114 &-490538339673414988
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -149,23 +149,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 798610453738157305}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a3af5a3e031992541a1b2126ecad6124, type: 3}
+  m_Script: {fileID: 11500000, guid: a202148b2f909af47bcfcf1a9d26eb2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemTYPE: 0
-  ItemID: 0
-  Heal: 0
-  SpeedUp: 0
-  PowerUp: 0
-  Critical: 0
-  BuffTime: 0
-  cards:
-  - {fileID: 11400000, guid: 2abb238e61bae30429a911e6f92648f9, type: 2}
-  - {fileID: 11400000, guid: 654627b33bfba8046b2c7044eab43e8d, type: 2}
-  - {fileID: 11400000, guid: d29d624011d89064e8d51ee1138f4bd6, type: 2}
-  value: 0
-  power: 0
---- !u!114 &-1360664583053988228
+  spellType: 0
+  spellID: 0
+  spellName: 
+  cost: 0
+  duration: 0
+  damage: 0
+  maxHpUp: 0
+  powerUp: 0
+  speedUp: 0
+  spells:
+  - {fileID: 11400000, guid: dc225d6dd6ce14e4f86ec3c956497e57, type: 2}
+  - {fileID: 11400000, guid: fe906895032a21343941eb4ea09fa51d, type: 2}
+  - {fileID: 11400000, guid: cbb69fa797615164eb1a9abdba563b34, type: 2}
+  - {fileID: 11400000, guid: 8bc092c7aaa4189449889f5f43cdec90, type: 2}
+  - {fileID: 11400000, guid: b4d18e3da984b13429bb9277dd6fc5ac, type: 2}
+--- !u!114 &5121889740425968333
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -174,7 +176,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 798610453738157305}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d4ce351618041c4e813f83497be7b6b, type: 3}
+  m_Script: {fileID: 11500000, guid: 23b52a9e650157a429cbf87f40374911, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &2854145661760163395
