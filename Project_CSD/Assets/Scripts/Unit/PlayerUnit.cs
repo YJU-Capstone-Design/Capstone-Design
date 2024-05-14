@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using static UnitBase;
+using static SpellBase;
 using Spine.Unity;
 using static UnityEngine.GraphicsBuffer;
 using UnityEngine.SocialPlatforms;
@@ -52,7 +53,7 @@ public class PlayerUnit : UnitBase
     {
         StateSetting();
 
-        CardManger.Instance.units.Add(gameObject);
+        CardManager.Instance.units.Add(gameObject);
 
         Vector3 startPos = BattleManager.Instance.unitSpawnPoint[0].position;
         Vector3 targetPos = BattleManager.Instance.point;
@@ -60,6 +61,15 @@ public class PlayerUnit : UnitBase
 
         // 클릭 지점으로 이동 -> 나머지는 Scanner 함수 에서 실행 (y 축만 먼저 빠르게 이동)
         lerp = StartCoroutine(lerpCoroutine(startPos,new Vector3((xPos > targetPos.x ? targetPos.x : xPos), targetPos.y, 0), speed)); // y 축 먼저 이동
+    }
+
+    private void Start()
+    {
+        // 초기 데이터 저장
+        initialHealth = unitData.Health;
+        initialSpeed = unitData.Speed;
+        initialPower = unitData.Power;
+        initialAttackTime = unitData.AttackTime;
     }
 
     void Update()
@@ -326,7 +336,7 @@ public class PlayerUnit : UnitBase
         speed = 0;
         attackTime = 0;
 
-        CardManger.Instance.units.Remove(gameObject);
+        CardManager.Instance.units.Remove(gameObject);
 
         // 진행중인 코루틴 함수 모두 중지
         if (smash != null) { StopCoroutine(smash); smash = null; }
@@ -392,17 +402,17 @@ public class PlayerUnit : UnitBase
         CurrentAnimation = animName;
     }
 
-    public void buff(int value)
+    public void Buff_Effect(SpellTypes spellType, bool isBuff)
     {
-        switch (value)
+        switch (spellType)
         {
-            case 20000:
+            case SpellTypes.Attack:
                 buffEffect[0].SetActive(true);
                 break;
-            case 20001:
+            case SpellTypes.Buff:
                 buffEffect[1].SetActive(true);
                 break;
-            case 22001:
+            case SpellTypes.Debuff:
                 buffEffect[2].SetActive(true);
                 break;
         }

@@ -2,31 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpellManager : Singleton<SpellManager>
+public class SpellManager : MonoBehaviour
 {
-    public List<GameObject> units;
-    public List<GameObject> enemys;
-
-    [Header("Using Card")]
-    public Transform poolObj;
-    PlayerSpell playerSpell;
+    Spell spell;
 
     private void Awake()
     {
-        playerSpell = GetComponent<PlayerSpell>();
-        units = new List<GameObject>();
-        enemys = new List<GameObject>();
+        spell = GetComponent<Spell>();
     }
 
-    public void Buff_Logic(int value)
+    public void UsingCard()
     {
-        foreach (GameObject obj in units)
+        if (spell.spellType != SpellBase.SpellTypes.Attack) // °ø°Ý ½ºÆçÀÌ ¾Æ´Ò ¶§
         {
-            PlayerUnit unitLogic = obj.GetComponent<PlayerUnit>();
-            PlayerUnit unitBuff = obj.GetComponentInChildren<PlayerUnit>();
-            unitLogic.power += (unitLogic.power * 0.05f);
-            Debug.Log(unitLogic.power);
-            unitBuff.buff(value);
+            Debug.Log("Using Buff or Debuff Spell");
+            CardManager.Instance.Buff_Status(spell);
+        }
+        else // °ø°Ý ½ºÆçÀÏ ¶§
+        {
+            Debug.Log("Using Attack Spell");
         }
         BattleManager.Instance.CardShuffle();
     }

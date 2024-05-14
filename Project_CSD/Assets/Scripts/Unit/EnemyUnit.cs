@@ -40,8 +40,17 @@ public class EnemyUnit : UnitBase
 
     void OnEnable()
     {
-        CardManger.Instance.enemys.Add(gameObject);
+        CardManager.Instance.enemys.Add(gameObject);
         StateSetting();
+    }
+
+    private void Start()
+    {
+        // 초기 데이터 저장
+        initialHealth = unitData.Health;
+        initialSpeed = unitData.Speed;
+        initialPower = unitData.Power;
+        initialAttackTime = unitData.AttackTime;
     }
 
     void Update()
@@ -321,7 +330,7 @@ public class EnemyUnit : UnitBase
         speed = 0;
         attackTime = 0;
 
-        CardManger.Instance.enemys.Remove(gameObject);
+        CardManager.Instance.enemys.Remove(gameObject);
 
         // 애니메이션
         anim.Die();

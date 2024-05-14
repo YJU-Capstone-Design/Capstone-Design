@@ -12,10 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0a04df6d7c76794aadc51537869fdbc, type: 3}
   m_Name: 22003
   m_EditorClassIdentifier: 
-  itemID: 22003
-  itemName: "\uBD80\uB4DC\uB7FD\uAC8C~"
+  spellType: 1
+  spellID: 22003
+  spellName: "\uBD80\uB4DC\uB7FD\uAC8C~"
   cost: 20
+  duration: 0
+  damage: 0
   maxHpUp: 0
   powerUp: 0
   speedUp: 50
-  duration: 10

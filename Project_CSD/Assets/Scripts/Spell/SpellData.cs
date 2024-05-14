@@ -1,28 +1,36 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using static SpellBase;
 
 [CreateAssetMenu(fileName = "Spell", menuName = "Scriptable Object/Spell Data")]
 public class SpellData : ScriptableObject
 {
-    public enum ItemTYPE { Attack, Buff, Debuff }
+    public enum SpellTypes { Attack, Buff, Debuff }
 
-    [Header("# Card State")]
+    [Header("# Spell Type")]
+    [SerializeField]
+    private SpellTypes spellType;
+    public SpellTypes SpellType { get { return spellType; } }
+
+    [Header("# Spell State")]
     [SerializeField] // 아이템 ID
-    private int itemID;
-    public int ItemID { get { return itemID; } }
+    private int spellID;
+    public int SpellID { get { return spellID; } }
 
-    [SerializeField] // 아이템 이름
-    private string itemName;
-    public string ItemName { get { return itemName; } }
+    [SerializeField] // 회복
+    private string spellName;
+    public string SpellName { get { return spellName; } }
 
     [SerializeField] // 필요 코스트
     private int cost;
     public int Cost { get { return cost; } }
 
-    [SerializeField] // 필요 코스트
+    [SerializeField] // 버프 지속시간
+    private float duration;
+    public float Duration { get { return duration; } }
+
+    [SerializeField] // (공격스펠 한정) 대미지값
     private float damage;
     public float Damage { get { return damage; } }
 
@@ -37,8 +45,4 @@ public class SpellData : ScriptableObject
     [SerializeField] // 속도 증가
     private float speedUp;
     public float SpeedUp { get { return speedUp; } }
-
-    [SerializeField] // 스펠 지속시간
-    private float duration;
-    public float Duration { get { return duration; } }
 }

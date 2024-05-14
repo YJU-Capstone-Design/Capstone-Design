@@ -4,33 +4,24 @@ using UnityEngine;
 
 public class SkillManager : MonoBehaviour
 {
-    PlayerCard playerCard;
-    PlayerUnit playerUnit;
+    Spell spell;
 
     private void Awake()
     {
-        playerCard = GetComponent<PlayerCard>();
-        playerUnit = GetComponent<PlayerUnit>();
+        spell = GetComponent<Spell>();
     }
 
     public void UsingCard()
     {
-        int value = this.playerCard.value;
-
-        switch (value)
+        if (spell.spellType != SpellBase.SpellTypes.Attack) // °ø°Ý ½ºÆçÀÌ ¾Æ´Ò ¶§
         {
-            case 20000:
-                CardManger.Instance.Buff(value);
-                Debug.Log("ATK_UP");
-                break;
-            case 20001:
-                CardManger.Instance.Buff(value);
-                Debug.Log("SPEED_UP");
-                break;
-            case 22001:
-                CardManger.Instance.Buff(value);
-                Debug.Log("HEAL");
-                break;
+            Debug.Log("Using Buff or Debuff Spell");
+            CardManager.Instance.Buff_Status(spell);
         }
+        else // °ø°Ý ½ºÆçÀÏ ¶§
+        {
+            Debug.Log("Using Attack Spell");
+        }
+        BattleManager.Instance.CardShuffle();
     }
 }
