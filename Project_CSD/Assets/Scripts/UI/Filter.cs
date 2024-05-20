@@ -13,7 +13,7 @@ public class Filter : MonoBehaviour
     [SerializeField] private GameObject[] filter;
     [SerializeField] private GameObject[] Spellfilter;
     [SerializeField] private TMP_Text filterTxt;
-
+    [SerializeField] private GameObject cardCurrent;
     //미보유 카드 필터
     [SerializeField] private Transform[] unFilter;
 
@@ -39,6 +39,7 @@ public class Filter : MonoBehaviour
         bannel[1].SetActive(true);
         bannel[2].SetActive(false);
         bannel[3].SetActive(true);
+        cardCurrent.SetActive(true);
         foreach (GameObject go in filter)
         {
             go.SetActive(false);
@@ -58,7 +59,7 @@ public class Filter : MonoBehaviour
         //배경 초기화
         bg[0].SetActive(true);
         bg[1].SetActive(false);
-
+        cardCurrent.SetActive(false);
         //타이틀 초기화 
         title[0].SetActive(true);
         title[1].SetActive(false);
