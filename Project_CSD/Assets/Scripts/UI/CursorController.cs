@@ -8,11 +8,11 @@ public class CursorController : MonoBehaviour
     [SerializeField] Vector2 mapSize;   // 배경 너비, 높이
     [SerializeField] Transform tf_cursor;
     [SerializeField] float dragSpeed = 10.0f;   // 화면 움직임 속도
+    [SerializeField] GameObject cam;
 
     private float camWidth , camHeight;  // 카메라 너비/2, 높이/2
     private float firstClickPointX;
     private RectTransform tf_background;    // 배경 너비, 높이를 가져오기 위한 변수
-
     void Start()
     {
         camHeight = Camera.main.orthographicSize;   // 카메라의 높이 / 2
@@ -62,6 +62,8 @@ public class CursorController : MonoBehaviour
 
         if (Input.GetMouseButton(0))
         {
+            if (Camera.main.transform.position.x >= 0)
+            {
             // (현재 마우스 위치 - 최초 위치)의 음의 방향으로 카메라 이동
             Vector2 position = Camera.main.ScreenToViewportPoint(-new Vector3(tf_cursor.localPosition.x - firstClickPointX, 0, 0));
             Vector2 move = position * (Time.deltaTime * dragSpeed);
@@ -75,6 +77,12 @@ public class CursorController : MonoBehaviour
             //float clampY = Mathf.Clamp(Camera.main.transform.position.y, -dy + center.y, dy + center.y);
 
             Camera.main.transform.position = new Vector3(clampX, 0, Camera.main.transform.position.z);
+            }
+            else if(Camera.main.transform.position.x < 0)
+            {
+                Camera.main.transform.position = new Vector3(0, 0, -10);
+            }
+
         }
     }
 
