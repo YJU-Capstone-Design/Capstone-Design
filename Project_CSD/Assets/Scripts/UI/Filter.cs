@@ -6,7 +6,12 @@ using UnityEngine.UI;
 using TMPro; 
 public class Filter : MonoBehaviour
 {
+    [Header("image")]
+    [SerializeField] private GameObject[] bg;
+    [SerializeField] private GameObject[] title;
+    [SerializeField] private GameObject[] bannel;
     [SerializeField] private GameObject[] filter;
+    [SerializeField] private GameObject[] Spellfilter;
     [SerializeField] private TMP_Text filterTxt;
 
     //미보유 카드 필터
@@ -14,25 +19,91 @@ public class Filter : MonoBehaviour
 
     private void Awake()
     {
-        filter[0].SetActive(false);
-        filter[1].SetActive(false);
+        Clear();
         filterTxt.text = "캐릭터 카드";
         unFilterCard();
     }
     public void Charclick()
     {
-        filter[0].SetActive(false);
-        filter[1].SetActive(false);
+        Clear();
         filterTxt.text = "캐릭터 카드";
         unFilterCard();
     }
     public void Spellclick()
     {
-        filter[0].SetActive(true);
+        bg[0].SetActive(false);
+        bg[1].SetActive(true);
+        title[0].SetActive(false);
+        title[1].SetActive(true);
+        bannel[0].SetActive(false);
+        bannel[1].SetActive(true);
+        bannel[2].SetActive(false);
+        bannel[3].SetActive(true);
+        foreach (GameObject go in filter)
+        {
+            go.SetActive(false);
+        }
         filter[1].SetActive(true);
+        foreach (GameObject go in Spellfilter)
+        {
+            go.SetActive(false);
+        }
+        Spellfilter[0].SetActive(true);
+
         filterTxt.text = "스펠 카드";
         unFilterCard();
     }
+    void Clear()
+    {
+        //배경 초기화
+        bg[0].SetActive(true);
+        bg[1].SetActive(false);
+
+        //타이틀 초기화 
+        title[0].SetActive(true);
+        title[1].SetActive(false);
+
+        //배너 초기화
+        bannel[0].SetActive(true);
+        bannel[1].SetActive(false);
+        bannel[2].SetActive(true);
+        bannel[3].SetActive(false);
+
+        //배너 상세 초기화
+        foreach(GameObject go in filter)
+        {
+            go.SetActive(false);
+        }
+        filter[2].SetActive(true);
+        foreach (GameObject go in Spellfilter)
+        {
+            go.SetActive(false);
+        }
+        Spellfilter[3].SetActive(true);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     void unFilterCard()
     {
