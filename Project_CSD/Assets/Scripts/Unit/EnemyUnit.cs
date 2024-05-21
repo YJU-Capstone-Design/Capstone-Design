@@ -82,9 +82,9 @@ public class EnemyUnit : UnitBase
             // SpriteRenderer 가 있을 경우에는 본체의 y 축 값의 소수점을 제외한 값을 Order Layer 에 적용
             if(bodySprite != null)
             {
-                int yPos = Mathf.FloorToInt(transform.position.y) - 4; // 소수점 제외, 음수를 없애기 위해 -4 처리
-                yPos = Mathf.Abs(yPos); // 절대값으로 변경
-                bodySprite.sortingOrder = yPos;
+                float yPos = (transform.position.y - 4) * 10; // 음수/양수 처리를 위해 -4, 넓게 분배하기 위해 *10
+                int orderLayer = Mathf.FloorToInt(yPos); // 소수점 제외
+                bodySprite.sortingOrder = Mathf.Abs(orderLayer); // 절대값으로 변경 후 적용
             }
         }
     }
