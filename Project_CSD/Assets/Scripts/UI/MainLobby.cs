@@ -11,6 +11,7 @@ public class MainLobby : MonoBehaviour
     [SerializeField] private List<GameObject> menu_Obj_Setting = new List<GameObject>();
     [SerializeField] private GameObject toggleMenu;
     private int toogleState = 0;
+    private int roomNum = 0;//·ë¹øÈ£
 
     [Header("toggle Transform")]
     [SerializeField] private GameObject toggleBtn;
@@ -83,10 +84,12 @@ public class MainLobby : MonoBehaviour
         }
         menu[openScene].SetActive(true);
         menu_Obj_Setting[openScene].SetActive(true);
+        roomNum = 1;
         if (openScene == 0)
         {
             mainLobby.transform.localScale = Vector3.one;
             mainLobbyObj.transform.localScale = Vector3.one;
+            roomNum = 0;
         }
 
     }
@@ -141,12 +144,13 @@ public class MainLobby : MonoBehaviour
 
     public void Clear()
     {
+        
         toogleState = 0;
         mainLobby.transform.localScale = Vector3.one;
         menu[0].gameObject.SetActive(true);
         menu_Obj_Setting[0].gameObject.SetActive(true);
         setMenu.SetActive(false);
-
+        roomNum = 0;
         for (int i = 1; i < menu.Count; i++)
         {
             menu[i].gameObject.SetActive(false);
@@ -173,7 +177,17 @@ public class MainLobby : MonoBehaviour
 
     public void GameEscape()
     {
-        Application.Quit();
+        if (roomNum == 0)
+        {
+
+            Application.Quit();
+            Debug.Log("Game End");
+        }
+        else
+        {
+            Clear();
+        }
+      
     }
 
 }

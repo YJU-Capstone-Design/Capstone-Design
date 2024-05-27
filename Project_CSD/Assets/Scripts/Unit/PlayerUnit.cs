@@ -17,7 +17,7 @@ public class PlayerUnit : UnitBase
     [Header("# Unit Setting")]
     public Scanner scanner;
     public UnitData unitData;
-    SpriteRenderer bodySprite;
+    MeshRenderer bodySprite;
     bool startMoveFinish = false;
     LayerMask targetLayer;
     Vector3 moveVec; // 거리
@@ -44,7 +44,7 @@ public class PlayerUnit : UnitBase
         scanner = GetComponentInChildren<Scanner>();
         col = GetComponent<Collider2D>();
         skeletonAnimation = GetComponent<SkeletonAnimation>();
-        bodySprite = GetComponent<SpriteRenderer>();
+        bodySprite = GetComponent<MeshRenderer>();
 
         targetLayer = scanner.targetLayer;
     }
@@ -101,9 +101,9 @@ public class PlayerUnit : UnitBase
         // SpriteRenderer 가 있을 경우에는 본체의 y 축 값의 소수점을 제외한 값을 Order Layer 에 적용
         if (bodySprite != null)
         {
-            int yPos = Mathf.FloorToInt(transform.position.y);
-            int orderLayer = (yPos < 0 ? yPos * yPos : yPos); // 음수일 경우에는 제곱처리
-            bodySprite.sortingOrder = orderLayer;
+            float yPos = (transform.position.y - 4) * 10; // 음수/양수 처리를 위해 -4, 넓게 분배하기 위해 *10
+            int orderLayer = Mathf.FloorToInt(yPos); // 소수점 제외
+            bodySprite.sortingOrder = Mathf.Abs(orderLayer); // 절대값으로 변경 후 적용
         }
     }
 
@@ -157,8 +157,6 @@ public class PlayerUnit : UnitBase
 
             // 가는 방향에 따라 Sprite 방향 변경
             SpriteDir(moveVec, Vector3.zero);
-
-            //unitActivity = UnitActivity.FindEnemy;
         }
         else
         {
@@ -192,6 +190,7 @@ public class PlayerUnit : UnitBase
 
         if (nearestAttackTarget != null)
         {
+
             if(!startMoveFinish)
             {
                 StopCoroutine(lerp);
@@ -332,6 +331,9 @@ public class PlayerUnit : UnitBase
         unitState = UnitState.Die;
         moveVec = Vector2.zero;
         col.enabled = false;
+
+        EnemyUnit enemyLogic = nearestAttackTarget.GetComponent<EnemyUnit>();
+        enemyLogic.unitState = UnitState.Move;
 
         speed = 0;
         attackTime = 0;
