@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using static UnitBase;
-using static SpellBase;
 using Spine.Unity;
 using static UnityEngine.GraphicsBuffer;
 using UnityEngine.SocialPlatforms;
@@ -17,7 +16,7 @@ public class PlayerUnit : UnitBase
     [Header("# Unit Setting")]
     public Scanner scanner;
     public UnitData unitData;
-    MeshRenderer bodySprite;
+    SpriteRenderer bodySprite;
     bool startMoveFinish = false;
     LayerMask targetLayer;
     Vector3 moveVec; // 거리
@@ -44,7 +43,7 @@ public class PlayerUnit : UnitBase
         scanner = GetComponentInChildren<Scanner>();
         col = GetComponent<Collider2D>();
         skeletonAnimation = GetComponent<SkeletonAnimation>();
-        bodySprite = GetComponent<MeshRenderer>();
+        bodySprite = GetComponent<SpriteRenderer>();
 
         targetLayer = scanner.targetLayer;
     }
@@ -53,7 +52,7 @@ public class PlayerUnit : UnitBase
     {
         StateSetting();
 
-        CardManager.Instance.units.Add(gameObject);
+        CardManger.Instance.units.Add(gameObject);
 
         Vector3 startPos = BattleManager.Instance.unitSpawnPoint[0].position;
         Vector3 targetPos = BattleManager.Instance.point;
@@ -61,15 +60,6 @@ public class PlayerUnit : UnitBase
 
         // 클릭 지점으로 이동 -> 나머지는 Scanner 함수 에서 실행 (y 축만 먼저 빠르게 이동)
         lerp = StartCoroutine(lerpCoroutine(startPos,new Vector3((xPos > targetPos.x ? targetPos.x : xPos), targetPos.y, 0), speed)); // y 축 먼저 이동
-    }
-
-    private void Start()
-    {
-        // 초기 데이터 저장
-        initialHealth = unitData.Health;
-        initialSpeed = unitData.Speed;
-        initialPower = unitData.Power;
-        initialAttackTime = unitData.AttackTime;
     }
 
     void Update()
@@ -101,9 +91,9 @@ public class PlayerUnit : UnitBase
         // SpriteRenderer 가 있을 경우에는 본체의 y 축 값의 소수점을 제외한 값을 Order Layer 에 적용
         if (bodySprite != null)
         {
-            float yPos = (transform.position.y - 4) * 10; // 음수/양수 처리를 위해 -4, 넓게 분배하기 위해 *10
-            int orderLayer = Mathf.FloorToInt(yPos); // 소수점 제외
-            bodySprite.sortingOrder = Mathf.Abs(orderLayer); // 절대값으로 변경 후 적용
+            int yPos = Mathf.FloorToInt(transform.position.y);
+            int orderLayer = (yPos < 0 ? yPos * yPos : yPos); // 음수일 경우에는 제곱처리
+            bodySprite.sortingOrder = orderLayer;
         }
     }
 
@@ -157,6 +147,8 @@ public class PlayerUnit : UnitBase
 
             // 가는 방향에 따라 Sprite 방향 변경
             SpriteDir(moveVec, Vector3.zero);
+
+            //unitActivity = UnitActivity.FindEnemy;
         }
         else
         {
@@ -190,7 +182,6 @@ public class PlayerUnit : UnitBase
 
         if (nearestAttackTarget != null)
         {
-
             if(!startMoveFinish)
             {
                 StopCoroutine(lerp);
@@ -332,13 +323,10 @@ public class PlayerUnit : UnitBase
         moveVec = Vector2.zero;
         col.enabled = false;
 
-        EnemyUnit enemyLogic = nearestAttackTarget.GetComponent<EnemyUnit>();
-        enemyLogic.unitState = UnitState.Move;
-
         speed = 0;
         attackTime = 0;
 
-        CardManager.Instance.units.Remove(gameObject);
+        CardManger.Instance.units.Remove(gameObject);
 
         // 진행중인 코루틴 함수 모두 중지
         if (smash != null) { StopCoroutine(smash); smash = null; }
@@ -404,17 +392,17 @@ public class PlayerUnit : UnitBase
         CurrentAnimation = animName;
     }
 
-    public void Buff_Effect(SpellTypes spellType, bool isBuff)
+    public void buff(int value)
     {
-        switch (spellType)
+        switch (value)
         {
-            case SpellTypes.Attack:
+            case 20000:
                 buffEffect[0].SetActive(true);
                 break;
-            case SpellTypes.Buff:
+            case 20001:
                 buffEffect[1].SetActive(true);
                 break;
-            case SpellTypes.Debuff:
+            case 22001:
                 buffEffect[2].SetActive(true);
                 break;
         }

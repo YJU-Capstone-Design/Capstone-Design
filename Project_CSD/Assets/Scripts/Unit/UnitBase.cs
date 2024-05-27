@@ -5,13 +5,6 @@ public class UnitBase : MonoBehaviour
 {
     public enum UnitState { Idle, Move, Fight, Die, Win}
 
-    // 데이터를 받아와서 저장하는 용도
-    public float initialHealth;
-    public float initialSpeed;
-    public float initialPower;
-    public float initialAttackTime;
-
-    // 실제로 적용되는 값
     [Header("# UnitState")]
     public UnitState unitState;
     public int unitID;

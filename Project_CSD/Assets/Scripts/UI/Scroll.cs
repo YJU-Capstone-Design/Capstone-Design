@@ -22,13 +22,11 @@ public class Scroll : MonoBehaviour
         if (type.Equals("spell")){
             charCollection.SetActive(false);
             cardCollection.SetActive(true);
-          
         }
         else if (type.Equals("char"))
         {
             charCollection.SetActive(true);
             cardCollection.SetActive(false);
-  
         }
        
     }
