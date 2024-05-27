@@ -43,12 +43,10 @@ public class Scanner : MonoBehaviour
             if(unitType == 1) // ¾Æ±º 
             {
                 EnemyUnit targetLogic = target.transform.gameObject.GetComponent<EnemyUnit>();
-
                 if (targetLogic.unitState == UnitBase.UnitState.Fight)
                 {
                     continue;
-                }
-                else if(targetLogic.scanner.nearestTarget != null)
+                } else if(targetLogic.scanner.nearestTarget != null)
                 {
                     if(targetLogic.scanner.nearestTarget != this.gameObject.transform)
                     {
@@ -59,7 +57,6 @@ public class Scanner : MonoBehaviour
             else if(unitType == 3) // Àû
             {
                 PlayerUnit targetLogic = target.transform.gameObject.GetComponent<PlayerUnit>();
-
                 if (targetLogic.unitState == UnitBase.UnitState.Fight)
                 {
                     continue;

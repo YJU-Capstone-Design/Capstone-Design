@@ -7,9 +7,8 @@ using TMPro;
 public class LodingSceneMgr : MonoBehaviour
 {
     public static string nextScene;
-    [SerializeField] Slider progressBar;
+    [SerializeField] Image progressBar;
     [SerializeField] TextMeshProUGUI time;
-    [SerializeField] private float speed;
 
     private void Start()
     {
@@ -37,23 +36,23 @@ public class LodingSceneMgr : MonoBehaviour
                 timer += Time.unscaledDeltaTime;
                 if (op.progress < 0.9f)
                 {
-                    progressBar.value = Mathf.Lerp(progressBar.value, op.progress, timer*speed);
-                    if (progressBar.value >= op.progress)
+                    progressBar.fillAmount = Mathf.Lerp(progressBar.fillAmount, op.progress, timer);
+                    if (progressBar.fillAmount >= op.progress)
                     {
                         timer = 0f;
                     }
                 }
                 else
                 {
-                    progressBar.value = Mathf.Lerp(progressBar.value, 1f, timer*speed);
-                    if (progressBar.value == 1f)
+                    progressBar.fillAmount = Mathf.Lerp(progressBar.fillAmount, 1f, timer);
+                    if (progressBar.fillAmount == 1.0f)
                     {
                         // 로딩이 완료된 후에 nextScene 변수를 초기화합니다.
                         nextScene = "";
                         op.allowSceneActivation = true;
                         break; // 로딩이 완료되었으므로 이번 씬 로딩 코루틴을 종료합니다.
                     }
-                    time.text = (progressBar.value * 100).ToString("F0") + "%";
+                    time.text = (progressBar.fillAmount * 100).ToString("F0") + "%";
                 }
             }
         }
