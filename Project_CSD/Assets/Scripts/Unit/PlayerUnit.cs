@@ -156,8 +156,6 @@ public class PlayerUnit : UnitBase
 
             // 가는 방향에 따라 Sprite 방향 변경
             SpriteDir(moveVec, Vector3.zero);
-
-            //unitActivity = UnitActivity.FindEnemy;
         }
         else
         {
@@ -191,6 +189,7 @@ public class PlayerUnit : UnitBase
 
         if (nearestAttackTarget != null)
         {
+
             if(!startMoveFinish)
             {
                 StopCoroutine(lerp);
@@ -331,6 +330,9 @@ public class PlayerUnit : UnitBase
         unitState = UnitState.Die;
         moveVec = Vector2.zero;
         col.enabled = false;
+
+        EnemyUnit enemyLogic = nearestAttackTarget.GetComponent<EnemyUnit>();
+        enemyLogic.unitState = UnitState.Move;
 
         speed = 0;
         attackTime = 0;
