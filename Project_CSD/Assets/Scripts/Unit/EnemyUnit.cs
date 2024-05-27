@@ -40,8 +40,17 @@ public class EnemyUnit : UnitBase
 
     void OnEnable()
     {
-        CardManger.Instance.enemys.Add(gameObject);
+        CardManager.Instance.enemys.Add(gameObject);
         StateSetting();
+    }
+
+    private void Start()
+    {
+        // 초기 데이터 저장
+        initialHealth = unitData.Health;
+        initialSpeed = unitData.Speed;
+        initialPower = unitData.Power;
+        initialAttackTime = unitData.AttackTime;
     }
 
     void Update()
@@ -73,9 +82,9 @@ public class EnemyUnit : UnitBase
             // SpriteRenderer 가 있을 경우에는 본체의 y 축 값의 소수점을 제외한 값을 Order Layer 에 적용
             if(bodySprite != null)
             {
-                int yPos = Mathf.FloorToInt(transform.position.y);
-                int orderLayer = (yPos < 0 ? yPos * yPos : yPos); // 음수일 경우에는 제곱처리
-                bodySprite.sortingOrder = orderLayer;
+                float yPos = (transform.position.y - 4) * 10; // 음수/양수 처리를 위해 -4, 넓게 분배하기 위해 *10
+                int orderLayer = Mathf.FloorToInt(yPos); // 소수점 제외
+                bodySprite.sortingOrder = Mathf.Abs(orderLayer); // 절대값으로 변경 후 적용
             }
         }
     }
@@ -148,8 +157,6 @@ public class EnemyUnit : UnitBase
 
         if (nearestAttackTarget != null)
         {
-            //unitState = UnitState.Fight;
-
             // 적(유닛, 벽)이 인식되면 attackTime 증가 및 공격 함수 실행
             attackTime += Time.deltaTime;
 
@@ -314,6 +321,9 @@ public class EnemyUnit : UnitBase
         moveVec = Vector2.zero;
         col.enabled = false;
 
+        PlayerUnit enemyLogic = nearestAttackTarget.GetComponent<PlayerUnit>();
+        enemyLogic.unitState = UnitState.Move;
+
         // 작동중인 다른 Coroutine 함수 중지
         if (smash != null) { StopCoroutine(smash); smash = null; }
         if (arrow != null) { StopCoroutine(arrow); arrow = null; }
@@ -321,7 +331,7 @@ public class EnemyUnit : UnitBase
         speed = 0;
         attackTime = 0;
 
-        CardManger.Instance.enemys.Remove(gameObject);
+        CardManager.Instance.enemys.Remove(gameObject);
 
         // 애니메이션
         anim.Die();
