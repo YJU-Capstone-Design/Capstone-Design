@@ -45,4 +45,8 @@ public class SpellData : ScriptableObject
     [SerializeField] // 속도 증가
     private float speedUp;
     public float SpeedUp { get { return speedUp; } }
+
+    [SerializeField] // 속도 증가
+    private float attackTimeUp;
+    public float AttackTimeUp { get { return attackTimeUp; } }
 }

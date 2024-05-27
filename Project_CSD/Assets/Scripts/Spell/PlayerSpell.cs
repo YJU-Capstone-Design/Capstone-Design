@@ -22,15 +22,13 @@ public class PlayerSpell : SpellBase
     public void CallCardData(int type)
     {
         // ¼öÄ¡°ª
-        itemID = spell[type].ItemID;
-        itemName = spell[type].ItemName;
+        spellType = (SpellTypes) spell[type].SpellType;
+        spellID = spell[type].SpellID;
+        spellName = spell[type].SpellName;
         cost = spell[type].Cost;
+        duration = spell[type].Duration;
         damage = spell[type].Damage;
         speedUp = spell[type].SpeedUp;
         powerUp = spell[type].PowerUp;
-        duration = spell[type].Duration;
-
-        value = itemID;
-        Debug.Log(itemID);
     }
 }

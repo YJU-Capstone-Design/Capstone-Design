@@ -13,14 +13,19 @@ public class SpellManager : MonoBehaviour
 
     public void UsingCard()
     {
-        if (spell.spellType != SpellBase.SpellTypes.Attack) // °ø°Ý ½ºÆçÀÌ ¾Æ´Ò ¶§
+        switch (spell.spellType)
         {
-            Debug.Log("Using Buff or Debuff Spell");
-            CardManager.Instance.Buff_Status(spell);
-        }
-        else // °ø°Ý ½ºÆçÀÏ ¶§
-        {
-            Debug.Log("Using Attack Spell");
+            case SpellBase.SpellTypes.Attack:
+                Debug.Log("Using Attack Spell");
+                break;
+            case SpellBase.SpellTypes.Buff:
+                Debug.Log("Using Buff Spell");
+                CardManager.Instance.Buff_Status(spell);
+                break;
+            case SpellBase.SpellTypes.Debuff:
+                Debug.Log("Using Debuff Spell");
+                CardManager.Instance.Buff_Status(spell);
+                break;
         }
         BattleManager.Instance.CardShuffle();
     }
