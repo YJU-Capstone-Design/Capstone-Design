@@ -240,7 +240,6 @@ public class BattleManager :Singleton<BattleManager>
         spawnIndex = 0;
         spawnEnd = false;
 
-        Debug.Log(waveCount);
         // 리스폰 파일 읽기
         TextAsset textFile = Resources.Load(enemySpawnFile[waveCount].name) as TextAsset; // as 를 사용해서 text 파일인지 검증 -> 아니면 null 처리됨.
         StringReader reader = new StringReader(textFile.text); // StringReader : 파일 내의 문자열 데이터 읽기 클래스 - > 파일 열기
