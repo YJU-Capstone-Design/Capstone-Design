@@ -2437,6 +2437,7 @@ MonoBehaviour:
   battle: {fileID: 2016165685}
   gameEnd: {fileID: 1964115668}
   mainCamera: {fileID: 1250325186}
+  wave: 0
   pool: {fileID: 513461668}
   point: {x: 0, y: 0, z: 0}
   unitSpawnPoint:
@@ -2444,6 +2445,10 @@ MonoBehaviour:
   - {fileID: 1582974061}
   - {fileID: 308611781}
   - {fileID: 1588485322}
+  enemySpawnFile:
+  - {fileID: 4900000, guid: 8de3a0dc85ab4ac418de2a6e476b7f02, type: 3}
+  - {fileID: 4900000, guid: 8de3a0dc85ab4ac418de2a6e476b7f02, type: 3}
+  - {fileID: 4900000, guid: 8de3a0dc85ab4ac418de2a6e476b7f02, type: 3}
   hpBarParent: {fileID: 896767616}
   unitSpawnRange: {fileID: 974946586}
 --- !u!4 &418216610
@@ -2494,6 +2499,7 @@ MonoBehaviour:
   mapSize: {x: -5, y: 5}
   tf_cursor: {fileID: 440047941}
   dragSpeed: 150
+  cam: {fileID: 0}
 --- !u!4 &440047941
 Transform:
   m_ObjectHideFlags: 0

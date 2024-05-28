@@ -6,7 +6,7 @@ using System.IO;
 using System.Drawing;
 public class BattleManager :Singleton<BattleManager>
 {
-    public enum BattleState { Start, Win, Lose }
+    public enum BattleState { Start, Win, Lose, BreakTime }
     public BattleState battleState;
 
     [Header("Shop")]
@@ -24,12 +24,14 @@ public class BattleManager :Singleton<BattleManager>
     [SerializeField] private GameObject battle;
     [SerializeField] private GameObject gameEnd;
     [SerializeField] Transform mainCamera;
+    [SerializeField] int wave;
 
     [Header("Spawn")]
     public PoolManager pool;
     public Vector3 point; // 마우스 클릭 포인트
     public Transform[] unitSpawnPoint; // 기본 spawn point
-    [SerializeField] List<Spawn> spawnList;
+    [SerializeField] List<TextAsset> enemySpawnFile; // Enemy Spawn 이 적혀있는 Text File
+    [SerializeField] List<Spawn> spawnList; // Text File 에서 읽어들인 값을 저장시키긴 위한 List
     int spawnIndex; // 스폰 로직 순서
     bool spawnEnd; // 스폰 로직 마지막
     float curSpawnTime;  
@@ -44,6 +46,7 @@ public class BattleManager :Singleton<BattleManager>
     {
         // 전투 시작
         battleState = BattleState.Start;
+        wave = 0;
 
         // 전투 기본 세팅
         battle.SetActive(true);
@@ -54,7 +57,7 @@ public class BattleManager :Singleton<BattleManager>
 
         spawnList = new List<Spawn>();
 
-        ReadSpawnFile(); // 적 유닛 스폰 파일 가져오기
+        ReadSpawnFile(wave); // 적 유닛 스폰 파일 가져오기
 
         unitType = UnitType.Bread; // 테스트(제작)용
     }
@@ -81,11 +84,27 @@ public class BattleManager :Singleton<BattleManager>
             curSpawnTime = 0;
         }
 
-        // 모든 적이 소환된 후, 필드에 남아있는 적이 없고, 벽의 hp가 남아 있으면 Win
+        // 모든 적이 소환된 후, 필드에 남아있는 적이 없고, 벽의 hp가 남아 있을 때 상황 처리
         if (spawnEnd && CardManger.Instance.enemys.Count == 0 && curHealth > 0)
         {
-            battleState = BattleState.Win;
-        } 
+            Debug.Log("End Wave");
+            // 모든 enemySpawnFile 을 다 처리했을 경우 Win
+            if(wave + 1 == enemySpawnFile.Count)
+            {
+                battleState = BattleState.Win;
+                Debug.Log("Win");
+            }
+            // 아직 처리하지 못한 enemySpawnFile 이 남아있을 경우 다음 Wave 실행
+            else if(wave + 1 < enemySpawnFile.Count && battleState == BattleState.Start)
+            {
+                Debug.Log("Next Wave");
+                // Wave 애니메이션 필요
+                battleState = BattleState.BreakTime;
+                wave++;
+                ReadSpawnFile(wave); // 적 유닛 스폰 파일 가져오기
+                battleState = BattleState.Start;
+            }
+        }
 
         // 이겼거나 졌을 경우 결과창 띄우기
         if (battleState == BattleState.Win || battleState == BattleState.Lose) 
@@ -210,15 +229,16 @@ public class BattleManager :Singleton<BattleManager>
         }
     }
 
-    void ReadSpawnFile()
+    void ReadSpawnFile(int waveCount)
     {
         // 변수 초기화
         spawnList.Clear();
         spawnIndex = 0;
         spawnEnd = false;
 
+        Debug.Log(waveCount);
         // 리스폰 파일 읽기
-        TextAsset textFile = Resources.Load("Stage1") as TextAsset; // as 를 사용해서 text 파일인지 검증 -> 아니면 null 처리됨.
+        TextAsset textFile = Resources.Load(enemySpawnFile[waveCount].name) as TextAsset; // as 를 사용해서 text 파일인지 검증 -> 아니면 null 처리됨.
         StringReader reader = new StringReader(textFile.text); // StringReader : 파일 내의 문자열 데이터 읽기 클래스 - > 파일 열기
 
         // 한 줄씩 데이터 저장
