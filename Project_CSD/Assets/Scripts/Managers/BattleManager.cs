@@ -8,6 +8,7 @@ public class BattleManager :Singleton<BattleManager>
 {
     public enum BattleState { Start, Win, Lose }
     public BattleState battleState;
+    public CashManager cashmge;
 
     [Header("Shop")]
     [SerializeField] private Transform shopParent;

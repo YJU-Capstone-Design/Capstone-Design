@@ -31,7 +31,7 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
     {
         // DontDestroyOnLoad 는 부모 오브젝트가 있으면 제대로 작동을 안함.
         // 그래서 부모나 최상위에 오브젝트가 있으면 그 오브젝트를 DontDestroyOnLoad 함.
-        if (transform.parent != null && transform.root != null)
+        if (transform.parent != null || transform.root != null)
         {
             DontDestroyOnLoad(this.transform.root.gameObject);
         } else

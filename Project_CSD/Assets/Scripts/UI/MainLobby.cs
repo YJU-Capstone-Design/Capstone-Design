@@ -40,8 +40,6 @@ public class MainLobby : MonoBehaviour
 
     private void Start()
     {
-
-
         toggle_anim = toggleBtn.GetComponent<Animator>();
         toggle_BG_anim = panel_Bg.GetComponent<Animator>();
         Clear();
