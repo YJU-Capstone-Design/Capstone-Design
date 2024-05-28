@@ -110,6 +110,10 @@ public class BattleManager :Singleton<BattleManager>
         if (battleState == BattleState.Win || battleState == BattleState.Lose) 
         { 
             // 결과 PopUp 창
+
+            // 다시 Lobby 로 이동
+
+            // 패배나 도중 포기인 경우 Wave 저장 필요 -> DontDestroy 오브젝트에 넣어야 할 듯
         }
 
 
