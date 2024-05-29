@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-
+using UnityEngine.UI;
 public class BreakRack : Singleton<BreakRack>
 {
     
+
     [Header("메인 Top오브젝트")]
     [SerializeField] private GameObject topBox;
     [SerializeField] private GameObject itemBox;
@@ -16,7 +17,7 @@ public class BreakRack : Singleton<BreakRack>
     [SerializeField] private int save = 0;
 
     //전체 적용 능력치
-    [SerializeField] TextMeshPro setInfo;
+    [SerializeField] private TextMeshProUGUI setInfo;
 
     private void Awake()
     {
@@ -25,10 +26,7 @@ public class BreakRack : Singleton<BreakRack>
 
     }
 
-    public void TextInfo()
-    {
-
-    }
+    
 
 
 
