@@ -44,11 +44,9 @@ public class BreakRack : Singleton<BreakRack>
     public void OpenItemBox()
     {
         itemBox.transform.localScale = Vector3.one;
-    }
-    public void OpenInfoBox()
-    {
         infoBox.transform.localScale = Vector3.one;
     }
+   
     public void OpenPopUpBox()
     {
         popUp.SetActive(true);

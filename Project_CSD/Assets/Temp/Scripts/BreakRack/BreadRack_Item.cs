@@ -12,10 +12,7 @@ public class BreadRack_Item : MonoBehaviour
         StartCoroutine(Select_Item());
     }
 
-    public void Click_Info()
-    {
-        BreakRack.Instance.OpenInfoBox();
-    }
+
 
     IEnumerator Select_Item()
     {
