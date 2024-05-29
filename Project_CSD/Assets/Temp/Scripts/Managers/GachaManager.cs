@@ -57,7 +57,7 @@ public class GachaManager : MonoBehaviour
         int[] pick = unitList;
 
         System.Random random = new System.Random();
-        int randomValue = random.Next(1, pick.Length);
+        int randomValue = random.Next(0, pick.Length);
 
         result.Add(pick[randomValue]);
 
