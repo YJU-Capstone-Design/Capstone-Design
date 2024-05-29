@@ -8,7 +8,7 @@ public class BattleManager :Singleton<BattleManager>
 {
     public enum BattleState { Start, Win, Lose }
     public BattleState battleState;
-    public CashManager cashmge;
+    public CashManager cashmgr;
 
     [Header("Shop")]
     [SerializeField] private Transform shopParent;
@@ -18,7 +18,7 @@ public class BattleManager :Singleton<BattleManager>
     [Header("HpBar")] // 메인 집
     public float curHealth; //* 현재 체력
     public float maxHealth; //* 최대 체력
-    public GameObject healthBar; // 벽 체력바
+    public GameObject healthBar; //벽 체력바
     public Slider HpBarSlider; 
 
     [Header("BattleMgr")]
@@ -43,6 +43,11 @@ public class BattleManager :Singleton<BattleManager>
 
     private void Awake()
     {
+        if (cashmgr == null)
+        {
+            GameObject go = GameObject.Find("CashManager");
+            cashmgr = go.GetComponent<CashManager>();
+        }
         // 전투 시작
         battleState = BattleState.Start;
 
@@ -170,8 +175,6 @@ public class BattleManager :Singleton<BattleManager>
 
     private void CardMake()
     {
-
-        
         for (int i = 0; i < 3; i++)
         {
             int ran_card = Random.Range(0, card.Length);
@@ -182,8 +185,6 @@ public class BattleManager :Singleton<BattleManager>
             
             cardObj.Add(myInstance);
         }
-
-
     }
 
     public void CardShuffle()
@@ -208,6 +209,7 @@ public class BattleManager :Singleton<BattleManager>
             healthBar.SetActive(false);
             battle.SetActive(false);
             gameEnd.SetActive(true);
+            Result();
             Time.timeScale = 0f;
         }
     }
@@ -264,5 +266,11 @@ public class BattleManager :Singleton<BattleManager>
 
         // 다음 리스폰 딜레이 갱신
         nextSpawnDelay = spawnList[spawnIndex].spawnDelay;
+    }
+
+    // 게임 결과에 따라 재화결산
+    public void Result()
+    {
+        cashmgr.player_Gold += 10;
     }
 }

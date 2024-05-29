@@ -1874,10 +1874,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10455982f5ccab24e869d6387c8809c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player_Gold: 1
-  player_Cash: 1
+  instance: {fileID: 0}
+  player_Gold: 200
+  player_Cash: 200
   GoldText: {fileID: 0}
   CashText: {fileID: 0}
+  obj1: {fileID: 0}
+  obj2: {fileID: 0}
 --- !u!4 &642351155
 Transform:
   m_ObjectHideFlags: 0
