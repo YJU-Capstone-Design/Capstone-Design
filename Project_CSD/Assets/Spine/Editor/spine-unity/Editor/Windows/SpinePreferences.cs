@@ -52,7 +52,7 @@ namespace Spine.Unity.Editor {
 		static int wasPreferencesAssetCreated = 0;
 #endif
 
-		public const string SPINE_SETTINGS_ASSET_PATH = "Assets/Editor/SpineSettings.asset";
+		public const string SPINE_SETTINGS_ASSET_PATH = "Assets/Spine/Editor/SpineSettings.asset";
 
 #if SPINE_TK2D
 		internal const float DEFAULT_DEFAULT_SCALE = 1f;
@@ -208,8 +208,8 @@ namespace Spine.Unity.Editor {
 				// Multiple threads may be calling this method during import, creating the folder
 				// multiple times with ascending number suffix. Atomic wasPreferencesDirCreated int
 				// variable is used to prevent any redundant create operations.
-				if (!AssetDatabase.IsValidFolder("Assets/Editor") && Interlocked.Exchange(ref wasPreferencesDirCreated, 1) == 0)
-					AssetDatabase.CreateFolder("Assets", "Editor");
+				if (!AssetDatabase.IsValidFolder("Assets/Spine/Editor") && Interlocked.Exchange(ref wasPreferencesDirCreated, 1) == 0)
+					AssetDatabase.CreateFolder("Assets/Spine", "Editor");
 				if (Interlocked.Exchange(ref wasPreferencesAssetCreated, 1) == 0)
 					AssetDatabase.CreateAsset(settings, SPINE_SETTINGS_ASSET_PATH);
 			}

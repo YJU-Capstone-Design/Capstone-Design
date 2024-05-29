@@ -1,0 +1,40 @@
+WhiteBread.png
+	size: 379, 110
+	filter: Linear, Linear
+	pma: true
+	scale: 0.5
+body1
+	bounds: 2, 25, 88, 83
+body2
+	bounds: 121, 2, 90, 31
+	offsets: 0, 0, 91, 31
+dust1
+	bounds: 214, 29, 106, 16
+dust2
+	bounds: 2, 2, 117, 21
+dust3
+	bounds: 92, 72, 121, 36
+dust4
+	bounds: 215, 73, 122, 35
+dust5
+	bounds: 92, 35, 120, 35
+dust6
+	bounds: 215, 47, 108, 24
+dust7
+	bounds: 213, 4, 89, 23
+eye
+	bounds: 339, 86, 32, 22
+eye2
+	bounds: 339, 71, 38, 13
+eye3
+	bounds: 325, 58, 44, 11
+leg
+	bounds: 304, 8, 62, 19
+legL
+	bounds: 325, 44, 12, 23
+	offsets: 0, 0, 12, 24
+	rotate: 90
+legR
+	bounds: 322, 30, 12, 23
+	offsets: 0, 0, 12, 24
+	rotate: 90
