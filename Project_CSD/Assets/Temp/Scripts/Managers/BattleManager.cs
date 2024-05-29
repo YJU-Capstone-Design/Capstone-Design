@@ -6,7 +6,7 @@ using System.IO;
 using System.Drawing;
 public class BattleManager :Singleton<BattleManager>
 {
-    public enum BattleState { Start, Win, Lose }
+    public enum BattleState { Start, Win, Lose, BreakTime }
     public BattleState battleState;
 
     [Header("Shop")]
@@ -18,32 +18,35 @@ public class BattleManager :Singleton<BattleManager>
     public float curHealth; //* 현재 체력
     public float maxHealth; //* 최대 체력
     public GameObject healthBar; // 벽 체력바
-    public Slider HpBarSlider; 
+    public Slider HpBarSlider;
 
     [Header("BattleMgr")]
     [SerializeField] private GameObject battle;
     [SerializeField] private GameObject gameEnd;
     [SerializeField] Transform mainCamera;
+    [SerializeField] int wave;
 
     [Header("Spawn")]
     public PoolManager pool;
     public Vector3 point; // 마우스 클릭 포인트
     public Transform[] unitSpawnPoint; // 기본 spawn point
-    [SerializeField] List<Spawn> spawnList;
+    [SerializeField] List<TextAsset> enemySpawnFile; // Enemy Spawn 이 적혀있는 Text File
+    [SerializeField] List<Spawn> spawnList; // Text File 에서 읽어들인 값을 저장시키긴 위한 List
     int spawnIndex; // 스폰 로직 순서
     bool spawnEnd; // 스폰 로직 마지막
-    float curSpawnTime;  
+    float curSpawnTime;
     float nextSpawnDelay;
     public GameObject hpBarParent; // 유닛 체력바 부모 (canvas 오브젝트)
     public GameObject unitSpawnRange; // 유닛 스폰 범위 (canvas 오브젝트)
 
-    enum UnitType {Bread, Pupnut, Kitchu, Ramo}; // 테스트(제작)용
+    enum UnitType { Bread, Pupnut, Kitchu, Ramo }; // 테스트(제작)용
     UnitType unitType;
 
     private void Awake()
     {
         // 전투 시작
         battleState = BattleState.Start;
+        wave = 0;
 
         // 전투 기본 세팅
         battle.SetActive(true);
@@ -54,7 +57,7 @@ public class BattleManager :Singleton<BattleManager>
 
         spawnList = new List<Spawn>();
 
-        ReadSpawnFile(); // 적 유닛 스폰 파일 가져오기
+        ReadSpawnFile(wave); // 적 유닛 스폰 파일 가져오기
 
         unitType = UnitType.Bread; // 테스트(제작)용
     }
@@ -64,8 +67,7 @@ public class BattleManager :Singleton<BattleManager>
         // 적 좀비 소환 -> 테스트 용
         if (Input.GetKeyDown("2")) { pool.Get(2, 0); }
 
-
-        if(CardManager.Instance.enemys.Count > 0 && curHealth > 0)
+        if (CardManager.Instance.enemys.Count > 0 && curHealth > 0)
         {
             battleState = BattleState.Start;
         }
@@ -82,16 +84,36 @@ public class BattleManager :Singleton<BattleManager>
             curSpawnTime = 0;
         }
 
-        // 모든 적이 소환된 후, 필드에 남아있는 적이 없고, 벽의 hp가 남아 있으면 Win
+        // 모든 적이 소환된 후, 필드에 남아있는 적이 없고, 벽의 hp가 남아 있을 때 상황 처리
         if (spawnEnd && CardManager.Instance.enemys.Count == 0 && curHealth > 0)
         {
-            battleState = BattleState.Win;
-        } 
+            Debug.Log("End Wave");
+            // 모든 enemySpawnFile 을 다 처리했을 경우 Win
+            if (wave + 1 == enemySpawnFile.Count)
+            {
+                battleState = BattleState.Win;
+                Debug.Log("Win");
+            }
+            // 아직 처리하지 못한 enemySpawnFile 이 남아있을 경우 다음 Wave 실행
+            else if (wave + 1 < enemySpawnFile.Count && battleState == BattleState.Start)
+            {
+                Debug.Log("Next Wave");
+                // Wave 애니메이션 필요
+                battleState = BattleState.BreakTime;
+                wave++;
+                ReadSpawnFile(wave); // 적 유닛 스폰 파일 가져오기
+                battleState = BattleState.Start;
+            }
+        }
 
         // 이겼거나 졌을 경우 결과창 띄우기
-        if (battleState == BattleState.Win || battleState == BattleState.Lose) 
-        { 
+        if (battleState == BattleState.Win || battleState == BattleState.Lose)
+        {
             // 결과 PopUp 창
+
+            // 다시 Lobby 로 이동
+
+            // 패배나 도중 포기인 경우 Wave 저장 필요 -> DontDestroy 오브젝트에 넣어야 할 듯
         }
 
 
@@ -99,10 +121,10 @@ public class BattleManager :Singleton<BattleManager>
         if (Input.GetKeyDown(KeyCode.Keypad0))
         {
             unitType = UnitType.Bread;
-        } 
-        else if(Input.GetKey(KeyCode.Keypad1))
+        }
+        else if (Input.GetKey(KeyCode.Keypad1))
         {
-            unitType= UnitType.Pupnut;
+            unitType = UnitType.Pupnut;
         }
         else if (Input.GetKey(KeyCode.Keypad2))
         {
@@ -124,7 +146,7 @@ public class BattleManager :Singleton<BattleManager>
             {
                 spawnAreaAnchors.anchorMin = new Vector2(0, 0.1f);
                 spawnAreaAnchors.anchorMax = new Vector2(1, 0.5f);
-            } 
+            }
             else
             {
                 spawnAreaAnchors.anchorMin = new Vector2(0.15f, 0.1f);
@@ -170,15 +192,15 @@ public class BattleManager :Singleton<BattleManager>
     private void CardMake()
     {
 
-        
+
         for (int i = 0; i < 3; i++)
         {
             int ran_card = Random.Range(0, card.Length);
             GameObject myInstance;
-           
+
             myInstance = Instantiate(card[ran_card], shopParent);
-                
-            
+
+
             cardObj.Add(myInstance);
         }
 
@@ -187,8 +209,8 @@ public class BattleManager :Singleton<BattleManager>
 
     public void CardShuffle()
     {
-       
-        foreach(GameObject card in cardObj)
+
+        foreach (GameObject card in cardObj)
         {
             Destroy(card);
         }
@@ -199,7 +221,7 @@ public class BattleManager :Singleton<BattleManager>
 
     void UpdateHealthBar()
     {
-        
+
         float sliderValue = curHealth / maxHealth;
         HpBarSlider.value = sliderValue;
         if (curHealth <= 0)
@@ -211,7 +233,7 @@ public class BattleManager :Singleton<BattleManager>
         }
     }
 
-    void ReadSpawnFile()
+    void ReadSpawnFile(int waveCount)
     {
         // 변수 초기화
         spawnList.Clear();
@@ -219,7 +241,7 @@ public class BattleManager :Singleton<BattleManager>
         spawnEnd = false;
 
         // 리스폰 파일 읽기
-        TextAsset textFile = Resources.Load("Stage1") as TextAsset; // as 를 사용해서 text 파일인지 검증 -> 아니면 null 처리됨.
+        TextAsset textFile = Resources.Load(enemySpawnFile[waveCount].name) as TextAsset; // as 를 사용해서 text 파일인지 검증 -> 아니면 null 처리됨.
         StringReader reader = new StringReader(textFile.text); // StringReader : 파일 내의 문자열 데이터 읽기 클래스 - > 파일 열기
 
         // 한 줄씩 데이터 저장

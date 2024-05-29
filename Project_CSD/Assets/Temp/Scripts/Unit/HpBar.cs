@@ -26,7 +26,19 @@ public class HpBar : MonoBehaviour
                 hpBarPos = new Vector3((hpBarDir.x < 0 ? -0.2f : 0f), 3.5f);
                 break;
             case string name when name.Contains("Skeleton") || name.Contains("Zombie"):
-                hpBarPos = new Vector3((hpBarDir.x < 0 ? -0.2f : 0f), 1.8f);
+                hpBarPos = new Vector3((hpBarDir.x < 0 ? -0.1f : 0f), 1.8f);
+                break;
+            case string name when name.Contains("Slime"):
+                hpBarPos = new Vector3((hpBarDir.x < 0 ? 0f : -0.1f), 1.3f);
+                break;
+            case string name when name.Contains("WhiteBread"):
+                hpBarPos = new Vector3((hpBarDir.x < 0 ? -0.2f : 0f), 2f);
+                break;
+            case string name when name.Contains("Ramo"):
+                hpBarPos = new Vector3((hpBarDir.x < 0 ? -0.4f : -0.1f), 1.8f);
+                break;
+            case string name when name.Contains("Pupnut"):
+                hpBarPos = new Vector3(-0.05f, 1.5f);
                 break;
             default:
                 hpBarPos = new Vector3((hpBarDir.x < 0 ? -0.2f : 0f), 1.5f);
@@ -40,13 +52,15 @@ public class HpBar : MonoBehaviour
         realHp.fillAmount = (float)nowHp / (float)maxHp;
 
         // Color
-        if(realHp.fillAmount < 0.66f)
+        if (realHp.fillAmount < 0.66f)
         {
             realHp.color = Color.yellow;
-        } else if(realHp.fillAmount < 0.33f)
+        }
+        else if (realHp.fillAmount < 0.33f)
         {
             realHp.color = Color.red;
-        } else
+        }
+        else
         {
             realHp.color = Color.green;
         }
