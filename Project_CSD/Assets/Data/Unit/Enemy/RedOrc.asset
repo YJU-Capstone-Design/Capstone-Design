@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: RedOrc
   m_EditorClassIdentifier: 
   unitID: 32003
-  health: 120
+  health: 500
   speed: 1
   power: 1.8
-  attackTime: 3
+  attackTime: 1.5

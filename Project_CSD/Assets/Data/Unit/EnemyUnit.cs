@@ -13,6 +13,8 @@ public class EnemyUnit : UnitBase
     public UnitData unitData;
     Vector3 moveVec; // 이동 방향
     LayerMask attackLayer;
+    [SerializeField] float attackRayUpPos; // 유닛이 위를 향할 때 사용되는 y 포지션 값
+    [SerializeField] float attackRayDownPos; // 유닛이 아래를 향할 때 사용되는 y 포지션 값 -> 기본값 (Enemy 는 아래를 향할 때 중심과 크게 차이가 안나게 설정)
     [SerializeField] Vector3 attackRayPos; // attackRay 위치 = 현재 위치 + attackRayPos
     [SerializeField] Vector2 attackRaySize;
     GameObject hpBar; // 체력바
@@ -144,15 +146,24 @@ public class EnemyUnit : UnitBase
         SpriteDir(Vector3.zero, moveVec);
 
         // 애니메이션
-        anim.Walk();
+        if(gameObject.name.Contains("Bat"))
+        {
+            anim.Idle();
+        }
+        else if(gameObject.name.Contains("Beholder") || gameObject.name.Contains("Crow"))
+        {
+            anim.Fly();
+        }
+        else
+        {
+            anim.Walk();
+        }
     }
 
     // 실제 공격 범위 Ray 함수
     void AttackRay()
     {
-        float attackRayYPos = attackRayPos.y * (attackRayPos.y > 0 ? (moveVec.y > 0 ? 2 : 1) : (moveVec.y > 0 ? 1 : 2));
-
-        attackTargets = Physics2D.BoxCastAll(transform.position + new Vector3(attackRayPos.x * Mathf.Sign(moveVec.x), attackRayYPos, attackRayPos.z), attackRaySize, 0, Vector2.zero, 0, attackLayer);
+        attackTargets = Physics2D.BoxCastAll(transform.position + new Vector3(attackRayPos.x * Mathf.Sign(moveVec.x), (moveVec.y > 0 ? attackRayUpPos : attackRayDownPos), attackRayPos.z), attackRaySize, 0, Vector2.zero, 0, attackLayer);
         nearestAttackTarget = scanner.GetNearestAttack(attackTargets); // 단일 공격
         multipleAttackTargets = scanner.GetAttackTargets(attackTargets, 5); // 다수 공격
 
@@ -215,10 +226,8 @@ public class EnemyUnit : UnitBase
 
     void OnDrawGizmosSelected()
     {
-        float attackRayYPos = attackRayPos.y * (attackRayPos.y > 0 ? (moveVec.y > 0 ? 2 : 1) : (moveVec.y > 0 ? 1 : 2));
-
         Gizmos.color = Color.blue;
-        Gizmos.DrawWireCube(transform.position + new Vector3(attackRayPos.x * Mathf.Sign(moveVec.x), attackRayYPos, attackRayPos.z), attackRaySize);
+        Gizmos.DrawWireCube(transform.position + new Vector3(attackRayPos.x * Mathf.Sign(moveVec.x), (moveVec.y > 0 ? attackRayUpPos : attackRayDownPos), attackRayPos.z), attackRaySize);
     }
 
     // 일반 근접 공격 함수
@@ -232,7 +241,7 @@ public class EnemyUnit : UnitBase
         // 유닛 종류 별 애니메이션
         switch (gameObject.name)
         {
-            case string name when name.Contains("Zombie") || name.Contains("Cyclope") || name.Contains("Orc"):
+            case string name when name.Contains("Zombie") || name.Contains("Cyclope") || name.Contains("Orc") || name.Contains("Goblin") || name.Contains("Ghost") || name.Contains("Demon"):
                 anim.Smash();
                 break;
             case string name when name.Contains("Skeleton"):
@@ -252,8 +261,8 @@ public class EnemyUnit : UnitBase
         }
         else
         {
-            // Cyclope 랑 Orc 만 첫번째 공격이 도중에 끊겨서 일단 문제를 찾기 전까지 분류해서 시간 나눔.
-            if (gameObject.name.Contains("Cyclope") || gameObject.name.Contains("Orc")) { yield return new WaitForSeconds(anim.GetTime() + 0.3f); }
+            // Cyclope 랑 Orc, Rat, Goblin, Demon 만 첫번째 공격이 도중에 끊겨서 일단 문제를 찾기 전까지 분류해서 시간 나눔.
+            if (gameObject.name.Contains("Cyclope") || gameObject.name.Contains("Orc") || gameObject.name.Contains("Rat") || gameObject.name.Contains("Demon")) { yield return new WaitForSeconds(anim.GetTime() + 0.3f); }
             else { yield return new WaitForSeconds(anim.GetTime()); }
 
             if ((unitID % 10000) / 1000 == 2) // 탱커 -> 다수 공격
@@ -325,8 +334,13 @@ public class EnemyUnit : UnitBase
         moveVec = Vector2.zero;
         col.enabled = false;
 
-        PlayerUnit enemyLogic = nearestAttackTarget.GetComponent<PlayerUnit>();
-        enemyLogic.unitState = UnitState.Move;
+        if(nearestAttackTarget != null)
+        {
+            PlayerUnit enemyLogic = nearestAttackTarget.GetComponent<PlayerUnit>();
+            enemyLogic.unitState = UnitState.Move;
+
+            nearestAttackTarget = null;
+        }
 
         // 작동중인 다른 Coroutine 함수 중지
         if (smash != null) { StopCoroutine(smash); smash = null; }

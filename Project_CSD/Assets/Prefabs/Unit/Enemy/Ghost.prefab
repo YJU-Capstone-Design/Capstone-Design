@@ -97,10 +97,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed8b1ae4e4e52b34ea557c1c11e076fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_CategoryHash: -1.4470151e-16
-  m_labelHash: -3.6279963e-15
+  m_CategoryHash: 1.4470151e-16
+  m_labelHash: 3.6279963e-15
   m_SpriteKey: 0
-  m_SpriteHash: 0
+  m_SpriteHash: 856598049
 --- !u!1 &2797091702903327284
 GameObject:
   m_ObjectHideFlags: 0
@@ -382,10 +382,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed8b1ae4e4e52b34ea557c1c11e076fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_CategoryHash: 330880480
-  m_labelHash: -1.2985474e-36
+  m_CategoryHash: 9.723703e-31
+  m_labelHash: 1.2985474e-36
   m_SpriteKey: 0
-  m_SpriteHash: 0
+  m_SpriteHash: 918346080
 --- !u!1 &2797091703355057066
 GameObject:
   m_ObjectHideFlags: 0
@@ -484,10 +484,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed8b1ae4e4e52b34ea557c1c11e076fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_CategoryHash: 33.451756
-  m_labelHash: -1.2985474e-36
+  m_CategoryHash: 9.830587e-38
+  m_labelHash: 1.2985474e-36
   m_SpriteKey: 0
-  m_SpriteHash: 0
+  m_SpriteHash: 830197695
 --- !u!1 &2797091703364262327
 GameObject:
   m_ObjectHideFlags: 0
@@ -600,10 +600,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed8b1ae4e4e52b34ea557c1c11e076fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_CategoryHash: -0.6622639
-  m_labelHash: -92886600
+  m_CategoryHash: 0.6622639
+  m_labelHash: 2.7296918e-31
   m_SpriteKey: 0
-  m_SpriteHash: 0
+  m_SpriteHash: 215273681
 --- !u!1 &2797091703419844058
 GameObject:
   m_ObjectHideFlags: 0
@@ -698,8 +698,10 @@ MonoBehaviour:
   attackTime: 0
   scanner: {fileID: 0}
   unitData: {fileID: 11400000, guid: 6f6b8c80982c33644a8dc5b75539c971, type: 2}
-  attackRayPos: {x: 0.4, y: 0.3, z: 0}
-  attackRaySize: {x: 0.5, y: 0.5}
+  attackRayUpPos: 0.45
+  attackRayDownPos: 0.2
+  attackRayPos: {x: 0.35, y: 0, z: 0}
+  attackRaySize: {x: 0.55, y: 0.4}
   allChildren: []
   nearestAttackTarget: {fileID: 0}
   multipleAttackTargets: []
@@ -940,10 +942,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed8b1ae4e4e52b34ea557c1c11e076fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_CategoryHash: -0.6622639
-  m_labelHash: -2.977024e-14
+  m_CategoryHash: 0.6622639
+  m_labelHash: 2.977024e-14
   m_SpriteKey: 0
-  m_SpriteHash: 0
+  m_SpriteHash: 217844416
 --- !u!1 &2797091704213700354
 GameObject:
   m_ObjectHideFlags: 0
@@ -1041,10 +1043,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed8b1ae4e4e52b34ea557c1c11e076fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_CategoryHash: 330880480
-  m_labelHash: -1.2985474e-36
+  m_CategoryHash: 9.723703e-31
+  m_labelHash: 1.2985474e-36
   m_SpriteKey: 0
-  m_SpriteHash: 0
+  m_SpriteHash: 918346080
 --- !u!1 &2797091704323729329
 GameObject:
   m_ObjectHideFlags: 0
@@ -1143,7 +1145,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed8b1ae4e4e52b34ea557c1c11e076fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_CategoryHash: -0.000015903426
-  m_labelHash: -1.2985474e-36
+  m_CategoryHash: 0.000015903426
+  m_labelHash: 1.2985474e-36
   m_SpriteKey: 0
-  m_SpriteHash: 0
+  m_SpriteHash: 87354284

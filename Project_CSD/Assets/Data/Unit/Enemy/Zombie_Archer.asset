@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Zombie_Archer
   m_EditorClassIdentifier: 
   unitID: 31002
-  health: 17
+  health: 500
   speed: 1
   power: 1.5
-  attackTime: 3
+  attackTime: 1.5

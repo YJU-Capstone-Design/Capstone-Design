@@ -332,8 +332,13 @@ public class PlayerUnit : UnitBase
         moveVec = Vector2.zero;
         col.enabled = false;
 
-        EnemyUnit enemyLogic = nearestAttackTarget.GetComponent<EnemyUnit>();
-        enemyLogic.unitState = UnitState.Move;
+        if (nearestAttackTarget != null)
+        {
+            EnemyUnit enemyLogic = nearestAttackTarget.GetComponent<EnemyUnit>();
+            enemyLogic.unitState = UnitState.Move;
+
+            nearestAttackTarget = null;
+        }
 
         speed = 0;
         attackTime = 0;
