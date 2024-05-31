@@ -38,11 +38,13 @@ public class CardManager : Singleton<CardManager>
         PlayerUnit status = unit.GetComponent<PlayerUnit>();
         float maxHpUpPoint = status.initialHealth * (spell.maxHpUp * 0.01f);
         float powerUpPoint = status.initialPower * (spell.powerUp * 0.01f);
-        float speedUpPoint = status.initialSpeed * (spell.speedUp * 0.01f);
+        float attackSpeedUpPoint = status.initialSpeed * (spell.attackSpeedUp * 0.01f);
+        float moveSpeedUpPoint = status.initialSpeed * (spell.moveSpeedUp * 0.01f);
 
         // status.health += maxHpUpPoint;
         status.power += powerUpPoint;
-        status.speed += speedUpPoint;
+        status.attackTime += attackSpeedUpPoint;
+        status.speed += moveSpeedUpPoint;
         Debug.Log("power = " + status.power + ", speed = " + status.speed + ", spellID = " + spell.spellID);
         unit.GetComponent<PlayerUnit>().Buff_Effect(spell.spellType, true);
 
@@ -56,7 +58,8 @@ public class CardManager : Singleton<CardManager>
 
         // status.health -= maxHpUpPoint;
         status.power -= powerUpPoint;
-        status.speed -= speedUpPoint;
+        status.attackTime -= attackSpeedUpPoint;
+        status.speed -= moveSpeedUpPoint;
         Debug.Log("power = " + status.power + ", speed = " + status.speed);
         unit.GetComponent<PlayerUnit>().Buff_Effect(spell.spellType, false);
     }
