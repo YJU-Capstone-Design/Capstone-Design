@@ -150,7 +150,9 @@ public class EnemyUnit : UnitBase
     // 실제 공격 범위 Ray 함수
     void AttackRay()
     {
-        attackTargets = Physics2D.BoxCastAll(transform.position + new Vector3(attackRayPos.x * Mathf.Sign(moveVec.x), attackRayPos.y * (moveVec.y > 0 ? 2 : 1), attackRayPos.z), attackRaySize, 0, Vector2.zero, 0, attackLayer);
+        float attackRayYPos = attackRayPos.y * (attackRayPos.y > 0 ? (moveVec.y > 0 ? 2 : 1) : (moveVec.y > 0 ? 1 : 2));
+
+        attackTargets = Physics2D.BoxCastAll(transform.position + new Vector3(attackRayPos.x * Mathf.Sign(moveVec.x), attackRayYPos, attackRayPos.z), attackRaySize, 0, Vector2.zero, 0, attackLayer);
         nearestAttackTarget = scanner.GetNearestAttack(attackTargets); // 단일 공격
         multipleAttackTargets = scanner.GetAttackTargets(attackTargets, 5); // 다수 공격
 
@@ -213,8 +215,10 @@ public class EnemyUnit : UnitBase
 
     void OnDrawGizmosSelected()
     {
+        float attackRayYPos = attackRayPos.y * (attackRayPos.y > 0 ? (moveVec.y > 0 ? 2 : 1) : (moveVec.y > 0 ? 1 : 2));
+
         Gizmos.color = Color.blue;
-        Gizmos.DrawWireCube(transform.position + new Vector3(attackRayPos.x * Mathf.Sign(moveVec.x), attackRayPos.y * (moveVec.y > 0 ? 2 : 1), attackRayPos.z), attackRaySize);
+        Gizmos.DrawWireCube(transform.position + new Vector3(attackRayPos.x * Mathf.Sign(moveVec.x), attackRayYPos, attackRayPos.z), attackRaySize);
     }
 
     // 일반 근접 공격 함수

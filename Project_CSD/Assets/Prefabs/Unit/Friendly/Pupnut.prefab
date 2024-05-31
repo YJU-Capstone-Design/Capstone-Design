@@ -60,7 +60,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: e430444d84a86fd409244a3aaadb7233, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -202,7 +202,7 @@ MonoBehaviour:
   - {fileID: 4425038874698875886}
   - {fileID: 4189284796073285082}
   scanner: {fileID: 0}
-  unitData: {fileID: 11400000, guid: 5dc493d583f6a864399336bc0a8cedff, type: 2}
+  unitData: {fileID: 11400000, guid: ffd2baf915980a94a89f459f8f2c0a1b, type: 2}
   attackRayPos: {x: 0.4, y: 0.3, z: 0}
   attackRaySize: {x: 0.6, y: 0.35}
   nearestAttackTarget: {fileID: 0}
