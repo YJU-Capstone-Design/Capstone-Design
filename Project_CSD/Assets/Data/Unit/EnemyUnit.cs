@@ -23,8 +23,8 @@ public class EnemyUnit : UnitBase
     [Header("# Unit Activity")]
     Collider2D col;
     public RaycastHit2D[] attackTargets; // 스캔 결과 배열
-    [SerializeField] Transform nearestAttackTarget; // 가장 가까운 목표
-    [SerializeField] Transform[] multipleAttackTargets; // 다수 공격 목표
+    [SerializeField] public Transform nearestAttackTarget; // 가장 가까운 목표
+    [SerializeField] public Transform[] multipleAttackTargets; // 다수 공격 목표
     MonsterCharacterAnimation anim;
     Coroutine smash; // 코루틴 값을 저장하기 위한 변수
     Coroutine arrow;

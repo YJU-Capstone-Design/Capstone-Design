@@ -39,7 +39,7 @@ public class BattleManager :Singleton<BattleManager>
     public GameObject hpBarParent; // 유닛 체력바 부모 (canvas 오브젝트)
     public GameObject unitSpawnRange; // 유닛 스폰 범위 (canvas 오브젝트)
 
-    enum UnitType { Bread, Pupnut, Kitchu, Ramo }; // 테스트(제작)용
+    enum UnitType { Bread, Pupnut, Kitchu, Ramo, Sorang, Croirang }; // 테스트(제작)용
     UnitType unitType;
 
     private void Awake()
@@ -134,6 +134,14 @@ public class BattleManager :Singleton<BattleManager>
         {
             unitType = UnitType.Ramo;
         }
+        else if (Input.GetKey(KeyCode.Keypad4))
+        {
+            unitType = UnitType.Sorang;
+        }
+        else if (Input.GetKey(KeyCode.Keypad5))
+        {
+            unitType = UnitType.Croirang;
+        }
 
         // 유닛 소환 영역 활성화
         if (Input.GetKeyDown("1"))
@@ -176,6 +184,12 @@ public class BattleManager :Singleton<BattleManager>
                 break;
             case UnitType.Ramo:
                 pool.Get(0, 3);
+                break;
+            case UnitType.Sorang:
+                pool.Get(0, 4);
+                break;
+            case UnitType.Croirang:
+                pool.Get(0, 5);
                 break;
         }
 

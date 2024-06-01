@@ -18,22 +18,22 @@ public class PlayerUnit : UnitBase
     public Scanner scanner;
     public UnitData unitData;
     MeshRenderer bodySprite;
-    bool startMoveFinish = false;
-    LayerMask targetLayer;
-    Vector3 moveVec; // 거리
-    [SerializeField] Vector3 attackRayPos; // attackRay 위치 = 현재 위치 + attackRayPos
-    [SerializeField] Vector2 attackRaySize;
+    protected bool startMoveFinish = false;
+    protected LayerMask targetLayer;
+    protected Vector3 moveVec; // 거리
+    [SerializeField] protected Vector3 attackRayPos; // attackRay 위치 = 현재 위치 + attackRayPos
+    [SerializeField] protected Vector2 attackRaySize;
     GameObject hpBar; // 체력바
 
     [Header("# Unit Activity")]
     Collider2D col;
-    RaycastHit2D[] attackTargets; // 스캔 결과 배열
-    [SerializeField] Transform nearestAttackTarget; // 가장 가까운 목표
-    [SerializeField] Transform[] multipleAttackTargets; // 다수 공격 목표
+    protected RaycastHit2D[] attackTargets; // 스캔 결과 배열
+    [SerializeField] protected Transform nearestAttackTarget; // 가장 가까운 목표
+    [SerializeField] protected Transform[] multipleAttackTargets; // 다수 공격 목표
     Vector3 firstPos;
-    Coroutine smash;
-    Coroutine arrow;
-    Coroutine lerp;
+    protected Coroutine smash;
+    protected Coroutine arrow;
+    protected Coroutine lerp;
 
     [Header("# Spine")]
     SkeletonAnimation skeletonAnimation;
@@ -139,7 +139,7 @@ public class PlayerUnit : UnitBase
     }
 
     // 가까운 적을 찾는 Scanner 함수 (이동)
-    void Scanner()
+    protected virtual void Scanner()
     {
         if (scanner.nearestTarget)
         {
@@ -179,8 +179,7 @@ public class PlayerUnit : UnitBase
     }
 
     // 가까운 공격 목표를 찾는 Ray 함수 (공격)
-
-    void AttackRay()
+    protected virtual void AttackRay()
     {
         // BoxCastAll(시작 위치, 크기, 회전, 방향, 길이, 대상 레이어) : 사각형의 캐스트를 쏘고 모든 결과를 반환하는 함수
         attackTargets = Physics2D.BoxCastAll(transform.position + new Vector3(attackRayPos.x * Mathf.Sign(moveVec.x), attackRayPos.y, attackRayPos.z), attackRaySize, 0, Vector2.zero, 0, targetLayer);
@@ -190,7 +189,6 @@ public class PlayerUnit : UnitBase
 
         if (nearestAttackTarget != null)
         {
-
             if(!startMoveFinish)
             {
                 StopCoroutine(lerp);
@@ -203,7 +201,9 @@ public class PlayerUnit : UnitBase
             // 적 상태 변경
             if ((unitID % 10000) / 1000 == 2) // 탱커 -> 다수 공격
             {
-                if (multipleAttackTargets == null) return;
+                if (multipleAttackTargets == null) 
+                    return;
+
                 foreach (Transform enemy in multipleAttackTargets)
                 {
                     if (enemy == null) return;
@@ -245,7 +245,6 @@ public class PlayerUnit : UnitBase
             // 다음에 attackRay 에 적 인식시, 바로 공격 가능하게 attackTime 초기화
             attackTime = unitData.AttackTime - 0.2f;
         }
-
     }
 
     void OnDrawGizmosSelected()
@@ -255,18 +254,14 @@ public class PlayerUnit : UnitBase
     }
 
     // 일반 근접 공격 함수
-    IEnumerator Attack()
+    protected virtual IEnumerator Attack()
     {
         if (nearestAttackTarget == null) {
             if (smash != null) { StopCoroutine(smash); smash = null; }
         }
 
         // 애니메이션
-        // 탱커가 아닐 경우엔 Attack 애니메이션 작동
-        if(!gameObject.name.Contains("Sorang"))
-        {
-            StartAnimation("Attack", false, 1f);
-        }
+        StartAnimation("Attack", false, 1f);
 
         yield return new WaitForSeconds(0.6f); // 애니메이션 시간
 
@@ -288,7 +283,7 @@ public class PlayerUnit : UnitBase
         StartAnimation("Idle", true, 1.5f);
     }
 
-    void SetEnemyState(Transform target)
+    protected void SetEnemyState(Transform target)
     {
         if(target == null)
             return;
@@ -396,7 +391,7 @@ public class PlayerUnit : UnitBase
     }
 
     // 스파인 애니메이션 함수
-    private void StartAnimation(string animName, bool loop, float timeScale)
+    protected void StartAnimation(string animName, bool loop, float timeScale)
     {
         //동일한 애니메이션을 재생하려고 한다면 아래 코드 구문 실행 X
         if (animName.Equals(CurrentAnimation))
