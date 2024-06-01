@@ -25323,6 +25323,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: acaebfa0962e93a4eb57eb1c2deed00c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cashMgr: {fileID: 0}
   result_Text: {fileID: 693978418}
   gacha_Result: {fileID: 1497947071}
   result_Str: 'Result = '

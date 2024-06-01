@@ -60,25 +60,24 @@ public class GachaManager : MonoBehaviour
         result_Str = "";
 
         for (int i = 1; i <= number; i++)
+        {
+            System.Random random = new System.Random();
+            int randomValue = random.Next(1, 100);
+
+            if (randomValue <= 3) // Epic 3%
             {
-                System.Random random = new System.Random();
-                int randomValue = random.Next(1, 100);
-
-                if (randomValue <= 3) // Epic 3%
-                {
-                    Gacha_Unit(unitList_Epic, "Epic");
-                }
-                else if (randomValue <= 24) // Rare 21%
-                {
-                    Gacha_Unit(unitList_Rare, "Rare");
-                }
-                else // Common 76%
-                {
-                    Gacha_Unit(unitList_Common, "Common");
-                }
-
-                Gacha_Result(result.Count);
+                Gacha_Unit(unitList_Epic, "Epic");
+            }
+            else if (randomValue <= 24) // Rare 21%
+            {
+                Gacha_Unit(unitList_Rare, "Rare");
+            }
+            else // Common 76%
+            {
+                Gacha_Unit(unitList_Common, "Common");
+            }
         }
+        Gacha_Result(result.Count);
     }
 
     void Gacha_Unit(int[] unitList, string rarity)
