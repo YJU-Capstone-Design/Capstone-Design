@@ -83,7 +83,6 @@ public class PlayerUnit : UnitBase
 
             if (health <= 0 || BattleManager.Instance.battleState == BattleManager.BattleState.Lose) // hp 가 0 이 되거나 게임에서 졌을 경우
             {
-                Debug.Log("Die1");
                 StartCoroutine(Die());
             } 
             else if(BattleManager.Instance.battleState == BattleManager.BattleState.Win) // 승리 시
@@ -326,10 +325,10 @@ public class PlayerUnit : UnitBase
 
     IEnumerator Die()
     {
-        Debug.Log("Die2");
         unitState = UnitState.Die;
         moveVec = Vector2.zero;
         col.enabled = false;
+        hpBar.SetActive(false);
 
         if (nearestAttackTarget != null)
         {
@@ -353,7 +352,6 @@ public class PlayerUnit : UnitBase
 
         yield return new WaitForSeconds(1f);
 
-        hpBar.SetActive(false);
         gameObject.SetActive(false);
     }
 

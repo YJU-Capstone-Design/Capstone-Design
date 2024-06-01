@@ -28,11 +28,11 @@ public class HpBar : MonoBehaviour
         realHp.fillAmount = (float)nowHp / (float)maxHp;
 
         // Color
-        if (realHp.fillAmount < 0.66f)
+        if (realHp.fillAmount > 0.25f && realHp.fillAmount <= 0.75f)
         {
             realHp.color = Color.yellow;
         }
-        else if (realHp.fillAmount < 0.33f)
+        else if (realHp.fillAmount <= 0.25f)
         {
             realHp.color = Color.red;
         }

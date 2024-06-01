@@ -39,11 +39,12 @@ public class PoolManager : Singleton<PoolManager>
         // 선택한 풀이 놀고 (비활성화 된) 있는 게임 오브젝트 접근
         foreach (GameObject item in pools[prefabIndex])
         {
-            if (!item.activeSelf && item == prefabs[prefabIndex][objIndex])
+            if (!item.activeInHierarchy && item == prefabs[prefabIndex][objIndex])
             {
                 // 발견하면 select 변수에 할당
                 select = item;
                 select.SetActive(true);
+                Debug.Log(select.name);
                 break;
             }
         }

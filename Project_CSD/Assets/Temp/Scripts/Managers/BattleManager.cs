@@ -64,7 +64,7 @@ public class BattleManager :Singleton<BattleManager>
 
     void Update()
     {
-        // 적 좀비 소환 -> 테스트 용
+        // 적 소환 -> 테스트 용
         if (Input.GetKeyDown("2")) { pool.Get(2, 0); }
 
         if (CardManager.Instance.enemys.Count > 0 && curHealth > 0)

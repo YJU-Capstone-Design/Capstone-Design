@@ -342,8 +342,9 @@ public class EnemyUnit : UnitBase
         unitState = UnitState.Die;
         moveVec = Vector2.zero;
         col.enabled = false;
+        hpBar.SetActive(false);
 
-        if(nearestAttackTarget != null)
+        if (nearestAttackTarget != null)
         {
             PlayerUnit enemyLogic = nearestAttackTarget.GetComponent<PlayerUnit>();
             enemyLogic.unitState = UnitState.Move;
@@ -367,7 +368,6 @@ public class EnemyUnit : UnitBase
         yield return new WaitForSeconds(anim.GetTime());
 
         StateSetting();
-        hpBar.SetActive(false);
         gameObject.SetActive(false);
     }
 
