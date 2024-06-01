@@ -4,10 +4,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using JetBrains.Annotations;
 
 public class GachaManager : MonoBehaviour
 {
     public TMP_Text result_Text;
+    public GameObject gacha_Result;
 
     // Temp
     public string result_Str = "Result = ";
@@ -22,6 +24,8 @@ public class GachaManager : MonoBehaviour
     {
         //팝업 출력 등 활용 가능 메소드
         Gacha_Rarity(number);
+
+        gacha_Result.SetActive(true);
     }
 
     void Gacha_Rarity(int number)
@@ -78,5 +82,10 @@ public class GachaManager : MonoBehaviour
             }
         }
         result_Text.text = result_Str;
+    }
+
+    public void result_Off()
+    {
+        gacha_Result.SetActive(false);
     }
 }
