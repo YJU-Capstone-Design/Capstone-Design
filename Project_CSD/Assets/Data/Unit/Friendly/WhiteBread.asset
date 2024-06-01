@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: WhiteBread
   m_EditorClassIdentifier: 
   unitID: 12001
-  health: 100
+  health: 1500
   speed: 1
-  power: 100
+  power: 50
   attackTime: 2

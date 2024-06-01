@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Sorang
   m_EditorClassIdentifier: 
   unitID: 12002
-  health: 100
+  health: 2000
   speed: 1
-  power: 100
+  power: 0
   attackTime: 2

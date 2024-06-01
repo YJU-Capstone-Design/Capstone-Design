@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Ramo
   m_EditorClassIdentifier: 
   unitID: 11003
-  health: 100
+  health: 800
   speed: 1
-  power: 100
+  power: 50
   attackTime: 1.5

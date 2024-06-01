@@ -263,8 +263,8 @@ public class EnemyUnit : UnitBase
         }
         else
         {
-            // Cyclope 랑 Orc, Rat, Goblin, Demon 만 첫번째 공격이 도중에 끊겨서 일단 문제를 찾기 전까지 분류해서 시간 나눔.
-            if (gameObject.name.Contains("Cyclope") || gameObject.name.Contains("Orc") || gameObject.name.Contains("Rat") || gameObject.name.Contains("Demon")) { yield return new WaitForSeconds(anim.GetTime() + 0.3f); }
+            // Cyclope, Orc, Rat, Goblin, Demon, Worm 만 첫번째 공격이 도중에 끊겨서 일단 문제를 찾기 전까지 분류해서 시간 나눔.
+            if (gameObject.name.Contains("Cyclope") || gameObject.name.Contains("Orc") || gameObject.name.Contains("Rat") || gameObject.name.Contains("Goblin") || gameObject.name.Contains("Demon") || gameObject.name.Contains("Worm")) { yield return new WaitForSeconds(anim.GetTime() + 0.3f); }
             else { yield return new WaitForSeconds(anim.GetTime()); }
 
             if ((unitID % 10000) / 1000 == 2) // 탱커 -> 다수 공격
