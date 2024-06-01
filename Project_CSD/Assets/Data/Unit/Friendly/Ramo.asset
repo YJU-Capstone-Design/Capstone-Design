@@ -12,8 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a845f90d0e6947f41a945dcd5a979615, type: 3}
   m_Name: Ramo
   m_EditorClassIdentifier: 
-  unitID: 11003
-  health: 100
-  speed: 1
+  unitType: 0
+  unitID: 11002
+  unitName: "\uB77C\uBAA8"
+  cost: 5
+  health: 300
   power: 100
-  attackTime: 1
+  moveSpeed: 0.75
+  attackSpeed: 0.75
