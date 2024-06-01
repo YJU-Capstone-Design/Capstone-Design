@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Burst.CompilerServices;
 using Unity.VisualScripting;
 //using UnityEditorInternal.Profiling.Memory.Experimental;
@@ -254,13 +255,17 @@ public class EnemyUnit : UnitBase
                 break;
         }
 
-        Debug.Log(anim.GetTime() + "     1");
+        // 특정 유닛들만 첫번째 공격이 도중에 끊겨서 일단 문제를 찾기 전까지 분류해서 시간 나눔.
+        string[] namesToCheck = { "Cyclope", "Orc", "Rat", "Goblin", "Demon", "Worm"};
 
-        // Cyclope, Orc, Rat, Goblin, Demon, Worm 만 첫번째 공격이 도중에 끊겨서 일단 문제를 찾기 전까지 분류해서 시간 나눔.
-        if (gameObject.name.Contains("Cyclope") || gameObject.name.Contains("Orc") || gameObject.name.Contains("Rat") || gameObject.name.Contains("Goblin") || gameObject.name.Contains("Demon") || gameObject.name.Contains("Worm")) { yield return new WaitForSeconds(anim.GetTime() + 0.3f); }
-        else {yield return new WaitForSeconds(anim.GetTime()); }
-
-        Debug.Log(anim.GetTime() + "     2");
+        if (namesToCheck.Any(name => gameObject.name.Contains(name)))
+        {
+            yield return new WaitForSeconds(anim.GetTime() + 0.3f);
+        }
+        else
+        {
+            yield return new WaitForSeconds(anim.GetTime());
+        }
 
         if (nearestAttackTarget.gameObject.CompareTag("Wall"))
         {
@@ -282,13 +287,7 @@ public class EnemyUnit : UnitBase
         }
 
         // 애니메이션
-        if(gameObject.name.Contains("Crow"))
-        {
-            anim.Walk();
-        } else
-        {
-            anim.Idle();
-        }
+        anim.Idle();
     }
 
     void SetEnemyState(Transform target)
