@@ -39,6 +39,11 @@ public class CashManager : MonoBehaviour
             SceneManager.sceneLoaded -= OnSceneLoaded;
         }*/
 
+    void Update()
+    {
+        UpGold();   
+    }
+
     public void CheakMoney()
     {
         if (obj1 == null)
@@ -55,7 +60,7 @@ public class CashManager : MonoBehaviour
         UpGold();
     }
 
-    public void UpGold()
+    public void UpGold() //CHAT GPT »ç¿ëÇÔ
     {
         if (obj1 != null)
         {

@@ -8,6 +8,7 @@ using JetBrains.Annotations;
 
 public class GachaManager : MonoBehaviour
 {
+    public GameObject cashMgr;
     public TMP_Text result_Text;
     public GameObject gacha_Result;
 
@@ -19,13 +20,36 @@ public class GachaManager : MonoBehaviour
     private int[] unitList_Epic = { 3 };
 
     [SerializeField] private List<int> result = new List<int>();
+    // 캐시 매니저 스크립트 참조 변수
+    private CashManager cashManagerScript;
 
+    public void Awake()
+    {
+        if (cashMgr == null)
+        {
+            cashMgr = GameObject.Find("CashManager");
+        }
+        // CashManager 스크립트를 가져옵니다.
+        if (cashMgr != null)
+        {
+            cashManagerScript = cashMgr.GetComponent<CashManager>();
+        }
+    }
     public void Gacha_Btn(int number)
     {
+        if(cashManagerScript.player_Cash >= 1 && number == 1)
+        {
+            cashManagerScript.player_Cash = cashManagerScript.player_Cash - 1;
+            Gacha_Rarity(number);
+            gacha_Result.SetActive(true);
+        }
+        else if (cashManagerScript.player_Cash >= 10 && number == 10)
+        {
+            cashManagerScript.player_Cash = cashManagerScript.player_Cash - 10;
+            Gacha_Rarity(number);
+            gacha_Result.SetActive(true);
+        }
         //팝업 출력 등 활용 가능 메소드
-        Gacha_Rarity(number);
-
-        gacha_Result.SetActive(true);
     }
 
     void Gacha_Rarity(int number)
@@ -36,24 +60,25 @@ public class GachaManager : MonoBehaviour
         result_Str = "";
 
         for (int i = 1; i <= number; i++)
-        {
-            System.Random random = new System.Random();
-            int randomValue = random.Next(1, 100);
+            {
+                System.Random random = new System.Random();
+                int randomValue = random.Next(1, 100);
 
-            if (randomValue <= 3) // Epic 3%
-            {
-                Gacha_Unit(unitList_Epic, "Epic");
-            }
-            else if (randomValue <= 24) // Rare 21%
-            {
-                Gacha_Unit(unitList_Rare, "Rare");
-            }
-            else // Common 76%
-            {
-                Gacha_Unit(unitList_Common, "Common");
-            }
+                if (randomValue <= 3) // Epic 3%
+                {
+                    Gacha_Unit(unitList_Epic, "Epic");
+                }
+                else if (randomValue <= 24) // Rare 21%
+                {
+                    Gacha_Unit(unitList_Rare, "Rare");
+                }
+                else // Common 76%
+                {
+                    Gacha_Unit(unitList_Common, "Common");
+                }
+
+                Gacha_Result(result.Count);
         }
-        Gacha_Result(result.Count);
     }
 
     void Gacha_Unit(int[] unitList, string rarity)
