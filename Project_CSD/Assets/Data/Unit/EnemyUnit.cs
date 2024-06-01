@@ -73,6 +73,8 @@ public class EnemyUnit : UnitBase
             else
             {
                 AttackRay();
+
+                if(transform.position.x <= 27) { col.enabled = true; } else {  col.enabled = false; } // 아군 유닛 최대 전진 범위 때문에 설정
             }
         }
 
@@ -107,7 +109,7 @@ public class EnemyUnit : UnitBase
         attackTime = unitData.AttackTime;
 
         // 설정값
-        col.enabled = true;
+        //col.enabled = true;
         unitState = UnitState.Move;
         moveVec = Vector3.left;
         transform.GetChild(0).rotation = Quaternion.identity; // 애니메이션 각도 초기화를 위한 로직
