@@ -267,6 +267,7 @@ public class EnemyUnit : UnitBase
             yield return new WaitForSeconds(anim.GetTime());
         }
 
+
         if (nearestAttackTarget.gameObject.CompareTag("Wall"))
         {
             BattleManager.Instance.HpDamage(power);

@@ -265,7 +265,7 @@ public class PlayerUnit : UnitBase
 
         yield return new WaitForSeconds(0.6f); // 애니메이션 시간
 
-        if ((unitID % 10000) / 1000 == 2) // 탱커 -> 다수 공격
+        if ((unitID % 10000) / 1000 == 2) // 탱커, Croirang -> 다수 공격
         {
             foreach (Transform enemy in multipleAttackTargets)
             {
