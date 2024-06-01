@@ -262,7 +262,11 @@ public class PlayerUnit : UnitBase
         }
 
         // 애니메이션
-        StartAnimation("Attack", false, 1f);
+        // 탱커가 아닐 경우엔 Attack 애니메이션 작동
+        if(!gameObject.name.Contains("Sorang"))
+        {
+            StartAnimation("Attack", false, 1f);
+        }
 
         yield return new WaitForSeconds(0.6f); // 애니메이션 시간
 
