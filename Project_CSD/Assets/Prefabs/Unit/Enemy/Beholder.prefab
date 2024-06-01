@@ -496,9 +496,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7494660634011777706}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: Beholder
-  m_TagString: EnemyUnit
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

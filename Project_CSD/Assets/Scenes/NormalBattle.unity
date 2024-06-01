@@ -3018,8 +3018,6 @@ MonoBehaviour:
   - {fileID: 7339107190655348046, guid: 935a759ae4be805498e19f5721d1e319, type: 3}
   enemyPrefabs:
   - {fileID: 1042312463165950002, guid: dde4af852618849acba1afba12097aea, type: 3}
-  - {fileID: 8486722579785192668, guid: 62dc7871ee815417c818d3a320ce7b3a, type: 3}
-  - {fileID: 6507571715418089891, guid: 44f88d421ad7f4ed3957bd0adc96c67b, type: 3}
   - {fileID: 4373878531874603118, guid: 043ce7cd9aa2640cb8a66468599e4d4d, type: 3}
   - {fileID: 8530048719097680756, guid: a568f5a7cf2e44c68a0a560cc975f7f5, type: 3}
   - {fileID: 2797091703419844058, guid: d51f38c432ebd48f59c88db6244d6737, type: 3}
