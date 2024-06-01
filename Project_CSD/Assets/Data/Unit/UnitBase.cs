@@ -26,8 +26,8 @@ public class UnitBase : MonoBehaviour
 
     public float health;
     public float power;
-    public float moveSpeed;
     public float attackSpeed;
+    public float moveSpeed;
 
     // 스프라이트 방향 설정 함수
     protected void SpriteDir(Vector3 firstVec, Vector3 secondVec)
