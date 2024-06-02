@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: HighCatsleBread
   m_EditorClassIdentifier: 
   breadRack_Name: HCHBRD
+  breadRack_RareType: 2
   breadRack_No: 4002
   breadRack_Cost: 5
   breadRack_Level: 2

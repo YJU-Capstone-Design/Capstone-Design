@@ -9,6 +9,10 @@ public class BreadRack_Data : ScriptableObject {
     private string breadRack_Name;
     public string BreadRack_Name { get { return breadRack_Name; } }
 
+    [SerializeField]  // 레어도 타입
+    private int breadRack_RareType;
+    public int BreadRack_RareType { get { return breadRack_RareType; } }
+
     [SerializeField] // 번호 번호 가장 앞자리로 타입 구분 1001 2001 1=파워 2= 속도 가장 뒷자리는 개인번호
     private int breadRack_No;
     public int BreadRack_No { get { return breadRack_No; } }

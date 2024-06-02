@@ -63,6 +63,11 @@ public class BreakRack : Singleton<BreakRack>
             Clear();
         }
     }
+    public void Show_CaseSave()
+    {
+        save = 3;
+    }
+
     public void Cancel(GameObject go)
     {
         go.transform.localScale = Vector3.zero;

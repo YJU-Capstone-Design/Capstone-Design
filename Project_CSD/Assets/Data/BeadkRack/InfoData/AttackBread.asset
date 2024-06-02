@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: AttackBread
   m_EditorClassIdentifier: 
   breadRack_Name: ABRD
+  breadRack_RareType: 1
   breadRack_No: 1001
   breadRack_Cost: 3
   breadRack_Level: 1
   breadRack_Img: {fileID: 21300000, guid: e33d014a646ef44a8b301a004c1c908f, type: 3}
   breadRack_Stats: 1.5
-  breadRack_InfoTxt: "\uD30C\uC6CC\uAC00 1.5\uBC30 \uC99D\uAC00"
+  breadRack_InfoTxt: "\uACF5\uACA9\uB825\uC774 1.5\uBC30 \uC99D\uAC00\uD55C\uB2E4."

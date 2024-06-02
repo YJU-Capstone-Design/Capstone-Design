@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: HpBread
   m_EditorClassIdentifier: 
   breadRack_Name: HBRD
+  breadRack_RareType: 1
   breadRack_No: 3001
   breadRack_Cost: 3
   breadRack_Level: 1

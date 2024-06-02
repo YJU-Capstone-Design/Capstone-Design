@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: CastleHpBread
   m_EditorClassIdentifier: 
   breadRack_Name: CHBRD
+  breadRack_RareType: 1
   breadRack_No: 4001
   breadRack_Cost: 3
   breadRack_Level: 1

@@ -17,12 +17,13 @@ public class BreadRack_Item : MonoBehaviour
     public void Select_SetItem()
     {
         
-        if(select_Item == 0)
+        if(select_Item == 0 && BreakRackMgr.Instance.set_item_Value!=8)
         {
             select = true;
             //StartCoroutine(Select_Item());
             select_Icon.SetActive(true);
             select_Item = 2;
+            OpenBreadInfo();
             Debug.Log("Select ON");
         }
         else if (select_Item == 2)
@@ -32,6 +33,7 @@ public class BreadRack_Item : MonoBehaviour
             select_Icon.SetActive(false);
 
             select_Item = 0;
+            BreakRackMgr.Instance.Cancel_SetItem(data);
             Debug.Log("Select OFF");
         }
     }
@@ -43,20 +45,4 @@ public class BreadRack_Item : MonoBehaviour
     }
 
 
-    IEnumerator Select_Item()
-    {
-        while (select)
-        {
-            select_Icon.SetActive(true);
-            yield return new WaitForSeconds(0.3f);  // 0.3초 대기
-            select_Icon.SetActive(false);
-            yield return new WaitForSeconds(0.3f);  // 0.3초 대기
-        }
-    }
-
-    private void OnDisable()
-    {
-        select = false;
-        StopCoroutine(Select_Item());
-    }
 }

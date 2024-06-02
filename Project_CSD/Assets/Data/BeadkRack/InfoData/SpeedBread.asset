@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: SpeedBread
   m_EditorClassIdentifier: 
   breadRack_Name: SBRD
+  breadRack_RareType: 1
   breadRack_No: 2001
   breadRack_Cost: 3
   breadRack_Level: 1
