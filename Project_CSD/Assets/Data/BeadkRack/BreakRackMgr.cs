@@ -39,6 +39,14 @@ public class BreakRackMgr : Singleton<BreakRackMgr>
     public float mainHp_Stu;
     public float unitHp_Stu;
 
+    private void Awake()
+    {
+        attack_Status.text = "Attack    ";
+        speed_Status.text = "Speed  "  ;
+        mainHP_Status.text = "UnitHP    " ;
+        unitHP_Status.text = "MainHP    ";
+    }
+
     public void SetItem(BreadRack_Data data)
     {
         int value_No = 0;
@@ -143,7 +151,7 @@ public class BreakRackMgr : Singleton<BreakRackMgr>
 
     }
 
-
+   
     public void BreadInfoValue(BreadRack_Data data)//아이템 정보 표시
     {
 
