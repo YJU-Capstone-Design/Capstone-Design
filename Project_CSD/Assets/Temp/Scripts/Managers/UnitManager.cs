@@ -8,7 +8,6 @@ public class UnitManager : MonoBehaviour
 {
     Unit unit;
     private PoolManager pool;
-
     public Button unitSpawnRangeButton;
 
     private void Awake()
