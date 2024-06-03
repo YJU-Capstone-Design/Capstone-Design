@@ -23,7 +23,7 @@ public class BattleManager :Singleton<BattleManager>
     [Header("BattleMgr")]
     [SerializeField] private GameObject battle;
     [SerializeField] private GameObject gameEnd;
-    [SerializeField] Transform mainCamera;
+    [SerializeField] public Transform mainCamera;
     [SerializeField] int wave;
 
     [Header("Spawn")]
@@ -39,8 +39,8 @@ public class BattleManager :Singleton<BattleManager>
     public GameObject hpBarParent; // 유닛 체력바 부모 (canvas 오브젝트)
     public GameObject unitSpawnRange; // 유닛 스폰 범위 (canvas 오브젝트)
 
-    enum UnitType { Bread, Pupnut, Kitchu, Ramo }; // 테스트(제작)용
-    UnitType unitType;
+    //enum UnitType { Bread, Pupnut, Kitchu, Ramo }; // 테스트(제작)용
+    //UnitType unitType;
 
     private void Awake()
     {
@@ -59,7 +59,7 @@ public class BattleManager :Singleton<BattleManager>
 
         ReadSpawnFile(wave); // 적 유닛 스폰 파일 가져오기
 
-        unitType = UnitType.Bread; // 테스트(제작)용
+        //unitType = UnitType.Bread; // 테스트(제작)용
     }
 
     void Update()
@@ -118,11 +118,12 @@ public class BattleManager :Singleton<BattleManager>
 
 
         // 플레이어 유닛 소환 -> 테스트(제작)용
-        if (Input.GetKeyDown(KeyCode.Keypad0))
+        /*if (Input.GetKeyDown(KeyCode.Keypad0))
         {
             unitType = UnitType.Bread;
         }
         else if (Input.GetKey(KeyCode.Keypad1))
+
         {
             unitType = UnitType.Pupnut;
         }
@@ -133,7 +134,7 @@ public class BattleManager :Singleton<BattleManager>
         else if (Input.GetKey(KeyCode.Keypad3))
         {
             unitType = UnitType.Ramo;
-        }
+        }*/
 
         // 유닛 소환 영역 활성화
         if (Input.GetKeyDown("1"))
@@ -163,7 +164,7 @@ public class BattleManager :Singleton<BattleManager>
         point = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x,
             Input.mousePosition.y, -Camera.main.transform.position.z));
 
-        switch (unitType)
+        /*switch (unitType)
         {
             case UnitType.Bread:
                 pool.Get(0, 0);
@@ -177,7 +178,7 @@ public class BattleManager :Singleton<BattleManager>
             case UnitType.Ramo:
                 pool.Get(0, 3);
                 break;
-        }
+        }*/
 
         unitSpawnRange.SetActive(false);
     }

@@ -40,7 +40,7 @@ public class EnemyUnit : UnitBase
 
     void OnEnable()
     {
-        CardManager.Instance.enemys.Add(gameObject);
+        BattleData.Instance.enemys.Add(gameObject);
         StateSetting();
     }
 
@@ -48,9 +48,9 @@ public class EnemyUnit : UnitBase
     {
         // 초기 데이터 저장
         initialHealth = unitData.Health;
-        initialSpeed = unitData.Speed;
+        initialMoveSpeed = unitData.MoveSpeed;
         initialPower = unitData.Power;
-        initialAttackTime = unitData.AttackTime;
+        initialAttackSpeed = unitData.AttackSpeed;
     }
 
     void Update()
@@ -100,9 +100,9 @@ public class EnemyUnit : UnitBase
         // 수치값
         unitID = unitData.UnitID;
         health = unitData.Health;
-        speed = unitData.Speed;
+        moveSpeed = unitData.MoveSpeed;
         power = unitData.Power;
-        attackTime = unitData.AttackTime;
+        attackSpeed = unitData.AttackSpeed;
 
         // 설정값
         col.enabled = true;
@@ -137,7 +137,7 @@ public class EnemyUnit : UnitBase
         }
 
         // 목표 지점으로 이동
-        transform.position += moveVec.normalized * speed * Time.deltaTime;
+        transform.position += moveVec.normalized * moveSpeed * Time.deltaTime;
         unitState = UnitState.Move;
 
         // 가는 방향에 따라 Sprite 방향 변경
@@ -158,7 +158,7 @@ public class EnemyUnit : UnitBase
         if (nearestAttackTarget != null)
         {
             // 적(유닛, 벽)이 인식되면 attackTime 증가 및 공격 함수 실행
-            attackTime += Time.deltaTime;
+            attackSpeed += Time.deltaTime;
 
             if (!nearestAttackTarget.CompareTag("Wall"))
             {
@@ -182,9 +182,9 @@ public class EnemyUnit : UnitBase
             }
 
             // 공격
-            if (attackTime >= unitData.AttackTime)
+            if (attackSpeed >= unitData.AttackSpeed)
             {
-                attackTime = 0;
+                attackSpeed = 0;
 
                 // 유닛 별로 각각의 공격 함수 실행
                 if (gameObject.CompareTag("Archer"))
@@ -206,7 +206,7 @@ public class EnemyUnit : UnitBase
             Scanner();
 
             // 다음에 attackRay 에 적 인식시, 바로 공격 가능하게 attackTime 초기화
-            attackTime = unitData.AttackTime - 0.2f;
+            attackSpeed = unitData.AttackSpeed - 0.2f;
         }
 
     }
@@ -328,10 +328,10 @@ public class EnemyUnit : UnitBase
         if (smash != null) { StopCoroutine(smash); smash = null; }
         if (arrow != null) { StopCoroutine(arrow); arrow = null; }
 
-        speed = 0;
-        attackTime = 0;
+        moveSpeed = 0;
+        attackSpeed = 0;
 
-        CardManager.Instance.enemys.Remove(gameObject);
+        BattleData.Instance.enemys.Remove(gameObject);
 
         // 애니메이션
         anim.Die();

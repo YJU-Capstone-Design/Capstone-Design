@@ -13,32 +13,35 @@ public class UiManager : Singleton<UiManager>
 
     [Header("Cost")]
     public int cost = 0;
+    public int supply;
     private float costTime = 0f;
     private float timeInterver = 5f;
-    [SerializeField] private TextMeshProUGUI costText;
+    [SerializeField] private TextMeshProUGUI costText; //보유한 코스트
+    [SerializeField] private TextMeshProUGUI per_costText; //몇초당 회복
+    [SerializeField] private TextMeshProUGUI per_supplyText; //초당 회복률
 
     [Header("BattleUiToggle")]
     [SerializeField] private List<GameObject> battle_Btn = new List<GameObject>();
     private int toggle=0;
     [SerializeField] private GameObject[] toggleBtn;
-    
 
     private void Awake()
     {
-        cost = 10;
+        cost = 0;
         costText.text = cost.ToString();
-        
     }
     private void Update()
     {
+        per_costText.text = timeInterver.ToString();
+        per_supplyText.text = supply.ToString();
+
         costTime += Time.deltaTime;
         if (costTime >= timeInterver)
         {
             costTime = 0f;
-            cost += 2;
+            cost += supply;
             CostMgr(cost);
         }
-        
     }
 
     public void CloseToggle()
@@ -68,10 +71,7 @@ public class UiManager : Singleton<UiManager>
 
     public void CostMgr(int cost)
     {
-
-        
-            costText.text = cost.ToString();
-        
+       costText.text = cost.ToString();
     }
     public void SpeedUp()
     {

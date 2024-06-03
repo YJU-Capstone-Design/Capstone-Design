@@ -6,26 +6,39 @@ using static UnitBase;
 [CreateAssetMenu(fileName = "Unit", menuName = "Scriptable Object/Unit Data")]
 public class UnitData : ScriptableObject
 {
-    [Header("# Main State")]
+    [Header("# Unit Type")]
+    [SerializeField] // Unit Type (Friendly or Enemy)
+    private UnitTypes unitType;
+    public UnitTypes UnitType { get { return unitType; } }
+
+    [Header("# Unit State")]
     [SerializeField] // À¯´Ö ¾ÆÀÌµð
     private int unitID;
     public int UnitID { get { return unitID; } }
+
+    [SerializeField] // Unit Name
+    private string unitName;
+    public string UnitName { get {  return unitName; } }
+
+    [SerializeField] // Unit Spawn Cost
+    private int cost;
+    public int Cost { get { return cost; } }
 
     [SerializeField] // À¯´Ö Ã¼·Â
     private float health;
     public float Health { get { return health; } }
 
-    [SerializeField] // À¯´Ö ÀÌµ¿¼Óµµ
-    private float speed;
-    public float Speed { get { return speed; } }
-
     [SerializeField] // À¯´Ö °ø°Ý·Â
     private float power;
     public float Power { get { return power; } }
 
+    [SerializeField] // À¯´Ö ÀÌµ¿¼Óµµ
+    private float moveSpeed;
+    public float MoveSpeed { get { return moveSpeed; } }
+
     [SerializeField] // À¯´Ö °ø°Ý ÄðÅ¸ÀÓ
-    private float attackTime;
-    public float AttackTime { get { return attackTime; } }
+    private float attackSpeed;
+    public float AttackSpeed { get { return attackSpeed; } }
 
 
     //[Header("# Level State")]

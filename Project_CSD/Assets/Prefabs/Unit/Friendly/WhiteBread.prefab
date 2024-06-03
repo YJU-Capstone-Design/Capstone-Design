@@ -60,7 +60,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 66a07f142150e6f4c98aef21c353d054, type: 2}
+  - {fileID: 2100000, guid: 43d1222fe4491f240b0a5554473aa95e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -180,21 +180,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialHealth: 0
-  initialSpeed: 0
+  initialMoveSpeed: 0
   initialPower: 0
-  initialAttackTime: 0
+  initialAttackSpeed: 0
+  unitType: 0
   unitState: 0
   unitID: 0
+  unitName: 
+  cost: 0
   health: 0
-  speed: 0
   power: 0
-  attackTime: 0
+  moveSpeed: 0
+  attackSpeed: 0
   buffEffect:
   - {fileID: 3017555356110722591}
   - {fileID: 2943681988755331646}
   - {fileID: 8874215935305071327}
   scanner: {fileID: 0}
-  unitData: {fileID: 11400000, guid: ffe17753e345f7e4488c21c32a792c45, type: 2}
+  unitData: {fileID: 11400000, guid: 5c555b720eee4eb4fbcc373caaa241b4, type: 2}
   attackRayPos: {x: 0.6, y: 0.35, z: 0}
   attackRaySize: {x: 1, y: 0.35}
   nearestAttackTarget: {fileID: 0}

@@ -5,6 +5,8 @@ using static SpellBase;
 
 public class CardManager : Singleton<CardManager>
 {
+    public BattleData battleData;
+
     public List<GameObject> units;
     public List<GameObject> enemys;
 
@@ -19,8 +21,20 @@ public class CardManager : Singleton<CardManager>
 
     private void Awake()
     {
+        if (battleData == null)
+        {
+            GameObject go = GameObject.Find("BattleData");
+            battleData = go.GetComponent<BattleData>();
+        }
+
         units = new List<GameObject>();
         enemys = new List<GameObject>();
+    }
+
+    private void Update()
+    {
+        units = BattleData.Instance.units;
+        enemys = BattleData.Instance.enemys;
     }
 
     public void Buff_Status(Spell spell)
@@ -38,12 +52,14 @@ public class CardManager : Singleton<CardManager>
         PlayerUnit status = unit.GetComponent<PlayerUnit>();
         float maxHpUpPoint = status.initialHealth * (spell.maxHpUp * 0.01f);
         float powerUpPoint = status.initialPower * (spell.powerUp * 0.01f);
-        float speedUpPoint = status.initialSpeed * (spell.speedUp * 0.01f);
+        float attackSpeedUpPoint = status.initialAttackSpeed * (spell.attackSpeedUp * 0.01f);
+        float moveSpeedUpPoint = status.initialMoveSpeed * (spell.moveSpeedUp * 0.01f);
 
         // status.health += maxHpUpPoint;
         status.power += powerUpPoint;
-        status.speed += speedUpPoint;
-        Debug.Log("power = " + status.power + ", speed = " + status.speed + ", spellID = " + spell.spellID);
+        status.attackSpeed += attackSpeedUpPoint;
+        status.moveSpeed += moveSpeedUpPoint;
+        Debug.Log("power = " + status.power + ", speed = " + status.moveSpeed + ", spellID = " + spell.spellID);
         unit.GetComponent<PlayerUnit>().Buff_Effect(spell.spellType, true);
 
         float time = 0;
@@ -56,8 +72,9 @@ public class CardManager : Singleton<CardManager>
 
         // status.health -= maxHpUpPoint;
         status.power -= powerUpPoint;
-        status.speed -= speedUpPoint;
-        Debug.Log("power = " + status.power + ", speed = " + status.speed);
+        status.attackSpeed -= attackSpeedUpPoint;
+        status.moveSpeed -= moveSpeedUpPoint;
+        Debug.Log("power = " + status.power + ", speed = " + status.moveSpeed);
         unit.GetComponent<PlayerUnit>().Buff_Effect(spell.spellType, false);
     }
 }

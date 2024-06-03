@@ -53,23 +53,23 @@ public class PlayerUnit : UnitBase
     {
         StateSetting();
 
-        CardManager.Instance.units.Add(gameObject);
+        BattleData.Instance.units.Add(gameObject);
 
         Vector3 startPos = BattleManager.Instance.unitSpawnPoint[0].position;
         Vector3 targetPos = BattleManager.Instance.point;
         float xPos = startPos.x + targetPos.x * (targetPos.x < 0 ? -0.4f : 0.4f);
 
         // 클릭 지점으로 이동 -> 나머지는 Scanner 함수 에서 실행 (y 축만 먼저 빠르게 이동)
-        lerp = StartCoroutine(lerpCoroutine(startPos,new Vector3((xPos > targetPos.x ? targetPos.x : xPos), targetPos.y, 0), speed)); // y 축 먼저 이동
+        lerp = StartCoroutine(lerpCoroutine(startPos,new Vector3((xPos > targetPos.x ? targetPos.x : xPos), targetPos.y, 0), moveSpeed)); // y 축 먼저 이동
     }
 
     private void Start()
     {
         // 초기 데이터 저장
         initialHealth = unitData.Health;
-        initialSpeed = unitData.Speed;
+        initialMoveSpeed = unitData.MoveSpeed;
         initialPower = unitData.Power;
-        initialAttackTime = unitData.AttackTime;
+        initialAttackSpeed = unitData.AttackSpeed;
     }
 
     void Update()
@@ -118,9 +118,9 @@ public class PlayerUnit : UnitBase
         // 수치값
         unitID = unitData.UnitID;
         health = unitData.Health;
-        speed = unitData.Speed;
+        moveSpeed = unitData.MoveSpeed;
         power = unitData.Power;
-        attackTime = unitData.AttackTime;
+        attackSpeed = unitData.AttackSpeed;
 
         // 설정값
         col.enabled = true;
@@ -149,7 +149,7 @@ public class PlayerUnit : UnitBase
             else { moveVec.x *= 1f; moveVec.y *= 1f; } // 정상화
 
             // 이동
-            transform.position += moveVec.normalized * speed * Time.deltaTime;
+            transform.position += moveVec.normalized * moveSpeed * Time.deltaTime;
             unitState = UnitState.Move;
 
             // 애니메이션
@@ -163,7 +163,7 @@ public class PlayerUnit : UnitBase
             if (startMoveFinish)
             {
                 // 유닛의 처음 위치로 귀환
-                StartCoroutine(lerpCoroutine(transform.position, firstPos, speed));
+                StartCoroutine(lerpCoroutine(transform.position, firstPos, moveSpeed));
 
                 if (transform.position == firstPos) {
 
@@ -198,7 +198,7 @@ public class PlayerUnit : UnitBase
             }
 
             // 적이 인식되면 attackTime 증가 및 공격 함수 실행
-            attackTime += Time.deltaTime;
+            attackSpeed += Time.deltaTime;
 
             // 적 상태 변경
             if ((unitID % 10000) / 1000 == 2) // 탱커 -> 다수 공격
@@ -219,9 +219,9 @@ public class PlayerUnit : UnitBase
             }         
 
             // 공격
-            if (attackTime >= unitData.AttackTime)
+            if (attackSpeed >= unitData.AttackSpeed)
             {
-                attackTime = 0;
+                attackSpeed = 0;
 
                 // 유닛 별로 각각의 공격 함수 실행
                 if (gameObject.CompareTag("Archer"))
@@ -243,7 +243,7 @@ public class PlayerUnit : UnitBase
             Scanner();
 
             // 다음에 attackRay 에 적 인식시, 바로 공격 가능하게 attackTime 초기화
-            attackTime = unitData.AttackTime - 0.2f;
+            attackSpeed = unitData.AttackSpeed - 0.2f;
         }
 
     }
@@ -335,10 +335,10 @@ public class PlayerUnit : UnitBase
         EnemyUnit enemyLogic = nearestAttackTarget.GetComponent<EnemyUnit>();
         enemyLogic.unitState = UnitState.Move;
 
-        speed = 0;
-        attackTime = 0;
+        moveSpeed = 0;
+        attackSpeed = 0;
 
-        CardManager.Instance.units.Remove(gameObject);
+        BattleData.Instance.units.Remove(gameObject);
 
         // 진행중인 코루틴 함수 모두 중지
         if (smash != null) { StopCoroutine(smash); smash = null; }

@@ -12,8 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a845f90d0e6947f41a945dcd5a979615, type: 3}
   m_Name: Kitchu
   m_EditorClassIdentifier: 
+  unitType: 0
   unitID: 11001
-  health: 100
-  speed: 1
-  power: 100
-  attackTime: 1
+  unitName: "\uD0B7\uCE04"
+  cost: 3
+  health: 1000
+  power: 200
+  moveSpeed: 1
+  attackSpeed: 1
