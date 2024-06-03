@@ -23,7 +23,7 @@ public class BattleManager :Singleton<BattleManager>
     [Header("BattleMgr")]
     [SerializeField] private GameObject battle;
     [SerializeField] private GameObject gameEnd;
-    [SerializeField] Transform mainCamera;
+    [SerializeField] public Transform mainCamera;
     [SerializeField] int wave;
 
     [Header("Spawn")]
@@ -123,6 +123,7 @@ public class BattleManager :Singleton<BattleManager>
             unitType = UnitType.Bread;
         }
         else if (Input.GetKey(KeyCode.Keypad1))
+
         {
             unitType = UnitType.Pupnut;
         }
@@ -163,7 +164,7 @@ public class BattleManager :Singleton<BattleManager>
         point = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x,
             Input.mousePosition.y, -Camera.main.transform.position.z));
 
-        switch (unitType)
+        /*switch (unitType)
         {
             case UnitType.Bread:
                 pool.Get(0, 0);
@@ -177,7 +178,7 @@ public class BattleManager :Singleton<BattleManager>
             case UnitType.Ramo:
                 pool.Get(0, 3);
                 break;
-        }
+        }*/
 
         unitSpawnRange.SetActive(false);
     }

@@ -5,6 +5,8 @@ using static SpellBase;
 
 public class CardManager : Singleton<CardManager>
 {
+    public BattleData battleData;
+
     public List<GameObject> units;
     public List<GameObject> enemys;
 
@@ -19,8 +21,20 @@ public class CardManager : Singleton<CardManager>
 
     private void Awake()
     {
+        if (battleData == null)
+        {
+            GameObject go = GameObject.Find("BattleData");
+            battleData = go.GetComponent<BattleData>();
+        }
+
         units = new List<GameObject>();
         enemys = new List<GameObject>();
+    }
+
+    private void Update()
+    {
+        units = BattleData.Instance.units;
+        enemys = BattleData.Instance.enemys;
     }
 
     public void Buff_Status(Spell spell)

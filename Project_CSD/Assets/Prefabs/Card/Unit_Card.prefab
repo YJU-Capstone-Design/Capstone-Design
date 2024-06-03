@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 3148164937010508007}
   - component: {fileID: 239527638786203014}
   - component: {fileID: 6924558214924428078}
-  - component: {fileID: 5549122716866402055}
-  - component: {fileID: 6264621621515275122}
+  - component: {fileID: 8074906876845180572}
+  - component: {fileID: 212317160910575987}
   m_Layer: 5
   m_Name: Unit_Card
   m_TagString: Untagged
@@ -128,8 +128,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5549122716866402055}
-        m_TargetAssemblyTypeName: SpellManager, Assembly-CSharp
+      - m_Target: {fileID: 8074906876845180572}
+        m_TargetAssemblyTypeName: UnitManager, Assembly-CSharp
         m_MethodName: UsingCard
         m_Mode: 1
         m_Arguments:
@@ -140,7 +140,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &5549122716866402055
+--- !u!114 &8074906876845180572
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -149,10 +149,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 798610453738157305}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 23b52a9e650157a429cbf87f40374911, type: 3}
+  m_Script: {fileID: 11500000, guid: aed32c7a2a7f8c8488ab71c4b96e0d6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &6264621621515275122
+--- !u!114 &212317160910575987
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -161,35 +161,27 @@ MonoBehaviour:
   m_GameObject: {fileID: 798610453738157305}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a202148b2f909af47bcfcf1a9d26eb2b, type: 3}
+  m_Script: {fileID: 11500000, guid: 0fd2348dc356f5849bd25cc451e68de9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spellType: 0
-  spellID: 0
-  spellName: 
+  initialHealth: 0
+  initialMoveSpeed: 0
+  initialPower: 0
+  initialAttackSpeed: 0
+  unitType: 0
+  unitState: 0
+  unitID: 0
+  unitName: 
   cost: 0
-  duration: 0
-  damage: 0
-  maxHpUp: 0
-  powerUp: 0
-  attackSpeedUp: 0
-  moveSpeedUp: 0
-  spells:
-  - {fileID: 11400000, guid: d2454644a324cb24088898e5caccc1f5, type: 2}
-  - {fileID: 11400000, guid: e6dc83ad307d22e469e69197cb6e1b34, type: 2}
-  - {fileID: 11400000, guid: 00ec16d921255c24fb2d3e385b0e38b9, type: 2}
-  - {fileID: 11400000, guid: 9d535d802c402d54baba3edd50e5e887, type: 2}
-  - {fileID: 11400000, guid: 9b9e17c03b28fef41a8a4e497b9bed4a, type: 2}
-  - {fileID: 11400000, guid: 7d9a90833bd552a4a82acfb25c352c81, type: 2}
-  - {fileID: 11400000, guid: 019547aff5e70ee46aacbc00f0fe536b, type: 2}
-  - {fileID: 11400000, guid: 738b9018fe6a3514198d38e6134b606e, type: 2}
-  - {fileID: 11400000, guid: 08702786e5246cf429aaf9491d0c1ff7, type: 2}
-  - {fileID: 11400000, guid: 2d1478112f03a57459719a0f779cfb6f, type: 2}
-  - {fileID: 11400000, guid: c80a64ddedb9f6140a0de18191d09255, type: 2}
-  - {fileID: 11400000, guid: ae8e6b45f20a14942acef74fbda418fa, type: 2}
-  - {fileID: 11400000, guid: 29046aa1b6f412d41b6f401bd80bb9bc, type: 2}
-  - {fileID: 11400000, guid: 4b25a7d0fab63ab4eb7fbffbfa80a7d6, type: 2}
-  - {fileID: 11400000, guid: b08925a7c5fe44149b688f090c9d0388, type: 2}
+  health: 0
+  power: 0
+  attackSpeed: 0
+  moveSpeed: 0
+  units:
+  - {fileID: 11400000, guid: 30d37853b7fea784faf7413667f05d18, type: 2}
+  - {fileID: 11400000, guid: 3432d7c5b5226954187957314341727e, type: 2}
+  - {fileID: 11400000, guid: ffd2baf915980a94a89f459f8f2c0a1b, type: 2}
+  - {fileID: 11400000, guid: 5c555b720eee4eb4fbcc373caaa241b4, type: 2}
 --- !u!1 &2854145661760163395
 GameObject:
   m_ObjectHideFlags: 0

@@ -53,7 +53,7 @@ public class PlayerUnit : UnitBase
     {
         StateSetting();
 
-        CardManager.Instance.units.Add(gameObject);
+        BattleData.Instance.units.Add(gameObject);
 
         Vector3 startPos = BattleManager.Instance.unitSpawnPoint[0].position;
         Vector3 targetPos = BattleManager.Instance.point;
@@ -338,7 +338,7 @@ public class PlayerUnit : UnitBase
         moveSpeed = 0;
         attackSpeed = 0;
 
-        CardManager.Instance.units.Remove(gameObject);
+        BattleData.Instance.units.Remove(gameObject);
 
         // 진행중인 코루틴 함수 모두 중지
         if (smash != null) { StopCoroutine(smash); smash = null; }
