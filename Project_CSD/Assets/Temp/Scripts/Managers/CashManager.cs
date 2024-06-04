@@ -34,10 +34,6 @@ public class CashManager : MonoBehaviour
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
-    /*    private void OnDisable()
-        {
-            SceneManager.sceneLoaded -= OnSceneLoaded;
-        }*/
 
     void Update()
     {

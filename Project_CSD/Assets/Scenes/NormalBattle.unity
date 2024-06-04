@@ -9289,6 +9289,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unitSpawnRangeButton: {fileID: 0}
+  uiMgr: {fileID: 0}
 --- !u!1 &1848760901
 GameObject:
   m_ObjectHideFlags: 0
