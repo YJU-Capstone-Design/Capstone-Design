@@ -35,7 +35,7 @@ public class MainLobby : MonoBehaviour
     [SerializeField] private GameObject mainLobbyObj;//메인로비 필드 오브젝트
 
 
-
+    public GameObject popBtn_construction;
 
 
     private void Start()
@@ -57,7 +57,8 @@ public class MainLobby : MonoBehaviour
         }
         else if (type == "TraningBtn")
         {
-            openScene = 2;
+            //openScene = 2;
+            popBtn_construction.SetActive(true);
         }
         else if (type == "Formation")
         {
@@ -65,7 +66,8 @@ public class MainLobby : MonoBehaviour
         }
         else if (type == "KitchenRoom")
         {
-            openScene = 4;
+            //openScene = 4;
+            popBtn_construction.SetActive(true);
         }
         else if (type == "Collection")
         {
@@ -73,7 +75,8 @@ public class MainLobby : MonoBehaviour
         }
         else if (type == "Chm&Mission")
         {
-            openScene = 6;
+            popBtn_construction.SetActive(true);
+            //openScene = 6;
         }
         for (int i = 1; i < menu.Count; i++)
         {
@@ -144,7 +147,7 @@ public class MainLobby : MonoBehaviour
 
     public void Clear()
     {
-        
+        popBtn_construction.SetActive(false);
         toogleState = 0;
         mainLobby.transform.localScale = Vector3.one;
         menu[0].gameObject.SetActive(true);
@@ -161,6 +164,11 @@ public class MainLobby : MonoBehaviour
     public void SettingClose()
     {
         setMenu.SetActive(false);
+    }
+
+    public void Close_construction()
+    {
+        popBtn_construction.SetActive(false);
     }
     public void GameSetting()
     {
