@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-
+using UnityEngine.UI;
 public class BreakRack : Singleton<BreakRack>
 {
     
+
     [Header("메인 Top오브젝트")]
     [SerializeField] private GameObject topBox;
     [SerializeField] private GameObject itemBox;
@@ -16,7 +17,7 @@ public class BreakRack : Singleton<BreakRack>
     [SerializeField] private int save = 0;
 
     //전체 적용 능력치
-    [SerializeField] TextMeshPro setInfo;
+    [SerializeField] private TextMeshProUGUI setInfo;
 
     private void Awake()
     {
@@ -25,10 +26,7 @@ public class BreakRack : Singleton<BreakRack>
 
     }
 
-    public void TextInfo()
-    {
-
-    }
+    
 
 
 
@@ -40,15 +38,14 @@ public class BreakRack : Singleton<BreakRack>
     public void OpenTopBox()
     {
         topBox.transform.localScale = Vector3.one;
+        save = 0;
     }
     public void OpenItemBox()
     {
         itemBox.transform.localScale = Vector3.one;
-    }
-    public void OpenInfoBox()
-    {
         infoBox.transform.localScale = Vector3.one;
     }
+   
     public void OpenPopUpBox()
     {
         popUp.SetActive(true);
@@ -56,17 +53,13 @@ public class BreakRack : Singleton<BreakRack>
 
     public void TopMenuCancel()//팝업창이 나오는 경우 -> 설정을 변경후 저장 버튼을 누르지 않을때
     {
-        if (save == 0||save==2)
-        {
-            popUp.SetActive(true);
-            save = 3;
-
-        }else if(save == 3)
-        {
+        
           
             Clear();
-        }
+        
     }
+
+
     public void Cancel(GameObject go)
     {
         go.transform.localScale = Vector3.zero;
