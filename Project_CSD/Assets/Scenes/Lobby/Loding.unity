@@ -1152,7 +1152,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   progressBar: {fileID: 1546760599}
   time: {fileID: 765453334}
-  speed: 0.4
+  speed: 0.5
 --- !u!4 &1661964486
 Transform:
   m_ObjectHideFlags: 0
