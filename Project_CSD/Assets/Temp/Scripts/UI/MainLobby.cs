@@ -35,8 +35,7 @@ public class MainLobby : MonoBehaviour
     [SerializeField] private GameObject mainLobbyObj;//메인로비 필드 오브젝트
 
 
-    [Header("Prohibited Room")]//진입금지
-    [SerializeField] GameObject pop;
+
 
 
     private void Start()
@@ -58,8 +57,7 @@ public class MainLobby : MonoBehaviour
         }
         else if (type == "TraningBtn")
         {
-            pop.SetActive(true);
-            //openScene = 2;
+            openScene = 2;
         }
         else if (type == "Formation")
         {
@@ -67,8 +65,7 @@ public class MainLobby : MonoBehaviour
         }
         else if (type == "KitchenRoom")
         {
-            pop.SetActive(true);
-            //openScene = 4;
+            openScene = 4;
         }
         else if (type == "Collection")
         {
@@ -76,8 +73,7 @@ public class MainLobby : MonoBehaviour
         }
         else if (type == "Chm&Mission")
         {
-            pop.SetActive(true);
-           //openScene = 6;
+            openScene = 6;
         }
         for (int i = 1; i < menu.Count; i++)
         {
@@ -97,10 +93,7 @@ public class MainLobby : MonoBehaviour
         }
 
     }
-    public void ClostPop()
-    {
-        pop.SetActive(false);
-    }
+
 
     public void ToggleOnOff()
     {

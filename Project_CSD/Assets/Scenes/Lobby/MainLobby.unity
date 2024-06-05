@@ -22755,7 +22755,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1723423945}
         m_TargetAssemblyTypeName: MainLobby, Assembly-CSharp
-        m_MethodName: ClostPop
+        m_MethodName: Close_construction
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -26294,7 +26294,6 @@ MonoBehaviour:
   battleMode: {fileID: 804946117}
   mainLobby: {fileID: 2016165685}
   mainLobbyObj: {fileID: 581485262}
-  pop: {fileID: 484292572}
 --- !u!4 &1723423946
 Transform:
   m_ObjectHideFlags: 0
