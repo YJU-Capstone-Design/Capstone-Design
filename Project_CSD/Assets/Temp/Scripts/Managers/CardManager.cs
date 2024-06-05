@@ -42,10 +42,20 @@ public class CardManager : Singleton<CardManager>
     public void Buff_Status(Spell spell)
     {
         usingSpell = spell;
-        foreach (GameObject unit in units)
+
+        if (usingSpell.spellType == SpellTypes.Buff)
         {
-            StartCoroutine(Buff_Logic(unit, spell));
+            foreach (GameObject unit in units)
+            {
+                StartCoroutine(Buff_Logic(unit, spell));
+            }
+        } else if (usingSpell.spellType == SpellTypes.Debuff) {
+            foreach (GameObject enemy in enemys)
+            {
+
+            }
         }
+
         // BattleManager.Instance.CardShuffle();
     }
 
