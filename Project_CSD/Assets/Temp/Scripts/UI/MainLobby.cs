@@ -1,3 +1,4 @@
+using Spine;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -35,8 +36,8 @@ public class MainLobby : MonoBehaviour
     [SerializeField] private GameObject mainLobbyObj;//메인로비 필드 오브젝트
 
 
-
-
+    [Header("Prohibited Room")]//진입금지룸
+    [SerializeField] GameObject pop;
 
     private void Start()
     {
@@ -57,7 +58,8 @@ public class MainLobby : MonoBehaviour
         }
         else if (type == "TraningBtn")
         {
-            openScene = 2;
+            pop.SetActive(true);
+            //openScene = 2;
         }
         else if (type == "Formation")
         {
@@ -65,7 +67,8 @@ public class MainLobby : MonoBehaviour
         }
         else if (type == "KitchenRoom")
         {
-            openScene = 4;
+            pop.SetActive(true);
+            // openScene = 4;
         }
         else if (type == "Collection")
         {
@@ -73,7 +76,8 @@ public class MainLobby : MonoBehaviour
         }
         else if (type == "Chm&Mission")
         {
-            openScene = 6;
+            pop.SetActive(true);
+            //openScene = 6;
         }
         for (int i = 1; i < menu.Count; i++)
         {
@@ -94,7 +98,10 @@ public class MainLobby : MonoBehaviour
 
     }
 
-
+    public void ClosePoP()
+    {
+        pop.SetActive(false);
+    }
     public void ToggleOnOff()
     {
         if (toogleState == 0)
