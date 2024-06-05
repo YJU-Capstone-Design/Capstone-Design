@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
 using System.Drawing;
+using TMPro;
 public class BattleManager :Singleton<BattleManager>
 {
     public enum BattleState { Start, Win, Lose, BreakTime }
@@ -23,7 +24,7 @@ public class BattleManager :Singleton<BattleManager>
     [Header("BattleMgr")]
     [SerializeField] private GameObject battle;
     [SerializeField] private GameObject gameEnd;
-    [SerializeField] public Transform mainCamera;
+    [SerializeField] Transform mainCamera;
     [SerializeField] int wave;
 
     [Header("Spawn")]
@@ -39,14 +40,26 @@ public class BattleManager :Singleton<BattleManager>
     public GameObject hpBarParent; // 유닛 체력바 부모 (canvas 오브젝트)
     public GameObject unitSpawnRange; // 유닛 스폰 범위 (canvas 오브젝트)
 
-    //enum UnitType { Bread, Pupnut, Kitchu, Ramo }; // 테스트(제작)용
-    //UnitType unitType;
+    [Header("# UI")]
+    [SerializeField] GameObject waveUI;
+    [SerializeField] Animator[] waveUIChild;
+    [SerializeField] GameObject resultUI;
+    [SerializeField] Sprite[] waveNumImg;
+    [SerializeField] Image[] battleWaveImg;
+    [SerializeField] Sprite[] resultImg;
+    [SerializeField] Image resultPanel;
+    [SerializeField] Image resultMenuBar;
+    [SerializeField] Image[] resultWaveImg;
+
+    enum UnitType { Bread, Pupnut, Kitchu, Ramo, Sorang, Croirang }; // 테스트(제작)용
+    UnitType unitType;
 
     private void Awake()
     {
         // 전투 시작
         battleState = BattleState.Start;
         wave = 0;
+        Wave();
 
         // 전투 기본 세팅
         battle.SetActive(true);
@@ -59,12 +72,12 @@ public class BattleManager :Singleton<BattleManager>
 
         ReadSpawnFile(wave); // 적 유닛 스폰 파일 가져오기
 
-        //unitType = UnitType.Bread; // 테스트(제작)용
+        unitType = UnitType.Bread; // 테스트(제작)용
     }
 
     void Update()
     {
-        // 적 좀비 소환 -> 테스트 용
+        // 적 소환 -> 테스트 용
         if (Input.GetKeyDown("2")) { pool.Get(2, 0); }
 
         if (CardManager.Instance.enemys.Count > 0 && curHealth > 0)
@@ -98,32 +111,40 @@ public class BattleManager :Singleton<BattleManager>
             else if (wave + 1 < enemySpawnFile.Count && battleState == BattleState.Start)
             {
                 Debug.Log("Next Wave");
-                // Wave 애니메이션 필요
+
                 battleState = BattleState.BreakTime;
                 wave++;
                 ReadSpawnFile(wave); // 적 유닛 스폰 파일 가져오기
                 battleState = BattleState.Start;
+
+                Wave();
             }
+        }
+        
+        if(spawnIndex >= 1)
+        {
+            waveUI.SetActive(false);
         }
 
         // 이겼거나 졌을 경우 결과창 띄우기
-        if (battleState == BattleState.Win || battleState == BattleState.Lose)
+        if (battleState == BattleState.Win)
         {
             // 결과 PopUp 창
-
-            // 다시 Lobby 로 이동
-
-            // 패배나 도중 포기인 경우 Wave 저장 필요 -> DontDestroy 오브젝트에 넣어야 할 듯
+            EndGame("Win");
+        }
+        else if(battleState == BattleState.Lose)
+        {
+            // 결과 PopUp 창
+            EndGame("Lose");
         }
 
 
         // 플레이어 유닛 소환 -> 테스트(제작)용
-        /*if (Input.GetKeyDown(KeyCode.Keypad0))
+        if (Input.GetKeyDown(KeyCode.Keypad0))
         {
             unitType = UnitType.Bread;
         }
         else if (Input.GetKey(KeyCode.Keypad1))
-
         {
             unitType = UnitType.Pupnut;
         }
@@ -134,7 +155,15 @@ public class BattleManager :Singleton<BattleManager>
         else if (Input.GetKey(KeyCode.Keypad3))
         {
             unitType = UnitType.Ramo;
-        }*/
+        }
+        else if (Input.GetKey(KeyCode.Keypad4))
+        {
+            unitType = UnitType.Sorang;
+        }
+        else if (Input.GetKey(KeyCode.Keypad5))
+        {
+            unitType = UnitType.Croirang;
+        }
 
         // 유닛 소환 영역 활성화
         if (Input.GetKeyDown("1"))
@@ -157,6 +186,55 @@ public class BattleManager :Singleton<BattleManager>
         }
     }
 
+    void Wave()
+    {
+        // Wave UI 활성화
+        waveUI.SetActive(true);
+
+        int waveCount = wave + 1;
+
+        // 숫자 이미지 변경
+        int ten = waveCount / 10 > 0 ? waveCount / 10 : 0;
+        int one = waveCount % 10;
+
+        battleWaveImg[0].sprite = waveNumImg[one];
+        battleWaveImg[1].sprite = waveNumImg[ten];
+
+        // Wave 애니메이션
+        foreach (Animator waveAnim in waveUIChild)
+        {
+            waveAnim.SetBool("next", true);
+        }
+    }
+
+    public void EndGame(string whether)
+    {
+        resultUI.SetActive(true);
+
+        int waveCount = wave + 1;
+
+        // 숫자 이미지 변경
+        int ten = waveCount / 10 > 0 ? waveCount / 10 : 0;
+        int one = waveCount % 10;
+
+        resultWaveImg[0].sprite = waveNumImg[one];
+        resultWaveImg[1].sprite = waveNumImg[ten];
+
+        if (whether == "Win")
+        {
+            resultPanel.sprite = resultImg[0];
+            resultMenuBar.sprite = resultImg[2];
+        }
+        else if(whether == "Lose")
+        {
+            resultPanel.sprite = resultImg[1];
+            resultMenuBar.sprite = resultImg[3];
+
+            // Wave 저장 필요 -> DontDestroy 오브젝트에 넣어야 할 듯
+        }
+
+    }
+
     // 유닛 스폰 버튼
     public void UnitSpawn()
     {
@@ -164,7 +242,7 @@ public class BattleManager :Singleton<BattleManager>
         point = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x,
             Input.mousePosition.y, -Camera.main.transform.position.z));
 
-        /*switch (unitType)
+        switch (unitType)
         {
             case UnitType.Bread:
                 pool.Get(0, 0);
@@ -178,7 +256,13 @@ public class BattleManager :Singleton<BattleManager>
             case UnitType.Ramo:
                 pool.Get(0, 3);
                 break;
-        }*/
+            case UnitType.Sorang:
+                pool.Get(0, 4);
+                break;
+            case UnitType.Croirang:
+                pool.Get(0, 5);
+                break;
+        }
 
         unitSpawnRange.SetActive(false);
     }
