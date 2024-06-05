@@ -24,7 +24,7 @@ public class BattleManager :Singleton<BattleManager>
     [Header("BattleMgr")]
     [SerializeField] private GameObject battle;
     [SerializeField] private GameObject gameEnd;
-    [SerializeField] Transform mainCamera;
+    [SerializeField] public Transform mainCamera;
     [SerializeField] int wave;
 
     [Header("Spawn")]
