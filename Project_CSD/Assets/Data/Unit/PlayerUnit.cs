@@ -69,7 +69,7 @@ public class PlayerUnit : UnitBase
         initialHealth = unitData.Health;
         initialMoveSpeed = unitData.MoveSpeed;
         initialPower = unitData.Power;
-        initialAttackSpeed = unitData.AttackSpeed;
+        initialAttackTime = unitData.AttackTime;
     }
 
     void Update()
@@ -120,7 +120,7 @@ public class PlayerUnit : UnitBase
         health = unitData.Health;
         moveSpeed = unitData.MoveSpeed;
         power = unitData.Power;
-        attackSpeed = unitData.AttackSpeed;
+        attackTime = unitData.AttackTime;
 
         // 설정값
         col.enabled = true;
@@ -198,7 +198,7 @@ public class PlayerUnit : UnitBase
             }
 
             // 적이 인식되면 attackTime 증가 및 공격 함수 실행
-            attackSpeed += Time.deltaTime;
+            attackTime += Time.deltaTime;
 
             // 적 상태 변경
             if ((unitID % 10000) / 1000 == 2) // 탱커 -> 다수 공격
@@ -219,9 +219,9 @@ public class PlayerUnit : UnitBase
             }         
 
             // 공격
-            if (attackSpeed >= unitData.AttackSpeed)
+            if (attackTime >= unitData.AttackTime)
             {
-                attackSpeed = 0;
+                attackTime = 0;
 
                 // 유닛 별로 각각의 공격 함수 실행
                 if (gameObject.CompareTag("Archer"))
@@ -243,7 +243,7 @@ public class PlayerUnit : UnitBase
             Scanner();
 
             // 다음에 attackRay 에 적 인식시, 바로 공격 가능하게 attackTime 초기화
-            attackSpeed = unitData.AttackSpeed - 0.2f;
+            attackTime = unitData.AttackTime - 0.2f;
         }
 
     }
@@ -336,7 +336,7 @@ public class PlayerUnit : UnitBase
         enemyLogic.unitState = UnitState.Move;
 
         moveSpeed = 0;
-        attackSpeed = 0;
+        attackTime = 0;
 
         BattleData.Instance.units.Remove(gameObject);
 

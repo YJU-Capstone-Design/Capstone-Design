@@ -50,7 +50,7 @@ public class EnemyUnit : UnitBase
         initialHealth = unitData.Health;
         initialMoveSpeed = unitData.MoveSpeed;
         initialPower = unitData.Power;
-        initialAttackSpeed = unitData.AttackSpeed;
+        initialAttackTime = unitData.AttackTime;
     }
 
     void Update()
@@ -102,7 +102,7 @@ public class EnemyUnit : UnitBase
         health = unitData.Health;
         moveSpeed = unitData.MoveSpeed;
         power = unitData.Power;
-        attackSpeed = unitData.AttackSpeed;
+        attackTime = unitData.AttackTime;
 
         // 설정값
         col.enabled = true;
@@ -158,7 +158,7 @@ public class EnemyUnit : UnitBase
         if (nearestAttackTarget != null)
         {
             // 적(유닛, 벽)이 인식되면 attackTime 증가 및 공격 함수 실행
-            attackSpeed += Time.deltaTime;
+            attackTime += Time.deltaTime;
 
             if (!nearestAttackTarget.CompareTag("Wall"))
             {
@@ -182,9 +182,9 @@ public class EnemyUnit : UnitBase
             }
 
             // 공격
-            if (attackSpeed >= unitData.AttackSpeed)
+            if (attackTime >= unitData.AttackTime)
             {
-                attackSpeed = 0;
+                attackTime = 0;
 
                 // 유닛 별로 각각의 공격 함수 실행
                 if (gameObject.CompareTag("Archer"))
@@ -206,7 +206,7 @@ public class EnemyUnit : UnitBase
             Scanner();
 
             // 다음에 attackRay 에 적 인식시, 바로 공격 가능하게 attackTime 초기화
-            attackSpeed = unitData.AttackSpeed - 0.2f;
+            attackTime = unitData.AttackTime - 0.2f;
         }
 
     }
@@ -329,7 +329,7 @@ public class EnemyUnit : UnitBase
         if (arrow != null) { StopCoroutine(arrow); arrow = null; }
 
         moveSpeed = 0;
-        attackSpeed = 0;
+        attackTime = 0;
 
         BattleData.Instance.enemys.Remove(gameObject);
 
