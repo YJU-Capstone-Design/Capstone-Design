@@ -2558,7 +2558,7 @@ MonoBehaviour:
   - {fileID: 798610453738157305, guid: 75f42d5873409ff4292800fdace630a6, type: 3}
   - {fileID: 798610453738157305, guid: 36babf8173af2534892251ae495bf7fb, type: 3}
   cardObj: []
-  curHealth: 0
+  curHealth: 50
   maxHealth: 50
   healthBar: {fileID: 139648792}
   HpBarSlider: {fileID: 442939622}
@@ -2579,6 +2579,15 @@ MonoBehaviour:
   - {fileID: 4900000, guid: 8de3a0dc85ab4ac418de2a6e476b7f02, type: 3}
   hpBarParent: {fileID: 896767616}
   unitSpawnRange: {fileID: 974946586}
+  waveUI: {fileID: 0}
+  waveUIChild: []
+  resultUI: {fileID: 0}
+  waveNumImg: []
+  battleWaveImg: []
+  resultImg: []
+  resultPanel: {fileID: 0}
+  resultMenuBar: {fileID: 0}
+  resultWaveImg: []
 --- !u!4 &418216610
 Transform:
   m_ObjectHideFlags: 0
