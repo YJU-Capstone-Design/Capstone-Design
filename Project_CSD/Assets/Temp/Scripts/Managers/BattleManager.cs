@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
 using System.Drawing;
+using TMPro;
 public class BattleManager :Singleton<BattleManager>
 {
     public enum BattleState { Start, Win, Lose, BreakTime }
@@ -39,6 +40,17 @@ public class BattleManager :Singleton<BattleManager>
     public GameObject hpBarParent; // 유닛 체력바 부모 (canvas 오브젝트)
     public GameObject unitSpawnRange; // 유닛 스폰 범위 (canvas 오브젝트)
 
+    [Header("# UI")]
+    [SerializeField] GameObject waveUI;
+    [SerializeField] Animator[] waveUIChild;
+    [SerializeField] GameObject resultUI;
+    [SerializeField] Sprite[] waveNumImg;
+    [SerializeField] Image[] battleWaveImg;
+    [SerializeField] Sprite[] resultImg;
+    [SerializeField] Image resultPanel;
+    [SerializeField] Image resultMenuBar;
+    [SerializeField] Image[] resultWaveImg;
+
     enum UnitType { Bread, Pupnut, Kitchu, Ramo, Sorang, Croirang }; // 테스트(제작)용
     UnitType unitType;
 
@@ -47,6 +59,7 @@ public class BattleManager :Singleton<BattleManager>
         // 전투 시작
         battleState = BattleState.Start;
         wave = 0;
+        Wave();
 
         // 전투 기본 세팅
         battle.SetActive(true);
@@ -98,12 +111,20 @@ public class BattleManager :Singleton<BattleManager>
             else if (wave + 1 < enemySpawnFile.Count && battleState == BattleState.Start)
             {
                 Debug.Log("Next Wave");
-                // Wave 애니메이션 필요
+
                 battleState = BattleState.BreakTime;
                 wave++;
                 ReadSpawnFile(wave); // 적 유닛 스폰 파일 가져오기
                 battleState = BattleState.Start;
+
+                Wave();
             }
+        }
+        
+        if(spawnIndex >= 1)
+        if(spawnIndex >= 1)
+        {
+            waveUI.SetActive(false);
         }
 
         // 이겼거나 졌을 경우 결과창 띄우기
@@ -161,6 +182,27 @@ public class BattleManager :Singleton<BattleManager>
                 spawnAreaAnchors.anchorMax = new Vector2(1, 0.5f);
             }
             unitSpawnRange.SetActive(true);
+        }
+    }
+
+    void Wave()
+    {
+        // Wave UI 활성화
+        waveUI.SetActive(true);
+
+        int waveCount = wave + 1;
+
+        // 숫자 이미지 변경
+        int ten = waveCount / 10 > 0 ? waveCount / 10 : 0;
+        int one = waveCount % 10;
+
+        battleWaveImg[0].sprite = waveNumImg[one];
+        battleWaveImg[1].sprite = waveNumImg[ten];
+
+        // Wave 애니메이션
+        foreach (Animator waveAnim in waveUIChild)
+        {
+            waveAnim.SetBool("next", true);
         }
     }
 
