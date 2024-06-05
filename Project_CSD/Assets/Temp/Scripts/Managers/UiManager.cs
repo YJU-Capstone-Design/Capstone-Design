@@ -6,6 +6,7 @@ using TMPro;
 
 public class UiManager : Singleton<UiManager>
 {
+    public UiManager instance;
     [Header("GameSpeed")]
     public int time = 1;
     [SerializeField] private GameObject speed_Icon;
@@ -27,6 +28,8 @@ public class UiManager : Singleton<UiManager>
 
     private void Awake()
     {
+        instance = this;
+
         cost = 0;
         costText.text = cost.ToString();
     }
@@ -40,8 +43,8 @@ public class UiManager : Singleton<UiManager>
         {
             costTime = 0f;
             cost += supply;
-            CostMgr(cost);
         }
+        CostMgr(cost);
     }
 
     public void CloseToggle()
