@@ -18,22 +18,22 @@ public class PlayerUnit : UnitBase
     public Scanner scanner;
     public UnitData unitData;
     MeshRenderer bodySprite;
-    protected bool startMoveFinish = false;
-    protected LayerMask targetLayer;
-    protected Vector3 moveVec; // 거리
-    [SerializeField] protected Vector3 attackRayPos; // attackRay 위치 = 현재 위치 + attackRayPos
-    [SerializeField] protected Vector2 attackRaySize;
+    bool startMoveFinish = false;
+    LayerMask targetLayer;
+    Vector3 moveVec; // 거리
+    [SerializeField] Vector3 attackRayPos; // attackRay 위치 = 현재 위치 + attackRayPos
+    [SerializeField] Vector2 attackRaySize;
     GameObject hpBar; // 체력바
 
     [Header("# Unit Activity")]
     Collider2D col;
-    protected RaycastHit2D[] attackTargets; // 스캔 결과 배열
-    [SerializeField] protected Transform nearestAttackTarget; // 가장 가까운 목표
-    [SerializeField] protected Transform[] multipleAttackTargets; // 다수 공격 목표
+    RaycastHit2D[] attackTargets; // 스캔 결과 배열
+    [SerializeField] Transform nearestAttackTarget; // 가장 가까운 목표
+    [SerializeField] Transform[] multipleAttackTargets; // 다수 공격 목표
     Vector3 firstPos;
-    protected Coroutine smash;
-    protected Coroutine arrow;
-    protected Coroutine lerp;
+    Coroutine smash;
+    Coroutine arrow;
+    Coroutine lerp;
 
     [Header("# Spine")]
     SkeletonAnimation skeletonAnimation;
@@ -69,7 +69,7 @@ public class PlayerUnit : UnitBase
         initialHealth = unitData.Health;
         initialMoveSpeed = unitData.MoveSpeed;
         initialPower = unitData.Power;
-        initialAttackTime = unitData.AttackTime;
+        initialAttackSpeed = unitData.AttackSpeed;
     }
 
     void Update()
@@ -83,6 +83,7 @@ public class PlayerUnit : UnitBase
 
             if (health <= 0 || BattleManager.Instance.battleState == BattleManager.BattleState.Lose) // hp 가 0 이 되거나 게임에서 졌을 경우
             {
+                Debug.Log("Die1");
                 StartCoroutine(Die());
             } 
             else if(BattleManager.Instance.battleState == BattleManager.BattleState.Win) // 승리 시
@@ -119,7 +120,7 @@ public class PlayerUnit : UnitBase
         health = unitData.Health;
         moveSpeed = unitData.MoveSpeed;
         power = unitData.Power;
-        attackTime = unitData.AttackTime;
+        attackSpeed = unitData.AttackSpeed;
 
         // 설정값
         col.enabled = true;
@@ -138,7 +139,7 @@ public class PlayerUnit : UnitBase
     }
 
     // 가까운 적을 찾는 Scanner 함수 (이동)
-    protected virtual void Scanner()
+    void Scanner()
     {
         if (scanner.nearestTarget)
         {
@@ -178,7 +179,8 @@ public class PlayerUnit : UnitBase
     }
 
     // 가까운 공격 목표를 찾는 Ray 함수 (공격)
-    protected virtual void AttackRay()
+
+    void AttackRay()
     {
         // BoxCastAll(시작 위치, 크기, 회전, 방향, 길이, 대상 레이어) : 사각형의 캐스트를 쏘고 모든 결과를 반환하는 함수
         attackTargets = Physics2D.BoxCastAll(transform.position + new Vector3(attackRayPos.x * Mathf.Sign(moveVec.x), attackRayPos.y, attackRayPos.z), attackRaySize, 0, Vector2.zero, 0, targetLayer);
@@ -188,6 +190,7 @@ public class PlayerUnit : UnitBase
 
         if (nearestAttackTarget != null)
         {
+
             if(!startMoveFinish)
             {
                 StopCoroutine(lerp);
@@ -195,14 +198,12 @@ public class PlayerUnit : UnitBase
             }
 
             // 적이 인식되면 attackTime 증가 및 공격 함수 실행
-            attackTime += Time.deltaTime;
+            attackSpeed += Time.deltaTime;
 
             // 적 상태 변경
             if ((unitID % 10000) / 1000 == 2) // 탱커 -> 다수 공격
             {
-                if (multipleAttackTargets == null) 
-                    return;
-
+                if (multipleAttackTargets == null) return;
                 foreach (Transform enemy in multipleAttackTargets)
                 {
                     if (enemy == null) return;
@@ -218,9 +219,9 @@ public class PlayerUnit : UnitBase
             }         
 
             // 공격
-            if (attackTime >= unitData.AttackTime)
+            if (attackSpeed >= unitData.AttackSpeed)
             {
-                attackTime = 0;
+                attackSpeed = 0;
 
                 // 유닛 별로 각각의 공격 함수 실행
                 if (gameObject.CompareTag("Archer"))
@@ -242,8 +243,9 @@ public class PlayerUnit : UnitBase
             Scanner();
 
             // 다음에 attackRay 에 적 인식시, 바로 공격 가능하게 attackTime 초기화
-            attackTime = unitData.AttackTime - 0.2f;
+            attackSpeed = unitData.AttackSpeed - 0.2f;
         }
+
     }
 
     void OnDrawGizmosSelected()
@@ -253,7 +255,7 @@ public class PlayerUnit : UnitBase
     }
 
     // 일반 근접 공격 함수
-    protected virtual IEnumerator Attack()
+    IEnumerator Attack()
     {
         if (nearestAttackTarget == null) {
             if (smash != null) { StopCoroutine(smash); smash = null; }
@@ -264,7 +266,7 @@ public class PlayerUnit : UnitBase
 
         yield return new WaitForSeconds(0.6f); // 애니메이션 시간
 
-        if ((unitID % 10000) / 1000 == 2) // 탱커, Croirang -> 다수 공격
+        if ((unitID % 10000) / 1000 == 2) // 탱커 -> 다수 공격
         {
             foreach (Transform enemy in multipleAttackTargets)
             {
@@ -282,7 +284,7 @@ public class PlayerUnit : UnitBase
         StartAnimation("Idle", true, 1.5f);
     }
 
-    protected void SetEnemyState(Transform target)
+    void SetEnemyState(Transform target)
     {
         if(target == null)
             return;
@@ -325,21 +327,16 @@ public class PlayerUnit : UnitBase
 
     IEnumerator Die()
     {
+        Debug.Log("Die2");
         unitState = UnitState.Die;
         moveVec = Vector2.zero;
         col.enabled = false;
-        hpBar.SetActive(false);
 
-        if (nearestAttackTarget != null)
-        {
-            EnemyUnit enemyLogic = nearestAttackTarget.GetComponent<EnemyUnit>();
-            enemyLogic.unitState = UnitState.Move;
-
-            nearestAttackTarget = null;
-        }
+        EnemyUnit enemyLogic = nearestAttackTarget.GetComponent<EnemyUnit>();
+        enemyLogic.unitState = UnitState.Move;
 
         moveSpeed = 0;
-        attackTime = 0;
+        attackSpeed = 0;
 
         BattleData.Instance.units.Remove(gameObject);
 
@@ -352,6 +349,7 @@ public class PlayerUnit : UnitBase
 
         yield return new WaitForSeconds(1f);
 
+        hpBar.SetActive(false);
         gameObject.SetActive(false);
     }
 
@@ -389,7 +387,7 @@ public class PlayerUnit : UnitBase
     }
 
     // 스파인 애니메이션 함수
-    protected void StartAnimation(string animName, bool loop, float timeScale)
+    private void StartAnimation(string animName, bool loop, float timeScale)
     {
         //동일한 애니메이션을 재생하려고 한다면 아래 코드 구문 실행 X
         if (animName.Equals(CurrentAnimation))

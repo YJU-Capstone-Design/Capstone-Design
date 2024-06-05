@@ -717,11 +717,9 @@ MonoBehaviour:
   power: 0
   attackTime: 0
   scanner: {fileID: 0}
-  unitData: {fileID: 11400000, guid: 74842af52a6bccd43bc372122aab9025, type: 2}
-  attackRayUpPos: 0.45
-  attackRayDownPos: 0.2
-  attackRayPos: {x: 0.5, y: 0, z: 0}
-  attackRaySize: {x: 0.8, y: 0.4}
+  unitData: {fileID: 11400000, guid: f687aca6df1815d40af4750ae06a36b0, type: 2}
+  attackRayPos: {x: 0.4, y: 0.3, z: 0}
+  attackRaySize: {x: 0.5, y: 0.5}
   allChildren: []
   nearestAttackTarget: {fileID: 0}
   multipleAttackTargets: []

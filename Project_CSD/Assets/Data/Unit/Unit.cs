@@ -27,7 +27,7 @@ public class Unit : UnitBase
         // Unit Status
         health = units[index].Health;
         power = units[index].Power;
-        attackTime = units[index].AttackTime;
+        attackSpeed = units[index].AttackSpeed;
         moveSpeed = units[index].MoveSpeed;
     }
 }

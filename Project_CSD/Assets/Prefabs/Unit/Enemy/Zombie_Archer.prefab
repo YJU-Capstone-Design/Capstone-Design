@@ -732,8 +732,6 @@ MonoBehaviour:
   attackTime: 0
   scanner: {fileID: 0}
   unitData: {fileID: 11400000, guid: 3ac2ab28f0aad2543b8189c4786aaab3, type: 2}
-  attackRayUpPos: 0
-  attackRayDownPos: 0
   attackRayPos: {x: 0, y: 0.3, z: 0}
   attackRaySize: {x: 25, y: 6}
   allChildren: []

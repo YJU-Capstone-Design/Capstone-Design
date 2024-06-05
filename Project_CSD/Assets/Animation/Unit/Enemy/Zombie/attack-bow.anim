@@ -334,15 +334,15 @@ AnimationClip:
       - serializedVersion: 3
         time: 0.25
         value: {x: 0, y: 0, z: 65.523}
-        inSlope: {x: 0, y: 0, z: 0}
-        outSlope: {x: 0, y: 0, z: 0}
+        inSlope: {x: 0, y: 0, z: 18.672018}
+        outSlope: {x: 0, y: 0, z: 18.672018}
         tangentMode: 0
         weightedMode: 0
         inWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334}
         outWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334}
       - serializedVersion: 3
         time: 1
-        value: {x: 0, y: 0, z: 60}
+        value: {x: 0, y: 0, z: 115.005}
         inSlope: {x: 0, y: 0, z: 0}
         outSlope: {x: 0, y: 0, z: 0}
         tangentMode: 0
@@ -2605,15 +2605,15 @@ AnimationClip:
       - serializedVersion: 3
         time: 0.25
         value: 65.523
-        inSlope: 0
-        outSlope: 0
+        inSlope: 18.672018
+        outSlope: 18.672018
         tangentMode: 136
         weightedMode: 0
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 1
-        value: 60
+        value: 115.005
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -3867,7 +3867,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.z
-    path: Body/Head
+    path: Body/Back hand/Back item
     classID: 4
     script: {fileID: 0}
     flags: 16
@@ -3879,7 +3879,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.y
-    path: Body/Head
+    path: Body/Back hand/Back item
     classID: 4
     script: {fileID: 0}
     flags: 16
@@ -3891,7 +3891,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.x
-    path: Body/Head
+    path: Body/Back hand/Back item
     classID: 4
     script: {fileID: 0}
     flags: 16
@@ -3939,10 +3939,10 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.x
-    path: Body/Back hand/Back item
+    path: Body/Head
     classID: 4
     script: {fileID: 0}
-    flags: 0
+    flags: 16
   - serializedVersion: 2
     curve:
       serializedVersion: 2
@@ -3951,10 +3951,10 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.y
-    path: Body/Back hand/Back item
+    path: Body/Head
     classID: 4
     script: {fileID: 0}
-    flags: 0
+    flags: 16
   - serializedVersion: 2
     curve:
       serializedVersion: 2
@@ -3963,10 +3963,10 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.z
-    path: Body/Back hand/Back item
+    path: Body/Head
     classID: 4
     script: {fileID: 0}
-    flags: 0
+    flags: 16
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events: []

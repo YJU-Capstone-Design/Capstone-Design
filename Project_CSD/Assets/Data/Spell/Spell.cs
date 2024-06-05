@@ -29,7 +29,7 @@ public class Spell : SpellBase
         damage = spells[index].Damage;
         maxHpUp = spells[index].MaxHpUp;
         powerUp = spells[index].PowerUp;
-        attackTimeDown = spells[index].AttackTimeDown;
+        attackSpeedUp = spells[index].AttackSpeedUp;
         moveSpeedUp = spells[index].MoveSpeedUp;
     }
 }

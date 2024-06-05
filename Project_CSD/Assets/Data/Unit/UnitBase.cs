@@ -10,7 +10,7 @@ public class UnitBase : MonoBehaviour
     public float initialHealth;
     public float initialMoveSpeed;
     public float initialPower;
-    public float initialAttackTime;
+    public float initialAttackSpeed;
 
     [Header("# Unit Type")]
     public UnitTypes unitType;
@@ -26,8 +26,8 @@ public class UnitBase : MonoBehaviour
 
     public float health;
     public float power;
+    public float attackSpeed;
     public float moveSpeed;
-    public float attackTime;
 
     // 스프라이트 방향 설정 함수
     protected void SpriteDir(Vector3 firstVec, Vector3 secondVec)
