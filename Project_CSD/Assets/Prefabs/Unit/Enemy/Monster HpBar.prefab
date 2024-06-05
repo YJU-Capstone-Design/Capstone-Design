@@ -35,7 +35,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 40, y: 5}
+  m_SizeDelta: {x: 34, y: 3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8994378548318831826
 CanvasRenderer:
@@ -58,14 +58,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 1, b: 0.67429614, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 24e6891a9ba59644c85667014948e5fe, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 339404fe9500ef340807f5ad82ea9753, type: 3}
   m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -110,7 +110,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 40, y: 5}
+  m_SizeDelta: {x: 35, y: 4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6497887600723860845
 CanvasRenderer:
@@ -140,7 +140,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 182b124b3c2b99747bbcd3fd987461ff, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9069eebf61dddb843b6e30f4cec72ac3, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -161,7 +161,7 @@ GameObject:
   - component: {fileID: 3328758093903057381}
   - component: {fileID: 477842489647993713}
   m_Layer: 5
-  m_Name: Hp Bar
+  m_Name: Monster HpBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -179,8 +179,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 4100360986862867735}
   - {fileID: 2989441067281923611}
+  - {fileID: 4100360986862867735}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -201,3 +201,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   realHp: {fileID: 7441833053611779118}
+  owner: {fileID: 0}
+  parent: {fileID: 0}
+  nowHp: 0
+  maxHp: 0
+  hpBarPos: {x: 0, y: 0, z: 0}
+  hpBarDir: {x: 0, y: 0, z: 0}

@@ -37,9 +37,8 @@ public class UnitData : ScriptableObject
     public float MoveSpeed { get { return moveSpeed; } }
 
     [SerializeField] // À¯´Ö °ø°İ ÄğÅ¸ÀÓ
-    private float attackSpeed;
-    public float AttackSpeed { get { return attackSpeed; } }
-
+    private float attackTime;
+    public float AttackTime { get { return attackTime; } }
 
     //[Header("# Level State")]
 

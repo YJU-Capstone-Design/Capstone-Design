@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Burst.CompilerServices;
 using Unity.VisualScripting;
 //using UnityEditorInternal.Profiling.Memory.Experimental;
@@ -13,6 +14,8 @@ public class EnemyUnit : UnitBase
     public UnitData unitData;
     Vector3 moveVec; // 이동 방향
     LayerMask attackLayer;
+    [SerializeField] float attackRayUpPos; // 유닛이 위를 향할 때 사용되는 y 포지션 값
+    [SerializeField] float attackRayDownPos; // 유닛이 아래를 향할 때 사용되는 y 포지션 값 -> 기본값 (Enemy 는 아래를 향할 때 중심과 크게 차이가 안나게 설정)
     [SerializeField] Vector3 attackRayPos; // attackRay 위치 = 현재 위치 + attackRayPos
     [SerializeField] Vector2 attackRaySize;
     GameObject hpBar; // 체력바
@@ -21,8 +24,8 @@ public class EnemyUnit : UnitBase
     [Header("# Unit Activity")]
     Collider2D col;
     public RaycastHit2D[] attackTargets; // 스캔 결과 배열
-    [SerializeField] Transform nearestAttackTarget; // 가장 가까운 목표
-    [SerializeField] Transform[] multipleAttackTargets; // 다수 공격 목표
+    [SerializeField] public Transform nearestAttackTarget; // 가장 가까운 목표
+    [SerializeField] public Transform[] multipleAttackTargets; // 다수 공격 목표
     MonsterCharacterAnimation anim;
     Coroutine smash; // 코루틴 값을 저장하기 위한 변수
     Coroutine arrow;
@@ -50,7 +53,7 @@ public class EnemyUnit : UnitBase
         initialHealth = unitData.Health;
         initialMoveSpeed = unitData.MoveSpeed;
         initialPower = unitData.Power;
-        initialAttackSpeed = unitData.AttackSpeed;
+        initialAttackTime = unitData.AttackTime;
     }
 
     void Update()
@@ -71,6 +74,8 @@ public class EnemyUnit : UnitBase
             else
             {
                 AttackRay();
+
+                if(transform.position.x <= 27) { col.enabled = true; } else {  col.enabled = false; } // 아군 유닛 최대 전진 범위 때문에 설정
             }
         }
 
@@ -102,17 +107,17 @@ public class EnemyUnit : UnitBase
         health = unitData.Health;
         moveSpeed = unitData.MoveSpeed;
         power = unitData.Power;
-        attackSpeed = unitData.AttackSpeed;
+        attackTime = unitData.AttackTime;
 
         // 설정값
-        col.enabled = true;
+        //col.enabled = true;
         unitState = UnitState.Move;
         moveVec = Vector3.left;
         transform.GetChild(0).rotation = Quaternion.identity; // 애니메이션 각도 초기화를 위한 로직
         scanner.unitType = unitID / 10000;
 
         // 체력바
-        hpBar = PoolManager.Instance.Get(1, 3);
+        hpBar = PoolManager.Instance.Get(1, 4);
         HpBar hpBarLogic = hpBar.GetComponent<HpBar>();
         hpBarLogic.owner = this.gameObject.transform;
         hpBarLogic.nowHp = health;
@@ -144,13 +149,24 @@ public class EnemyUnit : UnitBase
         SpriteDir(Vector3.zero, moveVec);
 
         // 애니메이션
-        anim.Walk();
+        if(gameObject.name.Contains("Bat"))
+        {
+            anim.Idle();
+        }
+        else if(gameObject.name.Contains("Beholder") || gameObject.name.Contains("Crow"))
+        {
+            anim.Fly();
+        }
+        else
+        {
+            anim.Walk();
+        }
     }
 
     // 실제 공격 범위 Ray 함수
     void AttackRay()
     {
-        attackTargets = Physics2D.BoxCastAll(transform.position + new Vector3(attackRayPos.x * Mathf.Sign(moveVec.x), attackRayPos.y * (moveVec.y > 0 ? 2 : 1), attackRayPos.z), attackRaySize, 0, Vector2.zero, 0, attackLayer);
+        attackTargets = Physics2D.BoxCastAll(transform.position + new Vector3(attackRayPos.x * Mathf.Sign(moveVec.x), (moveVec.y > 0 ? attackRayUpPos : attackRayDownPos), attackRayPos.z), attackRaySize, 0, Vector2.zero, 0, attackLayer);
         nearestAttackTarget = scanner.GetNearestAttack(attackTargets); // 단일 공격
         multipleAttackTargets = scanner.GetAttackTargets(attackTargets, 5); // 다수 공격
 
@@ -158,7 +174,7 @@ public class EnemyUnit : UnitBase
         if (nearestAttackTarget != null)
         {
             // 적(유닛, 벽)이 인식되면 attackTime 증가 및 공격 함수 실행
-            attackSpeed += Time.deltaTime;
+            attackTime += Time.deltaTime;
 
             if (!nearestAttackTarget.CompareTag("Wall"))
             {
@@ -182,9 +198,9 @@ public class EnemyUnit : UnitBase
             }
 
             // 공격
-            if (attackSpeed >= unitData.AttackSpeed)
+            if (attackTime >= unitData.AttackTime)
             {
-                attackSpeed = 0;
+                attackTime = 0;
 
                 // 유닛 별로 각각의 공격 함수 실행
                 if (gameObject.CompareTag("Archer"))
@@ -206,7 +222,7 @@ public class EnemyUnit : UnitBase
             Scanner();
 
             // 다음에 attackRay 에 적 인식시, 바로 공격 가능하게 attackTime 초기화
-            attackSpeed = unitData.AttackSpeed - 0.2f;
+            attackTime = unitData.AttackTime - 0.2f;
         }
 
     }
@@ -214,7 +230,7 @@ public class EnemyUnit : UnitBase
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.blue;
-        Gizmos.DrawWireCube(transform.position + new Vector3(attackRayPos.x * Mathf.Sign(moveVec.x), attackRayPos.y * (moveVec.y > 0 ? 2 : 1), attackRayPos.z), attackRaySize);
+        Gizmos.DrawWireCube(transform.position + new Vector3(attackRayPos.x * Mathf.Sign(moveVec.x), (moveVec.y > 0 ? attackRayUpPos : attackRayDownPos), attackRayPos.z), attackRaySize);
     }
 
     // 일반 근접 공격 함수
@@ -228,7 +244,7 @@ public class EnemyUnit : UnitBase
         // 유닛 종류 별 애니메이션
         switch (gameObject.name)
         {
-            case string name when name.Contains("Zombie") || name.Contains("Cyclope") || name.Contains("Orc"):
+            case string name when name.Contains("Zombie") || name.Contains("Cyclope") || name.Contains("Orc") || name.Contains("Goblin") || name.Contains("Ghost") || name.Contains("Demon"):
                 anim.Smash();
                 break;
             case string name when name.Contains("Skeleton"):
@@ -239,19 +255,25 @@ public class EnemyUnit : UnitBase
                 break;
         }
 
-        if (nearestAttackTarget.gameObject.CompareTag("Wall"))
+        // 특정 유닛들만 첫번째 공격이 도중에 끊겨서 일단 문제를 찾기 전까지 분류해서 시간 나눔.
+        string[] namesToCheck = { "Cyclope", "Orc", "Rat", "Goblin", "Demon", "Worm"};
+
+        if (namesToCheck.Any(name => gameObject.name.Contains(name)))
         {
-            yield return new WaitForSeconds(anim.GetTime());
-
-            BattleManager.Instance.HpDamage(power);
-
+            yield return new WaitForSeconds(anim.GetTime() + 0.3f);
         }
         else
         {
-            // Cyclope 랑 Orc 만 첫번째 공격이 도중에 끊겨서 일단 문제를 찾기 전까지 분류해서 시간 나눔.
-            if (gameObject.name.Contains("Cyclope") || gameObject.name.Contains("Orc")) { yield return new WaitForSeconds(anim.GetTime() + 0.3f); }
-            else { yield return new WaitForSeconds(anim.GetTime()); }
+            yield return new WaitForSeconds(anim.GetTime());
+        }
 
+
+        if (nearestAttackTarget.gameObject.CompareTag("Wall"))
+        {
+            BattleManager.Instance.HpDamage(power);
+        }
+        else
+        {
             if ((unitID % 10000) / 1000 == 2) // 탱커 -> 다수 공격
             {
                 foreach(Transform enemy in multipleAttackTargets)
@@ -320,16 +342,22 @@ public class EnemyUnit : UnitBase
         unitState = UnitState.Die;
         moveVec = Vector2.zero;
         col.enabled = false;
+        hpBar.SetActive(false);
 
-        PlayerUnit enemyLogic = nearestAttackTarget.GetComponent<PlayerUnit>();
-        enemyLogic.unitState = UnitState.Move;
+        if (nearestAttackTarget != null)
+        {
+            PlayerUnit enemyLogic = nearestAttackTarget.GetComponent<PlayerUnit>();
+            enemyLogic.unitState = UnitState.Move;
+
+            nearestAttackTarget = null;
+        }
 
         // 작동중인 다른 Coroutine 함수 중지
         if (smash != null) { StopCoroutine(smash); smash = null; }
         if (arrow != null) { StopCoroutine(arrow); arrow = null; }
 
         moveSpeed = 0;
-        attackSpeed = 0;
+        attackTime = 0;
 
         BattleData.Instance.enemys.Remove(gameObject);
 
@@ -340,7 +368,6 @@ public class EnemyUnit : UnitBase
         yield return new WaitForSeconds(anim.GetTime());
 
         StateSetting();
-        hpBar.SetActive(false);
         gameObject.SetActive(false);
     }
 
