@@ -11,6 +11,8 @@ public class UnitManager : MonoBehaviour
     Unit unit;
     private PoolManager pool;
     public Button unitSpawnRangeButton;
+    public UiManager uiMgr;
+
     private void Awake()
     {
         unit = GetComponent<Unit>();
@@ -20,6 +22,7 @@ public class UnitManager : MonoBehaviour
 
         unitSpawnRangeButton = BattleManager.Instance.unitSpawnRange.GetComponentInChildren<Button>();
     }
+
     public void UsingCard()
     {
         GameObject spawnArea = BattleManager.Instance.unitSpawnRange.transform.GetChild(1).gameObject;
@@ -39,8 +42,8 @@ public class UnitManager : MonoBehaviour
         BattleManager.Instance.unitSpawnRange.SetActive(true);
         unitSpawnRangeButton.onClick.RemoveAllListeners();
         Debug.Log(unit.unitID);
-/*        unitSpawnRangeButton.onClick.AddListener(() => UnitSpawn(unit.unitID));*/
-        unitSpawnRangeButton.onClick.AddListener(() => Buy(unit.cost));
+        unitSpawnRangeButton.onClick.AddListener(() => UnitSpawn(unit.unitID));
+        unitSpawnRangeButton.onClick.AddListener(Buy);
     }
 
     public void UnitSpawn(int unitID)
@@ -69,18 +72,18 @@ public class UnitManager : MonoBehaviour
         BattleManager.Instance.CardShuffle();
     }
 
-    public void Buy(int unitCost)
+    public void Buy()
     {
         // uiMgr.cost와 unitData.Cost를 비교하여 구매 가능한지 확인
-        if (UiManager.Instance != null && UiManager.Instance.cost >= unitCost)
+        if (uiMgr.cost >= unitData.Cost)
         {
             // 코스트를 차감하고 유닛을 스폰
-            UiManager.Instance.cost -= unitCost;
-            UnitSpawn(unit.unitID);
+            uiMgr.cost -= unitData.Cost;
+            UnitSpawn(unitData.UnitID);
         }
         else
         {
-            Debug.Log("돈이 없다! 게이게이야! ");
+            Debug.Log("Not enough cost to spawn the unit.");
         }
     }
 }

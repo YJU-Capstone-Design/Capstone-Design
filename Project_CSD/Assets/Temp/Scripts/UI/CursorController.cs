@@ -64,28 +64,25 @@ public class CursorController : MonoBehaviour
         {
             if (Camera.main.transform.position.x >= 0)
             {
-                // (현재 마우스 위치 - 최초 위치)의 음의 방향으로 카메라 이동
-                Vector2 position = Camera.main.ScreenToViewportPoint(-new Vector3(tf_cursor.localPosition.x - firstClickPointX, 0, 0));
-                Vector2 move = position * (Time.deltaTime * dragSpeed);
+            // (현재 마우스 위치 - 최초 위치)의 음의 방향으로 카메라 이동
+            Vector2 position = Camera.main.ScreenToViewportPoint(-new Vector3(tf_cursor.localPosition.x - firstClickPointX, 0, 0));
+            Vector2 move = position * (Time.deltaTime * dragSpeed);
 
-                Camera.main.transform.Translate(move);
+            Camera.main.transform.Translate(move);
 
-                float dx = mapSize.x;
-                float clampX = Mathf.Clamp(Camera.main.transform.position.x, -dx + center.x, dx + center.x);
+            float dx = mapSize.x;
+            float clampX = Mathf.Clamp(Camera.main.transform.position.x, -dx + center.x, dx + center.x);
 
-                //float dy = mapSize.y - camHeight;
-                //float clampY = Mathf.Clamp(Camera.main.transform.position.y, -dy + center.y, dy + center.y);
+            //float dy = mapSize.y - camHeight;
+            //float clampY = Mathf.Clamp(Camera.main.transform.position.y, -dy + center.y, dy + center.y);
 
-                Camera.main.transform.position = new Vector3(clampX, 0, Camera.main.transform.position.z);
+            Camera.main.transform.position = new Vector3(clampX, 0, Camera.main.transform.position.z);
             }
-            else if (Camera.main.transform.position.x < 0)
+            else if(Camera.main.transform.position.x < 0)
             {
                 Camera.main.transform.position = new Vector3(0, 0, -10);
-            } 
-            if (Camera.main.transform.position.x > 20)
-            {
-                Camera.main.transform.position = new Vector3(20, 0, -10);
             }
+
         }
     }
 
