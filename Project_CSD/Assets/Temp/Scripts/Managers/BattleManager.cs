@@ -122,19 +122,20 @@ public class BattleManager :Singleton<BattleManager>
         }
         
         if(spawnIndex >= 1)
-        if(spawnIndex >= 1)
         {
             waveUI.SetActive(false);
         }
 
         // 이겼거나 졌을 경우 결과창 띄우기
-        if (battleState == BattleState.Win || battleState == BattleState.Lose)
+        if (battleState == BattleState.Win)
         {
             // 결과 PopUp 창
-
-            // 다시 Lobby 로 이동
-
-            // 패배나 도중 포기인 경우 Wave 저장 필요 -> DontDestroy 오브젝트에 넣어야 할 듯
+            EndGame("Win");
+        }
+        else if(battleState == BattleState.Lose)
+        {
+            // 결과 PopUp 창
+            EndGame("Lose");
         }
 
 
@@ -204,6 +205,34 @@ public class BattleManager :Singleton<BattleManager>
         {
             waveAnim.SetBool("next", true);
         }
+    }
+
+    public void EndGame(string whether)
+    {
+        resultUI.SetActive(true);
+
+        int waveCount = wave + 1;
+
+        // 숫자 이미지 변경
+        int ten = waveCount / 10 > 0 ? waveCount / 10 : 0;
+        int one = waveCount % 10;
+
+        resultWaveImg[0].sprite = waveNumImg[one];
+        resultWaveImg[1].sprite = waveNumImg[ten];
+
+        if (whether == "Win")
+        {
+            resultPanel.sprite = resultImg[0];
+            resultMenuBar.sprite = resultImg[2];
+        }
+        else if(whether == "Lose")
+        {
+            resultPanel.sprite = resultImg[1];
+            resultMenuBar.sprite = resultImg[3];
+
+            // Wave 저장 필요 -> DontDestroy 오브젝트에 넣어야 할 듯
+        }
+
     }
 
     // 유닛 스폰 버튼
