@@ -20,5 +20,5 @@ MonoBehaviour:
   damage: 0
   maxHpUp: 0
   powerUp: 0
-  attackSpeedUp: 0
   moveSpeedUp: -100
+  attackTimeDown: -1000
