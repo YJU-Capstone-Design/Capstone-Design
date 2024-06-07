@@ -19,4 +19,4 @@ MonoBehaviour:
   health: 2000
   power: 750
   moveSpeed: 0.75
-  attackSpeed: 7
+  attackTime: 7
