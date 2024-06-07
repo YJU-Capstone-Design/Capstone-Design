@@ -28,13 +28,13 @@ public class UnitManager : MonoBehaviour
         // 메인 카메라의 위치에 따라 스폰 가능 영역 범위 변경
         if (BattleManager.Instance.mainCamera.position.x >= 3)
         {
-            spawnAreaAnchors.anchorMin = new Vector2(0, 0.1f);
-            spawnAreaAnchors.anchorMax = new Vector2(1, 0.5f);
+            spawnAreaAnchors.anchorMin = new Vector2(0, 0.43f);
+            spawnAreaAnchors.anchorMax = new Vector2(1, 0.66f);
         }
         else
         {
-            spawnAreaAnchors.anchorMin = new Vector2(0.15f, 0.1f);
-            spawnAreaAnchors.anchorMax = new Vector2(1, 0.5f);
+            spawnAreaAnchors.anchorMin = new Vector2(0.15f, 0.43f);
+            spawnAreaAnchors.anchorMax = new Vector2(1, 0.66f);
         }
         BattleManager.Instance.unitSpawnRange.SetActive(true);
         unitSpawnRangeButton.onClick.RemoveAllListeners();
