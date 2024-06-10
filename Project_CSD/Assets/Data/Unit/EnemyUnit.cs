@@ -44,7 +44,7 @@ public class EnemyUnit : UnitBase
     void OnEnable()
     {
         CardManager.Instance.enemys.Add(gameObject);
-        StateSetting();
+        StateSetting(BattleManager.Instance.wave);
     }
 
     private void Start()
@@ -100,17 +100,16 @@ public class EnemyUnit : UnitBase
     }
 
     // 기본 설정 초기화 함수
-    void StateSetting()
+    void StateSetting(int wave)
     {
         // 수치값
         unitID = unitData.UnitID;
-        health = unitData.Health;
+        health = unitData.Health + (initialHealth / 10) * wave;
         speed = unitData.Speed;
-        power = unitData.Power;
+        power = unitData.Power + (initialPower / 10) * wave;
         attackTime = unitData.AttackTime;
 
         // 설정값
-        //col.enabled = true;
         unitState = UnitState.Move;
         moveVec = Vector3.left;
         transform.GetChild(0).rotation = Quaternion.identity; // 애니메이션 각도 초기화를 위한 로직
@@ -367,7 +366,7 @@ public class EnemyUnit : UnitBase
 
         yield return new WaitForSeconds(anim.GetTime());
 
-        StateSetting();
+        StateSetting(0);
         gameObject.SetActive(false);
     }
 
