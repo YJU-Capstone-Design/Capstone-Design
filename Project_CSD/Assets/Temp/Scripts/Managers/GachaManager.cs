@@ -25,9 +25,9 @@ public class GachaManager : MonoBehaviour
 
 
     [Header("Gacha_Item_Info")]//가챠 아이템 정보
-    [SerializeField] private UnitData[] unit_DB;
-
-
+    
+    [SerializeField] private GameObject gacha_Item;
+    [SerializeField] private Transform gacha_Tr;
     public void Awake()
     {
         if (cashMgr == null)
@@ -44,12 +44,17 @@ public class GachaManager : MonoBehaviour
     {
         if(cashManagerScript.player_Cash >= 1 && number == 1)
         {
+
+            Item_Destroy();
             cashManagerScript.player_Cash = cashManagerScript.player_Cash - 1;
             Gacha_Rarity(number);
             gacha_Result.SetActive(true);
+
+
         }
         else if (cashManagerScript.player_Cash >= 10 && number == 10)
         {
+            Item_Destroy();
             cashManagerScript.player_Cash = cashManagerScript.player_Cash - 10;
             Gacha_Rarity(number);
             gacha_Result.SetActive(true);
@@ -66,23 +71,39 @@ public class GachaManager : MonoBehaviour
 
         for (int i = 1; i <= number; i++)
         {
-            System.Random random = new System.Random();
+            GameObject temp = Instantiate(gacha_Item, gacha_Tr.position, Quaternion.identity);
+            temp.transform.SetParent(gacha_Tr.transform);
+            /*System.Random random = new System.Random();
             int randomValue = random.Next(1, 100);
 
             if (randomValue <= 3) // Epic 3%
             {
-                Gacha_Unit(unitList_Epic, "Epic");
+                //Gacha_Unit(unitList_Epic, "Epic");
+               
+                    GameObject temp = Instantiate(gacha_Item, gacha_Tr.position, Quaternion.identity);
+                    temp.transform.SetParent(this.transform);
+                
+                   
+                
             }
             else if (randomValue <= 24) // Rare 21%
             {
-                Gacha_Unit(unitList_Rare, "Rare");
+                GameObject temp = Instantiate(gacha_Item, gacha_Tr.position, Quaternion.identity);
+                temp.transform.SetParent(this.transform);
+
+           
+                //Gacha_Unit(unitList_Rare, "Rare");
             }
             else // Common 76%
             {
-                Gacha_Unit(unitList_Common, "Common");
-            }
+                GameObject temp = Instantiate(gacha_Item, gacha_Tr.position, Quaternion.identity);
+                temp.transform.SetParent(gacha_Tr.transform);
+
+               
+                //Gacha_Unit(unitList_Common, "Common");
+            }*/
         }
-        Gacha_Result(result.Count);
+       // Gacha_Result(result.Count);
     }
 
     void Gacha_Unit(int[] unitList, string rarity)
@@ -116,5 +137,14 @@ public class GachaManager : MonoBehaviour
     public void result_Off()
     {
         gacha_Result.SetActive(false);
+    }
+
+    public void Item_Destroy()
+    {
+
+        foreach (Transform child in gacha_Tr)
+        {
+            Destroy(child.gameObject);
+        }
     }
 }
