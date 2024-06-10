@@ -15,8 +15,8 @@ public class UiManager : Singleton<UiManager>
     [Header("Cost")]
     public int cost = 0;
     public int supply;
-    private float costTime = 0f;
-    private float timeInterver = 5f;
+    public float costTime = 0f;
+    public float timeInterver = 1f;
     [SerializeField] private TextMeshProUGUI costText; //보유한 코스트
     [SerializeField] private TextMeshProUGUI per_supplyText; //초당 회복률
     [SerializeField] private Slider supply_Gage;
@@ -37,7 +37,7 @@ public class UiManager : Singleton<UiManager>
     {
         // 슬라이더의 초기 설정
         supply_Gage.minValue = 0;
-        supply_Gage.maxValue = timeInterver; // 최대값을 10으로 설정
+        supply_Gage.maxValue = timeInterver; // 최대값을 timeInterver으로 설정
         supply_Gage.value = 0; // 초기 값을 0으로 설정
 
         StartCoroutine(FillSlider());
