@@ -40,6 +40,14 @@ public class UnitData : ScriptableObject
     private float attackTime;
     public float AttackTime { get { return attackTime; } }
 
+    [SerializeField] // 유닛 이미지
+    private Sprite unit_Img;
+    public Sprite Unit_Img { get { return unit_Img; } }
+
+
+    [SerializeField] // 유닛 이미지
+    private Sprite unit_CardImg;
+    public Sprite Unit_CardImg { get { return unit_CardImg; } }
     //[Header("# Level State")]
 
     //[SerializeField] // 레벨에 따른 체력 증가량
