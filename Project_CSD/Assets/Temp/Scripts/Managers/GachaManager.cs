@@ -23,6 +23,11 @@ public class GachaManager : MonoBehaviour
     // 캐시 매니저 스크립트 참조 변수
     private CashManager cashManagerScript;
 
+
+    [Header("Gacha_Item_Info")]//가챠 아이템 정보
+    [SerializeField] private UnitData[] unit_DB;
+
+
     public void Awake()
     {
         if (cashMgr == null)
