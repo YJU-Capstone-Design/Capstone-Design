@@ -6,6 +6,9 @@ using UnityEngine.UI;
 using TMPro; 
 public class Filter : MonoBehaviour
 {
+    
+
+
     [Header("image")]
     [SerializeField] private GameObject[] bg;
     [SerializeField] private GameObject[] title;
@@ -16,12 +19,27 @@ public class Filter : MonoBehaviour
     [SerializeField] private GameObject cardCurrent;
     //미보유 카드 필터
     [SerializeField] private Transform[] unFilter;
+    //보유카드 필터 해제
+    [SerializeField] private Transform[] holdfilter;
+
+    [Header("GachaResult")]//가챠 결과 연동
+    [SerializeField] Transform unitTr;
+    [SerializeField] Transform unitTr_Disable;
+    [SerializeField] List<Collection_Data> haveItems;
+    [SerializeField] List<Collection_Data> noneItems;
+    public HoldingList holdingList;
 
     private void Awake()
     {
+     
+    }
+    private void Start()
+    {
+      
         Clear();
         filterTxt.text = "캐릭터 카드";
         unFilterCard();
+        
     }
     public void Charclick()
     {
@@ -88,6 +106,61 @@ public class Filter : MonoBehaviour
 
 
 
+    public void OnEnable()
+    {
+
+        UpdateCollection();
+
+    }
+
+    private Collection_Data getNewCollectionItem(ref List<Collection_Data> baseList)
+    {
+        for (int i = 0; i < baseList.Count; i++)
+        {
+            if (!baseList[i].gameObject.activeSelf)
+                return baseList[i];
+        }
+
+        Collection_Data temp = Instantiate(baseList[0], baseList[0].transform.position, Quaternion.identity);
+        temp.transform.SetParent(baseList[0].transform.parent);
+        baseList.Add(temp);
+        return temp;
+    }
+    public void UpdateCollection()
+    {
+        // 세팅 전 모든 표시 UI 아이템 off
+        for (int i = 0; i < haveItems.Count; i++)
+        {
+            haveItems[i].gameObject.SetActive(false);
+        }
+
+        for (int i = 0; i < noneItems.Count; i++)
+        {
+            noneItems[i].gameObject.SetActive(false);
+        }
+
+
+        // Todo : 보유한 카드 표시
+        for (int i = 0; i < HoldingList.single.holding_Unit.Count; i++)
+        {
+            getNewCollectionItem(ref haveItems).Init(HoldingList.single.holding_Unit[i]);
+        }
+        // todo : 미 보유한 카드 표시
+        for (int i = 0; i < GachaManager.single.listGachaTemplete.Count; i++)
+        {
+            UnitData have = HoldingList.single.holding_Unit.Find(val => val.UnitID == GachaManager.single.listGachaTemplete[i].UnitID);
+            if (have != null)
+                continue;
+            getNewCollectionItem(ref noneItems).Init(GachaManager.single.listGachaTemplete[i]);
+        }
+
+        LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)unitTr.parent);
+
+        Debug.Log("call collection");
+
+        //HoldFilterCard();
+        
+    }
 
 
 
@@ -98,9 +171,27 @@ public class Filter : MonoBehaviour
 
 
 
+    void HoldFilterCard()
+    {
+        GameObject goImage;
+        Color color;
+        for (int i = 0; i < holdfilter[0].childCount; i++)
+        {
+            goImage = holdfilter[0].GetChild(i).gameObject.transform.GetChild(2).gameObject;
+            color = goImage.GetComponent<Image>().color;
+            color.a = 0f;
+            goImage.GetComponent<Image>().color = color;
+        }
 
+        for (int i = 0; i < holdfilter[1].childCount; i++)
+        {
+            goImage = holdfilter[1].GetChild(i).gameObject.transform.GetChild(2).gameObject;
+            color = goImage.GetComponent<Image>().color;
+            color.a = 0f;
+            goImage.GetComponent<Image>().color = color;
+        }
 
-
+    }
 
 
 

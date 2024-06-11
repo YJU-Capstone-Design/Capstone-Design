@@ -8,7 +8,8 @@ using JetBrains.Annotations;
 
 public class GachaManager : MonoBehaviour
 {
-    private CashManager cashManager;
+    public static GachaManager single;
+    public GameObject cashMgr;
     public TMP_Text result_Text;
     public GameObject gacha_Result;
 
@@ -21,37 +22,45 @@ public class GachaManager : MonoBehaviour
 
     [SerializeField] private List<int> result = new List<int>();
     // 캐시 매니저 스크립트 참조 변수
-    
-
+    private CashManager cashManagerScript;
+    [SerializeField] HoldingList holdingScript;
 
     [Header("Gacha_Item_Info")]//가챠 아이템 정보
+    
     [SerializeField] private GameObject gacha_Item;
     [SerializeField] private Transform gacha_Tr;
 
+    [Header("가챠 템플릿")]
+    public List<UnitData> listGachaTemplete;
     public void Awake()
     {
-        if (cashManager == null)
+        single = this;
+        if (cashMgr == null)
         {
-            GameObject go = GameObject.Find("CashManager");
-            cashManager = go.GetComponent<CashManager>();
+            cashMgr = GameObject.Find("CashManager");
+        }
+        // CashManager 스크립트를 가져옵니다.
+        if (cashMgr != null)
+        {
+            cashManagerScript = cashMgr.GetComponent<CashManager>();
         }
     }
     public void Gacha_Btn(int number)
     {
-        if(cashManager.player_Cash >= 1 && number == 1)
+        if(cashManagerScript.player_Cash >= 1 && number == 1)
         {
 
             Item_Destroy();
-            cashManager.player_Cash = cashManager.player_Cash - 1;
+            cashManagerScript.player_Cash = cashManagerScript.player_Cash - 1;
             Gacha_Rarity(number);
             gacha_Result.SetActive(true);
 
 
         }
-        else if (cashManager.player_Cash >= 10 && number == 10)
+        else if (cashManagerScript.player_Cash >= 10 && number == 10)
         {
             Item_Destroy();
-            cashManager.player_Cash = cashManager.player_Cash - 10;
+            cashManagerScript.player_Cash = cashManagerScript.player_Cash - 10;
             Gacha_Rarity(number);
             gacha_Result.SetActive(true);
         }
@@ -67,8 +76,15 @@ public class GachaManager : MonoBehaviour
 
         for (int i = 1; i <= number; i++)
         {
+            UnitData dataRandom = listGachaTemplete[Random.Range(0, listGachaTemplete.Count)];
+            holdingScript.Update_Hoding(dataRandom);
+
             GameObject temp = Instantiate(gacha_Item, gacha_Tr.position, Quaternion.identity);
             temp.transform.SetParent(gacha_Tr.transform);
+
+            Gacha item = temp.GetComponent<Gacha>();
+            item.Init(dataRandom);
+
             /*System.Random random = new System.Random();
             int randomValue = random.Next(1, 100);
 
@@ -137,6 +153,7 @@ public class GachaManager : MonoBehaviour
 
     public void Item_Destroy()
     {
+
         foreach (Transform child in gacha_Tr)
         {
             Destroy(child.gameObject);
