@@ -74,12 +74,6 @@ public class BattleManager :Singleton<BattleManager>
         ReadSpawnFile(wave); // 적 유닛 스폰 파일 가져오기
 
         unitType = UnitType.Bread; // 테스트(제작)용
-
-        // 결과창 애니메이션 초기화
-        foreach (Animator anim in resultObjsAnim)
-        {
-            anim.SetBool("end", false);
-        }
     }
 
     void Update()
@@ -139,7 +133,7 @@ public class BattleManager :Singleton<BattleManager>
             // 결과 PopUp 창
             EndGame("Win");
         }
-        else if(battleState == BattleState.Lose)
+        else if (battleState == BattleState.Lose)
         {
             // 결과 PopUp 창
             EndGame("Lose");
@@ -191,6 +185,15 @@ public class BattleManager :Singleton<BattleManager>
             }
             unitSpawnRange.SetActive(true);
         }
+
+        if(Input.GetKeyDown("7"))
+        {
+            resultUI.SetActive(true);
+
+            // 애니메이션
+            resultObjsAnim[0].SetBool("endGame", true);
+            Debug.Log("aa");
+        }
     }
 
     void Wave()
@@ -231,21 +234,32 @@ public class BattleManager :Singleton<BattleManager>
         {
             resultPanel.sprite = resultImg[0];
             resultMenuBar.sprite = resultImg[2];
+
+            Time.timeScale = 1;
+
+            // 애니메이션
+            StartCoroutine(ResultAnimation(2));
         }
         else if(whether == "Lose")
         {
             resultPanel.sprite = resultImg[1];
             resultMenuBar.sprite = resultImg[3];
 
-            // Wave 저장 필요 -> DontDestroy 오브젝트에 넣어야 할 듯
+            Time.timeScale = 1;
+            
+            // 애니메이션
+            StartCoroutine(ResultAnimation(0));
         }
+    }
 
-        // 애니메이션
-        foreach(Animator anim in resultObjsAnim)
+    IEnumerator ResultAnimation(int second)
+    {
+        yield return new WaitForSeconds(second);
+
+        foreach (Animator resultAnim in resultObjsAnim)
         {
-            anim.SetBool("end", true);
+            resultAnim.SetBool("endGame", true);
         }
-
     }
 
     // 유닛 스폰 버튼
@@ -341,6 +355,7 @@ public class BattleManager :Singleton<BattleManager>
             healthBar.SetActive(false);
             battle.SetActive(false);
             gameEnd.SetActive(true);
+
             Time.timeScale = 0f;
         }
     }
