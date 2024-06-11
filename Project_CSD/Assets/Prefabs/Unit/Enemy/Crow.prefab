@@ -213,12 +213,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5699962473793132153}
-  - component: {fileID: 6504950899534842199}
-  - component: {fileID: 3342861443065796811}
-  - component: {fileID: 572676999602388017}
-  m_Layer: 0
+  - component: {fileID: 452300239665628488}
+  - component: {fileID: 3245879349181209302}
+  - component: {fileID: 2804061646701819110}
+  m_Layer: 7
   m_Name: Crow
-  m_TagString: Untagged
+  m_TagString: EnemyUnit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -231,36 +231,60 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4972411837538887114}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
-  - {fileID: 9066554723843693280}
+  - {fileID: 6657528333302388624}
   m_Father: {fileID: 701549891912459202}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &6504950899534842199
-Animator:
-  serializedVersion: 5
+--- !u!61 &452300239665628488
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4972411837538887114}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: dc3a46a2a20b54e84a3c57713e8d4958, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
---- !u!114 &3342861443065796811
+  m_Enabled: 0
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0.25}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.6, y: 0.4}
+  m_EdgeRadius: 0
+--- !u!114 &3245879349181209302
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -269,12 +293,33 @@ MonoBehaviour:
   m_GameObject: {fileID: 4972411837538887114}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c29cff538c195c249b69c6f2236de67b, type: 3}
+  m_Script: {fileID: 11500000, guid: b4e1b2babc551144c832dbe4acd56a2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Library: []
-  m_SpriteLibraryAsset: {fileID: 11400000, guid: ef1172e2c582b46d180525fc7aed1c28, type: 2}
---- !u!114 &572676999602388017
+  initialHealth: 0
+  initialMoveSpeed: 0
+  initialPower: 0
+  initialAttackTime: 0
+  unitType: 0
+  unitState: 0
+  unitID: 0
+  unitName: 
+  cost: 0
+  health: 0
+  power: 0
+  moveSpeed: 0
+  attackTime: 0
+  unit_CardImg: {fileID: 0}
+  scanner: {fileID: 0}
+  unitData: {fileID: 11400000, guid: 45a5158509e533044b9fe098dce8e6e5, type: 2}
+  attackRayUpPos: 0.35
+  attackRayDownPos: 0.12
+  attackRayPos: {x: 0.35, y: 0, z: 0}
+  attackRaySize: {x: 0.6, y: 0.3}
+  allChildren: []
+  nearestAttackTarget: {fileID: 0}
+  multipleAttackTargets: []
+--- !u!114 &2804061646701819110
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -283,9 +328,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 4972411837538887114}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 41b5287ae992e4274adbd3dd4719f6b1, type: 3}
+  m_Script: {fileID: 11500000, guid: 52279921ff6dbe14f88026711e89ae42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  scannerPos: {x: -5, y: 0, z: 0}
+  scanRange: {x: 30, y: 6}
+  targetLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  nearestTarget: {fileID: 0}
+  unitType: 0
 --- !u!1 &5199894106295011859
 GameObject:
   m_ObjectHideFlags: 0
@@ -497,9 +549,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 701549891912459202}
-  - component: {fileID: 3744934954184158174}
-  - component: {fileID: -4595277969727103074}
-  - component: {fileID: -7388222620536402065}
   m_Layer: 7
   m_Name: Crow
   m_TagString: EnemyUnit
@@ -517,107 +566,12 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 5699962473793132153}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &3744934954184158174
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6507571715418089891}
-  m_Enabled: 0
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.25}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 0.3, y: 0.1}
-  m_EdgeRadius: 0.2
---- !u!114 &-4595277969727103074
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6507571715418089891}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b4e1b2babc551144c832dbe4acd56a2c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  initialHealth: 0
-  initialSpeed: 0
-  initialPower: 0
-  initialAttackTime: 0
-  unitState: 0
-  unitID: 0
-  health: 0
-  speed: 0
-  power: 0
-  attackTime: 0
-  scanner: {fileID: 0}
-  unitData: {fileID: 11400000, guid: 45a5158509e533044b9fe098dce8e6e5, type: 2}
-  attackRayUpPos: 0.35
-  attackRayDownPos: 0.12
-  attackRayPos: {x: 0.6, y: 0, z: 0}
-  attackRaySize: {x: 1, y: 0.3}
-  allChildren: []
-  nearestAttackTarget: {fileID: 0}
-  multipleAttackTargets: []
---- !u!114 &-7388222620536402065
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6507571715418089891}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 52279921ff6dbe14f88026711e89ae42, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  scannerPos: {x: -5, y: 0, z: 0}
-  scanRange: {x: 30, y: 6}
-  targetLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  nearestTarget: {fileID: 0}
-  unitType: 0
 --- !u!1 &6787996977699725756
 GameObject:
   m_ObjectHideFlags: 0
@@ -921,6 +875,88 @@ MonoBehaviour:
   m_labelHash: 1.2159983e-27
   m_SpriteKey: 0
   m_SpriteHash: 368722548
+--- !u!1 &8898603464100227943
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6657528333302388624}
+  - component: {fileID: 8531826668780565662}
+  - component: {fileID: 3139331242776186132}
+  - component: {fileID: 3045766639264892685}
+  m_Layer: 0
+  m_Name: Crow
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6657528333302388624
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8898603464100227943}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 9066554723843693280}
+  m_Father: {fileID: 5699962473793132153}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &8531826668780565662
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8898603464100227943}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: dc3a46a2a20b54e84a3c57713e8d4958, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &3139331242776186132
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8898603464100227943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c29cff538c195c249b69c6f2236de67b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Library: []
+  m_SpriteLibraryAsset: {fileID: 11400000, guid: ef1172e2c582b46d180525fc7aed1c28, type: 2}
+--- !u!114 &3045766639264892685
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8898603464100227943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41b5287ae992e4274adbd3dd4719f6b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &9010418577922880243
 GameObject:
   m_ObjectHideFlags: 0
@@ -957,7 +993,7 @@ Transform:
   - {fileID: 1622293231599780116}
   - {fileID: 5050563595562989884}
   - {fileID: 493075299258978645}
-  m_Father: {fileID: 5699962473793132153}
+  m_Father: {fileID: 6657528333302388624}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &3820578297990593537
 SpriteRenderer:

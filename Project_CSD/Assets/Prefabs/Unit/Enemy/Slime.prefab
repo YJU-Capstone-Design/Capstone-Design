@@ -110,12 +110,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2567558826045072982}
-  - component: {fileID: 4204342768661107548}
-  - component: {fileID: 5682212751589718284}
-  - component: {fileID: 3250137384746401688}
-  m_Layer: 0
+  - component: {fileID: 2190437388482273258}
+  - component: {fileID: 6108893967010061193}
+  - component: {fileID: 7711477131859623453}
+  m_Layer: 7
   m_Name: Slime
-  m_TagString: Untagged
+  m_TagString: EnemyUnit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -128,36 +128,60 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1735723083107201589}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
-  - {fileID: 1153994453210280824}
+  - {fileID: 1253945927378241418}
   m_Father: {fileID: 8263701462601088746}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &4204342768661107548
-Animator:
-  serializedVersion: 5
+--- !u!61 &2190437388482273258
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1735723083107201589}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 56f1e81dc004c419db41be41215fcc0b, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
---- !u!114 &5682212751589718284
+  m_Enabled: 0
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0.2}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.6, y: 0.3}
+  m_EdgeRadius: 0
+--- !u!114 &6108893967010061193
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -166,12 +190,33 @@ MonoBehaviour:
   m_GameObject: {fileID: 1735723083107201589}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c29cff538c195c249b69c6f2236de67b, type: 3}
+  m_Script: {fileID: 11500000, guid: b4e1b2babc551144c832dbe4acd56a2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Library: []
-  m_SpriteLibraryAsset: {fileID: 11400000, guid: c5c36355f92de403ea32dd10f02e1d4b, type: 2}
---- !u!114 &3250137384746401688
+  initialHealth: 0
+  initialMoveSpeed: 0
+  initialPower: 0
+  initialAttackTime: 0
+  unitType: 0
+  unitState: 0
+  unitID: 0
+  unitName: 
+  cost: 0
+  health: 0
+  power: 0
+  moveSpeed: 0
+  attackTime: 0
+  unit_CardImg: {fileID: 0}
+  scanner: {fileID: 0}
+  unitData: {fileID: 11400000, guid: f38159a16ee30944ebdf9f6c2c45b968, type: 2}
+  attackRayUpPos: 0.25
+  attackRayDownPos: 0.13
+  attackRayPos: {x: -0.34, y: 0, z: 0}
+  attackRaySize: {x: 0.5, y: 0.3}
+  allChildren: []
+  nearestAttackTarget: {fileID: 0}
+  multipleAttackTargets: []
+--- !u!114 &7711477131859623453
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -180,9 +225,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 1735723083107201589}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 41b5287ae992e4274adbd3dd4719f6b1, type: 3}
+  m_Script: {fileID: 11500000, guid: 52279921ff6dbe14f88026711e89ae42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  scannerPos: {x: -5, y: 0, z: 0}
+  scanRange: {x: 30, y: 6}
+  targetLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  nearestTarget: {fileID: 0}
+  unitType: 0
 --- !u!1 &4385038628536417505
 GameObject:
   m_ObjectHideFlags: 0
@@ -284,6 +336,88 @@ MonoBehaviour:
   m_labelHash: 8.840178e-23
   m_SpriteKey: 0
   m_SpriteHash: 471613026
+--- !u!1 &5698529454942372128
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1253945927378241418}
+  - component: {fileID: 462905602470619677}
+  - component: {fileID: 8774436252877850157}
+  - component: {fileID: 1695587277434073866}
+  m_Layer: 0
+  m_Name: Slime
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1253945927378241418
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5698529454942372128}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1153994453210280824}
+  m_Father: {fileID: 2567558826045072982}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &462905602470619677
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5698529454942372128}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 56f1e81dc004c419db41be41215fcc0b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &8774436252877850157
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5698529454942372128}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c29cff538c195c249b69c6f2236de67b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Library: []
+  m_SpriteLibraryAsset: {fileID: 11400000, guid: c5c36355f92de403ea32dd10f02e1d4b, type: 2}
+--- !u!114 &1695587277434073866
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5698529454942372128}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41b5287ae992e4274adbd3dd4719f6b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6188572091759727163
 GameObject:
   m_ObjectHideFlags: 0
@@ -318,7 +452,7 @@ Transform:
   - {fileID: 231219928178069451}
   - {fileID: 3098911597337194302}
   - {fileID: 5083234220019532011}
-  m_Father: {fileID: 2567558826045072982}
+  m_Father: {fileID: 1253945927378241418}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1491983355990107026
 SpriteRenderer:
@@ -397,9 +531,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8263701462601088746}
-  - component: {fileID: 2545531906568787885}
-  - component: {fileID: 2930363391271502952}
-  - component: {fileID: 4052908276288644047}
   m_Layer: 7
   m_Name: Slime
   m_TagString: EnemyUnit
@@ -417,107 +548,12 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 2567558826045072982}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &2545531906568787885
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6573109270037096581}
-  m_Enabled: 0
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.2}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 0.45, y: 0.2}
-  m_EdgeRadius: 0.1
---- !u!114 &2930363391271502952
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6573109270037096581}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b4e1b2babc551144c832dbe4acd56a2c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  initialHealth: 0
-  initialSpeed: 0
-  initialPower: 0
-  initialAttackTime: 0
-  unitState: 0
-  unitID: 0
-  health: 0
-  speed: 0
-  power: 0
-  attackTime: 0
-  scanner: {fileID: 0}
-  unitData: {fileID: 11400000, guid: f38159a16ee30944ebdf9f6c2c45b968, type: 2}
-  attackRayUpPos: 0.25
-  attackRayDownPos: 0.13
-  attackRayPos: {x: 0.5, y: 0, z: 0}
-  attackRaySize: {x: 0.7, y: 0.3}
-  allChildren: []
-  nearestAttackTarget: {fileID: 0}
-  multipleAttackTargets: []
---- !u!114 &4052908276288644047
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6573109270037096581}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 52279921ff6dbe14f88026711e89ae42, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  scannerPos: {x: -5, y: 0, z: 0}
-  scanRange: {x: 30, y: 6}
-  targetLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  nearestTarget: {fileID: 0}
-  unitType: 0
 --- !u!1 &8597436767531568187
 GameObject:
   m_ObjectHideFlags: 0

@@ -60,7 +60,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 8301f8234b9594546b486e37d911bb00, type: 2}
+  - {fileID: 2100000, guid: 0f0226162e5d38442a997736a836e0c3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -94,7 +94,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d247ba06193faa74d9335f5481b2b56c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skeletonDataAsset: {fileID: 11400000, guid: fd2f9c0fcad872e4993ef22f6c384e16, type: 2}
+  skeletonDataAsset: {fileID: 11400000, guid: 0c1df580f6a867046ac8f48422dc34e2, type: 2}
   initialSkinName: 
   fixPrefabOverrideViaMeshFilter: 2
   initialFlipX: 0
@@ -162,7 +162,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.25}
+  m_Offset: {x: 0, y: 0.1}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -173,8 +173,8 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.3, y: 0.1}
-  m_EdgeRadius: 0.2
+  m_Size: {x: 0.5, y: 0.3}
+  m_EdgeRadius: 0
 --- !u!114 &6735879273722989327
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -190,7 +190,7 @@ MonoBehaviour:
   initialHealth: 0
   initialMoveSpeed: 0
   initialPower: 0
-  initialAttackSpeed: 0
+  initialAttackTime: 0
   unitType: 0
   unitState: 0
   unitID: 0
@@ -199,7 +199,8 @@ MonoBehaviour:
   health: 0
   power: 0
   moveSpeed: 0
-  attackSpeed: 0
+  attackTime: 0
+  unit_CardImg: {fileID: 0}
   buffEffect:
   - {fileID: 4764148881584780711}
   - {fileID: 4087543389168848730}
