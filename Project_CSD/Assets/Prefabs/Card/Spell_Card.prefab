@@ -41,8 +41,8 @@ RectTransform:
   - {fileID: 2269402084485208930}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.05, y: 0.05}
-  m_AnchorMax: {x: 0.3, y: 0.95}
+  m_AnchorMin: {x: 0.35, y: 0.05}
+  m_AnchorMax: {x: 0.65, y: 0.95}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -160,13 +160,21 @@ MonoBehaviour:
   damage: 0
   maxHpUp: 0
   powerUp: 0
-  speedUp: 0
+  moveSpeedUp: 0
+  attackTimeDown: 0
   spells:
-  - {fileID: 11400000, guid: dc225d6dd6ce14e4f86ec3c956497e57, type: 2}
-  - {fileID: 11400000, guid: fe906895032a21343941eb4ea09fa51d, type: 2}
-  - {fileID: 11400000, guid: cbb69fa797615164eb1a9abdba563b34, type: 2}
-  - {fileID: 11400000, guid: 8bc092c7aaa4189449889f5f43cdec90, type: 2}
-  - {fileID: 11400000, guid: b4d18e3da984b13429bb9277dd6fc5ac, type: 2}
+  - {fileID: 11400000, guid: 9d535d802c402d54baba3edd50e5e887, type: 2}
+  - {fileID: 11400000, guid: 9b9e17c03b28fef41a8a4e497b9bed4a, type: 2}
+  - {fileID: 11400000, guid: 7d9a90833bd552a4a82acfb25c352c81, type: 2}
+  - {fileID: 11400000, guid: 019547aff5e70ee46aacbc00f0fe536b, type: 2}
+  - {fileID: 11400000, guid: 738b9018fe6a3514198d38e6134b606e, type: 2}
+  - {fileID: 11400000, guid: 08702786e5246cf429aaf9491d0c1ff7, type: 2}
+  - {fileID: 11400000, guid: 2d1478112f03a57459719a0f779cfb6f, type: 2}
+  - {fileID: 11400000, guid: c80a64ddedb9f6140a0de18191d09255, type: 2}
+  - {fileID: 11400000, guid: ae8e6b45f20a14942acef74fbda418fa, type: 2}
+  - {fileID: 11400000, guid: 29046aa1b6f412d41b6f401bd80bb9bc, type: 2}
+  - {fileID: 11400000, guid: 4b25a7d0fab63ab4eb7fbffbfa80a7d6, type: 2}
+  - {fileID: 11400000, guid: b08925a7c5fe44149b688f090c9d0388, type: 2}
 --- !u!114 &5121889740425968333
 MonoBehaviour:
   m_ObjectHideFlags: 0
