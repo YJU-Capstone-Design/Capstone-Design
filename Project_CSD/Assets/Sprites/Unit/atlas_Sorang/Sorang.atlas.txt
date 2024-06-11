@@ -1,0 +1,29 @@
+Sorang.png
+	size: 373, 158
+	filter: Linear, Linear
+	pma: true
+	scale: 0.5
+arm R
+	bounds: 164, 15, 19, 15
+	rotate: 90
+armL
+	bounds: 181, 15, 19, 15
+	rotate: 90
+body1B
+	bounds: 164, 36, 129, 120
+body1F
+	bounds: 2, 2, 160, 154
+body2
+	bounds: 295, 61, 95, 75
+	rotate: 90
+eye1
+	bounds: 228, 11, 23, 9
+	rotate: 90
+eye2
+	bounds: 198, 19, 15, 13
+	rotate: 90
+eye3
+	bounds: 213, 20, 14, 13
+	rotate: 90
+shadow
+	bounds: 295, 35, 76, 24
