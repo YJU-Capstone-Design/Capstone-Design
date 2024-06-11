@@ -8,6 +8,7 @@ using JetBrains.Annotations;
 
 public class GachaManager : MonoBehaviour
 {
+    public static GachaManager single;
     public GameObject cashMgr;
     public TMP_Text result_Text;
     public GameObject gacha_Result;
@@ -22,14 +23,18 @@ public class GachaManager : MonoBehaviour
     [SerializeField] private List<int> result = new List<int>();
     // 캐시 매니저 스크립트 참조 변수
     private CashManager cashManagerScript;
-
+    [SerializeField] HoldingList holdingScript;
 
     [Header("Gacha_Item_Info")]//가챠 아이템 정보
     
     [SerializeField] private GameObject gacha_Item;
     [SerializeField] private Transform gacha_Tr;
+
+    [Header("가챠 템플릿")]
+    public List<UnitData> listGachaTemplete;
     public void Awake()
     {
+        single = this;
         if (cashMgr == null)
         {
             cashMgr = GameObject.Find("CashManager");
@@ -71,8 +76,15 @@ public class GachaManager : MonoBehaviour
 
         for (int i = 1; i <= number; i++)
         {
+            UnitData dataRandom = listGachaTemplete[Random.Range(0, listGachaTemplete.Count)];
+            holdingScript.Update_Hoding(dataRandom);
+
             GameObject temp = Instantiate(gacha_Item, gacha_Tr.position, Quaternion.identity);
             temp.transform.SetParent(gacha_Tr.transform);
+
+            Gacha item = temp.GetComponent<Gacha>();
+            item.Init(dataRandom);
+
             /*System.Random random = new System.Random();
             int randomValue = random.Next(1, 100);
 
