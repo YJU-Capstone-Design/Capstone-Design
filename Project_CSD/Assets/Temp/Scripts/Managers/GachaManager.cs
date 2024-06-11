@@ -8,7 +8,7 @@ using JetBrains.Annotations;
 
 public class GachaManager : MonoBehaviour
 {
-    public GameObject cashMgr;
+    private CashManager cashManager;
     public TMP_Text result_Text;
     public GameObject gacha_Result;
 
@@ -21,41 +21,37 @@ public class GachaManager : MonoBehaviour
 
     [SerializeField] private List<int> result = new List<int>();
     // 캐시 매니저 스크립트 참조 변수
-    private CashManager cashManagerScript;
+    
 
 
     [Header("Gacha_Item_Info")]//가챠 아이템 정보
-    
     [SerializeField] private GameObject gacha_Item;
     [SerializeField] private Transform gacha_Tr;
+
     public void Awake()
     {
-        if (cashMgr == null)
+        if (cashManager == null)
         {
-            cashMgr = GameObject.Find("CashManager");
-        }
-        // CashManager 스크립트를 가져옵니다.
-        if (cashMgr != null)
-        {
-            cashManagerScript = cashMgr.GetComponent<CashManager>();
+            GameObject go = GameObject.Find("CashManager");
+            cashManager = go.GetComponent<CashManager>();
         }
     }
     public void Gacha_Btn(int number)
     {
-        if(cashManagerScript.player_Cash >= 1 && number == 1)
+        if(cashManager.player_Cash >= 1 && number == 1)
         {
 
             Item_Destroy();
-            cashManagerScript.player_Cash = cashManagerScript.player_Cash - 1;
+            cashManager.player_Cash = cashManager.player_Cash - 1;
             Gacha_Rarity(number);
             gacha_Result.SetActive(true);
 
 
         }
-        else if (cashManagerScript.player_Cash >= 10 && number == 10)
+        else if (cashManager.player_Cash >= 10 && number == 10)
         {
             Item_Destroy();
-            cashManagerScript.player_Cash = cashManagerScript.player_Cash - 10;
+            cashManager.player_Cash = cashManager.player_Cash - 10;
             Gacha_Rarity(number);
             gacha_Result.SetActive(true);
         }
@@ -141,7 +137,6 @@ public class GachaManager : MonoBehaviour
 
     public void Item_Destroy()
     {
-
         foreach (Transform child in gacha_Tr)
         {
             Destroy(child.gameObject);
