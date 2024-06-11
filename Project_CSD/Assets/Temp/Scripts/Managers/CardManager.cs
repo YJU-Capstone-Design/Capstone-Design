@@ -57,7 +57,7 @@ public class CardManager : Singleton<CardManager>
             }
         }
 
-        BattleManager.Instance.CardShuffle();
+        BattleManager.Instance.CardShuffle(false);
     }
 
     public IEnumerator Buff_Logic_Unit(GameObject unit, Spell spell)

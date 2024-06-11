@@ -63,10 +63,16 @@ public class UnitManager : MonoBehaviour
             case 12001: // WhiteBread
                 pool.Get(0, 3);
                 break;
+            case 12002: // BreadCrab
+                pool.Get(0, 4);
+                break;
+            case 11004: // Croirang
+                pool.Get(0, 5);
+                break;
         }
 
         BattleManager.Instance.unitSpawnRange.SetActive(false);
-        BattleManager.Instance.CardShuffle();
+        BattleManager.Instance.CardShuffle(false);
     }
 
     public void Buy(int unitCost)
