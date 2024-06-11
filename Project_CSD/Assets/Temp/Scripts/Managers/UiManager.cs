@@ -111,17 +111,16 @@ public class UiManager : Singleton<UiManager>
 
             while (elapsed < timeInterver)
             {
-                // 경과 시간을 누적합니다.
+                // 경과 시간을 누적.
                 elapsed += Time.deltaTime;
 
-                // 슬라이더의 값을 업데이트합니다.
+                // 슬라이더의 값을 업데이트.
                 supply_Gage.value = Mathf.Lerp(0, supply_Gage.maxValue, elapsed / timeInterver);
 
-                // 다음 프레임까지 대기합니다.
                 yield return null;
             }
 
-            // 슬라이더 값을 초기화합니다.
+            // 슬라이더 값을 초기화
             supply_Gage.value = 0f;
         }
     }

@@ -22,6 +22,6 @@ public class SkillManager : MonoBehaviour
         {
             Debug.Log("Using Attack Spell");
         }
-        BattleManager.Instance.CardShuffle();
+        BattleManager.Instance.CardShuffle(false);
     }
 }

@@ -28,6 +28,7 @@ public class UnitBase : MonoBehaviour
     public float power;
     public float moveSpeed;
     public float attackTime;
+    public Sprite unit_CardImg;
 
     // 스프라이트 방향 설정 함수
     protected void SpriteDir(Vector3 firstVec, Vector3 secondVec)

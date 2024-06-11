@@ -292,16 +292,30 @@ public class BattleManager :Singleton<BattleManager>
 
     }
 
-    public void CardShuffle()
+    public void CardShuffle(bool Recost)
     {
-
-        foreach (GameObject card in cardObj)
+        if (UiManager.Instance.cost >= 1&&Recost)
         {
-            Destroy(card);
+            foreach (GameObject card in cardObj)
+            {
+                Destroy(card);
+            }
+            cardObj.Clear();
+            CardMake();
+            Debug.Log("Shuffle");
+            UiManager.Instance.cost -= 1;
         }
-        cardObj.Clear();
-        CardMake();
-        Debug.Log("Shuffle");
+        else if (!Recost)
+        {
+            foreach (GameObject card in cardObj)
+            {
+                Destroy(card);
+            }
+            cardObj.Clear();
+            CardMake();
+            Debug.Log("Shuffle");
+        }
+        
     }
 
     void UpdateHealthBar()

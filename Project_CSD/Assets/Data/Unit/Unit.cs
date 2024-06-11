@@ -1,12 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using static UnitBase;
 
 public class Unit : UnitBase
 {
     [Header("# Spell Setting")]
     public List<UnitData> units = new List<UnitData>();
+
+    public Image cardImg;
 
     public void OnEnable()
     {
@@ -29,5 +32,6 @@ public class Unit : UnitBase
         power = units[index].Power;
         attackTime = units[index].AttackTime;
         moveSpeed = units[index].MoveSpeed;
+        cardImg.sprite = units[index].Unit_CardImg;
     }
 }
