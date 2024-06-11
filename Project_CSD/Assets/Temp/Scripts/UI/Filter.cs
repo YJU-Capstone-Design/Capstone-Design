@@ -23,6 +23,7 @@ public class Filter : MonoBehaviour
     [SerializeField] private Transform[] holdfilter;
 
     [Header("GachaResult")]//가챠 결과 연동
+    [SerializeField] Transform parentTr;
     [SerializeField] Transform unitTr;
     [SerializeField] Transform unitTr_Disable;
     [SerializeField] List<Collection_Data> haveItems;
