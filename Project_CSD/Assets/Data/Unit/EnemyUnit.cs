@@ -75,7 +75,7 @@ public class EnemyUnit : UnitBase
             {
                 AttackRay();
 
-                if(transform.position.x <= 27) { col.enabled = true; } else {  col.enabled = false; } // 아군 유닛 최대 전진 범위 때문에 설정
+                if(transform.position.x <= 28) { col.enabled = true; } else {  col.enabled = false; } // 아군 유닛 최대 전진 범위 때문에 설정
             }
         }
 
