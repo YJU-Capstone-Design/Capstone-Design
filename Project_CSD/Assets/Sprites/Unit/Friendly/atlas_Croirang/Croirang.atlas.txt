@@ -1,0 +1,27 @@
+Croirang.png
+	size: 213, 126
+	filter: Linear, Linear
+	pma: true
+	scale: 0.5
+body
+	bounds: 2, 2, 122, 161
+	rotate: 90
+eye1
+	bounds: 191, 62, 27, 19
+	rotate: 90
+eye2
+	bounds: 191, 28, 32, 9
+	rotate: 90
+eyebrow
+	bounds: 202, 25, 35, 9
+	rotate: 90
+mouth1
+	bounds: 165, 2, 28, 19
+mouth2
+	bounds: 191, 91, 33, 20
+	rotate: 90
+mouth3
+	bounds: 165, 23, 24, 23
+shadow
+	bounds: 165, 48, 76, 24
+	rotate: 90

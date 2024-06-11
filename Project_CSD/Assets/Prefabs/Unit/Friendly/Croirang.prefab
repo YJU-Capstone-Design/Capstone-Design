@@ -48506,7 +48506,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 04d928e8ee55500479557aab83c9b665, type: 2}
+  - {fileID: 2100000, guid: 0991e64cbee6f644faaf0b90c3afd3a2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -48540,7 +48540,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d247ba06193faa74d9335f5481b2b56c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skeletonDataAsset: {fileID: 11400000, guid: 9a650bf55713ea647868f2bfdd35036b, type: 2}
+  skeletonDataAsset: {fileID: 11400000, guid: e016682dc48003d45a9b11222249bec4, type: 2}
   initialSkinName: 
   fixPrefabOverrideViaMeshFilter: 2
   initialFlipX: 0
@@ -48608,7 +48608,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.25}
+  m_Offset: {x: 0, y: 0.2}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -48619,8 +48619,8 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.3, y: 0.1}
-  m_EdgeRadius: 0.2
+  m_Size: {x: 0.5, y: 0.3}
+  m_EdgeRadius: 0
 --- !u!114 &3710205555433300612
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -48650,8 +48650,8 @@ MonoBehaviour:
   buffEffect: []
   scanner: {fileID: 0}
   unitData: {fileID: 11400000, guid: 805ad7c05fad00a49902805413b37246, type: 2}
-  attackRayPos: {x: 2.3, y: 0.3, z: 0}
-  attackRaySize: {x: 4.5, y: 0.35}
+  attackRayPos: {x: 1.7, y: 0.3, z: 0}
+  attackRaySize: {x: 3.3, y: 0.35}
   nearestAttackTarget: {fileID: 0}
   multipleAttackTargets: []
 --- !u!114 &3446319296211606957

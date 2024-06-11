@@ -44,7 +44,7 @@ public class EnemyUnit : UnitBase
     void OnEnable()
     {
         BattleData.Instance.enemys.Add(gameObject);
-        StateSetting();
+        StateSetting(BattleManager.Instance.wave);
     }
 
     private void Start()
@@ -58,13 +58,15 @@ public class EnemyUnit : UnitBase
 
     void Update()
     {
-        
         if (unitState != UnitState.Die)
         {
-            // 체력 실시간 적용
-            HpBar hpBarLogic = hpBar.GetComponent<HpBar>();
-            hpBarLogic.nowHp = health;
-            hpBarLogic.hpBarDir = moveVec;
+            if(hpBar != null)
+            {
+                // 체력 실시간 적용
+                HpBar hpBarLogic = hpBar.GetComponent<HpBar>();
+                hpBarLogic.nowHp = health;
+                hpBarLogic.hpBarDir = moveVec;
+            }
 
             if (health <= 0)
             {
@@ -75,7 +77,7 @@ public class EnemyUnit : UnitBase
             {
                 AttackRay();
 
-                if(transform.position.x <= 27) { col.enabled = true; } else {  col.enabled = false; } // 아군 유닛 최대 전진 범위 때문에 설정
+                if(transform.position.x <= 28) { col.enabled = true; } else {  col.enabled = false; } // 아군 유닛 최대 전진 범위 때문에 설정
             }
         }
 
@@ -100,13 +102,13 @@ public class EnemyUnit : UnitBase
     }
 
     // 기본 설정 초기화 함수
-    void StateSetting()
+    void StateSetting(int wave)
     {
         // 수치값
         unitID = unitData.UnitID;
-        health = unitData.Health;
+        health = unitData.Health + (unitData.Health / 10) * wave;
         moveSpeed = unitData.MoveSpeed;
-        power = unitData.Power;
+        power = unitData.Power + (unitData.Power / 10) * wave;
         attackTime = unitData.AttackTime;
 
         // 설정값
@@ -367,7 +369,7 @@ public class EnemyUnit : UnitBase
 
         yield return new WaitForSeconds(anim.GetTime());
 
-        StateSetting();
+        StateSetting(0);
         gameObject.SetActive(false);
     }
 
