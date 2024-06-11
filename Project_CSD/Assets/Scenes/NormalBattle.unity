@@ -2420,8 +2420,15 @@ MonoBehaviour:
   - {fileID: 1588485322}
   enemySpawnFile:
   - {fileID: 4900000, guid: 8de3a0dc85ab4ac418de2a6e476b7f02, type: 3}
-  - {fileID: 4900000, guid: 8de3a0dc85ab4ac418de2a6e476b7f02, type: 3}
-  - {fileID: 4900000, guid: 8de3a0dc85ab4ac418de2a6e476b7f02, type: 3}
+  - {fileID: 4900000, guid: 02eee206d5b996d419dcd7cbe7a73602, type: 3}
+  - {fileID: 4900000, guid: 3e7c1b90947b1b148998ea3d3a989413, type: 3}
+  - {fileID: 4900000, guid: 3aca6cea753b4fc49a801c56519317e6, type: 3}
+  - {fileID: 4900000, guid: edd9f63a478eb6749836b6b62933bccf, type: 3}
+  - {fileID: 4900000, guid: c3a90d09f75db4c46bd113f7b3358c97, type: 3}
+  - {fileID: 4900000, guid: 973dc3041772d2e4abb5719fc1c62143, type: 3}
+  - {fileID: 4900000, guid: 83e30de80904dd146b2b05e06dce7148, type: 3}
+  - {fileID: 4900000, guid: 450460b456eaa9b4883600f0fe779b71, type: 3}
+  - {fileID: 4900000, guid: 003d841d02f7b5d4283cc92d8d8700fb, type: 3}
   hpBarParent: {fileID: 896767616}
   unitSpawnRange: {fileID: 974946586}
   waveUI: {fileID: 7526724413939370857}
@@ -2957,14 +2964,20 @@ MonoBehaviour:
   - {fileID: 7339107190655348046, guid: 185859432bdd2884d90747eaba8d8d46, type: 3}
   - {fileID: 7339107190655348046, guid: 935a759ae4be805498e19f5721d1e319, type: 3}
   enemyPrefabs:
+  - {fileID: 1042312463165950002, guid: dde4af852618849acba1afba12097aea, type: 3}
+  - {fileID: 4373878531874603118, guid: 043ce7cd9aa2640cb8a66468599e4d4d, type: 3}
+  - {fileID: 2797091703419844058, guid: d51f38c432ebd48f59c88db6244d6737, type: 3}
+  - {fileID: 4257182648927169049, guid: 1cc4ae41159924c709f3a7edf60f7331, type: 3}
+  - {fileID: 4373878531874603118, guid: 30f6cd73c90364aac8162a6776e19dd8, type: 3}
+  - {fileID: 7980585695602270868, guid: 74f9a802b390d40d4b90d6227fa26120, type: 3}
+  - {fileID: 2601205732728549555, guid: b11950237ca9d644484694698c1ccb43, type: 3}
+  - {fileID: 3288908098828608227, guid: 085263d3a6e384dea9546a651ff53427, type: 3}
+  - {fileID: 6573109270037096581, guid: 28e34642d01c943a0b46bba6eb452584, type: 3}
+  - {fileID: 8187066320244205340, guid: dcf45206213dc4062ae1bd78e4571e72, type: 3}
+  - {fileID: 1831048854746484381, guid: f514e19c95b1740b6bb32157c604d9f7, type: 3}
   - {fileID: 2797091703419844058, guid: 3ea69bf29ca764f7099a7d978ac33e6a, type: 3}
   - {fileID: 3261629212605270289, guid: e814150df7352054c8910d04d62b3a90, type: 3}
-  - {fileID: 4373878531874603118, guid: 043ce7cd9aa2640cb8a66468599e4d4d, type: 3}
-  - {fileID: 3288908098828608227, guid: 085263d3a6e384dea9546a651ff53427, type: 3}
-  - {fileID: 8187066320244205340, guid: dcf45206213dc4062ae1bd78e4571e72, type: 3}
-  - {fileID: 6573109270037096581, guid: 28e34642d01c943a0b46bba6eb452584, type: 3}
-  - {fileID: 4373878531874603118, guid: 30f6cd73c90364aac8162a6776e19dd8, type: 3}
-  - {fileID: 2601205732728549555, guid: b11950237ca9d644484694698c1ccb43, type: 3}
+  - {fileID: 8530048719097680756, guid: a568f5a7cf2e44c68a0a560cc975f7f5, type: 3}
   weaponPrefabs:
   - {fileID: 4274193337363202239, guid: e1f8b9f208103204da32d0891cadf0f5, type: 3}
   - {fileID: 806876895597424990, guid: 15e0c0fbde1df15418e505e96a1c5190, type: 3}

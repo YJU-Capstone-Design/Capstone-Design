@@ -231,7 +231,7 @@ Transform:
   m_GameObject: {fileID: 1042312463165950002}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 27.766493, y: -0.025241315, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -477,8 +477,8 @@ MonoBehaviour:
   moveSpeed: 0
   attackTime: 0
   unit_CardImg: {fileID: 0}
-  scanner: {fileID: 0}
-  unitData: {fileID: 11400000, guid: 903433cf37245984aafea724ad9446f6, type: 2}
+  scanner: {fileID: 1641463629669152135}
+  unitData: {fileID: 11400000, guid: 660a64eba42599041958e202709cf5e9, type: 2}
   attackRayUpPos: 0.4
   attackRayDownPos: 0.15
   attackRayPos: {x: 0.45, y: 0, z: 0}
