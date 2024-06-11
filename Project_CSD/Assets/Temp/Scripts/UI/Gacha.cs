@@ -1,17 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 public class Gacha : MonoBehaviour
 {
+    
+
     [SerializeField] GameObject screen;
-    [SerializeField] GameObject ojb_Img;
+    [SerializeField] Image obj_Img;
     [SerializeField] Sprite basic_Img;
+    [SerializeField] private UnitData[] unit_DB;
 
 
-
-    public void Add_Item_Info(UnitData data)
+    public void OnEnable()
     {
-
+        int ran = Random.Range(0, 5);
+        obj_Img.sprite = unit_DB[ran].Unit_Img;
     }
 }
