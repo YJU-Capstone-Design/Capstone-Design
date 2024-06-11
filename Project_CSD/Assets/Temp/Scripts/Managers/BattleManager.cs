@@ -50,6 +50,7 @@ public class BattleManager :Singleton<BattleManager>
     [SerializeField] Image resultPanel;
     [SerializeField] Image resultMenuBar;
     [SerializeField] Image[] resultWaveImg;
+    [SerializeField] Animator[] resultObjsAnim;
 
     enum UnitType { Bread, Pupnut, Kitchu, Ramo, Sorang, Croirang }; // 테스트(제작)용
     UnitType unitType;
@@ -73,6 +74,12 @@ public class BattleManager :Singleton<BattleManager>
         ReadSpawnFile(wave); // 적 유닛 스폰 파일 가져오기
 
         unitType = UnitType.Bread; // 테스트(제작)용
+
+        // 결과창 애니메이션 초기화
+        foreach (Animator anim in resultObjsAnim)
+        {
+            anim.SetBool("end", false);
+        }
     }
 
     void Update()
@@ -231,6 +238,12 @@ public class BattleManager :Singleton<BattleManager>
             resultMenuBar.sprite = resultImg[3];
 
             // Wave 저장 필요 -> DontDestroy 오브젝트에 넣어야 할 듯
+        }
+
+        // 애니메이션
+        foreach(Animator anim in resultObjsAnim)
+        {
+            anim.SetBool("end", true);
         }
 
     }
