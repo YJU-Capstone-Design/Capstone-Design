@@ -11,10 +11,11 @@ public class Gacha : MonoBehaviour
     [SerializeField] Sprite basic_Img;
     [SerializeField] private UnitData[] unit_DB;
 
-
-    public void OnEnable()
+    [SerializeField] GameObject holding;
+    
+    public void Init(UnitData data)
     {
-        int ran = Random.Range(0, 5);
-        obj_Img.sprite = unit_DB[ran].Unit_Img;
+        obj_Img.sprite = data.Unit_Img;
+        gameObject.SetActive(true);
     }
 }
