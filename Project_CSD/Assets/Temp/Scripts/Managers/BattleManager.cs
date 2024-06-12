@@ -338,13 +338,16 @@ public class BattleManager :Singleton<BattleManager>
         HpBarSlider.value = sliderValue;
         if (curHealth <= 0)
         {
-            healthBar.SetActive(false);
-            battle.SetActive(false);
-            gameEnd.SetActive(true);
-            Time.timeScale = 0f;
+            Invoke("Test_GameOver",3f);
         }
     }
 
+    void Test_GameOver()
+    {
+        healthBar.SetActive(false);
+        battle.SetActive(false);
+        gameEnd.SetActive(true);
+    }
     void ReadSpawnFile(int waveCount)
     {
         // 변수 초기화
