@@ -14851,7 +14851,6 @@ MonoBehaviour:
   holdfilter:
   - {fileID: 1116466935}
   - {fileID: 1884725826}
-  parentTr: {fileID: 211183728}
   unitTr: {fileID: 1116466935}
   unitTr_Disable: {fileID: 2009009490}
   haveItems:
