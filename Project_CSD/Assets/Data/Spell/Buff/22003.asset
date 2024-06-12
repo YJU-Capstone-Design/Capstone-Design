@@ -22,3 +22,5 @@ MonoBehaviour:
   powerUp: 0
   moveSpeedUp: 50
   attackTimeDown: 25
+  item_Type: 2
+  spell_CardImg: {fileID: 21300000, guid: a91637e715196394f81f6a3586886df9, type: 3}

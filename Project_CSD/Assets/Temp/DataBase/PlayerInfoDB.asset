@@ -14,12 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sheet1:
   - Player_No: 8000100
-    NAME: Master
-    ID: acount
+    NAME: Player
+    ID: Admin
     PASS: 1234
     Lv: 1
-    Char: 4
-    Spell: 4
+    Char: 0
+    Spell: 0
   - Player_No: 0
     NAME: 0
     ID: 0

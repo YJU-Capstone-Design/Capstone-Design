@@ -11,6 +11,7 @@ public class UnitManager : MonoBehaviour
     Unit unit;
     private PoolManager pool;
     public Button unitSpawnRangeButton;
+
     private void Awake()
     {
         unit = GetComponent<Unit>();
@@ -25,14 +26,23 @@ public class UnitManager : MonoBehaviour
         GameObject spawnArea = BattleManager.Instance.unitSpawnRange.transform.GetChild(1).gameObject;
         RectTransform spawnAreaAnchors = spawnArea.GetComponent<RectTransform>();
 
+        /*        // 메인 카메라의 위치에 따라 스폰 가능 영역 범위 변경
+                if (BattleManager.Instance.mainCamera.position.x >= 3)
+                {
+                    BattleManager.Instance.mainCamera.position = new Vector3(0,0,-10);
+                    spawnAreaAnchors.anchorMin = new Vector2(0, 0.43f);
+                    spawnAreaAnchors.anchorMax = new Vector2(1, 0.66f);
+                } 좌표세이브 주석처리 06/12일 카드 클릭시 소한 범위 조정을 위한 카메라 이동
+                else
+                {
+                    spawnAreaAnchors.anchorMin = new Vector2(0.15f, 0.43f);
+                    spawnAreaAnchors.anchorMax = new Vector2(1, 0.66f);
+                }*/
+
         // 메인 카메라의 위치에 따라 스폰 가능 영역 범위 변경
         if (BattleManager.Instance.mainCamera.position.x >= 3)
         {
-            spawnAreaAnchors.anchorMin = new Vector2(0, 0.43f);
-            spawnAreaAnchors.anchorMax = new Vector2(1, 0.66f);
-        }
-        else
-        {
+            BattleManager.Instance.mainCamera.position = new Vector3(0, 0, -10);
             spawnAreaAnchors.anchorMin = new Vector2(0.15f, 0.43f);
             spawnAreaAnchors.anchorMax = new Vector2(1, 0.66f);
         }
@@ -82,7 +92,7 @@ public class UnitManager : MonoBehaviour
         {
             // 코스트를 차감하고 유닛을 스폰
             UiManager.Instance.cost -= unitCost;
-            UnitSpawn(unit.unitID);
+            UnitSpawn(unit.unitID); //52줄에 있는 데이터 담기
         }
         else
         {
