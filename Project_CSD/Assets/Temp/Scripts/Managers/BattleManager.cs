@@ -37,7 +37,6 @@ public class BattleManager :Singleton<BattleManager>
     bool spawnEnd; // 스폰 로직 마지막
     float curSpawnTime;
     float nextSpawnDelay;
-    public GameObject hpBarParent; // 유닛 체력바 부모 (canvas 오브젝트)
     public GameObject unitSpawnRange; // 유닛 스폰 범위 (canvas 오브젝트)
 
     [Header("# UI")]
@@ -331,7 +330,10 @@ public class BattleManager :Singleton<BattleManager>
         if (curHealth <= 0)
         {
             Time.timeScale = 1f;
-            EndGame("Lose"); // 결과창 UI 활성화
+            if (!resultUI.activeInHierarchy)
+            {
+                EndGame("Lose"); // 결과창 UI 활성화
+            }
             Invoke("Test_GameOver",3f);
         }
     }
