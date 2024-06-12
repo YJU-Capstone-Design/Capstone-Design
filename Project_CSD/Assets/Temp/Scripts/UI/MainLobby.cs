@@ -55,43 +55,49 @@ public class MainLobby : MonoBehaviour
     public void OpenScene(string type)
     {
         int openScene = 0;
-        if (type == "Gacha")
+        if (type.Equals("Gacha"))
         {
             mainBG.SetActive(false);
             openScene = 1;
         }
-        else if (type == "TraningBtn")
+        else if (type.Equals("TraningBtn"))
         {
             pop.SetActive(true);
             //openScene = 2;
         }
-        else if (type == "Formation")
+        else if (type.Equals("Formation"))
         {
-            openScene = 3;
+            pop.SetActive(true);
+            //openScene = 3;
         }
-        else if (type == "KitchenRoom")
+        else if (type.Equals("KitchenRoom"))
         {
             pop.SetActive(true);
             // openScene = 4;
         }
-        else if (type == "Collection")
+        else if (type.Equals("Collection"))
         {
             openScene = 5;
         }
-        else if (type == "Chm&Mission")
+        else if (type.Equals("Chm&Mission"))
         {
             pop.SetActive(true);
             //openScene = 6;
         }
         for (int i = 1; i < menu.Count; i++)
         {
-            menu[i].gameObject.SetActive(false);
-            menu_Obj_Setting[i].gameObject.SetActive(false);
-            mainLobby.transform.localScale = Vector3.zero;
-            mainLobbyObj.transform.localScale = Vector3.zero;
+            
+                menu[i].gameObject.SetActive(false);
+                menu_Obj_Setting[i].gameObject.SetActive(false);
+                mainLobby.transform.localScale = Vector3.zero;
+                mainLobbyObj.transform.localScale = Vector3.zero;
+            
+          
         }
-        menu[openScene].SetActive(true);
-        menu_Obj_Setting[openScene].SetActive(true);
+       menu[openScene].SetActive(true);
+       menu_Obj_Setting[openScene].SetActive(true);
+       
+      
         roomNum = 1;
         if (openScene == 0)
         {
@@ -164,8 +170,11 @@ public class MainLobby : MonoBehaviour
         roomNum = 0;
         for (int i = 1; i < menu.Count; i++)
         {
-            menu[i].gameObject.SetActive(false);
-            menu_Obj_Setting[i].gameObject.SetActive(false);
+            
+                menu[i].gameObject.SetActive(false);
+                menu_Obj_Setting[i].gameObject.SetActive(false);
+
+           
         }
 
     }

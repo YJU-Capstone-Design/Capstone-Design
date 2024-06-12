@@ -108,9 +108,9 @@ public class Filter : MonoBehaviour
 
     public void OnEnable()
     {
-
+        
         UpdateCollection();
-
+        LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)unitTr.parent);
     }
 
     private Collection_Data getNewCollectionItem(ref List<Collection_Data> baseList)
@@ -154,8 +154,8 @@ public class Filter : MonoBehaviour
             getNewCollectionItem(ref noneItems).Init(GachaManager.single.listGachaTemplete[i]);
         }
 
-        LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)unitTr.parent);
-
+        //LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)unitTr.parent);
+        StartCoroutine(RebuildAtEndOfFrame((RectTransform)unitTr.parent));
         Debug.Log("call collection");
 
         //HoldFilterCard();
@@ -164,7 +164,11 @@ public class Filter : MonoBehaviour
 
 
 
-
+    IEnumerator RebuildAtEndOfFrame(RectTransform rectTransform)
+    {
+        yield return new WaitForEndOfFrame();
+        LayoutRebuilder.ForceRebuildLayoutImmediate(rectTransform);
+    }
 
 
 

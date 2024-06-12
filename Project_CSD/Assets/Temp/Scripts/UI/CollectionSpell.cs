@@ -13,6 +13,7 @@ public class CollectionSpell : MonoBehaviour
 
         UpdateCollection();
         Debug.Log("SpellCollection Update");
+        LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)parentTr);
 
     }
 
@@ -59,10 +60,19 @@ public class CollectionSpell : MonoBehaviour
             getNewCollectionItem(ref noneItems).SpellInit(GachaManager.single.listSpellItem[i]);
         }
 
-        LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)parentTr);
+        //LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)parentTr);
 
+        // 호출할 때
+        StartCoroutine(RebuildAtEndOfFrame((RectTransform)parentTr));
         Debug.Log("call collection");
 
     
     }
+    IEnumerator RebuildAtEndOfFrame(RectTransform rectTransform)
+    {
+        yield return new WaitForEndOfFrame();
+        LayoutRebuilder.ForceRebuildLayoutImmediate(rectTransform);
+    }
+
+    
 }
