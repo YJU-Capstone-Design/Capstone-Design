@@ -102,6 +102,10 @@ public class PlayerUnit : UnitBase
             float yPos = (transform.position.y - 4) * 10; // 음수/양수 처리를 위해 -4, 넓게 분배하기 위해 *10
             int orderLayer = Mathf.FloorToInt(yPos); // 소수점 제외
             bodySprite.sortingOrder = Mathf.Abs(orderLayer); // 절대값으로 변경 후 적용
+
+            // 체력바 OrderLayer
+            HpBar hpBarLogic = hpBar.GetComponent<HpBar>();
+            hpBarLogic.realHpSprite.sortingOrder = Mathf.Abs(orderLayer);
         }
     }
 

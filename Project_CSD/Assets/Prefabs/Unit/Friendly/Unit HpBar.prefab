@@ -216,6 +216,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   realHp: {fileID: 1804016801081089723}
   realHpSprite: {fileID: 1192869670069561130}
+  hpFrameSprite: {fileID: 957354032744006061}
   owner: {fileID: 0}
   nowHp: 0
   maxHp: 0
