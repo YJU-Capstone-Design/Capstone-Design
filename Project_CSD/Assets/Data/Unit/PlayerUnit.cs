@@ -53,21 +53,21 @@ public class PlayerUnit : UnitBase
     {
         StateSetting();
 
-        BattleData.Instance.units.Add(gameObject);
+        CardManager.Instance.units.Add(gameObject);
 
         Vector3 startPos = BattleManager.Instance.unitSpawnPoint[0].position;
         Vector3 targetPos = BattleManager.Instance.point;
         float xPos = startPos.x + targetPos.x * (targetPos.x < 0 ? -0.4f : 0.4f);
 
         // 클릭 지점으로 이동 -> 나머지는 Scanner 함수 에서 실행 (y 축만 먼저 빠르게 이동)
-        lerp = StartCoroutine(lerpCoroutine(startPos,new Vector3((xPos > targetPos.x ? targetPos.x : xPos), targetPos.y, 0), moveSpeed)); // y 축 먼저 이동
+        lerp = StartCoroutine(lerpCoroutine(startPos,new Vector3((xPos > targetPos.x ? targetPos.x : xPos), targetPos.y, 0), speed)); // y 축 먼저 이동
     }
 
     private void Start()
     {
         // 초기 데이터 저장
         initialHealth = unitData.Health;
-        initialMoveSpeed = unitData.MoveSpeed;
+        initialSpeed = unitData.Speed;
         initialPower = unitData.Power;
         initialAttackTime = unitData.AttackTime;
     }
@@ -117,7 +117,7 @@ public class PlayerUnit : UnitBase
         // 수치값
         unitID = unitData.UnitID;
         health = unitData.Health;
-        moveSpeed = unitData.MoveSpeed;
+        speed = unitData.Speed;
         power = unitData.Power;
         attackTime = unitData.AttackTime;
 
@@ -148,7 +148,7 @@ public class PlayerUnit : UnitBase
             else { moveVec.x *= 1f; moveVec.y *= 1f; } // 정상화
 
             // 이동
-            transform.position += moveVec.normalized * moveSpeed * Time.deltaTime;
+            transform.position += moveVec.normalized * speed * Time.deltaTime;
             unitState = UnitState.Move;
 
             // 애니메이션
@@ -162,7 +162,7 @@ public class PlayerUnit : UnitBase
             if (startMoveFinish)
             {
                 // 유닛의 처음 위치로 귀환
-                StartCoroutine(lerpCoroutine(transform.position, firstPos, moveSpeed));
+                StartCoroutine(lerpCoroutine(transform.position, firstPos, speed));
 
                 if (transform.position == firstPos) {
 
@@ -338,10 +338,10 @@ public class PlayerUnit : UnitBase
             nearestAttackTarget = null;
         }
 
-        moveSpeed = 0;
+        speed = 0;
         attackTime = 0;
 
-        BattleData.Instance.units.Remove(gameObject);
+        CardManager.Instance.units.Remove(gameObject);
 
         // 진행중인 코루틴 함수 모두 중지
         if (smash != null) { StopCoroutine(smash); smash = null; }

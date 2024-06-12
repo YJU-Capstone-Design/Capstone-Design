@@ -24,6 +24,7 @@ public class SpellBase : MonoBehaviour
     // 스테이터스 버프
     public float maxHpUp; // 최대 HP 증가
     public float powerUp; // 공격력 증가
-    public float moveSpeedUp; // 이동속도 증가
-    public float attackTimeDown; // 공격속도 증가
+    public float speedUp; // 속도 증가
+
+
 }

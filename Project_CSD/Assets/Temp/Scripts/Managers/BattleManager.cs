@@ -24,8 +24,8 @@ public class BattleManager :Singleton<BattleManager>
     [Header("BattleMgr")]
     [SerializeField] private GameObject battle;
     [SerializeField] private GameObject gameEnd;
-    [SerializeField] public Transform mainCamera;
-    [SerializeField] public int wave;
+    [SerializeField] Transform mainCamera;
+    public int wave;
 
     [Header("Spawn")]
     public PoolManager pool;
@@ -50,7 +50,6 @@ public class BattleManager :Singleton<BattleManager>
     [SerializeField] Image resultPanel;
     [SerializeField] Image resultMenuBar;
     [SerializeField] Image[] resultWaveImg;
-    [SerializeField] Animator[] resultObjsAnim;
 
     enum UnitType { Bread, Pupnut, Kitchu, Ramo, Sorang, Croirang }; // 테스트(제작)용
     UnitType unitType;
@@ -74,12 +73,6 @@ public class BattleManager :Singleton<BattleManager>
         ReadSpawnFile(wave); // 적 유닛 스폰 파일 가져오기
 
         unitType = UnitType.Bread; // 테스트(제작)용
-
-        // 결과창 애니메이션 초기화
-        foreach (Animator anim in resultObjsAnim)
-        {
-            anim.SetBool("end", false);
-        }
     }
 
     void Update()
@@ -240,12 +233,6 @@ public class BattleManager :Singleton<BattleManager>
             // Wave 저장 필요 -> DontDestroy 오브젝트에 넣어야 할 듯
         }
 
-        // 애니메이션
-        foreach(Animator anim in resultObjsAnim)
-        {
-            anim.SetBool("end", true);
-        }
-
     }
 
     // 유닛 스폰 버튼
@@ -305,30 +292,16 @@ public class BattleManager :Singleton<BattleManager>
 
     }
 
-    public void CardShuffle(bool Recost)
+    public void CardShuffle()
     {
-        if (UiManager.Instance.cost >= 1&&Recost)
+
+        foreach (GameObject card in cardObj)
         {
-            foreach (GameObject card in cardObj)
-            {
-                Destroy(card);
-            }
-            cardObj.Clear();
-            CardMake();
-            Debug.Log("Shuffle");
-            UiManager.Instance.cost -= 1;
+            Destroy(card);
         }
-        else if (!Recost)
-        {
-            foreach (GameObject card in cardObj)
-            {
-                Destroy(card);
-            }
-            cardObj.Clear();
-            CardMake();
-            Debug.Log("Shuffle");
-        }
-        
+        cardObj.Clear();
+        CardMake();
+        Debug.Log("Shuffle");
     }
 
     void UpdateHealthBar()

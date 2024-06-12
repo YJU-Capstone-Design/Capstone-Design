@@ -12,11 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a845f90d0e6947f41a945dcd5a979615, type: 3}
   m_Name: Orc
   m_EditorClassIdentifier: 
-  unitType: 1
   unitID: 32002
-  unitName: "\uC624\uD06C"
-  cost: 0
-  health: 2500
-  power: 500
-  moveSpeed: 0.75
-  attackTime: 5
+  health: 1000
+  speed: 1
+  power: 20
+  attackTime: 2

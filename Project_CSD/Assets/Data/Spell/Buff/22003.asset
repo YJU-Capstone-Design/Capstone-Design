@@ -20,5 +20,4 @@ MonoBehaviour:
   damage: 0
   maxHpUp: 0
   powerUp: 0
-  moveSpeedUp: 50
-  attackTimeDown: 25
+  speedUp: 50

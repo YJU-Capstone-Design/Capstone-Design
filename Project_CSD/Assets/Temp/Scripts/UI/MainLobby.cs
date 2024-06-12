@@ -1,4 +1,3 @@
-using Spine;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -35,12 +34,9 @@ public class MainLobby : MonoBehaviour
     [SerializeField] private GameObject mainLobby;//메인로비 UI(캔버스)
     [SerializeField] private GameObject mainLobbyObj;//메인로비 필드 오브젝트
 
-    [Header("MainBg")]//진입금지룸
-    [SerializeField] GameObject mainBG;
 
 
-    [Header("Prohibited Room")]//진입금지룸
-    [SerializeField] GameObject pop;
+
 
     private void Start()
     {
@@ -57,13 +53,11 @@ public class MainLobby : MonoBehaviour
         int openScene = 0;
         if (type == "Gacha")
         {
-            mainBG.SetActive(false);
             openScene = 1;
         }
         else if (type == "TraningBtn")
         {
-            pop.SetActive(true);
-            //openScene = 2;
+            openScene = 2;
         }
         else if (type == "Formation")
         {
@@ -71,8 +65,7 @@ public class MainLobby : MonoBehaviour
         }
         else if (type == "KitchenRoom")
         {
-            pop.SetActive(true);
-            // openScene = 4;
+            openScene = 4;
         }
         else if (type == "Collection")
         {
@@ -80,8 +73,7 @@ public class MainLobby : MonoBehaviour
         }
         else if (type == "Chm&Mission")
         {
-            pop.SetActive(true);
-            //openScene = 6;
+            openScene = 6;
         }
         for (int i = 1; i < menu.Count; i++)
         {
@@ -102,10 +94,7 @@ public class MainLobby : MonoBehaviour
 
     }
 
-    public void ClosePoP()
-    {
-        pop.SetActive(false);
-    }
+
     public void ToggleOnOff()
     {
         if (toogleState == 0)
@@ -155,7 +144,7 @@ public class MainLobby : MonoBehaviour
 
     public void Clear()
     {
-        mainBG.SetActive(true);
+        
         toogleState = 0;
         mainLobby.transform.localScale = Vector3.one;
         menu[0].gameObject.SetActive(true);

@@ -43,7 +43,7 @@ public class EnemyUnit : UnitBase
 
     void OnEnable()
     {
-        BattleData.Instance.enemys.Add(gameObject);
+        CardManager.Instance.enemys.Add(gameObject);
         StateSetting(BattleManager.Instance.wave);
     }
 
@@ -51,22 +51,20 @@ public class EnemyUnit : UnitBase
     {
         // 초기 데이터 저장
         initialHealth = unitData.Health;
-        initialMoveSpeed = unitData.MoveSpeed;
+        initialSpeed = unitData.Speed;
         initialPower = unitData.Power;
         initialAttackTime = unitData.AttackTime;
     }
 
     void Update()
     {
+        
         if (unitState != UnitState.Die)
         {
-            if(hpBar != null)
-            {
-                // 체력 실시간 적용
-                HpBar hpBarLogic = hpBar.GetComponent<HpBar>();
-                hpBarLogic.nowHp = health;
-                hpBarLogic.hpBarDir = moveVec;
-            }
+            // 체력 실시간 적용
+            HpBar hpBarLogic = hpBar.GetComponent<HpBar>();
+            hpBarLogic.nowHp = health;
+            hpBarLogic.hpBarDir = moveVec;
 
             if (health <= 0)
             {
@@ -77,7 +75,7 @@ public class EnemyUnit : UnitBase
             {
                 AttackRay();
 
-                if(transform.position.x <= 28) { col.enabled = true; } else {  col.enabled = false; } // 아군 유닛 최대 전진 범위 때문에 설정
+                if(transform.position.x <= 27) { col.enabled = true; } else {  col.enabled = false; } // 아군 유닛 최대 전진 범위 때문에 설정
             }
         }
 
@@ -106,13 +104,12 @@ public class EnemyUnit : UnitBase
     {
         // 수치값
         unitID = unitData.UnitID;
-        health = unitData.Health + (unitData.Health / 10) * wave;
-        moveSpeed = unitData.MoveSpeed;
-        power = unitData.Power + (unitData.Power / 10) * wave;
+        health = unitData.Health + (initialHealth / 10) * wave;
+        speed = unitData.Speed;
+        power = unitData.Power + (initialPower / 10) * wave;
         attackTime = unitData.AttackTime;
 
         // 설정값
-        //col.enabled = true;
         unitState = UnitState.Move;
         moveVec = Vector3.left;
         transform.GetChild(0).rotation = Quaternion.identity; // 애니메이션 각도 초기화를 위한 로직
@@ -144,7 +141,7 @@ public class EnemyUnit : UnitBase
         }
 
         // 목표 지점으로 이동
-        transform.position += moveVec.normalized * moveSpeed * Time.deltaTime;
+        transform.position += moveVec.normalized * speed * Time.deltaTime;
         unitState = UnitState.Move;
 
         // 가는 방향에 따라 Sprite 방향 변경
@@ -358,10 +355,10 @@ public class EnemyUnit : UnitBase
         if (smash != null) { StopCoroutine(smash); smash = null; }
         if (arrow != null) { StopCoroutine(arrow); arrow = null; }
 
-        moveSpeed = 0;
+        speed = 0;
         attackTime = 0;
 
-        BattleData.Instance.enemys.Remove(gameObject);
+        CardManager.Instance.enemys.Remove(gameObject);
 
         // 애니메이션
         anim.Die();

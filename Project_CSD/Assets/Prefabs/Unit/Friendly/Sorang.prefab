@@ -19447,7 +19447,7 @@ Transform:
   m_GameObject: {fileID: 3676511844163922642}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 13.870607, y: -2.5232558, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -19535,7 +19535,7 @@ MonoBehaviour:
   disableRenderingOnOverride: 1
   updateTiming: 1
   unscaledTime: 0
-  _animationName: Idle
+  _animationName: Defense_ing
   loop: 0
   timeScale: 1
 --- !u!61 &5779101921625321433
@@ -19596,22 +19596,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialHealth: 0
-  initialMoveSpeed: 0
+  initialSpeed: 0
   initialPower: 0
   initialAttackTime: 0
-  unitType: 0
   unitState: 0
   unitID: 0
-  unitName: 
-  cost: 0
   health: 0
+  speed: 0
   power: 0
-  moveSpeed: 0
   attackTime: 0
-  unit_CardImg: {fileID: 0}
   buffEffect: []
   scanner: {fileID: 0}
-  unitData: {fileID: 11400000, guid: 6342ce5480d225c4a81e8c7adad08a2f, type: 2}
+  unitData: {fileID: 11400000, guid: 6a0d6bae7feee7c4b8e089d7c61ba908, type: 2}
   attackRayPos: {x: 0.6, y: 0.5, z: 0}
   attackRaySize: {x: 1, y: 1}
   nearestAttackTarget: {fileID: 0}
