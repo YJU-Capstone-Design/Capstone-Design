@@ -74,12 +74,6 @@ public class BattleManager :Singleton<BattleManager>
         ReadSpawnFile(wave); // 적 유닛 스폰 파일 가져오기
 
         unitType = UnitType.Bread; // 테스트(제작)용
-
-        // 결과창 애니메이션 초기화
-        foreach (Animator anim in resultObjsAnim)
-        {
-            anim.SetBool("end", false);
-        }
     }
 
     void Update()
@@ -112,7 +106,7 @@ public class BattleManager :Singleton<BattleManager>
             if (wave + 1 == enemySpawnFile.Count)
             {
                 battleState = BattleState.Win;
-                Debug.Log("Win");
+                EndGame("Win");
             }
             // 아직 처리하지 못한 enemySpawnFile 이 남아있을 경우 다음 Wave 실행
             else if (wave + 1 < enemySpawnFile.Count && battleState == BattleState.Start)
@@ -131,18 +125,6 @@ public class BattleManager :Singleton<BattleManager>
         if(spawnIndex >= 1)
         {
             waveUI.SetActive(false);
-        }
-
-        // 이겼거나 졌을 경우 결과창 띄우기
-        if (battleState == BattleState.Win)
-        {
-            // 결과 PopUp 창
-            EndGame("Win");
-        }
-        else if(battleState == BattleState.Lose)
-        {
-            // 결과 PopUp 창
-            EndGame("Lose");
         }
 
 
@@ -231,21 +213,30 @@ public class BattleManager :Singleton<BattleManager>
         {
             resultPanel.sprite = resultImg[0];
             resultMenuBar.sprite = resultImg[2];
+
+            StartCoroutine(ResultUI(2));
         }
         else if(whether == "Lose")
         {
             resultPanel.sprite = resultImg[1];
             resultMenuBar.sprite = resultImg[3];
 
-            // Wave 저장 필요 -> DontDestroy 오브젝트에 넣어야 할 듯
+            Debug.Log("Lose");
+            StartCoroutine(ResultUI(0));
         }
+    }
+
+    IEnumerator ResultUI(int second)
+    {
+        Time.timeScale = 1;
+
+        yield return new WaitForSeconds(second);
 
         // 애니메이션
-        foreach(Animator anim in resultObjsAnim)
+        foreach (Animator anim in resultObjsAnim)
         {
             anim.SetBool("end", true);
         }
-
     }
 
     // 유닛 스폰 버튼
@@ -285,6 +276,7 @@ public class BattleManager :Singleton<BattleManager>
         float damage = dmg;
         curHealth -= damage;
         UpdateHealthBar();
+
     }
 
     private void CardMake()
@@ -339,6 +331,7 @@ public class BattleManager :Singleton<BattleManager>
         if (curHealth <= 0)
         {
             Time.timeScale = 1;
+            EndGame("Lose"); // 결과창 UI 활성화
             Invoke("Test_GameOver",3f);
         }
     }
