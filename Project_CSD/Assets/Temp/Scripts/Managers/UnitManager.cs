@@ -12,6 +12,11 @@ public class UnitManager : MonoBehaviour
     private PoolManager pool;
     public Button unitSpawnRangeButton;
 
+<<<<<<< HEAD
+=======
+    public Button reRoll;
+
+>>>>>>> origin/Card
     private void Awake()
     {
         unit = GetComponent<Unit>();
@@ -20,12 +25,24 @@ public class UnitManager : MonoBehaviour
         pool = go.GetComponent<PoolManager>();
 
         unitSpawnRangeButton = BattleManager.Instance.unitSpawnRange.GetComponentInChildren<Button>();
+
+        reRoll = BattleManager.Instance.reRoll;
     }
     public void UsingCard()
     {
-        GameObject spawnArea = BattleManager.Instance.unitSpawnRange.transform.GetChild(1).gameObject;
-        RectTransform spawnAreaAnchors = spawnArea.GetComponent<RectTransform>();
+        if (!BattleManager.Instance.unitSpawnRange.activeSelf)
+        {
+            // 해당 카드를 제외한 카드의 버튼 컴포넌트를 비활성화 처리
+            foreach (GameObject card in BattleManager.Instance.cardObj)
+            {
+                if (card != this.gameObject)
+                {
+                    card.GetComponent<Button>().enabled = false;
+                    reRoll.enabled = false;
+                }
+            }
 
+<<<<<<< HEAD
         /*        // 메인 카메라의 위치에 따라 스폰 가능 영역 범위 변경
                 if (BattleManager.Instance.mainCamera.position.x >= 3)
                 {
@@ -51,6 +68,40 @@ public class UnitManager : MonoBehaviour
         Debug.Log(unit.unitID);
 /*        unitSpawnRangeButton.onClick.AddListener(() => UnitSpawn(unit.unitID));*/
         unitSpawnRangeButton.onClick.AddListener(() => Buy(unit.cost));
+=======
+            GameObject spawnArea = BattleManager.Instance.unitSpawnRange.transform.GetChild(1).gameObject;
+            RectTransform spawnAreaAnchors = spawnArea.GetComponent<RectTransform>();
+
+            // 메인 카메라의 위치에 따라 스폰 가능 영역 범위 변경
+            if (BattleManager.Instance.mainCamera.position.x >= 3)
+            {
+                spawnAreaAnchors.anchorMin = new Vector2(0, 0.43f);
+                spawnAreaAnchors.anchorMax = new Vector2(1, 0.66f);
+            }
+            else
+            {
+                spawnAreaAnchors.anchorMin = new Vector2(0.15f, 0.43f);
+                spawnAreaAnchors.anchorMax = new Vector2(1, 0.66f);
+            }
+            BattleManager.Instance.unitSpawnRange.SetActive(true);
+            unitSpawnRangeButton.onClick.RemoveAllListeners();
+            Debug.Log(unit.unitID);
+            /*        unitSpawnRangeButton.onClick.AddListener(() => UnitSpawn(unit.unitID));*/
+            unitSpawnRangeButton.onClick.AddListener(() => Buy(unit.cost));
+        } else
+        {
+            // 해당 카드의 사용을 캔슬할 경우 다른 카드의 버튼 컴포넌트 활성화
+            foreach (GameObject card in BattleManager.Instance.cardObj)
+            {
+                if (card != this.gameObject)
+                {
+                    card.GetComponent<Button>().enabled = true;
+                    reRoll.enabled = true;
+                }
+            }
+            BattleManager.Instance.unitSpawnRange.SetActive(false);
+        }
+>>>>>>> origin/Card
     }
 
     public void UnitSpawn(int unitID)
@@ -84,6 +135,7 @@ public class UnitManager : MonoBehaviour
         BattleManager.Instance.unitSpawnRange.SetActive(false);
         BattleManager.Instance.CardShuffle(false);
     }
+
 
     public void Buy(int unitCost)
     {

@@ -50,6 +50,7 @@ public class BattleManager :Singleton<BattleManager>
     [SerializeField] Image resultMenuBar;
     [SerializeField] Image[] resultWaveImg;
     [SerializeField] Animator[] resultObjsAnim;
+    [SerializeField] public Button reRoll;
 
     enum UnitType { Bread, Pupnut, Kitchu, Ramo, Sorang, Croirang }; // 테스트(제작)용
     UnitType unitType;
