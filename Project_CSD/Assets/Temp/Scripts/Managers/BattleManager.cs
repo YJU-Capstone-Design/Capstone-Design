@@ -338,7 +338,7 @@ public class BattleManager :Singleton<BattleManager>
         HpBarSlider.value = sliderValue;
         if (curHealth <= 0)
         {
-            Time.timeScale = 1;
+            Time.timeScale = 1f;
             Invoke("Test_GameOver",3f);
         }
     }
