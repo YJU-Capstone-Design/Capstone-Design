@@ -1005,7 +1005,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 44.1
+  m_fontSize: 44.15
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -2526,6 +2526,7 @@ MonoBehaviour:
   - {fileID: 4900000, guid: 83e30de80904dd146b2b05e06dce7148, type: 3}
   - {fileID: 4900000, guid: 450460b456eaa9b4883600f0fe779b71, type: 3}
   - {fileID: 4900000, guid: 003d841d02f7b5d4283cc92d8d8700fb, type: 3}
+  hpBarParent: {fileID: 896767616}
   unitSpawnRange: {fileID: 974946586}
   waveUI: {fileID: 7526724413939370857}
   waveUIChild:
@@ -3067,8 +3068,8 @@ MonoBehaviour:
   - {fileID: 7155335147208632822, guid: 97c43495f80a3244fad1301dfafbe252, type: 3}
   - {fileID: 7131401307255788800, guid: 4d9a3b35b3bc07649b697df7fb497b6d, type: 3}
   - {fileID: 9017484664307500583, guid: 1245b8d2997d5b34fb1637be70a7eb05, type: 3}
-  - {fileID: 6551973690250786760, guid: 96e192a1fe99f474a965dc336310e7c2, type: 3}
-  - {fileID: 6551973690250786760, guid: 60ea9ec667e04d94797967ee19200fb1, type: 3}
+  - {fileID: 7339107190655348046, guid: 185859432bdd2884d90747eaba8d8d46, type: 3}
+  - {fileID: 7339107190655348046, guid: 935a759ae4be805498e19f5721d1e319, type: 3}
   enemyPrefabs:
   - {fileID: 1042312463165950002, guid: dde4af852618849acba1afba12097aea, type: 3}
   - {fileID: 4373878531874603118, guid: 043ce7cd9aa2640cb8a66468599e4d4d, type: 3}
@@ -4252,7 +4253,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &807153527
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9164,10 +9165,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 2016165686}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.315, y: 0}
-  m_AnchorMax: {x: 0.685, y: 0.2}
-  m_AnchoredPosition: {x: 0, y: -95}
-  m_SizeDelta: {x: 0, y: 30}
+  m_AnchorMin: {x: 0.315, y: -0.15}
+  m_AnchorMax: {x: 0.685, y: 0.1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1776530781
 MonoBehaviour:

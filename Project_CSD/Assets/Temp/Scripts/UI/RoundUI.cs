@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RoundUI : MonoBehaviour
 {
-    float radius = 320f;
+    float radius = 333f;
 
     void Update()
     {
@@ -22,7 +22,15 @@ public class RoundUI : MonoBehaviour
             Vector2 targetPosition = new Vector2(Mathf.Cos(radianAngle), Mathf.Sin(radianAngle)) * radius;
 
             // 보간을 사용하여 부드럽게 이동합니다.
-            child.localPosition = Vector2.Lerp(child.localPosition, targetPosition, Time.deltaTime * 5f);
+            if (i == 1)
+            {
+                child.localPosition = Vector2.Lerp(child.localPosition, targetPosition - new Vector2(0, 60f), Time.deltaTime * 5f);
+            }
+            else
+            {
+                child.localPosition = Vector2.Lerp(child.localPosition, targetPosition - new Vector2(30f - (30f * i), 0), Time.deltaTime * 5f);
+            }
+            child.localRotation = Quaternion.Euler(new Vector3(0, 0, -20 + (20 * i)));
         }
     }
 }
