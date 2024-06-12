@@ -73,7 +73,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: -2
-  m_Sprite: {fileID: 21300000, guid: 2ddba7d8a39b544419ed6670d8954671, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 339404fe9500ef340807f5ad82ea9753, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -157,7 +157,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: cccdc95404b3cf74682dce6464c47a28, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9069eebf61dddb843b6e30f4cec72ac3, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -179,7 +179,7 @@ GameObject:
   - component: {fileID: 201179455759585643}
   - component: {fileID: 3668842719057618521}
   m_Layer: 0
-  m_Name: Unit HpBar
+  m_Name: Enemy HpBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -79,7 +79,6 @@ public class PlayerUnit : UnitBase
             // 체력 실시간 적용
             HpBar hpBarLogic = hpBar.GetComponent<HpBar>();
             hpBarLogic.nowHp = health;
-            hpBarLogic.hpBarDir = moveVec;
 
             if (health <= 0 || BattleManager.Instance.battleState == BattleManager.BattleState.Lose) // hp 가 0 이 되거나 게임에서 졌을 경우
             {
