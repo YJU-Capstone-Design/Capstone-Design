@@ -12,6 +12,7 @@ public class CollectionSpell : MonoBehaviour
     {
 
         UpdateCollection();
+        Debug.Log("SpellCollection Update");
 
     }
 
@@ -45,17 +46,17 @@ public class CollectionSpell : MonoBehaviour
 
 
         // Todo : 보유한 카드 표시
-        for (int i = 0; i < HoldingList.single.holding_Unit.Count; i++)
+        for (int i = 0; i < HoldingList.single.Cardholding_Spell.Count; i++)
         {
-            getNewCollectionItem(ref haveItems).Init(HoldingList.single.holding_Unit[i]);
+            getNewCollectionItem(ref haveItems).SpellInit(HoldingList.single.Cardholding_Spell[i]);
         }
         // todo : 미 보유한 카드 표시
-        for (int i = 0; i < GachaManager.single.listGachaTemplete.Count; i++)
+        for (int i = 0; i < GachaManager.single.listSpellItem.Count; i++)
         {
-            UnitData have = HoldingList.single.holding_Unit.Find(val => val.UnitID == GachaManager.single.listGachaTemplete[i].UnitID);
+            SpellData have = HoldingList.single.Cardholding_Spell.Find(val => val.SpellID == GachaManager.single.listSpellItem[i].SpellID);
             if (have != null)
                 continue;
-            getNewCollectionItem(ref noneItems).Init(GachaManager.single.listGachaTemplete[i]);
+            getNewCollectionItem(ref noneItems).SpellInit(GachaManager.single.listSpellItem[i]);
         }
 
         LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)parentTr);

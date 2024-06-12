@@ -6,7 +6,7 @@ public class HoldingList : MonoBehaviour
 {
     public static HoldingList single { get; private set; }
     public List<UnitData> holding_Unit = new List<UnitData>();
-    public List<SpellData> Cardholding_Unit = new List<SpellData>();
+    public List<SpellData> Cardholding_Spell = new List<SpellData>();
     public void Awake()
     {
         single = this;
@@ -54,9 +54,9 @@ public class HoldingList : MonoBehaviour
         bool exists = false;
 
         // 리스트에 동일한 ID를 가진 유닛이 있는지 확인
-        for (int i = 0; i < holding_Unit.Count; i++)
+        for (int i = 0; i < Cardholding_Spell.Count; i++)
         {
-            if (holding_Unit[i].UnitID == newid)
+            if (Cardholding_Spell[i].SpellID == newid)
             {
                 exists = true;
                 break;
@@ -66,12 +66,12 @@ public class HoldingList : MonoBehaviour
         // 동일한 ID를 가진 유닛이 없을 경우에만 리스트에 추가
         if (!exists)
         {
-            Cardholding_Unit.Add(data);
-            Debug.Log("Added unit: " + data.SpellName);
+            Cardholding_Spell.Add(data);
+            Debug.Log("Added spell: " + data.SpellName);
         }
         else
         {
-            Debug.Log("Unit already exists: " + data.SpellName);
+            Debug.Log("Spell already exists: " + data.SpellName);
         }
     }
 }
