@@ -39,12 +39,16 @@ public class UnitData : ScriptableObject
     [SerializeField] // À¯´Ö °ø°İ ÄğÅ¸ÀÓ
     private float attackTime;
     public float AttackTime { get { return attackTime; } }
+    
+    [SerializeField] // ¾ÆÀÌÅÛ Å¸ÀÔ À¯´Ö||½ºÆç 1 = À¯´Ö 2 = ½ºÆë
+    private int item_Type;
+    public float Item_Type { get { return item_Type; } }
 
     [SerializeField] // À¯´Ö ÀÌ¹ÌÁö
     private Sprite unit_Img;
     public Sprite Unit_Img { get { return unit_Img; } }
 
-    [SerializeField] // À¯´Ö ÀÌ¹ÌÁö
+    [SerializeField] // À¯´Ö Ä«µå ÀÌ¹ÌÁö
     private Sprite unit_CardImg;
     public Sprite Unit_CardImg { get { return unit_CardImg; } }
 

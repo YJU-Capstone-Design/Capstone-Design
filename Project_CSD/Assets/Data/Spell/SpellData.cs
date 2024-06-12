@@ -49,4 +49,12 @@ public class SpellData : ScriptableObject
     [SerializeField] // 공격 딜레이 감소 (= 공격속도 증가)
     private float attackTimeDown;
     public float AttackTimeDown { get { return attackTimeDown; } }
+
+    [SerializeField] // 아이템 타입 유닛||스펠 1 = 유닛 2 = 스펭
+    private int item_Type;
+    public float Item_Type { get { return item_Type; } }
+
+    [SerializeField] // 유닛 카드 이미지
+    private Sprite spell_CardImg;
+    public Sprite Spell_CardImg { get { return spell_CardImg; } }
 }

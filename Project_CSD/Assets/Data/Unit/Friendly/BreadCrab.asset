@@ -20,5 +20,6 @@ MonoBehaviour:
   power: 0
   moveSpeed: 0.5
   attackTime: 1.5
+  item_Type: 1
   unit_Img: {fileID: 21300000, guid: 18e70d213e4ef4d4fb04e0a374cf7597, type: 3}
   unit_CardImg: {fileID: 21300000, guid: 50892fbfdfcfbb648b6b18633e5da7bc, type: 3}
