@@ -12,11 +12,8 @@ public class UnitManager : MonoBehaviour
     private PoolManager pool;
     public Button unitSpawnRangeButton;
 
-<<<<<<< HEAD
-=======
     public Button reRoll;
 
->>>>>>> origin/Card
     private void Awake()
     {
         unit = GetComponent<Unit>();
@@ -42,33 +39,6 @@ public class UnitManager : MonoBehaviour
                 }
             }
 
-<<<<<<< HEAD
-        /*        // 메인 카메라의 위치에 따라 스폰 가능 영역 범위 변경
-                if (BattleManager.Instance.mainCamera.position.x >= 3)
-                {
-                    BattleManager.Instance.mainCamera.position = new Vector3(0,0,-10);
-                    spawnAreaAnchors.anchorMin = new Vector2(0, 0.43f);
-                    spawnAreaAnchors.anchorMax = new Vector2(1, 0.66f);
-                } 좌표세이브 주석처리 06/12일 카드 클릭시 소한 범위 조정을 위한 카메라 이동
-                else
-                {
-                    spawnAreaAnchors.anchorMin = new Vector2(0.15f, 0.43f);
-                    spawnAreaAnchors.anchorMax = new Vector2(1, 0.66f);
-                }*/
-
-        // 메인 카메라의 위치에 따라 스폰 가능 영역 범위 변경
-        if (BattleManager.Instance.mainCamera.position.x >= 3)
-        {
-            BattleManager.Instance.mainCamera.position = new Vector3(0, 0, -10);
-            spawnAreaAnchors.anchorMin = new Vector2(0.15f, 0.43f);
-            spawnAreaAnchors.anchorMax = new Vector2(1, 0.66f);
-        }
-        BattleManager.Instance.unitSpawnRange.SetActive(true);
-        unitSpawnRangeButton.onClick.RemoveAllListeners();
-        Debug.Log(unit.unitID);
-/*        unitSpawnRangeButton.onClick.AddListener(() => UnitSpawn(unit.unitID));*/
-        unitSpawnRangeButton.onClick.AddListener(() => Buy(unit.cost));
-=======
             GameObject spawnArea = BattleManager.Instance.unitSpawnRange.transform.GetChild(1).gameObject;
             RectTransform spawnAreaAnchors = spawnArea.GetComponent<RectTransform>();
 
@@ -88,7 +58,8 @@ public class UnitManager : MonoBehaviour
             Debug.Log(unit.unitID);
             /*        unitSpawnRangeButton.onClick.AddListener(() => UnitSpawn(unit.unitID));*/
             unitSpawnRangeButton.onClick.AddListener(() => Buy(unit.cost));
-        } else
+        }
+        else
         {
             // 해당 카드의 사용을 캔슬할 경우 다른 카드의 버튼 컴포넌트 활성화
             foreach (GameObject card in BattleManager.Instance.cardObj)
@@ -101,7 +72,6 @@ public class UnitManager : MonoBehaviour
             }
             BattleManager.Instance.unitSpawnRange.SetActive(false);
         }
->>>>>>> origin/Card
     }
 
     public void UnitSpawn(int unitID)
@@ -144,7 +114,7 @@ public class UnitManager : MonoBehaviour
         {
             // 코스트를 차감하고 유닛을 스폰
             UiManager.Instance.cost -= unitCost;
-            UnitSpawn(unit.unitID); //52줄에 있는 데이터 담기
+            UnitSpawn(unit.unitID);
         }
         else
         {
