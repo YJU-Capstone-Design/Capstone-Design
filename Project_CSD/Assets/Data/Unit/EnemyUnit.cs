@@ -94,7 +94,7 @@ public class EnemyUnit : UnitBase
 
                 // 체력바 OrderLayer
                 HpBar hpBarLogic = hpBar.GetComponent<HpBar>();
-                hpBarLogic.realHpSprite.sortingOrder = Mathf.Abs(orderLayer);
+                hpBarLogic.realHpSprite.sortingOrder = Mathf.Abs(orderLayer) - 1;
                 hpBarLogic.hpFrameSprite.sortingOrder = Mathf.Abs(orderLayer);
             }
         }
