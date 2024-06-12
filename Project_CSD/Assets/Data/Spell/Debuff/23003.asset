@@ -22,3 +22,5 @@ MonoBehaviour:
   powerUp: 0
   moveSpeedUp: -10
   attackTimeDown: -25
+  item_Type: 2
+  unit_CardImg: {fileID: 21300000, guid: d36db62af5c75214582a25d061c635ea, type: 3}
