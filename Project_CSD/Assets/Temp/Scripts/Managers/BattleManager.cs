@@ -330,7 +330,7 @@ public class BattleManager :Singleton<BattleManager>
         HpBarSlider.value = sliderValue;
         if (curHealth <= 0)
         {
-            Time.timeScale = 1;
+            Time.timeScale = 1f;
             EndGame("Lose"); // 결과창 UI 활성화
             Invoke("Test_GameOver",3f);
         }
