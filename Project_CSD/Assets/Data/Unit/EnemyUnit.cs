@@ -269,23 +269,26 @@ public class EnemyUnit : UnitBase
             yield return new WaitForSeconds(anim.GetTime());
         }
 
+        if (nearestAttackTarget != null)
+        {
+            if (nearestAttackTarget.gameObject.CompareTag("Wall"))
+            {
+                BattleManager.Instance.HpDamage(power);
 
-        if (nearestAttackTarget.gameObject.CompareTag("Wall"))
-        {
-            BattleManager.Instance.HpDamage(power);
-        }
-        else
-        {
-            if ((unitID % 10000) / 1000 == 2) // 탱커 -> 다수 공격
+            }
+            else
             {
-                foreach(Transform enemy in multipleAttackTargets)
+                if ((unitID % 10000) / 1000 == 2) // 탱커 -> 다수 공격
                 {
-                    SetEnemyState(enemy);
+                    foreach (Transform enemy in multipleAttackTargets)
+                    {
+                        SetEnemyState(enemy);
+                    }
                 }
-            } 
-            else // 단일 공격
-            {
-                SetEnemyState(nearestAttackTarget);
+                else // 단일 공격
+                {
+                    SetEnemyState(nearestAttackTarget);
+                }
             }
         }
 
