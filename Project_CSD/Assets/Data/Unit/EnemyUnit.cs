@@ -65,7 +65,6 @@ public class EnemyUnit : UnitBase
                 // 체력 실시간 적용
                 HpBar hpBarLogic = hpBar.GetComponent<HpBar>();
                 hpBarLogic.nowHp = health;
-                hpBarLogic.hpBarDir = moveVec;
             }
 
             if (health <= 0)

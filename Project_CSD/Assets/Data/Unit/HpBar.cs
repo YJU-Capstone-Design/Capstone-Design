@@ -5,40 +5,34 @@ using UnityEngine.UI;
 
 public class HpBar : MonoBehaviour
 {
-    public Image realHp;
+    public Transform realHp;
+    public SpriteRenderer realHpSprite;
     public Transform owner;
-    public GameObject parent;
     public float nowHp;
     public float maxHp;
     public Vector3 hpBarPos;
-    public Vector3 hpBarDir;
-
-    private void OnEnable()
-    {
-        transform.SetParent(BattleManager.Instance.hpBarParent.transform);
-    }
 
     private void Update()
     {
         // Æ÷Áö¼Ç
-        hpBarPos = new Vector3(0, -0.25f);
-        transform.position = Camera.main.WorldToScreenPoint(owner.position + hpBarPos);
+        hpBarPos = new Vector3(-0.3f, -0.25f);
+        transform.position = owner.position + hpBarPos;
 
-        // hp fillAmount
-        realHp.fillAmount = (float)nowHp / (float)maxHp;
+        // hp fillAmount (Scale)
+        realHp.localScale = new Vector3((float)nowHp / (float)maxHp, 1, 1);
 
         // Color
-        if (realHp.fillAmount > 0.25f && realHp.fillAmount <= 0.75f)
+        if (realHp.localScale.x > 0.25f && realHp.localScale.x <= 0.75f)
         {
-            realHp.color = Color.yellow;
+            realHpSprite.color = Color.yellow;
         }
-        else if (realHp.fillAmount <= 0.25f)
+        else if (realHp.localScale.x <= 0.25f)
         {
-            realHp.color = Color.red;
+            realHpSprite.color = Color.red;
         }
         else
         {
-            realHp.color = Color.green;
+            realHpSprite.color = Color.green;
         }
     }
 }
