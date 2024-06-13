@@ -46,6 +46,7 @@ public class EnemyUnit : UnitBase
         BattleData.Instance.enemys.Add(gameObject);
         StateSetting(BattleManager.Instance.wave);
         MakeHpBar();
+        Debug.Log("Enable");
     }
 
     private void Start()
@@ -77,7 +78,8 @@ public class EnemyUnit : UnitBase
             {
                 AttackRay();
 
-                if(transform.position.x <= 28) { col.enabled = true; } else {  col.enabled = false; } // 아군 유닛 최대 전진 범위 때문에 설정
+                // 아군 유닛 최대 전진 범위 때문에 설정
+                if (transform.position.x <= 28) { col.enabled = true; } else {  col.enabled = false; }
             }
         }
 
@@ -120,7 +122,8 @@ public class EnemyUnit : UnitBase
         attackTime = unitData.AttackTime;
 
         // 설정값
-        //col.enabled = true;
+        transform.parent.position = Vector3.zero;
+        transform.position = Vector3.zero;
         unitState = UnitState.Move;
         moveVec = Vector3.left;
         transform.GetChild(0).rotation = Quaternion.identity; // 애니메이션 각도 초기화를 위한 로직
@@ -165,23 +168,29 @@ public class EnemyUnit : UnitBase
         if(gameObject.name.Contains("Bat"))
         {
             anim.Idle();
+            Debug.Log("Walk 1");
         }
         else if(gameObject.name.Contains("Beholder") || gameObject.name.Contains("Crow"))
         {
             anim.Fly();
+            Debug.Log("Walk 2");
         }
         else
         {
             anim.Walk();
+            Debug.Log("Walk 3");
         }
     }
 
     // 실제 공격 범위 Ray 함수
     void AttackRay()
     {
-        attackTargets = Physics2D.BoxCastAll(transform.position + new Vector3(attackRayPos.x * Mathf.Sign(moveVec.x), (moveVec.y > 0 ? attackRayUpPos : attackRayDownPos), attackRayPos.z), attackRaySize, 0, Vector2.zero, 0, attackLayer);
-        nearestAttackTarget = scanner.GetNearestAttack(attackTargets); // 단일 공격
-        multipleAttackTargets = scanner.GetAttackTargets(attackTargets, 5); // 다수 공격
+        if (transform.position.x <= 28)
+        {
+            attackTargets = Physics2D.BoxCastAll(transform.position + new Vector3(attackRayPos.x * Mathf.Sign(moveVec.x), (moveVec.y > 0 ? attackRayUpPos : attackRayDownPos), attackRayPos.z), attackRaySize, 0, Vector2.zero, 0, attackLayer);
+            nearestAttackTarget = scanner.GetNearestAttack(attackTargets); // 단일 공격
+            multipleAttackTargets = scanner.GetAttackTargets(attackTargets, 5); // 다수 공격
+        }
 
 
         if (nearestAttackTarget != null)
@@ -388,6 +397,7 @@ public class EnemyUnit : UnitBase
 
         // 부모 오브젝트를 종료
         transform.parent.gameObject.SetActive(false);
+        //transform.gameObject.SetActive(false);
     }
 
 }
