@@ -399,5 +399,4 @@ public class EnemyUnit : UnitBase
         transform.parent.gameObject.SetActive(false);
         //transform.gameObject.SetActive(false);
     }
-
 }
