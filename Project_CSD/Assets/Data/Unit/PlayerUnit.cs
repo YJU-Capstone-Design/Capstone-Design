@@ -52,6 +52,7 @@ public class PlayerUnit : UnitBase
     void OnEnable()
     {
         StateSetting();
+        MakeHpBar();
 
         BattleData.Instance.units.Add(gameObject);
 
@@ -99,7 +100,7 @@ public class PlayerUnit : UnitBase
         // SpriteRenderer 가 있을 경우에는 본체의 y 축 값의 소수점을 제외한 값을 Order Layer 에 적용
         if (bodySprite != null)
         {
-            float yPos = (transform.position.y - 4) * 10; // 음수/양수 처리를 위해 -4, 넓게 분배하기 위해 *10
+            float yPos = (transform.position.y - 4) * 100; // 음수/양수 처리를 위해 -4, 넓게 분배하기 위해 *10
             int orderLayer = Mathf.FloorToInt(yPos); // 소수점 제외
             bodySprite.sortingOrder = Mathf.Abs(orderLayer); // 절대값으로 변경 후 적용
 
@@ -132,9 +133,13 @@ public class PlayerUnit : UnitBase
         firstPos = BattleManager.Instance.point;
         scanner.unitType = unitID / 10000;
         nearestAttackTarget = null;
+    }
 
+    // 체력바
+    void MakeHpBar()
+    {
         // 체력바
-        hpBar = PoolManager.Instance.Get(1,3);
+        hpBar = PoolManager.Instance.Get(1, 3);
         HpBar hpBarLogic = hpBar.GetComponent<HpBar>();
         hpBarLogic.owner = this.gameObject.transform; // 주인 설정
         hpBarLogic.nowHp = health;

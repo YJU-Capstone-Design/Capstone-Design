@@ -154,6 +154,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unitData: {fileID: 0}
   unitSpawnRangeButton: {fileID: 0}
+  reRoll: {fileID: 0}
 --- !u!114 &1560200048377494799
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -2570,6 +2570,7 @@ MonoBehaviour:
   - {fileID: 9124715331880031945}
   - {fileID: 1742697568}
   - {fileID: 237471572}
+  reRoll: {fileID: 598841724}
 --- !u!4 &418216610
 Transform:
   m_ObjectHideFlags: 0
@@ -2618,7 +2619,6 @@ MonoBehaviour:
   mapSize: {x: 0, y: 0}
   tf_cursor: {fileID: 440047941}
   dragSpeed: 100
-  cam: {fileID: 0}
 --- !u!4 &440047941
 Transform:
   m_ObjectHideFlags: 0
@@ -9253,6 +9253,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unitData: {fileID: 0}
   unitSpawnRangeButton: {fileID: 0}
+  reRoll: {fileID: 0}
 --- !u!1 &1848760901
 GameObject:
   m_ObjectHideFlags: 0
