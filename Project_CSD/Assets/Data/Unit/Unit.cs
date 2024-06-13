@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using static UnitBase;
@@ -10,6 +11,7 @@ public class Unit : UnitBase
     public List<UnitData> units = new List<UnitData>();
 
     public Image cardImg;
+    public TextMeshProUGUI unitCost;
 
     public void OnEnable()
     {
@@ -33,5 +35,6 @@ public class Unit : UnitBase
         attackTime = units[index].AttackTime;
         moveSpeed = units[index].MoveSpeed;
         cardImg.sprite = units[index].Unit_CardImg;
+        unitCost.text = units[index].Cost.ToString();
     }
 }

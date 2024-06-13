@@ -32,6 +32,7 @@ public class GachaManager : MonoBehaviour
 
     [Header("∞°√≠ ≈€«√∏¥")]
     public List<UnitData> listGachaTemplete;
+    public List<SpellData> listSpellItem;
     public void Awake()
     {
         single = this;
@@ -71,10 +72,26 @@ public class GachaManager : MonoBehaviour
     {
         result.Clear();
         result_Text.text = "";
-
         result_Str = "";
 
+        StartCoroutine(GachaProcess(number));
+    }
+
+    IEnumerator GachaProcess(int number)
+    {
         for (int i = 1; i <= number; i++)
+        {
+            ItemInit();
+            yield return new WaitForSeconds(2f);
+        }
+        // Gacha_Result(result.Count);
+    }
+
+    void ItemInit()
+    {
+        System.Random random = new System.Random();
+        int randomValue = random.Next(1, 100);
+        if (randomValue <= 24) // Rare 21%
         {
             UnitData dataRandom = listGachaTemplete[Random.Range(0, listGachaTemplete.Count)];
             holdingScript.Update_Hoding(dataRandom);
@@ -85,37 +102,20 @@ public class GachaManager : MonoBehaviour
             Gacha item = temp.GetComponent<Gacha>();
             item.Init(dataRandom);
 
-            /*System.Random random = new System.Random();
-            int randomValue = random.Next(1, 100);
-
-            if (randomValue <= 3) // Epic 3%
-            {
-                //Gacha_Unit(unitList_Epic, "Epic");
-               
-                    GameObject temp = Instantiate(gacha_Item, gacha_Tr.position, Quaternion.identity);
-                    temp.transform.SetParent(this.transform);
-                
-                   
-                
-            }
-            else if (randomValue <= 24) // Rare 21%
-            {
-                GameObject temp = Instantiate(gacha_Item, gacha_Tr.position, Quaternion.identity);
-                temp.transform.SetParent(this.transform);
-
-           
-                //Gacha_Unit(unitList_Rare, "Rare");
-            }
-            else // Common 76%
-            {
-                GameObject temp = Instantiate(gacha_Item, gacha_Tr.position, Quaternion.identity);
-                temp.transform.SetParent(gacha_Tr.transform);
-
-               
-                //Gacha_Unit(unitList_Common, "Common");
-            }*/
         }
-       // Gacha_Result(result.Count);
+        else // Common 76%
+        {
+
+            SpellData dataRandom = listSpellItem[Random.Range(0, listSpellItem.Count)];
+            holdingScript.Update_SpellHoding(dataRandom);
+
+            GameObject temp = Instantiate(gacha_Item, gacha_Tr.position, Quaternion.identity);
+            temp.transform.SetParent(gacha_Tr.transform);
+
+            Gacha item = temp.GetComponent<Gacha>();
+            item.SpellInit(dataRandom);
+            //Gacha_Unit(unitList_Common, "Common");
+        }
     }
 
     void Gacha_Unit(int[] unitList, string rarity)
