@@ -1,14 +1,23 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 public class Loading : Singleton<Loading>
 {
-   
+    string type = "";
     // Use this for initialization
     public void Loding(string type)
     {
-        switch (type) {
+        this.type = type;
+        Invoke("MoveScene", 0.5f);
+
+
+    }
+    void MoveScene()
+    {
+        switch (this.type)
+        {
             case "Lobby":
                 LodingSceneMgr.LoadScene("MainLobby");
                 Debug.Log("Loding");
@@ -22,8 +31,6 @@ public class Loading : Singleton<Loading>
                 Debug.Log("BattleMode");
                 break;
         }
-
-
     }
 }
 

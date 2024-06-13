@@ -24,38 +24,34 @@ public class LodingSceneMgr : MonoBehaviour
 
     IEnumerator LoadScene()
     {
-        while (true)
+        // Load the next scene asynchronously but don't activate it yet
+        AsyncOperation op = SceneManager.LoadSceneAsync(nextScene);
+        op.allowSceneActivation = false;
+
+        float timer = 0.0f;
+        while (!op.isDone)
         {
             yield return null;
-            Debug.Log(nextScene);
-            AsyncOperation op = SceneManager.LoadSceneAsync(nextScene);
-            op.allowSceneActivation = false;
-            float timer = 0.0f;
-            while (!op.isDone)
+
+            // Update the progress bar value slowly
+            timer += Time.unscaledDeltaTime * speed;
+            float targetProgress = op.progress < 0.9f ? op.progress : 1f;
+            progressBar.value = Mathf.MoveTowards(progressBar.value, targetProgress, timer * Time.unscaledDeltaTime);
+
+            // Update the progress text
+            time.text = (progressBar.value * 100).ToString("F0") + "%";
+
+            // If the progress bar is full, break out of the loop
+            if (progressBar.value >= 1f)
             {
-                yield return null;
-                timer += Time.unscaledDeltaTime;
-                if (op.progress < 0.9f)
-                {
-                    progressBar.value = Mathf.Lerp(progressBar.value, op.progress, timer*speed);
-                    if (progressBar.value >= op.progress)
-                    {
-                        timer = 0f;
-                    }
-                }
-                else
-                {
-                    progressBar.value = Mathf.Lerp(progressBar.value, 1f, timer*speed);
-                    if (progressBar.value == 1f)
-                    {
-                        // 로딩이 완료된 후에 nextScene 변수를 초기화합니다.
-                        nextScene = "";
-                        op.allowSceneActivation = true;
-                        break; // 로딩이 완료되었으므로 이번 씬 로딩 코루틴을 종료합니다.
-                    }
-                    time.text = (progressBar.value * 100).ToString("F0") + "%";
-                }
+                break;
             }
         }
+
+        // Wait for 3 seconds
+        yield return new WaitForSeconds(1.0f);
+
+        // Activate the scene
+        op.allowSceneActivation = true;
     }
 }
