@@ -7,6 +7,7 @@ public class HpBar : MonoBehaviour
 {
     public Transform realHp;
     public SpriteRenderer realHpSprite;
+    public SpriteRenderer hpFrameSprite;
     public Transform owner;
     public float nowHp;
     public float maxHp;

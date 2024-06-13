@@ -58,7 +58,8 @@ public class UnitManager : MonoBehaviour
             Debug.Log(unit.unitID);
             /*        unitSpawnRangeButton.onClick.AddListener(() => UnitSpawn(unit.unitID));*/
             unitSpawnRangeButton.onClick.AddListener(() => Buy(unit.cost));
-        } else
+        }
+        else
         {
             // 해당 카드의 사용을 캔슬할 경우 다른 카드의 버튼 컴포넌트 활성화
             foreach (GameObject card in BattleManager.Instance.cardObj)
