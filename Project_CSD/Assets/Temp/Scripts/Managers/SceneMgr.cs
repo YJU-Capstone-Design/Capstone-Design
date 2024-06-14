@@ -9,7 +9,11 @@ public class SceneMgr : Singleton<SceneMgr>
     
     public void GoSceneSelect(string type)
     {
-        AudioManager.instance.BattleSound();
+        if (AudioManager.instance != null)
+        {
+            // AudioManager 인스턴스가 존재하면 BattleSound 메서드 호출
+            AudioManager.instance.ButtonSound();
+        }
         if (type.Equals("BattleModeSelect"))
         {
             SceneManager.LoadScene("MainLobby");
