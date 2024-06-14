@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AudioManager : Singleton<AudioManager>
+public class AudioManager : MonoBehaviour
 {
     //πË∞Ê¿Ω
     [SerializeField] AudioSource audioSource_Bg;
@@ -14,21 +14,36 @@ public class AudioManager : Singleton<AudioManager>
     [SerializeField] AudioSource audioSource_Effect;
     [SerializeField] AudioClip[] audioClip_Effect;
 
+    public static AudioManager instance;
+
+    private void Awake()
+    {
+
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
     private void Start()
     {
-       
-        audioSource_Bg.clip = audioClip_Bg[0];
-        audioSource_Bg.Play();
+
+        MainSound();
     }
 
+    public void GachaSound() {audioSource_Bg.clip = audioClip_Bg[1]; audioSource_Bg.Play();}
+    public void BattleSound() { audioSource_Bg.clip = audioClip_Bg[2]; audioSource_Bg.Play(); }
 
-
-
+    public void MainSound() { audioSource_Bg.clip = audioClip_Bg[0]; audioSource_Bg.Play(); }
     public void ButtonSound()
     {
         audioSource_Btn.clip = audioClip_Btn[1];
         audioSource_Btn.Play();
         Debug.Log("ButtonSound");
     }
-
+   
 }

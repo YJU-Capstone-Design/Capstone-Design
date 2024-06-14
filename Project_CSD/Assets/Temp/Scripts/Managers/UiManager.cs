@@ -89,6 +89,7 @@ public class UiManager : Singleton<UiManager>
     }
     public void SpeedUp()
     {
+        AudioManager.instance.ButtonSound();
         Image img_Icon = speed_Icon.GetComponent<Image>();
         if (time == 3)
         {

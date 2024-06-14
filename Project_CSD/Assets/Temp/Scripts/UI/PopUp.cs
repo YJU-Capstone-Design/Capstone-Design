@@ -21,13 +21,15 @@ public class PopUp : MonoBehaviour
     }
     public void OpenMenu()
     {
+        AudioManager.instance.ButtonSound();
         stop.SetActive(true);
         menu.SetActive(true);
         Time.timeScale = 0;
     }
     public void MenuBtn(string type)
     {
-        
+        AudioManager.instance.ButtonSound();
+
         if (type.Equals("Setting"))
         {
 

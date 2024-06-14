@@ -48,7 +48,10 @@ public class GachaManager : MonoBehaviour
     }
     public void Gacha_Btn(int number)
     {
-        if(cashManagerScript.player_Cash >= 1 && number == 1)
+        
+         AudioManager.instance.ButtonSound();
+        
+        if (cashManagerScript.player_Cash >= 1 && number == 1)
         {
 
             Item_Destroy();
@@ -148,6 +151,11 @@ public class GachaManager : MonoBehaviour
 
     public void result_Off()
     {
+        if (AudioManager.instance != null)
+        {
+            AudioManager.instance.ButtonSound();
+        }
+    
         gacha_Result.SetActive(false);
     }
 

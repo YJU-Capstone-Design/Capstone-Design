@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.UIElements;
 
 
@@ -54,11 +55,16 @@ public class MainLobby : MonoBehaviour
 
     public void OpenScene(string type)
     {
+        
+        AudioManager.instance.ButtonSound();
+       
+    
         int openScene = 0;
         if (type.Equals("Gacha"))
         {
             mainBG.SetActive(false);
-            openScene = 1;
+            openScene = 1; 
+            AudioManager.instance.GachaSound();
         }
         else if (type.Equals("TraningBtn"))
         {
@@ -101,19 +107,29 @@ public class MainLobby : MonoBehaviour
         roomNum = 1;
         if (openScene == 0)
         {
+            
             mainLobby.transform.localScale = Vector3.one;
             mainLobbyObj.transform.localScale = Vector3.one;
             roomNum = 0;
         }
 
+       
+       
+        
     }
 
     public void ClosePoP()
     {
+        
+        AudioManager.instance.ButtonSound();
+        
         pop.SetActive(false);
     }
     public void ToggleOnOff()
     {
+        
+        AudioManager.instance.ButtonSound();
+        
         if (toogleState == 0)
         {
 
@@ -126,6 +142,8 @@ public class MainLobby : MonoBehaviour
             toggle_BG_anim.SetBool("ToggleSet", false);
             toggle_anim.SetInteger("ToggleState", 0);
             toggle_anim.SetBool("ToggleSet", false);
+
+           
         }
         else if (toogleState == 1)
         {
@@ -143,6 +161,9 @@ public class MainLobby : MonoBehaviour
 
     public void BtlModeSelect()
     {
+
+        AudioManager.instance.ButtonSound();
+
         if (!battleMode.activeSelf)
         {
             battleMode.SetActive(true);
@@ -154,6 +175,7 @@ public class MainLobby : MonoBehaviour
     }
     public void OnToggle()
     {
+       
         toggleMenu.SetActive(true);
 
 
@@ -180,10 +202,15 @@ public class MainLobby : MonoBehaviour
     }
     public void SettingClose()
     {
+        
+        AudioManager.instance.ButtonSound();
+        
         setMenu.SetActive(false);
     }
     public void GameSetting()
     {
+        AudioManager.instance.ButtonSound();
+        
         if (!setMenu.activeSelf)
         {
             setMenu.SetActive(true);
@@ -197,6 +224,8 @@ public class MainLobby : MonoBehaviour
 
     public void GameEscape()
     {
+        AudioManager.instance.ButtonSound();
+        
         if (roomNum == 0)
         {
 

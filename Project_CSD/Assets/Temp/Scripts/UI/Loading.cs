@@ -16,6 +16,7 @@ public class Loading : Singleton<Loading>
     }
     void MoveScene()
     {
+        AudioManager.instance.ButtonSound();
         switch (this.type)
         {
             case "Lobby":

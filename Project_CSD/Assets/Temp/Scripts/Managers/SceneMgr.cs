@@ -16,10 +16,19 @@ public class SceneMgr : Singleton<SceneMgr>
         else if (type == "MainLobbySelect")
         {
             SceneManager.LoadScene("MainLobby");
-        }else if(type == "NomalMode")
+            AudioManager.instance.MainSound();
+        }
+        else if(type == "NomalMode")
         {
             SceneManager.LoadScene("NormalBattle");
+            AudioManager.instance.BattleSound();
         }
+
+    }
+
+
+    public void SoundControl()
+    {
 
     }
 }
