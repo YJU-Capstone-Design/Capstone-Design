@@ -386,7 +386,6 @@ public class EnemyUnit : UnitBase
 
         yield return new WaitForSeconds(anim.GetTime());
 
-        anim.Idle();
         StateSetting(0);
 
         // 부모 오브젝트를 종료
