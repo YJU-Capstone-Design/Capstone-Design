@@ -16,7 +16,15 @@ public class HpBar : MonoBehaviour
     private void Update()
     {
         // Æ÷Áö¼Ç
-        hpBarPos = new Vector3(-0.3f, -0.25f);
+        if (owner.gameObject.name.Contains("Croirang"))
+        {
+            hpBarPos = new Vector3(-0.35f, -0.25f);
+        }
+        else
+        {
+            hpBarPos = new Vector3(-0.3f, -0.25f);
+        }
+
         transform.position = owner.position + hpBarPos;
 
         // hp fillAmount (Scale)

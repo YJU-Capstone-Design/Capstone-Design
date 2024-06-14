@@ -108,7 +108,7 @@ public class EnemyUnit : UnitBase
 
     void OnDisable()
     {
-        transform.position = new Vector3(10, 0, 0); // 위치 초기화 (안해주면 다시 소환되는 순간  Unit 의 Ray 영역 안에 있으면 Ray 에 잠시 인식됨.)
+        transform.position = new Vector3(32, 0, 0); // 위치 초기화 (안해주면 다시 소환되는 순간  Unit 의 Ray 영역 안에 있으면 Ray 에 잠시 인식됨.)
     }
 
     // 기본 설정 초기화 함수
@@ -168,17 +168,14 @@ public class EnemyUnit : UnitBase
         if(gameObject.name.Contains("Bat"))
         {
             anim.Idle();
-            Debug.Log("Walk 1");
         }
         else if(gameObject.name.Contains("Beholder") || gameObject.name.Contains("Crow"))
         {
             anim.Fly();
-            Debug.Log("Walk 2");
         }
         else
         {
             anim.Walk();
-            Debug.Log("Walk 3");
         }
     }
 
@@ -355,9 +352,6 @@ public class EnemyUnit : UnitBase
         arrawLogic.playerUnit = this.gameObject;
 
         yield return new WaitForSeconds(anim.GetTime());
-
-        // 애니메이션
-        anim.Idle();
     }
 
 
@@ -390,9 +384,9 @@ public class EnemyUnit : UnitBase
         // 애니메이션
         anim.Die();
 
-
         yield return new WaitForSeconds(anim.GetTime());
 
+        anim.Idle();
         StateSetting(0);
 
         // 부모 오브젝트를 종료
