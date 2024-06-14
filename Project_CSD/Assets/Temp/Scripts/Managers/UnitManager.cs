@@ -35,9 +35,9 @@ public class UnitManager : MonoBehaviour
                 if (card != this.gameObject)
                 {
                     card.GetComponent<Button>().enabled = false;
-                    reRoll.enabled = false;
                 }
             }
+            reRoll.enabled = false;
 
             GameObject spawnArea = BattleManager.Instance.unitSpawnRange.transform.GetChild(1).gameObject;
             RectTransform spawnAreaAnchors = spawnArea.GetComponent<RectTransform>();
@@ -67,9 +67,9 @@ public class UnitManager : MonoBehaviour
                 if (card != this.gameObject)
                 {
                     card.GetComponent<Button>().enabled = true;
-                    reRoll.enabled = true;
                 }
             }
+            reRoll.enabled = true;
             BattleManager.Instance.unitSpawnRange.SetActive(false);
         }
     }
@@ -101,6 +101,12 @@ public class UnitManager : MonoBehaviour
                 pool.Get(0, 5);
                 break;
         }
+
+        foreach (GameObject card in BattleManager.Instance.cardObj)
+        {
+            card.GetComponent<Button>().enabled = true;
+        }
+        reRoll.enabled = true;
 
         BattleManager.Instance.unitSpawnRange.SetActive(false);
         BattleManager.Instance.CardShuffle(false);
