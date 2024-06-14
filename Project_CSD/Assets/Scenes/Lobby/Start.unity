@@ -4922,7 +4922,13 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 29bde6326b4c34ad8a12da475f79b50a, type: 3}
   - {fileID: 8300000, guid: 52320e590bf774734a288886eba557ba, type: 3}
   audioSource_Effect: {fileID: 2042733273}
-  audioClip_Effect: []
+  audioClip_Effect:
+  - {fileID: 8300000, guid: 9a365c718f8d744438ff9901d64f679f, type: 3}
+  - {fileID: 8300000, guid: a87268fd7f782cc47b2f489c4d970e2a, type: 3}
+  - {fileID: 8300000, guid: 80a8cc460dcf91a48b14066061238ac1, type: 3}
+  - {fileID: 8300000, guid: c3eb99c613ade184d8ad19e139a0389f, type: 3}
+  - {fileID: 8300000, guid: 5c54fad2e43547f4aacc90cdbe2e13b5, type: 3}
+  - {fileID: 8300000, guid: 57518b817bbd09249b517e561ed6f5b8, type: 3}
 --- !u!1 &1566796523
 GameObject:
   m_ObjectHideFlags: 0
@@ -7027,7 +7033,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 0.5
+  m_Volume: 0.8
   m_Pitch: 1
   Loop: 0
   Mute: 0

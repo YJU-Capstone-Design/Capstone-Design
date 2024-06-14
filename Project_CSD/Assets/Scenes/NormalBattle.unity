@@ -10257,7 +10257,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &172098660820543663
 RectTransform:
   m_ObjectHideFlags: 0
@@ -12445,14 +12445,14 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 6005040575816746629}
+  m_TargetGraphic: {fileID: 904678658}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1242249588}
-        m_TargetAssemblyTypeName: SceneMgr, Assembly-CSharp
-        m_MethodName: GoSceneSelect
-        m_Mode: 5
+      - m_Target: {fileID: 339033581}
+        m_TargetAssemblyTypeName: PopUp, Assembly-CSharp
+        m_MethodName: MoveScene
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -12832,6 +12832,7 @@ SceneRoots:
   - {fileID: 339033582}
   - {fileID: 1150004149}
   - {fileID: 418216610}
+  - {fileID: 28151069}
   - {fileID: 1242249589}
   - {fileID: 513461669}
   - {fileID: 105466926}
@@ -12840,4 +12841,3 @@ SceneRoots:
   - {fileID: 1924020916}
   - {fileID: 440047941}
   - {fileID: 1438821130}
-  - {fileID: 28151069}

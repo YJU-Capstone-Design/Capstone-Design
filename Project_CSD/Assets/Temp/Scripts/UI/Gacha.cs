@@ -70,6 +70,7 @@ public class Gacha : MonoBehaviour
         // 애니메이션이 완료된 후 최종 값 설정
         target.anchorMin = new Vector2(target.anchorMin.x, endValue);
         anchorAnimationCoroutine = null; // 코루틴이 종료되었으므로 null로 설정
+        AudioManager.instance.GachaEffect(true);
         yield break;
     }
 }

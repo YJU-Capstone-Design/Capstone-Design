@@ -57,6 +57,7 @@ public class PopUp : MonoBehaviour
 
     public void Close(GameObject other)
     {
+        AudioManager.instance.ButtonSound();
         other.SetActive(false);
         stop.SetActive(false);
         
@@ -64,22 +65,25 @@ public class PopUp : MonoBehaviour
     }
     public void ScenceEscape()
     {
+        AudioManager.instance.ButtonSound();
         Time.timeScale = 1;
     }
     public void Continue()
     {
+        AudioManager.instance.ButtonSound();
         UiManager.Instance.time = 3;
         UiManager.Instance.SpeedUp();
     }
 
     public void MoveScene()
     {
-        
-       
-        if(goLobby)
+
+        AudioManager.instance.ButtonSound();
+        if (goLobby)
         {
             LodingSceneMgr.LoadScene("MainLobby");
             Time.timeScale = 1;
+           
         }
         else if (!goLobby)
         {
@@ -88,9 +92,10 @@ public class PopUp : MonoBehaviour
     }
     public void MoveScene2()
     {
-        
-            LodingSceneMgr.LoadScene("MainLobby");
+        AudioManager.instance.ButtonSound();
+
+        LodingSceneMgr.LoadScene("MainLobby");
             Time.timeScale = 1;
-        
+        AudioManager.instance.MainSound();
     }
 }

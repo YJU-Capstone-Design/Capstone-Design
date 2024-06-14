@@ -30,6 +30,9 @@ public class UiManager : Singleton<UiManager>
     {
         instance = this;
 
+        AudioManager.instance.BattleSound();
+
+
         cost = 0;
         costText.text = cost.ToString();
     }

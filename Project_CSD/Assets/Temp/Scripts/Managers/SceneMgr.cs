@@ -9,19 +9,22 @@ public class SceneMgr : Singleton<SceneMgr>
     
     public void GoSceneSelect(string type)
     {
-        if (type == "BattleModeSelect")
+        AudioManager.instance.BattleSound();
+        if (type.Equals("BattleModeSelect"))
         {
             SceneManager.LoadScene("MainLobby");
         }
-        else if (type == "MainLobbySelect")
+        else if (type.Equals("MainLobbySelect"))
         {
+          
             SceneManager.LoadScene("MainLobby");
-            AudioManager.instance.MainSound();
+          
         }
-        else if(type == "NomalMode")
+        else if(type.Equals("NomalMode"))
         {
+           
             SceneManager.LoadScene("NormalBattle");
-            AudioManager.instance.BattleSound();
+            
         }
 
     }
