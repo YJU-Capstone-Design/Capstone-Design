@@ -16,8 +16,8 @@ public class BreadRack_Item : MonoBehaviour
     }
     public void Select_SetItem()
     {
-        
-        if(select_Item == 0 && BreakRackMgr.Instance.set_item_Value!=8)
+        AudioManager.instance.ButtonSound();
+        if (select_Item == 0 && BreakRackMgr.Instance.set_item_Value!=8)
         {
             select = true;
             //StartCoroutine(Select_Item());

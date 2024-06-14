@@ -37,31 +37,35 @@ public class BreakRack : Singleton<BreakRack>
 
     public void OpenTopBox()
     {
+        AudioManager.instance.ButtonSound();
         topBox.transform.localScale = Vector3.one;
         save = 0;
     }
     public void OpenItemBox()
     {
+        AudioManager.instance.ButtonSound();
         itemBox.transform.localScale = Vector3.one;
         infoBox.transform.localScale = Vector3.one;
     }
    
     public void OpenPopUpBox()
     {
+        AudioManager.instance.ButtonSound();
         popUp.SetActive(true);
     }
 
     public void TopMenuCancel()//팝업창이 나오는 경우 -> 설정을 변경후 저장 버튼을 누르지 않을때
     {
-        
-          
-            Clear();
+        AudioManager.instance.ButtonSound();
+
+        Clear();
         
     }
 
 
     public void Cancel(GameObject go)
     {
+        AudioManager.instance.ButtonSound();
         go.transform.localScale = Vector3.zero;
     }
     public void Clear()
