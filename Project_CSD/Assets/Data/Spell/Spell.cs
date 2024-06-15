@@ -1,12 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 using static SpellBase;
 
 public class Spell : SpellBase
 {
     [Header("# Spell Setting")]
     public List<SpellData> spells = new List<SpellData>();
+
+    public Image cardImg;
+    public TextMeshProUGUI spellCost;
 
     public void OnEnable()
     {
@@ -31,5 +37,8 @@ public class Spell : SpellBase
         powerUp = spells[index].PowerUp;
         attackTimeDown = spells[index].AttackTimeDown;
         moveSpeedUp = spells[index].MoveSpeedUp;
+
+        cardImg.sprite = spells[index].Spell_CardImg;
+        spellCost.text = spells[index].Cost.ToString();
     }
 }

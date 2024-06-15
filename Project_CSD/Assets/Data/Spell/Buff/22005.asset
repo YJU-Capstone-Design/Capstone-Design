@@ -23,4 +23,4 @@ MonoBehaviour:
   moveSpeedUp: 10
   attackTimeDown: 10
   item_Type: 2
-  spell_CardImg: {fileID: 21300000, guid: 98cc1b8fc9f3a0c4e86fc06fd2c2dd54, type: 3}
+  spell_CardImg: {fileID: 21300000, guid: dfb93eeb01a6ef747b9d9c03a7b8f4fc, type: 3}
