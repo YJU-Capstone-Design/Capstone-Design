@@ -16,11 +16,7 @@ public class Loading : Singleton<Loading>
     }
     void MoveScene()
     {
-        if (AudioManager.instance != null)
-        {
-            // AudioManager 인스턴스가 존재하면 ButtonSound 메서드 호출
-            AudioManager.instance.ButtonSound();
-        }
+        if (AudioManager.instance != null) { AudioManager.instance.ButtonSound(); }
         switch (this.type)
         {
             case "Lobby":

@@ -21,22 +21,14 @@ public class PopUp : MonoBehaviour
     }
     public void OpenMenu()
     {
-        if (AudioManager.instance != null)
-        {
-            // AudioManager 인스턴스가 존재하면 ButtonSound 메서드 호출
-            AudioManager.instance.ButtonSound();
-        }
+        if (AudioManager.instance != null) { AudioManager.instance.ButtonSound(); }
         stop.SetActive(true);
         menu.SetActive(true);
         Time.timeScale = 0;
     }
     public void MenuBtn(string type)
     {
-        if (AudioManager.instance != null)
-        {
-            // AudioManager 인스턴스가 존재하면 ButtonSound 메서드 호출
-            AudioManager.instance.ButtonSound();
-        }
+        if (AudioManager.instance != null) { AudioManager.instance.ButtonSound(); }
 
         if (type.Equals("Setting"))
         {
@@ -77,32 +69,25 @@ public class PopUp : MonoBehaviour
     }
     public void ScenceEscape()
     {
-        if (AudioManager.instance != null)
-        {
-            // AudioManager 인스턴스가 존재하면 ButtonSound 메서드 호출
-            AudioManager.instance.ButtonSound();
-        }
+        if (AudioManager.instance != null) { AudioManager.instance.ButtonSound(); }
         Time.timeScale = 1;
     }
     public void Continue()
     {
-        if (AudioManager.instance != null)
-        {
-            // AudioManager 인스턴스가 존재하면 ButtonSound 메서드 호출
-            AudioManager.instance.ButtonSound();
-        }
+        if (AudioManager.instance != null) { AudioManager.instance.ButtonSound(); }
         UiManager.Instance.time = 3;
         UiManager.Instance.SpeedUp();
+    }
+    public void SoundSetting()
+    {
+        if (AudioManager.instance != null) { AudioManager.instance.OpenAudioBox(); }
+        
     }
 
     public void MoveScene()
     {
 
-        if (AudioManager.instance != null)
-        {
-            // AudioManager 인스턴스가 존재하면 ButtonSound 메서드 호출
-            AudioManager.instance.ButtonSound();
-        }
+        if (AudioManager.instance != null) { AudioManager.instance.ButtonSound(); }
         if (goLobby)
         {
             LodingSceneMgr.LoadScene("MainLobby");
@@ -116,18 +101,10 @@ public class PopUp : MonoBehaviour
     }
     public void MoveScene2()
     {
-        if (AudioManager.instance != null)
-        {
-            // AudioManager 인스턴스가 존재하면 ButtonSound 메서드 호출
-            AudioManager.instance.ButtonSound();
-        }
+        if (AudioManager.instance != null) { AudioManager.instance.ButtonSound(); }
 
         LodingSceneMgr.LoadScene("MainLobby");
             Time.timeScale = 1;
-        if (AudioManager.instance != null)
-        {
-            // AudioManager 인스턴스가 존재하면 ButtonSound 메서드 호출
-            AudioManager.instance.MainSound();
-        }
+        if (AudioManager.instance != null) { AudioManager.instance.MainSound(); }
     }
 }

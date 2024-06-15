@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 public class AudioManager : MonoBehaviour
 {
     //πË∞Ê¿Ω
@@ -16,6 +16,14 @@ public class AudioManager : MonoBehaviour
 
     public static AudioManager instance;
 
+    public GameObject audioBox;
+    public Slider master_Sound;
+    public Slider bgm_slider;
+    public Slider sfx_slider;
+
+
+
+
     private void Awake()
     {
 
@@ -28,6 +36,13 @@ public class AudioManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        bgm_slider = bgm_slider.GetComponent<Slider>();
+        sfx_slider = sfx_slider.GetComponent<Slider>();
+        
+
+        master_Sound.onValueChanged.AddListener(MaserSound);
+        bgm_slider.onValueChanged.AddListener(ChangeBgmSound);
+        sfx_slider.onValueChanged.AddListener(ChangeSfxSound);
     }
     private void Start()
     {
@@ -76,5 +91,25 @@ public class AudioManager : MonoBehaviour
         }
 
     }
-   
+    public void OpenAudioBox() { audioBox.SetActive(true);  ButtonSound();  }
+    public void CloseAudioBox() { audioBox.SetActive(false);  ButtonSound();  }
+
+
+
+    void ChangeBgmSound(float value)
+    {
+        audioSource_Bg.volume = value;
+    }
+
+    void ChangeSfxSound(float value)
+    {
+        audioSource_Btn.volume = value;
+        audioSource_Effect.volume = value;
+    }
+    void MaserSound(float value)
+    {
+        audioSource_Bg.volume = value;
+        audioSource_Btn.volume = value;
+        audioSource_Effect.volume = value;
+    }
 }

@@ -55,16 +55,16 @@ public class MainLobby : MonoBehaviour
 
     public void OpenScene(string type)
     {
-        
-        AudioManager.instance.ButtonSound();
-       
-    
+
+        if (AudioManager.instance != null) { AudioManager.instance.ButtonSound(); }
+
+
         int openScene = 0;
         if (type.Equals("Gacha"))
         {
             mainBG.SetActive(false);
-            openScene = 1; 
-            AudioManager.instance.GachaSound();
+            openScene = 1;
+            if (AudioManager.instance != null) { AudioManager.instance.GachaSound(); }
         }
         else if (type.Equals("TraningBtn"))
         {
@@ -120,16 +120,16 @@ public class MainLobby : MonoBehaviour
 
     public void ClosePoP()
     {
-        
-        AudioManager.instance.ButtonSound();
-        
+
+        if (AudioManager.instance != null) { AudioManager.instance.ButtonSound(); }
+
         pop.SetActive(false);
     }
     public void ToggleOnOff()
     {
-        
-        AudioManager.instance.ButtonSound();
-        
+
+        if (AudioManager.instance != null) { AudioManager.instance.ButtonSound(); }
+
         if (toogleState == 0)
         {
 
@@ -162,7 +162,7 @@ public class MainLobby : MonoBehaviour
     public void BtlModeSelect()
     {
 
-        AudioManager.instance.ButtonSound();
+        if (AudioManager.instance != null) { AudioManager.instance.ButtonSound(); }
 
         if (!battleMode.activeSelf)
         {
@@ -188,7 +188,7 @@ public class MainLobby : MonoBehaviour
         mainLobby.transform.localScale = Vector3.one;
         menu[0].gameObject.SetActive(true);
         menu_Obj_Setting[0].gameObject.SetActive(true);
-        setMenu.SetActive(false);
+        
         roomNum = 0;
         for (int i = 1; i < menu.Count; i++)
         {
@@ -200,32 +200,19 @@ public class MainLobby : MonoBehaviour
         }
 
     }
-    public void SettingClose()
-    {
-        
-        AudioManager.instance.ButtonSound();
-        
-        setMenu.SetActive(false);
-    }
+ 
     public void GameSetting()
     {
-        AudioManager.instance.ButtonSound();
-        
-        if (!setMenu.activeSelf)
-        {
-            setMenu.SetActive(true);
-        }
-        else
-        {
+        if (AudioManager.instance != null) { AudioManager.instance.OpenAudioBox(); }
 
-        }
+       
     }
 
 
     public void GameEscape()
     {
-        AudioManager.instance.ButtonSound();
-        
+        if (AudioManager.instance != null) { AudioManager.instance.ButtonSound(); }
+
         if (roomNum == 0)
         {
 

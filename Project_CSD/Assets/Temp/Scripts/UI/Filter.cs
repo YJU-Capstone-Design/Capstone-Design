@@ -43,10 +43,7 @@ public class Filter : MonoBehaviour
     }
     public void Charclick()
     {
-        if (AudioManager.instance != null)
-        {
-            AudioManager.instance.ButtonSound();
-        }
+        if (AudioManager.instance != null) { AudioManager.instance.ButtonSound(); }
         Clear();
         filterTxt.text = "캐릭터 카드";
         unFilterCard();
@@ -54,10 +51,7 @@ public class Filter : MonoBehaviour
     }
     public void Spellclick()
     {
-        if (AudioManager.instance != null)
-        {
-            AudioManager.instance.ButtonSound();
-        }
+        if (AudioManager.instance != null) { AudioManager.instance.ButtonSound(); }
         bg[0].SetActive(false);
         bg[1].SetActive(true);
         title[0].SetActive(false);

@@ -198,11 +198,7 @@ public class BattleManager :Singleton<BattleManager>
 
     public void EndGame(string whether)
     {
-        if (AudioManager.instance != null)
-        {
-            // AudioManager 인스턴스가 존재하면 ButtonSound 메서드 호출
-            AudioManager.instance.ButtonSound();
-        }
+        if (AudioManager.instance != null) { AudioManager.instance.ButtonSound();}
 
         resultUI.SetActive(true);
 
@@ -219,22 +215,15 @@ public class BattleManager :Singleton<BattleManager>
         {
             resultPanel.sprite = resultImg[0];
             resultMenuBar.sprite = resultImg[2];
-            if (AudioManager.instance != null)
-            {
-                // AudioManager 인스턴스가 존재하면 ButtonSound 메서드 호출
-                AudioManager.instance.BattleEndSound(true);
-            }
+            
+            if (AudioManager.instance != null) { AudioManager.instance.BattleEndSound(true); }
             StartCoroutine(ResultUI(2));
         }
         else if(whether == "Lose")
         {
             resultPanel.sprite = resultImg[1];
             resultMenuBar.sprite = resultImg[3];
-            if (AudioManager.instance != null)
-            {
-                // AudioManager 인스턴스가 존재하면 ButtonSound 메서드 호출
-                AudioManager.instance.BattleEndSound(false);
-            }
+            if (AudioManager.instance != null) { AudioManager.instance.BattleEndSound(false); }
             Debug.Log("Lose");
             StartCoroutine(ResultUI(0));
         }
@@ -313,11 +302,7 @@ public class BattleManager :Singleton<BattleManager>
 
     public void CardShuffle(bool Recost)
     {
-        if (AudioManager.instance != null)
-        {
-            // AudioManager 인스턴스가 존재하면 ButtonSound 메서드 호출
-            AudioManager.instance.ButtonSound();
-        }
+        if (AudioManager.instance != null) { AudioManager.instance.ButtonSound(); }
         if (UiManager.Instance.cost >= 1&&Recost)
         {
             foreach (GameObject card in cardObj)

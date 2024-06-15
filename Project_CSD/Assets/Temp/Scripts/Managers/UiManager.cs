@@ -30,12 +30,7 @@ public class UiManager : Singleton<UiManager>
     {
         instance = this;
 
-        if (AudioManager.instance != null)
-        {
-            // AudioManager 인스턴스가 존재하면 ButtonSound 메서드 호출
-            AudioManager.instance.BattleSound();
-        }
-
+        if (AudioManager.instance != null) { AudioManager.instance.BattleSound(); }
 
         cost = 0;
         costText.text = cost.ToString();
@@ -96,11 +91,7 @@ public class UiManager : Singleton<UiManager>
     }
     public void SpeedUp()
     {
-        if (AudioManager.instance != null)
-        {
-            // AudioManager 인스턴스가 존재하면 ButtonSound 메서드 호출
-            AudioManager.instance.ButtonSound();
-        }
+        if (AudioManager.instance != null) { AudioManager.instance.ButtonSound(); }
         Image img_Icon = speed_Icon.GetComponent<Image>();
         if (time == 3)
         {
