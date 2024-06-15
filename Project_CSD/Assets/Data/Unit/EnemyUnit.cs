@@ -352,6 +352,9 @@ public class EnemyUnit : UnitBase
         arrawLogic.playerUnit = this.gameObject;
 
         yield return new WaitForSeconds(anim.GetTime());
+
+        // 애니메이션
+        anim.Idle();
     }
 
 
