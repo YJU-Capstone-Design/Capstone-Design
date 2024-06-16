@@ -1,10 +1,12 @@
+using JetBrains.Annotations;
 using Spine;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Audio;
-using UnityEngine.UIElements;
+
+using UnityEngine.UI;
 
 
 public class MainLobby : MonoBehaviour
@@ -36,6 +38,23 @@ public class MainLobby : MonoBehaviour
     [SerializeField] private GameObject mainLobby;//메인로비 UI(캔버스)
     [SerializeField] private GameObject mainLobbyObj;//메인로비 필드 오브젝트
 
+    [Header("PlayerInfo")]//플레이어 정보
+    public GameObject playerCard;
+    public TextMeshProUGUI nick;
+    public TextMeshProUGUI lv;
+    [SerializeField]  Image player_icon;
+
+    [Header("PlayerCard")]//플레이어 카드 정보
+    public TextMeshProUGUI card_nick;
+    public TextMeshProUGUI card_lv;
+    public Image card_icon;
+    public TextMeshProUGUI Char_cnt;
+    public TextMeshProUGUI Spell_cnt;
+    public TextMeshProUGUI cash;
+    public TextMeshProUGUI gold;
+    public TextMeshProUGUI uid;
+    public HoldingList holdingList;
+
     [Header("MainBg")]//진입금지룸
     [SerializeField] GameObject mainBG;
 
@@ -50,8 +69,35 @@ public class MainLobby : MonoBehaviour
         toggle_anim = toggleBtn.GetComponent<Animator>();
         toggle_BG_anim = panel_Bg.GetComponent<Animator>();
         Clear();
-    }
+        PlayerInfo();
 
+    }
+    public void PlayerInfo()
+    {
+        if (PlayerData.instance != null) {
+            
+            nick.text = PlayerData.instance.NAME;
+            lv.text = PlayerData.instance.Lv.ToString();
+            player_icon.sprite = PlayerData.instance.icon;
+        }
+    }
+    public void OpenPlayerCard()
+    {
+        playerCard.SetActive(true);
+        if (PlayerData.instance != null)
+        {
+
+            card_nick.text = PlayerData.instance.NAME;
+            card_lv.text = "Lv "+PlayerData.instance.Lv.ToString();
+            card_icon.sprite = PlayerData.instance.icon;
+            Char_cnt.text = "캐릭터 "+ PlayerData.instance.Char.ToString()+" / "+GachaManager.single.listGachaTemplete.Count;
+            Spell_cnt.text = "스펠 "+PlayerData.instance.Spell.ToString() + " / " + GachaManager.single.listSpellItem.Count;
+            cash.text = "캐쉬 "+CashManager.instance.player_Cash.ToString();
+            gold.text = "골드 "+CashManager.instance.player_Gold.ToString();
+            uid.text ="uid "+ PlayerData.instance.Player_No.ToString();
+        }
+    }
+    public void ClosePlayerCard() { playerCard.SetActive(false); }
 
     public void OpenScene(string type)
     {

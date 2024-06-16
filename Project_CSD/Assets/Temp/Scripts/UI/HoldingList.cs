@@ -30,7 +30,9 @@ public class HoldingList : MonoBehaviour
         // 동일한 ID를 가진 유닛이 없을 경우에만 리스트에 추가
         if (!exists)
         {
+            
             holding_Unit.Add(data);
+            if (PlayerData.instance != null) { PlayerData.instance.Char++; }
             Debug.Log("Added unit: " + data.UnitName);
         }
         else
@@ -67,6 +69,7 @@ public class HoldingList : MonoBehaviour
         if (!exists)
         {
             Cardholding_Spell.Add(data);
+            if (PlayerData.instance != null) { PlayerData.instance.Spell++; }
             Debug.Log("Added spell: " + data.SpellName);
         }
         else
