@@ -93,7 +93,14 @@ public class EnemyUnit : UnitBase
             {
                 float yPos = transform.position.y * 100 - 400; // 넓게 분배하기 위해 * 100 음수/양수 처리를 위해 -400;
                 int orderLayer = Mathf.FloorToInt(yPos); // 소수점 제외
-                bodySprite.sortingOrder = Mathf.Abs(orderLayer); // 절대값으로 변경 후 적용
+                if(bodySprite.gameObject.name.Contains("Shadow"))
+                {
+                    bodySprite.sortingOrder = Mathf.Abs(orderLayer) - 1; // 그림자는 -1
+                }
+                else
+                {
+                    bodySprite.sortingOrder = Mathf.Abs(orderLayer); // 절대값으로 변경 후 적용
+                }
 
                 // 체력바 OrderLayer
                 if(hpBar != null)
