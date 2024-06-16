@@ -88,13 +88,13 @@ public class MainLobby : MonoBehaviour
         {
 
             card_nick.text = PlayerData.instance.NAME;
-            card_lv.text = PlayerData.instance.Lv.ToString();
+            card_lv.text = "Lv "+PlayerData.instance.Lv.ToString();
             card_icon.sprite = PlayerData.instance.icon;
-            Char_cnt.text = PlayerData.instance.Char.ToString()+" / "+GachaManager.single.listGachaTemplete.Count;
-            Spell_cnt.text = PlayerData.instance.Spell.ToString() + " / " + GachaManager.single.listSpellItem.Count;
-            cash.text = CashManager.instance.player_Cash.ToString();
-            gold.text = CashManager.instance.player_Gold.ToString();
-            uid.text = PlayerData.instance.Player_No.ToString();
+            Char_cnt.text = "Ä³¸¯ÅÍ "+ PlayerData.instance.Char.ToString()+" / "+GachaManager.single.listGachaTemplete.Count;
+            Spell_cnt.text = "½ºÆç "+PlayerData.instance.Spell.ToString() + " / " + GachaManager.single.listSpellItem.Count;
+            cash.text = "Ä³½¬ "+CashManager.instance.player_Cash.ToString();
+            gold.text = "°ñµå "+CashManager.instance.player_Gold.ToString();
+            uid.text ="uid "+ PlayerData.instance.Player_No.ToString();
         }
     }
     public void ClosePlayerCard() { playerCard.SetActive(false); }
