@@ -1005,7 +1005,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 44.15
+  m_fontSize: 44.2
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -2521,11 +2521,6 @@ MonoBehaviour:
   - {fileID: 4900000, guid: 3e7c1b90947b1b148998ea3d3a989413, type: 3}
   - {fileID: 4900000, guid: 3aca6cea753b4fc49a801c56519317e6, type: 3}
   - {fileID: 4900000, guid: edd9f63a478eb6749836b6b62933bccf, type: 3}
-  - {fileID: 4900000, guid: c3a90d09f75db4c46bd113f7b3358c97, type: 3}
-  - {fileID: 4900000, guid: 973dc3041772d2e4abb5719fc1c62143, type: 3}
-  - {fileID: 4900000, guid: 83e30de80904dd146b2b05e06dce7148, type: 3}
-  - {fileID: 4900000, guid: 450460b456eaa9b4883600f0fe779b71, type: 3}
-  - {fileID: 4900000, guid: 003d841d02f7b5d4283cc92d8d8700fb, type: 3}
   unitSpawnRange: {fileID: 974946586}
   waveUI: {fileID: 7526724413939370857}
   waveUIChild:
