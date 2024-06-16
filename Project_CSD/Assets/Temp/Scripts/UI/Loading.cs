@@ -3,9 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-public class Loading : Singleton<Loading>
+public class Loading : MonoBehaviour
 {
+    public static Loading instance;
     string type = "";
+    private void Awake()
+    {
+        instance = this;
+    }
     // Use this for initialization
     public void Loding(string type)
     {

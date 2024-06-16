@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class CashManager : MonoBehaviour
 {
-    public CashManager instance;
+    public static CashManager instance;
     [Header("Money")]
     public int player_Cash;
     public int player_Gold;
