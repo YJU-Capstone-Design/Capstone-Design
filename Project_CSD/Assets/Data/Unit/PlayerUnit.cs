@@ -133,6 +133,7 @@ public class PlayerUnit : UnitBase
         firstPos = BattleManager.Instance.point;
         scanner.unitType = unitID / 10000;
         nearestAttackTarget = null;
+        multipleAttackTargets = new Transform[5];
     }
 
     // 체력바
@@ -314,7 +315,10 @@ public class PlayerUnit : UnitBase
         yield return new WaitForSeconds(0.6f); // 애니메이션 시간
 
         // 맞고 있는 적 유닛 상태 변경
-        EnemyUnit enemyLogic = nearestAttackTarget.gameObject.GetComponent<EnemyUnit>();
+        if (nearestAttackTarget != null)
+        {
+            EnemyUnit enemyLogic = nearestAttackTarget.gameObject.GetComponent<EnemyUnit>();
+        }
 
         // 화살 가져오기
         GameObject arrowObj = PoolManager.Instance.Get(3, 1, transform.position + new Vector3(0, 1f, 0));
@@ -323,8 +327,11 @@ public class PlayerUnit : UnitBase
         arrowLogic.arrowPower = power;
 
         // 화살 목표 오브젝트 설정
-        arrowLogic.target = nearestAttackTarget.gameObject;
-        arrowLogic.playerUnit = this.gameObject;
+        if(nearestAttackTarget != null)
+        {
+            arrowLogic.target = nearestAttackTarget.gameObject;
+            arrowLogic.playerUnit = this.gameObject;
+        }
 
         yield return new WaitForSeconds(0.4f); // 애니메이션 시간
 

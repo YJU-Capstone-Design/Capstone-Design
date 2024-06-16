@@ -50,6 +50,7 @@ public class BattleManager :Singleton<BattleManager>
     [SerializeField] Image resultMenuBar;
     [SerializeField] Image[] resultWaveImg;
     [SerializeField] Animator[] resultObjsAnim;
+    [SerializeField] Button[] resultButtons;
     [SerializeField] public Button reRoll;
 
     enum UnitType { Bread, Pupnut, Kitchu, Ramo, Sorang, Croirang }; // 테스트(제작)용
@@ -239,6 +240,13 @@ public class BattleManager :Singleton<BattleManager>
         foreach (Animator anim in resultObjsAnim)
         {
             anim.SetBool("end", true);
+        }
+
+        yield return new WaitForSeconds(1);
+
+        foreach (Button resultBtn in resultButtons)
+        {
+            resultBtn.enabled = true;
         }
     }
 

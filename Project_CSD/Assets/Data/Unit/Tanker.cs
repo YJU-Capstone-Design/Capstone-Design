@@ -53,7 +53,10 @@ public class Tanker : PlayerUnit
                 // 다수 공격 적에, 공격 목표에 자신이 포함되어 있지 않을 떼,
                 if ((enemyLogic.unitID % 10000) / 1000 == 2 && !enemyLogic.multipleAttackTargets.Contains(this.gameObject.transform))
                 {
-                    enemyLogic.multipleAttackTargets[0] = this.gameObject.transform;
+                    if(enemyLogic.nearestAttackTarget != null)
+                    {
+                        enemyLogic.multipleAttackTargets[0] = this.gameObject.transform;
+                    }
                 }
                 else if ((enemyLogic.unitID % 10000) / 1000 != 2) // 단일 공격 적일 때
                 {

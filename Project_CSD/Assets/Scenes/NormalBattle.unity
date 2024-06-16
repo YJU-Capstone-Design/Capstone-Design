@@ -2570,6 +2570,9 @@ MonoBehaviour:
   - {fileID: 9124715331880031945}
   - {fileID: 1742697568}
   - {fileID: 237471572}
+  resultButtons:
+  - {fileID: 7474100815180747803}
+  - {fileID: 9124715331880031944}
   reRoll: {fileID: 598841724}
 --- !u!4 &418216610
 Transform:
@@ -12424,7 +12427,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2560556906792404542}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
@@ -12739,7 +12742,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8736817208441688762}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 

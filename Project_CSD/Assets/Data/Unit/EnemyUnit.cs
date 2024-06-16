@@ -128,6 +128,7 @@ public class EnemyUnit : UnitBase
         moveVec = Vector3.left;
         transform.GetChild(0).rotation = Quaternion.identity; // 애니메이션 각도 초기화를 위한 로직
         scanner.unitType = unitID / 10000;
+        multipleAttackTargets = new Transform[5];
     }
 
     // 체력바 생성

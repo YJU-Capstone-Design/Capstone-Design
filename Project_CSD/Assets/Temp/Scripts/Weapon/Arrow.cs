@@ -24,7 +24,11 @@ public class Arrow : MonoBehaviour
     {
         // 오류 방지
         if (target == null)
+        {
+            // 오브젝트 비활성화
+            gameObject.SetActive(false);
             return;
+        }
 
         // 포물선 공식
         playerX = transform.position.x;
@@ -42,6 +46,9 @@ public class Arrow : MonoBehaviour
         if (movePosition == target.transform.position)
         {
             Arrived();
+
+            // 오브젝트 비활성화
+            gameObject.SetActive(false);
         }
     }
 
@@ -77,8 +84,5 @@ public class Arrow : MonoBehaviour
                 enemy.health -= arrowPower;
             }
         }
-
-        // 오브젝트 비활성화
-        gameObject.SetActive(false);
     }
 }
