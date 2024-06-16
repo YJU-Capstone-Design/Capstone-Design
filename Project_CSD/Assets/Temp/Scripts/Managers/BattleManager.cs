@@ -107,6 +107,7 @@ public class BattleManager :Singleton<BattleManager>
             if (wave + 1 == enemySpawnFile.Count)
             {
                 battleState = BattleState.Win;
+                unitSpawnRange.SetActive(false);
                 EndGame("Win");
             }
             // 아직 처리하지 못한 enemySpawnFile 이 남아있을 경우 다음 Wave 실행
