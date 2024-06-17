@@ -111,6 +111,7 @@ public class GachaManager : MonoBehaviour
             ItemInit();
         }
         gacha_Value = 0;
+        gacha = 0;
     }
 
     public void result_Off()
@@ -126,6 +127,7 @@ public class GachaManager : MonoBehaviour
             ItemInit();
         }
         gacha_Value = 0;
+        gacha = 0;
         gacha_Result.SetActive(false);
     }
 
