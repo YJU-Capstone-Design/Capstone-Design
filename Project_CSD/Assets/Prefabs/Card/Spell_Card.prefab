@@ -130,7 +130,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 5121889740425968333}
         m_TargetAssemblyTypeName: SpellManager, Assembly-CSharp
-        m_MethodName: UsingCard
+        m_MethodName: Buy
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

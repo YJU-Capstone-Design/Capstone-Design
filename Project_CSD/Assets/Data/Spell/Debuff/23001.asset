@@ -15,7 +15,7 @@ MonoBehaviour:
   spellType: 2
   spellID: 23001
   spellName: "\uC624\uC9C0 \uB9C8!"
-  cost: 25
+  cost: 10
   duration: 10
   damage: 0
   maxHpUp: 0

@@ -15,7 +15,7 @@ MonoBehaviour:
   spellType: 1
   spellID: 22007
   spellName: "\uBC14\uB85C \uAC08\uAC8C!"
-  cost: 10
+  cost: 5
   duration: 10
   damage: 0
   maxHpUp: 0

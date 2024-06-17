@@ -15,7 +15,7 @@ MonoBehaviour:
   spellType: 1
   spellID: 22006
   spellName: "\uD30C\uC774\uD305!"
-  cost: 30
+  cost: 15
   duration: 10
   damage: 0
   maxHpUp: 0

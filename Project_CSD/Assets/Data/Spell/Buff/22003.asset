@@ -15,7 +15,7 @@ MonoBehaviour:
   spellType: 1
   spellID: 22003
   spellName: "\uBD80\uB4DC\uB7FD\uAC8C~"
-  cost: 20
+  cost: 7
   duration: 10
   damage: 0
   maxHpUp: 0

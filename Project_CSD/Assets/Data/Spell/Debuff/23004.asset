@@ -15,7 +15,7 @@ MonoBehaviour:
   spellType: 2
   spellID: 23004
   spellName: "\uB108 \uBB50 \uB3FC?"
-  cost: 30
+  cost: 15
   duration: 20
   damage: 0
   maxHpUp: 0
