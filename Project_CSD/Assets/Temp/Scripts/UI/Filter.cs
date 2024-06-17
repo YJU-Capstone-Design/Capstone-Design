@@ -157,12 +157,12 @@ public class Filter : MonoBehaviour
                 continue;
             getNewCollectionItem(ref noneItems).Init(GachaManager.single.listGachaTemplete[i]);
         }
+        HoldFilterCard();
 
         //LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)unitTr.parent);
         StartCoroutine(RebuildAtEndOfFrame((RectTransform)unitTr.parent));
         Debug.Log("call collection");
 
-        //HoldFilterCard();
         
     }
 
@@ -185,7 +185,7 @@ public class Filter : MonoBehaviour
         Color color;
         for (int i = 0; i < holdfilter[0].childCount; i++)
         {
-            goImage = holdfilter[0].GetChild(i).gameObject.transform.GetChild(2).gameObject;
+            goImage = holdfilter[0].GetChild(i).gameObject.transform.GetChild(1).gameObject;
             color = goImage.GetComponent<Image>().color;
             color.a = 0f;
             goImage.GetComponent<Image>().color = color;
@@ -193,7 +193,7 @@ public class Filter : MonoBehaviour
 
         for (int i = 0; i < holdfilter[1].childCount; i++)
         {
-            goImage = holdfilter[1].GetChild(i).gameObject.transform.GetChild(2).gameObject;
+            goImage = holdfilter[1].GetChild(i).gameObject.transform.GetChild(1).gameObject;
             color = goImage.GetComponent<Image>().color;
             color.a = 0f;
             goImage.GetComponent<Image>().color = color;
@@ -211,18 +211,18 @@ public class Filter : MonoBehaviour
         Color color;
         for (int i=0; i < unFilter[0].childCount; i++)
         {
-            goImage = unFilter[0].GetChild(i).gameObject.transform.GetChild(2).gameObject;
+            goImage = unFilter[0].GetChild(i).gameObject.transform.GetChild(1).gameObject;
             color = goImage.GetComponent<Image>().color;
-            color.a = 0f;
+            color.a = 0.5f;
             goImage.GetComponent<Image>().color = color;
             Debug.Log("스크린해제");
         }
 
         for (int i = 0; i < unFilter[1].childCount; i++)
         {
-            goImage = unFilter[1].GetChild(i).gameObject.transform.GetChild(2).gameObject;
+            goImage = unFilter[1].GetChild(i).gameObject.transform.GetChild(1).gameObject;
             color = goImage.GetComponent<Image>().color;
-            color.a = 0f;
+            color.a = 0.5f;
             goImage.GetComponent<Image>().color = color;
             Debug.Log("스크린해제");
         }
