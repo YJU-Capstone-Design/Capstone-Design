@@ -177,15 +177,17 @@ public class BattleManager :Singleton<BattleManager>
             }
             unitSpawnRange.SetActive(true);
         }
-        Invoke("BattleTimer", 2f);
+        //Invoke("BattleTimer", 2f);
     }
 
-    void BattleTimer()
+    void BattleTimer()//≈∏¿Ã∏”
     {
 
         limite_time -= Time.deltaTime;
         if (limite_time <= 0)
         {
+            battleState = BattleState.Win;
+            unitSpawnRange.SetActive(false);
             EndGame("Win");
         }
         if (limite_time >= 0)

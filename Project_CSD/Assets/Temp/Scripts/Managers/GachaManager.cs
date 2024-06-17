@@ -79,10 +79,10 @@ public class GachaManager : MonoBehaviour
 
         StartCoroutine(GachaProcess(number));
     }
-
+    int gacha_Value;
     IEnumerator GachaProcess(int number)
     {
-        for (int i = 1; i <= number; i++)
+        for (gacha_Value =0; gacha_Value <= number; gacha_Value++)
         {
             ItemInit();
             yield return new WaitForSeconds(2f);
