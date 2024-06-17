@@ -23,6 +23,7 @@ public class Collection_Data : MonoBehaviour
 
     public void Init(UnitData data)
     {
+        panel.SetActive(false);
         this.data = data;
         icon.sprite = data.Unit_Img;
         id = data.UnitID;
