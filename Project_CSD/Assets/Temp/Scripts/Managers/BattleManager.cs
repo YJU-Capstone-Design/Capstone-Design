@@ -66,7 +66,7 @@ public class BattleManager :Singleton<BattleManager>
         // 전투 시작
         battleState = BattleState.Start;
         wave = 0;
-        Wave();
+        StartCoroutine(Wave());
 
         // 전투 기본 세팅
         battle.SetActive(true);
@@ -127,13 +127,8 @@ public class BattleManager :Singleton<BattleManager>
                 ReadSpawnFile(wave); // 적 유닛 스폰 파일 가져오기
                 battleState = BattleState.Start;
 
-                Wave();
+                StartCoroutine(Wave());
             }
-        }
-        
-        if(spawnIndex >= 1)
-        {
-            waveUI.SetActive(false);
         }
 
 
@@ -204,7 +199,7 @@ public class BattleManager :Singleton<BattleManager>
        
     }
 
-    void Wave()
+    IEnumerator Wave()
     {
         // Wave UI 활성화
         waveUI.SetActive(true);
@@ -223,6 +218,11 @@ public class BattleManager :Singleton<BattleManager>
         {
             waveAnim.SetBool("next", true);
         }
+
+        yield return new WaitForSeconds(2.2f);
+
+        // Wave UI 비활성화
+        waveUI.SetActive(false);
     }
 
     public void EndGame(string whether)

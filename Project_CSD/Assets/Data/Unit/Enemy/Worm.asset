@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: Worm
   m_EditorClassIdentifier: 
   unitType: 0
-  unitID: 31011
-  unitName: 
+  unitID: 31006
+  unitName: "\uC6DC"
   cost: 0
-  health: 1000
+  health: 500
   power: 150
   moveSpeed: 1
-  attackTime: 2
+  attackTime: 3
   item_Type: 0
   unit_Img: {fileID: 0}
   unit_CardImg: {fileID: 0}

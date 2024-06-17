@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: Goblin
   m_EditorClassIdentifier: 
   unitType: 0
-  unitID: 31006
-  unitName: 
+  unitID: 31008
+  unitName: "\uACE0\uBE14\uB9B0"
   cost: 0
-  health: 1400
-  power: 170
-  moveSpeed: 1
-  attackTime: 2
+  health: 800
+  power: 300
+  moveSpeed: 1.25
+  attackTime: 5
   item_Type: 0
   unit_Img: {fileID: 0}
   unit_CardImg: {fileID: 0}

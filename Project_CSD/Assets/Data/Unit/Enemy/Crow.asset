@@ -13,12 +13,13 @@ MonoBehaviour:
   m_Name: Crow
   m_EditorClassIdentifier: 
   unitType: 0
-  unitID: 31003
-  unitName: 
+  unitID: 31010
+  unitName: "\uAE4C\uB9C8\uADC0"
   cost: 0
-  health: 500
+  health: 300
   power: 30
   moveSpeed: 1
   attackTime: 2
+  item_Type: 0
   unit_Img: {fileID: 0}
   unit_CardImg: {fileID: 0}
