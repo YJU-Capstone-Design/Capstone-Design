@@ -32,7 +32,8 @@ public class MainLobby : MonoBehaviour
 
     [Header("BattleModeSelect")]
     [SerializeField] private GameObject battleMode;
-
+    [SerializeField] private GameObject battleMode_Obj;
+    [SerializeField] private GameObject lobbyCan;
 
     [Header("Lobby")]
     [SerializeField] private GameObject mainLobby;//메인로비 UI(캔버스)
@@ -213,10 +214,14 @@ public class MainLobby : MonoBehaviour
         if (!battleMode.activeSelf)
         {
             battleMode.SetActive(true);
+            battleMode_Obj.SetActive(true);
+            lobbyCan.SetActive(false);
         }
         else if (battleMode.activeSelf)
         {
             battleMode.SetActive(false);
+            battleMode_Obj.SetActive(false);
+            lobbyCan.SetActive(true);
         }
     }
     public void OnToggle()
