@@ -56,6 +56,9 @@ public class BattleManager :Singleton<BattleManager>
     enum UnitType { Bread, Pupnut, Kitchu, Ramo, Sorang, Croirang }; // 테스트(제작)용
     UnitType unitType;
 
+    [SerializeField] TextMeshProUGUI time;
+    public float limite_time = 3f;
+
     private void Awake()
     {
         // 전투 시작

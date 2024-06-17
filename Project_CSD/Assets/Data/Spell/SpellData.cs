@@ -18,7 +18,7 @@ public class SpellData : ScriptableObject
     private int spellID;
     public int SpellID { get { return spellID; } }
 
-    [SerializeField] // 회복
+    [SerializeField] // 이름
     private string spellName;
     public string SpellName { get { return spellName; } }
 
