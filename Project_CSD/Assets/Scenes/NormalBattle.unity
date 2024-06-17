@@ -508,7 +508,7 @@ MonoBehaviour:
   cost: 0
   supply: 2
   costTime: 0
-  timeInterver: 1
+  timeInterver: 3
   costText: {fileID: 1477738116}
   per_supplyText: {fileID: 103934482}
   supply_Gage: {fileID: 1638058627}
