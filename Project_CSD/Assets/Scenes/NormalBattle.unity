@@ -2786,9 +2786,8 @@ MonoBehaviour:
   - {fileID: 7474100815180747803}
   - {fileID: 9124715331880031944}
   reRoll: {fileID: 598841724}
-  time: {fileID: 0}
+  time: {fileID: 164023749}
   timer: 0
-  limite_time: 3
 --- !u!4 &418216610
 Transform:
   m_ObjectHideFlags: 0
