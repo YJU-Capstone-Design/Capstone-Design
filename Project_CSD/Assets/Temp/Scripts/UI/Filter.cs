@@ -213,7 +213,7 @@ public class Filter : MonoBehaviour
         {
             goImage = unFilter[0].GetChild(i).gameObject.transform.GetChild(2).gameObject;
             color = goImage.GetComponent<Image>().color;
-            color.a = 0.6f;
+            color.a = 1f;
             goImage.GetComponent<Image>().color = color;
         }
 
@@ -221,7 +221,7 @@ public class Filter : MonoBehaviour
         {
             goImage = unFilter[1].GetChild(i).gameObject.transform.GetChild(2).gameObject;
             color = goImage.GetComponent<Image>().color;
-            color.a = 0.6f;
+            color.a = 1f;
             goImage.GetComponent<Image>().color = color;
         }
 
