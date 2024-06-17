@@ -17,6 +17,6 @@ MonoBehaviour:
   breadRack_No: 2001
   breadRack_Cost: 3
   breadRack_Level: 1
-  breadRack_Img: {fileID: 21300000, guid: 77621d02a26e1e24ab52a4904ea2157e, type: 3}
+  breadRack_Img: {fileID: 21300000, guid: 5e9a064862a1b7841a9490847e43182e, type: 3}
   breadRack_Stats: 1.5
   breadRack_InfoTxt: "\uC18D\uB3C4\uAC00 1.5\uBC30 \uC99D\uAC00\uD55C\uB2E4."

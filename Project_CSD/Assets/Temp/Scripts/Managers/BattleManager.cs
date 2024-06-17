@@ -57,7 +57,9 @@ public class BattleManager :Singleton<BattleManager>
     UnitType unitType;
 
     [SerializeField] TextMeshProUGUI time;
-    public float limite_time = 3f;
+    public float timer = 0;
+    private float limite_time = 180f;
+
 
     private void Awake()
     {
@@ -82,6 +84,8 @@ public class BattleManager :Singleton<BattleManager>
 
     void Update()
     {
+
+
         // 적 소환 -> 테스트 용
         if (Input.GetKeyDown("2")) { pool.Get(2, 0); }
 
@@ -173,6 +177,28 @@ public class BattleManager :Singleton<BattleManager>
             }
             unitSpawnRange.SetActive(true);
         }
+        //Invoke("BattleTimer", 2f);
+    }
+
+    void BattleTimer()//타이머
+    {
+
+        limite_time -= Time.deltaTime;
+        if (limite_time <= 0)
+        {
+            battleState = BattleState.Win;
+            unitSpawnRange.SetActive(false);
+            EndGame("Win");
+        }
+        if (limite_time >= 0)
+        {
+            int minutes = Mathf.FloorToInt(limite_time / 60);
+            int seconds = Mathf.FloorToInt(limite_time % 60);
+
+            time.text = string.Format("{0:00} : {1:00}", minutes, seconds);
+        }
+       
+       
     }
 
     IEnumerator Wave()
