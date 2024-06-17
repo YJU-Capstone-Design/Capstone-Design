@@ -88,6 +88,7 @@ public class PlayerUnit : UnitBase
             else if(BattleManager.Instance.battleState == BattleManager.BattleState.Win) // 승리 시
             {
                 unitState = UnitState.Win;
+                startMoveFinish = true;
                 StopCoroutine(lerp); // 이동 멈춤
                 StartAnimation("Win", true, 1);
             }
