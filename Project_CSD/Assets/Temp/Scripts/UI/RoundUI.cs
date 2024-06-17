@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RoundUI : MonoBehaviour
 {
-    float radius = 333f;
+    float radius = 360f;
 
     void Update()
     {
@@ -28,9 +28,9 @@ public class RoundUI : MonoBehaviour
             }
             else
             {
-                child.localPosition = Vector2.Lerp(child.localPosition, targetPosition - new Vector2(30f - (30f * i), 0), Time.deltaTime * 5f);
+                child.localPosition = Vector2.Lerp(child.localPosition, targetPosition - new Vector2(20f - (20f * i), 0), Time.deltaTime * 5f);
             }
-            child.localRotation = Quaternion.Euler(new Vector3(0, 0, -20 + (20 * i)));
+            child.localRotation = Quaternion.Euler(new Vector3(0, 0, -22.5f + (22.5f * i)));
         }
     }
 }
