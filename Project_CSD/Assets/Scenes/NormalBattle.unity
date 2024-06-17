@@ -2574,6 +2574,8 @@ MonoBehaviour:
   - {fileID: 7474100815180747803}
   - {fileID: 9124715331880031944}
   reRoll: {fileID: 598841724}
+  time: {fileID: 0}
+  limite_time: 3
 --- !u!4 &418216610
 Transform:
   m_ObjectHideFlags: 0
@@ -10637,7 +10639,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2126852391
 RectTransform:
   m_ObjectHideFlags: 0
