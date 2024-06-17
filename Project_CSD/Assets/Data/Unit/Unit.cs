@@ -12,7 +12,7 @@ public class Unit : UnitBase
 
     public Image cardImg;
     public TextMeshProUGUI unitCost;
-
+    public TextMeshProUGUI unitText;
     public void OnEnable()
     {
         System.Random random = new System.Random();
@@ -36,5 +36,6 @@ public class Unit : UnitBase
         moveSpeed = units[index].MoveSpeed;
         cardImg.sprite = units[index].Unit_CardImg;
         unitCost.text = units[index].Cost.ToString();
+        unitText.text = units[index].UnitName;
     }
 }

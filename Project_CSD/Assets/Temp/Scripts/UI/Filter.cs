@@ -213,16 +213,18 @@ public class Filter : MonoBehaviour
         {
             goImage = unFilter[0].GetChild(i).gameObject.transform.GetChild(2).gameObject;
             color = goImage.GetComponent<Image>().color;
-            color.a = 1f;
+            color.a = 0f;
             goImage.GetComponent<Image>().color = color;
+            Debug.Log("스크린해제");
         }
 
         for (int i = 0; i < unFilter[1].childCount; i++)
         {
             goImage = unFilter[1].GetChild(i).gameObject.transform.GetChild(2).gameObject;
             color = goImage.GetComponent<Image>().color;
-            color.a = 1f;
+            color.a = 0f;
             goImage.GetComponent<Image>().color = color;
+            Debug.Log("스크린해제");
         }
 
     }

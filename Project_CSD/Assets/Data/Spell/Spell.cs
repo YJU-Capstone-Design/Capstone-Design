@@ -13,7 +13,7 @@ public class Spell : SpellBase
 
     public Image cardImg;
     public TextMeshProUGUI spellCost;
-
+    public TextMeshProUGUI spelltext;
     public void OnEnable()
     {
         System.Random random = new System.Random();
@@ -40,5 +40,6 @@ public class Spell : SpellBase
 
         cardImg.sprite = spells[index].Spell_CardImg;
         spellCost.text = spells[index].Cost.ToString();
+        spelltext.text = spells[index].SpellName;
     }
 }
