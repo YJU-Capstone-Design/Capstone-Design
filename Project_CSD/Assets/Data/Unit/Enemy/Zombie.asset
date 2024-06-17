@@ -16,7 +16,10 @@ MonoBehaviour:
   unitID: 31001
   unitName: "\uC880\uBE44"
   cost: 0
-  health: 1000
-  power: 400
+  health: 1500
+  power: 200
   moveSpeed: 1
   attackTime: 5
+  item_Type: 0
+  unit_Img: {fileID: 0}
+  unit_CardImg: {fileID: 0}

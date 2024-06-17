@@ -16,7 +16,10 @@ MonoBehaviour:
   unitID: 32002
   unitName: "\uC624\uD06C"
   cost: 0
-  health: 2500
-  power: 500
+  health: 3400
+  power: 190
   moveSpeed: 0.75
   attackTime: 5
+  item_Type: 0
+  unit_Img: {fileID: 0}
+  unit_CardImg: {fileID: 0}

@@ -1005,7 +1005,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 44.2
+  m_fontSize: 44.15
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -2500,8 +2500,8 @@ MonoBehaviour:
   - {fileID: 798610453738157305, guid: 75f42d5873409ff4292800fdace630a6, type: 3}
   - {fileID: 798610453738157305, guid: 4fd6921826f4e854a94eda6cac0277b1, type: 3}
   cardObj: []
-  curHealth: 50
-  maxHealth: 50
+  curHealth: 10000
+  maxHealth: 10000
   healthBar: {fileID: 139648792}
   HpBarSlider: {fileID: 442939622}
   battle: {fileID: 2016165685}

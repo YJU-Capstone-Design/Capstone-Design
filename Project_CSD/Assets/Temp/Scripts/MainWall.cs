@@ -28,7 +28,6 @@ public class MainWall : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
 
-
         Debug.Log("Break");
         col.enabled = false;
         gameObject.SetActive(false);
