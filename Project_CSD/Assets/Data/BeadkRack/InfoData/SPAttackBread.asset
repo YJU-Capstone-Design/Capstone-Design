@@ -19,4 +19,8 @@ MonoBehaviour:
   breadRack_Level: 3
   breadRack_Img: {fileID: 21300000, guid: fce713e6c4f5ed94d8d2646550179459, type: 3}
   breadRack_Stats: 3
+  breadRack_Atk: 3
+  breadRack_Spd: 0
+  breadRack_MainHp: 0
+  breadRack_UnitHp: 0
   breadRack_InfoTxt: "\uACF5\uACA9\uB825\uC774 3\uBC30 \uC99D\uAC00\uD55C\uB2E4."

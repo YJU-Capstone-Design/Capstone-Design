@@ -34,17 +34,17 @@ public class BreakRackMgr : Singleton<BreakRackMgr>
     public TextMeshProUGUI speed_Status;
     public TextMeshProUGUI mainHP_Status;
     public TextMeshProUGUI unitHP_Status;
-    public float atk_Stu;
-    public float speed_Stu;
-    public float mainHp_Stu;
-    public float unitHp_Stu;
+    public float atk_Stu=0;
+    public float speed_Stu=0;
+    public float mainHp_Stu=0;
+    public float unitHp_Stu=0;
 
     private void Awake()
     {
         attack_Status.text = "Attack    ";
         speed_Status.text = "Speed  "  ;
-        mainHP_Status.text = "UnitHP    " ;
-        unitHP_Status.text = "MainHP    ";
+        mainHP_Status.text = "MainHP    " ;
+        unitHP_Status.text = "UnitHP    ";
     }
 
     public void SetItem(BreadRack_Data data)
@@ -96,26 +96,27 @@ public class BreakRackMgr : Singleton<BreakRackMgr>
         float type = data.BreadRack_No / (int)Math.Pow(10, (int)Math.Log10(data.BreadRack_No)); ;
         if(type == 1)
         {
-            atk_Stu += data.BreadRack_Stats;
+            atk_Stu += data.BreadRack_Atk;
             attack_Status.text = "Attack    " + atk_Stu + "X";
+        
           
         }
         else if(type == 2)
         {
-            speed_Stu += data.BreadRack_Stats;
+            speed_Stu += data.BreadRack_Spd;
             speed_Status.text = "Speed  " + speed_Stu + "X";
-         
+          
         }
         else if (type == 3)
         {
-            mainHp_Stu += data.BreadRack_Stats;
-            mainHP_Status.text = "UnitHP    " + mainHp_Stu + "X";
-        
+            mainHp_Stu += data.BreadRack_MainHp;
+            mainHP_Status.text = "MainHP    " + mainHp_Stu + "X";
+    
         }
         else if (type == 4)
         {
-            unitHp_Stu += data.BreadRack_Stats;
-            unitHP_Status.text = "MainHP    " + unitHp_Stu + "X";
+            unitHp_Stu += data.BreadRack_UnitHp;
+            unitHP_Status.text = "UnitHP    " + unitHp_Stu + "X";
        
         }
         
@@ -126,27 +127,27 @@ public class BreakRackMgr : Singleton<BreakRackMgr>
         float type = data.BreadRack_No / (int)Math.Pow(10, (int)Math.Log10(data.BreadRack_No)); ;
         if (type == 1)
         {
-            atk_Stu -= data.BreadRack_Stats;
+            atk_Stu -= data.BreadRack_Atk;
             attack_Status.text = "Attack    " + atk_Stu + "X";
-
+        
         }
         else if (type == 2)
         {
-            speed_Stu -= data.BreadRack_Stats;
+            speed_Stu -= data.BreadRack_Spd;
             speed_Status.text = "Speed  " + speed_Stu + "X";
-
+           
         }
         else if (type == 3)
         {
-            mainHp_Stu -= data.BreadRack_Stats;
-            mainHP_Status.text = "UnitHP    " + mainHp_Stu + "X";
-
+            mainHp_Stu -= data.BreadRack_MainHp;
+            mainHP_Status.text = "MainHP    " + mainHp_Stu + "X";
+           
         }
         else if (type == 4)
         {
-            unitHp_Stu -= data.BreadRack_Stats;
-            unitHP_Status.text = "MainHP    " + unitHp_Stu + "X";
-
+            unitHp_Stu -= data.BreadRack_UnitHp;
+            unitHP_Status.text = "UnitHP    " + unitHp_Stu + "X";
+           
         }
 
     }
