@@ -16,7 +16,7 @@ MonoBehaviour:
   unitID: 31011
   unitName: "\uBE44\uD640\uB354"
   cost: 0
-  health: 500
+  health: 1500
   power: 30
   moveSpeed: 1
   attackTime: 2

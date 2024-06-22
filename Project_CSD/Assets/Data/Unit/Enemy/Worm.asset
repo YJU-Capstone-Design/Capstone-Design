@@ -16,7 +16,7 @@ MonoBehaviour:
   unitID: 31006
   unitName: "\uC6DC"
   cost: 0
-  health: 500
+  health: 2200
   power: 150
   moveSpeed: 1
   attackTime: 3

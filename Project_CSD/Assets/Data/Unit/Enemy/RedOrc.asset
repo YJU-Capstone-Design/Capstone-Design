@@ -16,7 +16,7 @@ MonoBehaviour:
   unitID: 32003
   unitName: "\uB808\uB4DC\uC624\uD06C"
   cost: 0
-  health: 2000
+  health: 3000
   power: 150
   moveSpeed: 1
   attackTime: 4.5
