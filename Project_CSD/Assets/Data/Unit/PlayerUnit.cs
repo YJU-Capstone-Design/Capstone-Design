@@ -71,6 +71,8 @@ public class PlayerUnit : UnitBase
         initialMoveSpeed = unitData.MoveSpeed;
         initialPower = unitData.Power;
         initialAttackTime = unitData.AttackTime;
+        
+
     }
 
     void Update()
@@ -127,6 +129,19 @@ public class PlayerUnit : UnitBase
         moveSpeed = unitData.MoveSpeed;
         power = unitData.Power;
         attackTime = unitData.AttackTime;
+
+        if (PlayerData.instance != null)//진열대 추가 수치값
+        {
+            Debug.Log("변경전 : " + power);
+            float atk = PlayerData.instance.atk_Stu;
+            float spd = PlayerData.instance.speed_Stu;
+            float hp = PlayerData.instance.unitHp_Stu;
+            if (atk >= 1) { power *= atk; }
+            if (spd >= 1) { moveSpeed *= spd; }
+            if (hp >= 1) { health *= hp; }
+            Debug.Log("변경후 : " + power);
+        }
+
 
         // 설정값
         col.enabled = true;

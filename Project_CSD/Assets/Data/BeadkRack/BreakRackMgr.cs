@@ -5,8 +5,10 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using System; 
-public class BreakRackMgr : Singleton<BreakRackMgr>
+public class BreakRackMgr : MonoBehaviour
 {
+    public static BreakRackMgr Instance;
+
     [Header("BreadRack 아이템 등급")]
     [SerializeField] private GameObject legendary_Icon;
     [SerializeField] private GameObject legendary_Cost;
@@ -41,12 +43,31 @@ public class BreakRackMgr : Singleton<BreakRackMgr>
 
     private void Awake()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
+
+    }
+    
+    private void Start()
+    {
         attack_Status.text = "Attack    ";
-        speed_Status.text = "Speed  "  ;
-        mainHP_Status.text = "MainHP    " ;
+        speed_Status.text = "Speed  ";
+        mainHP_Status.text = "MainHP    ";
         unitHP_Status.text = "UnitHP    ";
     }
-
+    private void Update()
+    {
+       
+      
+    }
     public void SetItem(BreadRack_Data data)
     {
         int value_No = 0;
@@ -88,6 +109,16 @@ public class BreakRackMgr : Singleton<BreakRackMgr>
         }
 
 
+    }
+    public void SaveStatus()
+    {
+        if (PlayerData.instance != null )
+        {
+            PlayerData.instance.atk_Stu = atk_Stu;
+            PlayerData.instance.speed_Stu = speed_Stu;
+            PlayerData.instance.mainHp_Stu = mainHp_Stu;
+            PlayerData.instance.unitHp_Stu = unitHp_Stu;
+        }
     }
 
     public void ShowCase_Status(BreadRack_Data data)

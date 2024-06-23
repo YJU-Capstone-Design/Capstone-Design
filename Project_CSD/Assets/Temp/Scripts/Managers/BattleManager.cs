@@ -72,6 +72,7 @@ public class BattleManager :Singleton<BattleManager>
         battle.SetActive(true);
         gameEnd.SetActive(false);
         CardMake();
+        if (PlayerData.instance != null) { if (PlayerData.instance.mainHp_Stu >= 1) { maxHealth *= PlayerData.instance.mainHp_Stu; } }
         curHealth = maxHealth;
         UpdateHealthBar();
 
@@ -248,7 +249,11 @@ public class BattleManager :Singleton<BattleManager>
             resultMenuBar.sprite = resultImg[2];
             
             if (AudioManager.instance != null) { AudioManager.instance.BattleEndSound(true); }
+            if (CashManager.instance != null) { CashManager.instance.player_Gold += 100 * wave; }
+            if (PlayerData.instance != null) { PlayerData.instance.Lv++; }
             StartCoroutine(ResultUI(2));
+
+
         }
         else if(whether == "Lose")
         {

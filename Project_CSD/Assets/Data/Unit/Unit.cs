@@ -9,7 +9,7 @@ public class Unit : UnitBase
 {
     [Header("# Spell Setting")]
     public List<UnitData> units = new List<UnitData>();
-
+    public UnitData data;
     public Image cardImg;
     public TextMeshProUGUI unitCost;
     public TextMeshProUGUI unitText;
@@ -23,7 +23,7 @@ public class Unit : UnitBase
     {
         // Unit Type
         unitType = (UnitTypes)units[index].UnitType;
-
+        data = units[index];
         // Unit Info
         unitID = units[index].UnitID;
         unitName = units[index].UnitName;
@@ -37,5 +37,10 @@ public class Unit : UnitBase
         cardImg.sprite = units[index].Unit_CardImg;
         unitCost.text = units[index].Cost.ToString();
         unitText.text = units[index].UnitName;
+    }
+    public void SetItemInfo()
+    {
+        if (AudioManager.instance != null) { AudioManager.instance.ButtonSound(); }
+        ItemInfo.instance.OpenInfoUnit(data);
     }
 }

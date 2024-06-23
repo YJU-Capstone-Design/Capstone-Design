@@ -14,14 +14,18 @@ public class Spell : SpellBase
     public Image cardImg;
     public TextMeshProUGUI spellCost;
     public TextMeshProUGUI spelltext;
+    public SpellData data;
+
     public void OnEnable()
     {
         System.Random random = new System.Random();
         CallSpellData(random.Next(0, spells.Count));
+      
     }
 
     public void CallSpellData(int index)
     {
+        data = spells[index];
         // Spell Type
         spellType = (SpellTypes) spells[index].SpellType;
 
@@ -42,4 +46,13 @@ public class Spell : SpellBase
         spellCost.text = spells[index].Cost.ToString();
         spelltext.text = spells[index].SpellName;
     }
+    public void SetItemInfo()
+    {
+        if (AudioManager.instance != null) { AudioManager.instance.ButtonSound(); }
+
+        ItemInfo.instance.OpenInfoSpell(data);
+    }
+
+    // 이 함수는 마우스가 오브젝트를 벗어날 때 호출됩니다.
+    
 }
