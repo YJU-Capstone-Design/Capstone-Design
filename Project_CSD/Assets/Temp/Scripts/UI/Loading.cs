@@ -26,14 +26,18 @@ public class Loading : MonoBehaviour
         {
             case "Lobby":
                 LodingSceneMgr.LoadScene("MainLobby");
+                
                 Debug.Log("Loding");
                 break;
             case "BattleMode":
                 LodingSceneMgr.LoadScene("BattleMode");
+                
                 Debug.Log("BattleMode");
                 break;
             case "NomalMode":
                 LodingSceneMgr.LoadScene("NormalBattle");
+               
+                BreakRackMgr.Instance.transform.localScale = Vector3.zero;
                 Debug.Log("BattleMode");
                 break;
         }

@@ -105,6 +105,7 @@ public class PopUp : MonoBehaviour
 
         LodingSceneMgr.LoadScene("MainLobby");
             Time.timeScale = 1;
+        BreakRackMgr.Instance.transform.localScale = Vector3.one;
         if (AudioManager.instance != null) { AudioManager.instance.MainSound(); }
     }
 }

@@ -46,13 +46,9 @@ public class BreakRackMgr : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
+            
         }
-        else
-        {
-            Destroy(gameObject);
-        }
-
+      
 
     }
     

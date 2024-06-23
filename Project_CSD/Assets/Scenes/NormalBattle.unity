@@ -11653,6 +11653,8 @@ MonoBehaviour:
   - {fileID: 964879728}
   - {fileID: 2132609542}
   - {fileID: 534009940}
+  collImg: {fileID: 0}
+  collObj: {fileID: 0}
 --- !u!1 &1988882989
 GameObject:
   m_ObjectHideFlags: 0
