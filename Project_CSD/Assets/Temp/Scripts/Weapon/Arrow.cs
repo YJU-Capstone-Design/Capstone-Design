@@ -29,6 +29,10 @@ public class Arrow : MonoBehaviour
             gameObject.SetActive(false);
             return;
         }
+        else
+        {
+            gameObject.SetActive(true);
+        }
 
         // 포물선 공식
         playerX = transform.position.x;

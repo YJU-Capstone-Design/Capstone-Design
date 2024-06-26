@@ -357,6 +357,7 @@ public class EnemyUnit : UnitBase
 
         // 화살 목표 오브젝트 설정
         arrawLogic.target = nearestAttackTarget.gameObject;
+        Debug.Log(nearestAttackTarget.name);
         arrawLogic.playerUnit = this.gameObject;
 
         yield return new WaitForSeconds(anim.GetTime());
