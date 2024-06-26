@@ -497,8 +497,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c83088164df3514eb830217755e469a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player_Cash: 100
-  player_Gold: 100
+  player_Cash: 300
+  player_Gold: 300
   GoldText: {fileID: 0}
   CashText: {fileID: 0}
   obj1: {fileID: 0}
@@ -9062,6 +9062,11 @@ MonoBehaviour:
   cash: 
   gold: 
   icon: {fileID: 0}
+  addicon: []
+  atk_Stu: 1
+  speed_Stu: 1
+  mainHp_Stu: 1
+  unitHp_Stu: 1
 --- !u!1 &1741892004
 GameObject:
   m_ObjectHideFlags: 0
