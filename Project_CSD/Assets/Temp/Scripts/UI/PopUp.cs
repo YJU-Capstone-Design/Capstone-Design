@@ -103,9 +103,9 @@ public class PopUp : MonoBehaviour
     {
         if (AudioManager.instance != null) { AudioManager.instance.ButtonSound(); }
 
-        LodingSceneMgr.LoadScene("MainLobby");
+        LodingSceneMgr.LoadScene("Start");
             Time.timeScale = 1;
-        BreakRackMgr.Instance.transform.localScale = Vector3.one;
+        
         if (AudioManager.instance != null) { AudioManager.instance.MainSound(); }
     }
 }

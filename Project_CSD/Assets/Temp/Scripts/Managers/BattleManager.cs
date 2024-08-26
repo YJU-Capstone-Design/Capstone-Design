@@ -56,10 +56,20 @@ public class BattleManager :Singleton<BattleManager>
     enum UnitType { Bread, Pupnut, Kitchu, Ramo, Sorang, Croirang }; // 테스트(제작)용
     UnitType unitType;
 
+    [Header("# 타이머와 웨이브")]
     [SerializeField] TextMeshProUGUI time;
-    public float timer = 0;
-    private float limite_time = 180f;
+    public float timer = 180;
+    private float limite_time = 0f;
+    [SerializeField] Image waveImg;
+    [SerializeField] Image waveImg2;
+    public float endTime=0f;
 
+
+    [Header("# 랭킹")]
+    [SerializeField] GameObject rank_Obj;
+    [SerializeField] GameObject rank_Item;
+    [SerializeField] TMP_InputField player_Name;
+    [SerializeField] TMP_InputField player_No;
 
     private void Awake()
     {
@@ -81,6 +91,7 @@ public class BattleManager :Singleton<BattleManager>
         ReadSpawnFile(wave); // 적 유닛 스폰 파일 가져오기
 
         unitType = UnitType.Bread; // 테스트(제작)용
+   
     }
 
     void Update()
@@ -178,13 +189,22 @@ public class BattleManager :Singleton<BattleManager>
             }
             unitSpawnRange.SetActive(true);
         }
-        //Invoke("BattleTimer", 2f);
+        Invoke("BattleTimer", 2f);
     }
 
     void BattleTimer()//타이머
     {
+        //클리어까지의 시간
 
-        limite_time -= Time.deltaTime;
+        
+        limite_time += Time.deltaTime;
+        int minutes = Mathf.FloorToInt(limite_time / 60);
+        int seconds = Mathf.FloorToInt(limite_time % 60);
+
+        time.text = string.Format("{0:00} : {1:00}", minutes, seconds);
+
+        //타임 어택
+        /*limite_time -= Time.deltaTime;
         if (limite_time <= 0)
         {
             battleState = BattleState.Win;
@@ -197,9 +217,9 @@ public class BattleManager :Singleton<BattleManager>
             int seconds = Mathf.FloorToInt(limite_time % 60);
 
             time.text = string.Format("{0:00} : {1:00}", minutes, seconds);
-        }
-       
-       
+        }*/
+
+
     }
 
     IEnumerator Wave()
@@ -215,7 +235,8 @@ public class BattleManager :Singleton<BattleManager>
 
         battleWaveImg[0].sprite = waveNumImg[one];
         battleWaveImg[1].sprite = waveNumImg[ten];
-
+        waveImg.sprite = waveNumImg[ten];
+        waveImg2.sprite = waveNumImg[one];
         // Wave 애니메이션
         foreach (Animator waveAnim in waveUIChild)
         {
@@ -242,7 +263,8 @@ public class BattleManager :Singleton<BattleManager>
 
         resultWaveImg[0].sprite = waveNumImg[one];
         resultWaveImg[1].sprite = waveNumImg[ten];
-
+        waveImg.sprite = waveNumImg[ten];
+        waveImg2.sprite = waveNumImg[one];
         if (whether == "Win")
         {
             resultPanel.sprite = resultImg[0];
@@ -444,5 +466,15 @@ public class BattleManager :Singleton<BattleManager>
 
         // 다음 리스폰 딜레이 갱신
         nextSpawnDelay = spawnList[spawnIndex].spawnDelay;
+    }
+
+    public void AddRanking()
+    {
+        
+    }
+
+    public void RankingCloser()
+    {
+        rank_Obj.SetActive(false);
     }
 }
