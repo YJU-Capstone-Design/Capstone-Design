@@ -91,7 +91,7 @@ public class EnemyUnit : UnitBase
             // SpriteRenderer 가 있을 경우에는 본체의 y 축 값의 소수점을 제외한 값을 Order Layer 에 적용
             if(bodySprite != null)
             {
-                float yPos = transform.position.y * 100 - 400; // 넓게 분배하기 위해 * 100 음수/양수 처리를 위해 -400;
+                float yPos = transform.position.y * 100 - 401; // 넓게 분배하기 위해 * 100 음수/양수 처리를 위해 -401 -> 파츠별로 나눠져 있어서 PlayerUnit 보다 -1;
                 int orderLayer = Mathf.FloorToInt(yPos); // 소수점 제외
                 if(bodySprite.gameObject.name.Contains("Shadow"))
                 {

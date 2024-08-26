@@ -66,7 +66,6 @@ public class MonsterAnimation : MonsterCharacterAnimation
                 break;
             case MonsterActing.Idle:
                 Animator.Play("idle");
-                Debug.Log("Idle");
                 break;
             case MonsterActing.Jump:
                 Animator.Play("jump");
