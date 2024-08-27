@@ -51,6 +51,7 @@ public class BattleManager :Singleton<BattleManager>
     [SerializeField] Image[] resultWaveImg;
     [SerializeField] Animator[] resultObjsAnim;
     [SerializeField] Button[] resultButtons;
+    [SerializeField] TextMeshProUGUI rainkg_Btn_Text;
     [SerializeField] public Button reRoll;
 
     enum UnitType { Bread, Pupnut, Kitchu, Ramo, Sorang, Croirang }; // 테스트(제작)용
@@ -472,9 +473,14 @@ public class BattleManager :Singleton<BattleManager>
     {
         
     }
-
+    public void RankingOpen()
+    {
+        if (AudioManager.instance != null) { AudioManager.instance.BattleSound(); }
+        rank_Obj.SetActive(true);
+    }
     public void RankingCloser()
     {
+        if (AudioManager.instance != null) { AudioManager.instance.BattleSound(); }
         rank_Obj.SetActive(false);
     }
 }
