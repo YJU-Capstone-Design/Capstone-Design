@@ -103,8 +103,9 @@ public class PopUp : MonoBehaviour
     {
         if (AudioManager.instance != null) { AudioManager.instance.ButtonSound(); }
 
-        LodingSceneMgr.LoadScene("MainLobby");
+        LodingSceneMgr.LoadScene("Start");
             Time.timeScale = 1;
+        
         if (AudioManager.instance != null) { AudioManager.instance.MainSound(); }
     }
 }

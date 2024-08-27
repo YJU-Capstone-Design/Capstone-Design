@@ -22,8 +22,8 @@ public class SceneMgr : Singleton<SceneMgr>
         }
         else if(type.Equals("NomalMode"))
         {
-           
-            SceneManager.LoadScene("NormalBattle");
+            LodingSceneMgr.LoadScene("NormalBattle");
+            //SceneManager.LoadScene("NormalBattle");
             
         }
 

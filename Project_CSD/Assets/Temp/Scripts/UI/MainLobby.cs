@@ -73,6 +73,16 @@ public class MainLobby : MonoBehaviour
         PlayerInfo();
 
     }
+    private void Update()
+    {
+        if (CashManager.instance != null)
+        {
+
+            cash.text = "Ä³½¬ " + CashManager.instance.player_Cash.ToString();
+            gold.text = "°ñµå " + CashManager.instance.player_Gold.ToString();
+        }
+
+    }
     public void PlayerInfo()
     {
         if (PlayerData.instance != null) {
@@ -84,6 +94,7 @@ public class MainLobby : MonoBehaviour
     }
     public void OpenPlayerCard()
     {
+        if (AudioManager.instance != null) { AudioManager.instance.ButtonSound(); }
         playerCard.SetActive(true);
         if (PlayerData.instance != null)
         {
@@ -109,6 +120,7 @@ public class MainLobby : MonoBehaviour
         int openScene = 0;
         if (type.Equals("Gacha"))
         {
+            BreakRackMgr.Instance.transform.localScale = Vector3.zero;
             mainBG.SetActive(false);
             openScene = 1;
             if (AudioManager.instance != null) { AudioManager.instance.GachaSound(); }
@@ -216,9 +228,11 @@ public class MainLobby : MonoBehaviour
             battleMode.SetActive(true);
             battleMode_Obj.SetActive(true);
             lobbyCan.SetActive(false);
+            BreakRackMgr.Instance.transform.localScale = Vector3.zero;
         }
         else if (battleMode.activeSelf)
         {
+            BreakRackMgr.Instance.transform.localScale = Vector3.one;
             battleMode.SetActive(false);
             battleMode_Obj.SetActive(false);
             lobbyCan.SetActive(true);
@@ -249,7 +263,7 @@ public class MainLobby : MonoBehaviour
 
            
         }
-
+        BreakRackMgr.Instance.transform.localScale = Vector3.one;
     }
  
     public void GameSetting()

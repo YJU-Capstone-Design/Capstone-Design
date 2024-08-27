@@ -19,8 +19,9 @@ public class Collection_Data : MonoBehaviour
     public GameObject panel;
     public Sprite sp_bg;
     public Sprite sp_frame;
-    
 
+    public UnitData uidata;
+    public SpellData spdata;
     public void Init(UnitData data)
     {
         panel.SetActive(false);
@@ -29,7 +30,20 @@ public class Collection_Data : MonoBehaviour
         id = data.UnitID;
       
         gameObject.SetActive(true);
-        
+        uidata = data;
+    }
+
+    public void ItemInfoOpen()
+    {
+        if (uidata != null)
+        {
+            ItemInfo.instance.UnitCollectionInfo(uidata);
+
+        }
+        else
+        {
+            ItemInfo.instance.SpellCollectionInfo(spdata);
+        }
     }
     public void SpellInit(SpellData spelldata)
     {
@@ -42,5 +56,6 @@ public class Collection_Data : MonoBehaviour
         bg.sprite = sp_bg;
         frame.sprite = sp_frame;
         panel.SetActive(true);
+        spdata = spelldata;
     }
 }

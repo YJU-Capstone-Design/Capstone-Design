@@ -32,6 +32,18 @@ public class BreadRack_Data : ScriptableObject {
     [SerializeField] // 증감 스텟
     private float breadRack_Stats;
     public float BreadRack_Stats { get { return breadRack_Stats; } }
+    [SerializeField]
+    private float breadRack_Atk;
+    public float BreadRack_Atk { get { return breadRack_Atk; } }
+    [SerializeField]
+    private float breadRack_Spd;
+    public float BreadRack_Spd { get { return breadRack_Spd; } }
+    [SerializeField]
+    private float breadRack_MainHp;
+    public float BreadRack_MainHp { get { return breadRack_MainHp; } }
+    [SerializeField]
+    private float breadRack_UnitHp;
+    public float BreadRack_UnitHp { get { return breadRack_UnitHp; } }
 
     [SerializeField] // 설명서
     private string breadRack_InfoTxt;

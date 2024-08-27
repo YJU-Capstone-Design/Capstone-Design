@@ -14,9 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   breadRack_Name: CHBRD
   breadRack_RareType: 1
-  breadRack_No: 4001
+  breadRack_No: 3001
   breadRack_Cost: 3
   breadRack_Level: 1
   breadRack_Img: {fileID: 21300000, guid: 0dcc6a8f67668554d95080e7e35fb1e5, type: 3}
   breadRack_Stats: 1.5
+  breadRack_Atk: 0
+  breadRack_Spd: 0
+  breadRack_MainHp: 1.5
+  breadRack_UnitHp: 0
   breadRack_InfoTxt: "\uD50C\uB808\uC774\uC5B4 HP\uAC00 1.5\uBC30 \uC99D\uAC00\uD55C\uB2E4."

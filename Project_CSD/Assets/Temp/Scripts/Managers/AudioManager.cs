@@ -112,4 +112,10 @@ public class AudioManager : MonoBehaviour
         audioSource_Btn.volume = value;
         audioSource_Effect.volume = value;
     }
+
+
+    public void EndGame()
+    {
+        Application.Quit();
+    }
 }
