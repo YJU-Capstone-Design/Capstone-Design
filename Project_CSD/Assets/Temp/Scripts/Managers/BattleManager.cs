@@ -59,6 +59,7 @@ public class BattleManager :Singleton<BattleManager>
 
     [Header("# 타이머와 웨이브")]
     [SerializeField] TextMeshProUGUI time;
+    [SerializeField] TextMeshProUGUI result_Time;
     public float timer = 180;
     private float limite_time = 0f;
     [SerializeField] Image waveImg;
@@ -275,7 +276,10 @@ public class BattleManager :Singleton<BattleManager>
             if (CashManager.instance != null) { CashManager.instance.player_Gold += 100 * wave; }
             if (PlayerData.instance != null) { PlayerData.instance.Lv++; }
             StartCoroutine(ResultUI(2));
-
+            endTime = limite_time;
+            int minutes = Mathf.FloorToInt(endTime / 60);
+            int seconds = Mathf.FloorToInt(endTime % 60);
+            result_Time.text = string.Format("{0:00} : {1:00}", minutes, seconds);
 
         }
         else if(whether == "Lose")
@@ -285,6 +289,10 @@ public class BattleManager :Singleton<BattleManager>
             if (AudioManager.instance != null) { AudioManager.instance.BattleEndSound(false); }
             Debug.Log("Lose");
             StartCoroutine(ResultUI(0));
+            endTime = limite_time;
+            int minutes = Mathf.FloorToInt(endTime / 60);
+            int seconds = Mathf.FloorToInt(endTime % 60);
+            result_Time.text = string.Format("{0:00} : {1:00}", minutes, seconds);
         }
     }
 
