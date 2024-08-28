@@ -3620,6 +3620,7 @@ MonoBehaviour:
   - {fileID: 7474100815180747803}
   - {fileID: 9124715331880031944}
   - {fileID: 444176255}
+  rainkg_Btn_Text: {fileID: 0}
   reRoll: {fileID: 598841724}
   time: {fileID: 164023749}
   timer: 0
@@ -6199,6 +6200,50 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &748921243
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 748921245}
+  - component: {fileID: 748921244}
+  m_Layer: 0
+  m_Name: DB Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &748921244
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 748921243}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1894c9131e43eb43a8bf15100a8e737, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &748921245
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 748921243}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 11.750392, y: 8.057145, z: -0.17332932}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &760196603
 GameObject:
   m_ObjectHideFlags: 0
@@ -17707,3 +17752,4 @@ SceneRoots:
   - {fileID: 440047941}
   - {fileID: 1438821130}
   - {fileID: 730749225}
+  - {fileID: 748921245}
