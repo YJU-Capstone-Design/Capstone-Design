@@ -16,7 +16,7 @@ public class DBConnect : MonoBehaviour
     public bool Connection()
     {
         string conStr = string.Format("Server={0};Database={1};Uid={2};Pwd={3};",
-                                  "34.64.201.214", "cst", "root", "yju123");
+                                  "127.0.0.1", "testDB", "root", "1478");
 
         try
         {
