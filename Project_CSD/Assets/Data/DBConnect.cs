@@ -23,6 +23,23 @@ public class DBConnect : Singleton<DBConnect>
         // 데이터 검색 후 없으면 Insert 있으면 Update
     }
 
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.I))
+        {
+            XmlNodeList selectedData = Select("ranking", $"WHERE id = {2001565}");
+
+            if (selectedData == null)
+            {
+                Insert("ranking", 2001565, "홍길동", 10);
+            }
+            else
+            {
+                Update("ranking", "name", "time", "짱구", 5, "id = 2001565");
+            }
+        }
+    }
+
 
     // MySql 연결 함수
     public bool Connection()
@@ -62,7 +79,7 @@ public class DBConnect : Singleton<DBConnect>
     }
 
     private static MySqlConnection _connection = null;
-    private static MySqlConnection connection
+    private static MySqlConnection connection // 호출 시 실행되는 구조
     {
         get
         {
@@ -117,20 +134,25 @@ public class DBConnect : Singleton<DBConnect>
     // 데이터베이스에서 데이터를 가져오는 함수
     private static DataSet m_OnLoad(string tableName, string query)
     {
-        DataSet ds = null; // DataSet : 여러 테이블을 메모리 상에 담을 수 있는 데이터 구조
+        DataSet ds = null; ;
         try
         {
+            connection.Open();   //DB 연결
+
             MySqlCommand cmd = new MySqlCommand();
+            cmd.Connection = connection;
             cmd.CommandText = query;
 
-            MySqlDataAdapter sd = new MySqlDataAdapter(cmd);  // MySqlDataAdapter : 데이터베이스로부터 데이터를 가져옴.
-            ds = new DataSet();       // DataSet 객체를 새로 생성한 후, MySqlDataAdapter의 Fill 메서드를 통해 쿼리 결과를 DataSet에 넣
-            sd.Fill(ds, tableName);   // tableName 매개변수를 사용해 DataSet 내의 특정 테이블에 데이터를 채움.
+            MySqlDataAdapter sd = new MySqlDataAdapter(cmd);
+            ds = new DataSet();
+            sd.Fill(ds, tableName);
         }
         catch (Exception e)
         {
             Debug.LogError(e.ToString());
         }
+
+        connection.Close();  //DB 연결 해제
         return ds;
     }
 
@@ -141,11 +163,11 @@ public class DBConnect : Singleton<DBConnect>
     /// <param name="field">검색할 필드 (입력하지 않을 경우 전체 로드)</param>
     /// <param name="condition">조건</param>
     /// <returns></returns>
-    public static XmlNodeList Select(string tableName, string field = "*", string condition = "")
+    public static XmlNodeList Select(string tableName, string condition = "")
     {
-        DataSet dataSet = m_OnLoad(tableName, $"SELECT {field} FROM {tableName} {condition}");
+        DataSet dataSet = m_OnLoad(tableName, $"SELECT * FROM {tableName} {condition}");
 
-        if (dataSet == null)
+        if (dataSet == null || dataSet.Tables.Count == 0 || dataSet.Tables[0].Rows.Count == 0)
             return null;
 
         XmlDocument xmlDocument = new XmlDocument();
@@ -190,11 +212,12 @@ public class DBConnect : Singleton<DBConnect>
     /// <param name="value">입력할 값</param>
     /// <param name="condition">조건</param>
     /// <returns></returns>
-    public static bool Update(string tableName, string fieldName, string value, string condition)
+    public static bool Update(string tableName, string fieldName1, string fieldName2, string name, int time, string condition)
     {
         Debug.Log("Update Data");
-        return m_OnChange($"UPDATE {tableName} SET {fieldName}='{value}' WHERE {condition}");
+        return m_OnChange($"UPDATE {tableName} SET {fieldName1}='{name}', {fieldName2}={time} WHERE {condition}");
     }
+
 
     /// <summary>
     /// 레코드 제거
