@@ -719,9 +719,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: BattleManager, Assembly-CSharp
-        m_MethodName: RankingCloser
+      - m_Target: {fileID: 2080752046}
+        m_TargetAssemblyTypeName: CheckRank, Assembly-CSharp
+        m_MethodName: CloseRankList
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
