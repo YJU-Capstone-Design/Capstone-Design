@@ -17,12 +17,6 @@ public class DBConnect : Singleton<DBConnect>
         Debug.Log("Connection Test :" + Connection());
     }
 
-    private void Start()
-    {
-        // Insert("ranking", 2001565, "홍길동", 10);
-        // 데이터 검색 후 없으면 Insert 있으면 Update
-    }
-
     private void Update()
     {
         if(Input.GetKeyDown(KeyCode.I))
@@ -46,8 +40,6 @@ public class DBConnect : Singleton<DBConnect>
     {
         string conStr = string.Format("Server={0};Database={1};Uid={2};Pwd={3};Port={4};SslMode=none;",
          "34.64.201.214", "cst", "root", "yju123", "3306");
-        //"34.64.201.214", "cst", "ori", "Asdf1478!", "3306");
-        //"127.0.0.1", "testDB", "root", "1478", "3306");    // -> 내 로컬 db
 
         try
         {

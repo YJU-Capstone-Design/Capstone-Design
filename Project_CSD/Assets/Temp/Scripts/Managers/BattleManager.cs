@@ -99,11 +99,6 @@ public class BattleManager :Singleton<BattleManager>
 
     void Update()
     {
-
-
-        // 적 소환 -> 테스트 용
-        if (Input.GetKeyDown("2")) { pool.Get(2, 0); }
-
         if (CardManager.Instance.enemys.Count > 0 && curHealth > 0)
         {
             battleState = BattleState.Start;
@@ -146,52 +141,6 @@ public class BattleManager :Singleton<BattleManager>
             }
         }
 
-
-        // 플레이어 유닛 소환 -> 테스트(제작)용
-        if (Input.GetKeyDown(KeyCode.Keypad0))
-        {
-            unitType = UnitType.Bread;
-        }
-        else if (Input.GetKey(KeyCode.Keypad1))
-        {
-            unitType = UnitType.Pupnut;
-        }
-        else if (Input.GetKey(KeyCode.Keypad2))
-        {
-            unitType = UnitType.Kitchu;
-        }
-        else if (Input.GetKey(KeyCode.Keypad3))
-        {
-            unitType = UnitType.Ramo;
-        }
-        else if (Input.GetKey(KeyCode.Keypad4))
-        {
-            unitType = UnitType.Sorang;
-        }
-        else if (Input.GetKey(KeyCode.Keypad5))
-        {
-            unitType = UnitType.Croirang;
-        }
-
-        // 유닛 소환 영역 활성화
-        if (Input.GetKeyDown("1"))
-        {
-            GameObject spawnArea = unitSpawnRange.transform.GetChild(1).gameObject;
-            RectTransform spawnAreaAnchors = spawnArea.GetComponent<RectTransform>();
-
-            // 메인 카메라의 위치에 따라 스폰 가능 영역 범위 변경
-            if (mainCamera.position.x >= 3)
-            {
-                spawnAreaAnchors.anchorMin = new Vector2(0, 0.1f);
-                spawnAreaAnchors.anchorMax = new Vector2(1, 0.5f);
-            }
-            else
-            {
-                spawnAreaAnchors.anchorMin = new Vector2(0.15f, 0.1f);
-                spawnAreaAnchors.anchorMax = new Vector2(1, 0.5f);
-            }
-            unitSpawnRange.SetActive(true);
-        }
         Invoke("BattleTimer", 2f);
     }
 
@@ -306,13 +255,21 @@ public class BattleManager :Singleton<BattleManager>
             // 데이터베이스 입력
             XmlNodeList selectedData = DBConnect.Select("ranking", $"WHERE id = {2001565}");
 
-            if (selectedData == null)
+            // player_No 값이 int 형인지 확인 후, 데이터 입력
+            if (int.TryParse(player_No.text, out int playerId))
             {
-                DBConnect.Insert("ranking", int.Parse(player_No.text), player_Name.text, (int)endTime);
+                if (selectedData == null)
+                {
+                    DBConnect.Insert("ranking", int.Parse(player_No.text), player_Name.text, (int)endTime);
+                }
+                else
+                {
+                    DBConnect.Update("ranking", "name", "time", player_Name.text, (int)endTime, $"id = {int.Parse(player_No.text)}");
+                }
             }
             else
             {
-                DBConnect.Update("ranking", "name", "time", player_Name.text, (int)endTime, $"id = {int.Parse(player_No.text)}");
+                Debug.Log("학번이 잘못되었습니다.");
             }
 
             // 로비 복귀 로직 추가 필요
