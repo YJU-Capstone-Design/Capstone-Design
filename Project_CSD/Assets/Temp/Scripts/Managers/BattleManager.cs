@@ -266,13 +266,13 @@ public class BattleManager :Singleton<BattleManager>
                 {
                     DBConnect.Update("ranking", "name", "time", player_Name.text, (int)endTime, $"id = {int.Parse(player_No.text)}");
                 }
+
+                // 로비 복귀 로직 추가 필요
             }
             else
             {
                 Debug.Log("학번이 잘못되었습니다.");
             }
-
-            // 로비 복귀 로직 추가 필요
         }
         else
         {
