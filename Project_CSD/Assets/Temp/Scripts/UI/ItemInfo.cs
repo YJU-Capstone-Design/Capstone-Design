@@ -59,7 +59,7 @@ public class ItemInfo : MonoBehaviour
     {
         InfoClear();
 
-        unititem[0].text = "이름 " + data.UnitName;
+        unititem[0].text = data.UnitName;
         unititem[1].text = "코스트 " + data.Cost.ToString();
         unititem[2].text = "체력 " + data.Health.ToString();
         unititem[3].text = "공격력 " + data.Power.ToString();
@@ -71,7 +71,7 @@ public class ItemInfo : MonoBehaviour
     {
         InfoClear();
 
-        spellitem[0].text = "이름 "+data.SpellName;
+        spellitem[0].text =data.SpellName;
         spellitem[1].text = "코스트 "+data.Cost.ToString();
         spellitem[2].text = "지속시간 "+data.Duration.ToString();
         if(data.SpellType == SpellData.SpellTypes.Debuff) {
