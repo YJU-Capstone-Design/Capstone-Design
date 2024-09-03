@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using System.IO;
 using System.Drawing;
 using TMPro;
+using System.Xml;
 public class BattleManager :Singleton<BattleManager>
 {
     public enum BattleState { Start, Win, Lose, BreakTime }
@@ -293,6 +294,30 @@ public class BattleManager :Singleton<BattleManager>
             int minutes = Mathf.FloorToInt(endTime / 60);
             int seconds = Mathf.FloorToInt(endTime % 60);
             result_Time.text = string.Format("{0:00} : {1:00}", minutes, seconds);
+        }
+    }
+
+    // 게임 승리 후, 데이터베이스에 데이터 입력 버튼 함수
+    public void SaveUserData()
+    {
+        if(!string.IsNullOrEmpty(player_Name.text) && !string.IsNullOrEmpty(player_No.text))
+        {
+            Debug.Log(player_Name.text + "    " + player_Name.text);
+            // 데이터베이스 입력
+            XmlNodeList selectedData = DBConnect.Select("ranking", $"WHERE id = {2001565}");
+
+            if (selectedData == null)
+            {
+                DBConnect.Insert("ranking", int.Parse(player_No.text), player_Name.text, (int)endTime);
+            }
+            else
+            {
+                DBConnect.Update("ranking", "name", "time", player_Name.text, (int)endTime, $"id = {int.Parse(player_No.text)}");
+            }
+        }
+        else
+        {
+            Debug.Log("입력값이 비어있습니다.");
         }
     }
 

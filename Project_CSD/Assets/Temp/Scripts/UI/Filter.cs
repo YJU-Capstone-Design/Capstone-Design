@@ -6,9 +6,6 @@ using UnityEngine.UI;
 using TMPro; 
 public class Filter : MonoBehaviour
 {
-    
-
-
     [Header("image")]
     [SerializeField] private GameObject[] bg;
     [SerializeField] private GameObject[] title;
