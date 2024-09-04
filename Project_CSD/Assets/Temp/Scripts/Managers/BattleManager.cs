@@ -66,7 +66,7 @@ public class BattleManager :Singleton<BattleManager>
     [SerializeField] Image waveImg;
     [SerializeField] Image waveImg2;
     public float endTime=0f;
-
+    bool victory = false;
 
     [Header("# 랭킹")]
     [SerializeField] GameObject rank_Obj;
@@ -141,7 +141,8 @@ public class BattleManager :Singleton<BattleManager>
             }
         }
 
-        Invoke("BattleTimer", 2f);
+        //Invoke("BattleTimer", 2f);
+        BattleTimer();
     }
 
     void BattleTimer()//타이머
@@ -230,6 +231,7 @@ public class BattleManager :Singleton<BattleManager>
             int minutes = Mathf.FloorToInt(endTime / 60);
             int seconds = Mathf.FloorToInt(endTime % 60);
             result_Time.text = string.Format("{0:00} : {1:00}", minutes, seconds);
+            victory = true;
 
         }
         else if(whether == "Lose")
@@ -287,15 +289,27 @@ public class BattleManager :Singleton<BattleManager>
         yield return new WaitForSeconds(second);
 
         // 애니메이션
-        foreach (Animator anim in resultObjsAnim)
+        for (int i = 0; i < resultObjsAnim.Length; i++)
         {
+            Animator anim = resultObjsAnim[i];
+            if (i == resultObjsAnim.Length - 1 && !victory || i == resultObjsAnim.Length - 2 && !victory)
+            {
+                // victory가 false인 경우, 마지막 오브젝트는 애니메이션을 적용하지 않음
+                continue;
+            }
             anim.SetBool("end", true);
         }
 
         yield return new WaitForSeconds(1);
 
-        foreach (Button resultBtn in resultButtons)
+        for (int i = 0; i < resultButtons.Length; i++)
         {
+            Button resultBtn = resultButtons[i];
+            if (i == resultButtons.Length - 1 && !victory)
+            {
+                // victory가 false인 경우, 마지막 버튼은 활성화하지 않음
+                continue;
+            }
             resultBtn.enabled = true;
         }
     }
