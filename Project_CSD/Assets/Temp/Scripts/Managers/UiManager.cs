@@ -26,6 +26,11 @@ public class UiManager : Singleton<UiManager>
     private int toggle=0;
     [SerializeField] private GameObject[] toggleBtn;
 
+
+    [Header("도감")]
+    [SerializeField] GameObject collectionBook;
+
+
     private void Awake()
     {
         instance = this;
@@ -126,5 +131,17 @@ public class UiManager : Singleton<UiManager>
             // 슬라이더 값을 초기화
             supply_Gage.value = 0f;
         }
+    }
+
+
+    public void OpenCollectionBook()
+    {
+        Time.timeScale = 0;
+        collectionBook.SetActive(true);
+    }
+    public void CloseCollectionBook()
+    {
+        Time.timeScale = 1;
+        collectionBook.SetActive(false) ;
     }
 }

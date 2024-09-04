@@ -40,10 +40,10 @@ public class CollectionSpell : MonoBehaviour
             haveItems[i].gameObject.SetActive(false);
         }
 
-        for (int i = 0; i < noneItems.Count; i++)
+       /* for (int i = 0; i < noneItems.Count; i++)
         {
             noneItems[i].gameObject.SetActive(false);
-        }
+        }*/
 
 
         // Todo : 보유한 카드 표시
@@ -52,15 +52,15 @@ public class CollectionSpell : MonoBehaviour
             getNewCollectionItem(ref haveItems).SpellInit(HoldingList.single.Cardholding_Spell[i]);
         }
         // todo : 미 보유한 카드 표시
-        for (int i = 0; i < GachaManager.single.listSpellItem.Count; i++)
+        /*for (int i = 0; i < GachaManager.single.listSpellItem.Count; i++)
         {
             SpellData have = HoldingList.single.Cardholding_Spell.Find(val => val.SpellID == GachaManager.single.listSpellItem[i].SpellID);
             if (have != null)
                 continue;
             getNewCollectionItem(ref noneItems).SpellInit(GachaManager.single.listSpellItem[i]);
-        }
+        }*/
 
-        //LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)parentTr);
+        LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)parentTr);
 
         // 호출할 때
         StartCoroutine(RebuildAtEndOfFrame((RectTransform)parentTr));

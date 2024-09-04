@@ -11,7 +11,7 @@ public class ItemInfo : MonoBehaviour
     [SerializeField] TextMeshProUGUI[] spellitem;
 
     public Image collImg;
-    public GameObject collObj;
+    [SerializeField] GameObject collInfo;
 
     private void Start()
     {
@@ -37,21 +37,21 @@ public class ItemInfo : MonoBehaviour
     public void UnitCollectionInfo(UnitData data)
     {
         if (AudioManager.instance != null) { AudioManager.instance.ButtonSound(); }
-        collObj.SetActive(true);
+        collInfo.SetActive(true);
         collImg.sprite = data.Unit_CardImg;
         OpenInfoUnit(data);
     }
     public void SpellCollectionInfo(SpellData data)
     {
         if (AudioManager.instance != null) { AudioManager.instance.ButtonSound(); }
-        collObj.SetActive(true);
+        collInfo.SetActive(true);
         collImg.sprite = data.Spell_CardImg;
         OpenInfoSpell(data);
     }
     public void CollectionInfoCancell()
     {
         if (AudioManager.instance != null) { AudioManager.instance.ButtonSound(); }
-        collObj.SetActive(false);
+        collInfo.SetActive(false);
     }
 
 

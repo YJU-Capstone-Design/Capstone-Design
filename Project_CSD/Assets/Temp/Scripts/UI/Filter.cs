@@ -7,23 +7,23 @@ using TMPro;
 public class Filter : MonoBehaviour
 {
     [Header("image")]
-    [SerializeField] private GameObject[] bg;
-    [SerializeField] private GameObject[] title;
+    //[SerializeField] private GameObject[] bg;
+    //[SerializeField] private GameObject[] title;
     [SerializeField] private GameObject[] bannel;
     [SerializeField] private GameObject[] filter;
     [SerializeField] private GameObject[] Spellfilter;
-    [SerializeField] private TMP_Text filterTxt;
+    //[SerializeField] private TMP_Text filterTxt;
     [SerializeField] private GameObject cardCurrent;
     //미보유 카드 필터
-    [SerializeField] private Transform[] unFilter;
+    //[SerializeField] private Transform[] unFilter;
     //보유카드 필터 해제
     [SerializeField] private Transform[] holdfilter;
 
     [Header("GachaResult")]//가챠 결과 연동
     [SerializeField] Transform unitTr;
-    [SerializeField] Transform unitTr_Disable;
+    //[SerializeField] Transform unitTr_Disable;
     [SerializeField] List<Collection_Data> haveItems;
-    [SerializeField] List<Collection_Data> noneItems;
+    //[SerializeField] List<Collection_Data> noneItems;
     public HoldingList holdingList;
 
     private void Awake()
@@ -34,25 +34,25 @@ public class Filter : MonoBehaviour
     {
       
         Clear();
-        filterTxt.text = "캐릭터 카드";
-        unFilterCard();
+       // filterTxt.text = "캐릭터 카드";
+       // unFilterCard();
         
     }
     public void Charclick()
     {
         if (AudioManager.instance != null) { AudioManager.instance.ButtonSound(); }
         Clear();
-        filterTxt.text = "캐릭터 카드";
-        unFilterCard();
+      //  filterTxt.text = "캐릭터 카드";
+     //   unFilterCard();
       
     }
     public void Spellclick()
     {
         if (AudioManager.instance != null) { AudioManager.instance.ButtonSound(); }
-        bg[0].SetActive(false);
+      /*  bg[0].SetActive(false);
         bg[1].SetActive(true);
         title[0].SetActive(false);
-        title[1].SetActive(true);
+        title[1].SetActive(true);*/
         bannel[0].SetActive(false);
         bannel[1].SetActive(true);
         bannel[2].SetActive(false);
@@ -69,20 +69,20 @@ public class Filter : MonoBehaviour
         }
         Spellfilter[0].SetActive(true);
 
-        filterTxt.text = "스펠 카드";
-        unFilterCard();
+      //  filterTxt.text = "스펠 카드";
+      //  unFilterCard();
 
     }
     void Clear()
     {
         //배경 초기화
-        bg[0].SetActive(true);
-        bg[1].SetActive(false);
+     /*   bg[0].SetActive(true);
+        bg[1].SetActive(false);*/
         cardCurrent.SetActive(false);
         //타이틀 초기화 
-        title[0].SetActive(true);
+       /* title[0].SetActive(true);
         title[1].SetActive(false);
-
+*/
         //배너 초기화
         bannel[0].SetActive(true);
         bannel[1].SetActive(false);
@@ -135,10 +135,10 @@ public class Filter : MonoBehaviour
             haveItems[i].gameObject.SetActive(false);
         }
 
-        for (int i = 0; i < noneItems.Count; i++)
+     /*   for (int i = 0; i < noneItems.Count; i++)
         {
             noneItems[i].gameObject.SetActive(false);
-        }
+        }*/
 
 
         // Todo : 보유한 카드 표시
@@ -147,13 +147,13 @@ public class Filter : MonoBehaviour
             getNewCollectionItem(ref haveItems).Init(HoldingList.single.holding_Unit[i]);
         }
         // todo : 미 보유한 카드 표시
-        for (int i = 0; i < GachaManager.single.listGachaTemplete.Count; i++)
+       /* for (int i = 0; i < GachaManager.single.listGachaTemplete.Count; i++)
         {
             UnitData have = HoldingList.single.holding_Unit.Find(val => val.UnitID == GachaManager.single.listGachaTemplete[i].UnitID);
             if (have != null)
                 continue;
             getNewCollectionItem(ref noneItems).Init(GachaManager.single.listGachaTemplete[i]);
-        }
+        }*/
         HoldFilterCard();
 
         //LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)unitTr.parent);
@@ -202,7 +202,7 @@ public class Filter : MonoBehaviour
 
 
 
-    void unFilterCard()
+    /*void unFilterCard()
     {
         GameObject goImage;
         Color color;
@@ -224,5 +224,5 @@ public class Filter : MonoBehaviour
             Debug.Log("스크린해제");
         }
 
-    }
+    }*/
 }
