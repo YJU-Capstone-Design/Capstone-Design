@@ -32,8 +32,8 @@ public class RankingManager : MonoBehaviour
     void RankingSystem()
     {
         // 데이터베이스에서 1위부터 10위까지의 랭킹 데이터를 가져옴
-        XmlNodeList rankingData = DBConnect.Instance.Select("ranking", "ORDER BY time ASC LIMIT 10");
-
+        XmlNodeList rankingData = DBConnect.Select("ranking", "ORDER BY time ASC LIMIT 10");
+        
         if (rankingData != null)
         {
             int rank = 1;
