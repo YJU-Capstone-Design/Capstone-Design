@@ -14,8 +14,8 @@ public class RankItem : MonoBehaviour
     public void SetRankingData(int rank, string name, int time, int id)
     {
         // Rank를 2자리 숫자로 분리하여 이미지에 설정
-        rankImg.sprite = rankImg_No[rank / 10]; // 앞자리
-        rankImg2.sprite = rankImg_No[rank % 10]; // 뒷자리
+        //rankImg.sprite = rankImg_No[rank / 10]; // 앞자리
+        //rankImg2.sprite = rankImg_No[rank % 10]; // 뒷자리
 
         // 나머지 데이터 설정
         player_Name.text = name;

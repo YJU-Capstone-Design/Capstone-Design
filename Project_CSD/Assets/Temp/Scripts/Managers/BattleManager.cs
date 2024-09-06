@@ -255,7 +255,7 @@ public class BattleManager :Singleton<BattleManager>
         {
             Debug.Log(player_Name.text + "    " + player_Name.text);
             // 데이터베이스 입력
-            XmlNodeList selectedData = DBConnect.Select("ranking", $"WHERE id = {2001565}");
+            XmlNodeList selectedData = DBConnect.Select("ranking", $"WHERE id = {int.Parse(player_No.text)}");
 
             // player_No 값이 int 형인지 확인 후, 데이터 입력
             if (int.TryParse(player_No.text, out int playerId))
