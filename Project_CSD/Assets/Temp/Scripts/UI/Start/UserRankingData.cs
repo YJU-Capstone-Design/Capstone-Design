@@ -40,7 +40,7 @@ public class UserRankingData : MonoBehaviour
 
 
 
-    public void Login()
+    public void Login()//로그인 창 id글자는 5개 제한 번호는 숫자만으로 제한됨
     {
         if (player_Name != null && player_No !=null)
         {
@@ -51,7 +51,11 @@ public class UserRankingData : MonoBehaviour
             SceneMgr.Instance.GoSceneSelect("NomalMode");
         }
     }
+    public void AddUsingCard(int cardID)
+    {
 
+        //액셀에 카드 아이디랑 값은 컬럼에 count += 1;
+    }
     public void Close()//로그인 창 나가기
     {
         if (AudioManager.instance != null) { AudioManager.instance.ButtonSound(); }
