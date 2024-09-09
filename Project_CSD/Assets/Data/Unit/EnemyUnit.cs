@@ -392,6 +392,8 @@ public class EnemyUnit : UnitBase
         attackTime = 0;
 
         BattleData.Instance.enemys.Remove(gameObject);
+        BattleManager.Instance.totalEnemyCount--; // 적 카운트 감소
+        /*BattleManager.Instance.UpdateEnemyCountUI(); // UI 업데이트*/
 
         // 애니메이션
         anim.Die();
