@@ -242,7 +242,7 @@ public class BattleManager :Singleton<BattleManager>
             victory = true;
 
             // userData 데이터 입력
-            DBConnect.UserDataInsert(player_Name.text, waveCount + 1);
+            DBConnect.UserDataInsert(UserRankingData.instance.playerName, waveCount + 1);
         }
         else if(whether == "Lose")
         {
@@ -259,7 +259,7 @@ public class BattleManager :Singleton<BattleManager>
             if (waveCount >= 2)
             {
                 // userData 데이터 입력
-                DBConnect.UserDataInsert(player_Name.text, waveCount);
+                DBConnect.UserDataInsert(UserRankingData.instance.playerName, waveCount);
             }
         }
     }
@@ -267,20 +267,18 @@ public class BattleManager :Singleton<BattleManager>
     // 게임 승리 후, 데이터베이스에 데이터 입력 버튼 함수
     public void SaveUserData()
     {
-        if(!string.IsNullOrEmpty(player_Name.text))
+        if(!string.IsNullOrEmpty(UserRankingData.instance.playerName))
         {
-            Debug.Log(player_Name.text + "    " + player_Name.text);
-
             // 데이터베이스 입력
-            XmlNodeList selectedData = DBConnect.Select("userData", $"WHERE userName = {player_Name}");
+            XmlNodeList selectedData = DBConnect.Select("ranking", $"WHERE userName = '{UserRankingData.instance.playerName}'");
 
             if (selectedData == null)
             {
-                DBConnect.RankingInsert("ranking", player_Name.text, (int)endTime); // endTime -> score 로 변경 필요
+                DBConnect.RankingInsert("ranking", UserRankingData.instance.playerName, (int)endTime); // endTime -> score 로 변경 필요
             }
             else
             {
-                DBConnect.UpdateRanking("ranking", "score", (int)endTime, $"name = {player_Name}"); // endTime -> score 로 변경 필요
+                DBConnect.UpdateRanking("ranking", "score", (int)endTime, $"userName = '{UserRankingData.instance.playerName}'"); // endTime -> score 로 변경 필요
             }
         }
         else

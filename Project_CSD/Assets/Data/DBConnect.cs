@@ -182,20 +182,35 @@ public class DBConnect : Singleton<DBConnect>
 
         strValues = $"'{userName}',";
 
-        for(int i = 1; i < wave; i++)
+        // 도달 라운드 Value 값
+        for (int i = 1; i < wave; i++)
         {
-            if(i < wave - 1)
-            {
-                strValues += "1, ";
-            }
-            else
+            if(i == wave - 1 && wave == 11)
             {
                 strValues += "1";
             }
+            else
+            {
+                strValues += "1, ";
+            }
         }
 
+        // 도달 실패 라운드 Value 값
+        for(int i = wave; i < 11; i++)
+        {
+            if (i == 10)
+            {
+                strValues += "0";
+            }
+            else
+            {
+                strValues += "0, ";
+            }
+        }
+
+        Debug.Log(strValues);
         Debug.Log("Insert Data");
-        return m_OnChange($"INSERT INTO usesData VALUES ({strValues})");
+        return m_OnChange($"INSERT INTO userData VALUES ({strValues})");
     }
 
     /// <summary>
