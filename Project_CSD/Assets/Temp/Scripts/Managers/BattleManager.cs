@@ -39,6 +39,7 @@ public class BattleManager :Singleton<BattleManager>
     float curSpawnTime;
     float nextSpawnDelay;
     public GameObject unitSpawnRange; // 유닛 스폰 범위 (canvas 오브젝트)
+    public int totalEnemyCount; // 스폰될 적의 총 수
 
     [Header("# UI")]
     [SerializeField] GameObject waveUI;
@@ -54,6 +55,7 @@ public class BattleManager :Singleton<BattleManager>
     [SerializeField] Button[] resultButtons;
     [SerializeField] TextMeshProUGUI rainkg_Btn_Text;
     [SerializeField] public Button reRoll;
+    [SerializeField] TextMeshProUGUI enemyCountText; // 적의 수를 표시할 UI Text
 
     enum UnitType { Bread, Pupnut, Kitchu, Ramo, Sorang, Croirang }; // 테스트(제작)용
     UnitType unitType;
@@ -139,6 +141,12 @@ public class BattleManager :Singleton<BattleManager>
 
                 StartCoroutine(Wave());
             }
+        }
+
+        // 적 처치 후 남은 적의 수 업데이트
+        if (!spawnEnd && CardManager.Instance.enemys.Count > 0)
+        {
+            UpdateEnemyCountUI();
         }
 
         //Invoke("BattleTimer", 2f);
@@ -365,7 +373,6 @@ public class BattleManager :Singleton<BattleManager>
 
             myInstance = Instantiate(card[ran_card], shopParent);
 
-
             cardObj.Add(myInstance);
         }
 
@@ -428,14 +435,17 @@ public class BattleManager :Singleton<BattleManager>
         spawnIndex = 0;
         spawnEnd = false;
 
+        // 적의 수 초기화
+        totalEnemyCount = 0;
+
         // 리스폰 파일 읽기
-        TextAsset textFile = Resources.Load(enemySpawnFile[waveCount].name) as TextAsset; // as 를 사용해서 text 파일인지 검증 -> 아니면 null 처리됨.
-        StringReader reader = new StringReader(textFile.text); // StringReader : 파일 내의 문자열 데이터 읽기 클래스 - > 파일 열기
+        TextAsset textFile = Resources.Load(enemySpawnFile[waveCount].name) as TextAsset;
+        StringReader reader = new StringReader(textFile.text);
 
         // 한 줄씩 데이터 저장
         while (reader != null)
         {
-            string line = reader.ReadLine(); // ReadLine() : 자동 줄 바꿈 -> 텍스트 데이터를 한 줄씩 반환.
+            string line = reader.ReadLine();
 
             if (line == null)
                 break;
@@ -445,14 +455,20 @@ public class BattleManager :Singleton<BattleManager>
             spawnData.unitType = int.Parse(line.Split(',')[1]);
             spawnData.unitIndex = int.Parse(line.Split(',')[2]);
             spawnData.spawnPoint = int.Parse(line.Split(',')[3]);
-            spawnList.Add(spawnData); // 리스트에 값을 저장
+            spawnList.Add(spawnData);
+
+            // 적 수 카운트 증가
+            totalEnemyCount++;
         }
 
         // 텍스트 파일 닫기
-        reader.Close(); // 파일 닫기
+        reader.Close();
 
-        // 미리 첫번째 스폰 딜레이 적용
+        // 미리 첫 번째 스폰 딜레이 적용
         nextSpawnDelay = spawnList[0].spawnDelay;
+
+        // 적의 수를 UI에 업데이트
+        UpdateEnemyCountUI();
     }
 
     void SpawnEnemy()
@@ -475,6 +491,10 @@ public class BattleManager :Singleton<BattleManager>
         nextSpawnDelay = spawnList[spawnIndex].spawnDelay;
     }
 
+    void UpdateEnemyCountUI()
+    {
+        enemyCountText.text = totalEnemyCount.ToString();
+    }
     public void AddRanking()
     {
         
