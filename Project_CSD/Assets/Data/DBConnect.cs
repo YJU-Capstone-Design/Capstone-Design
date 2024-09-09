@@ -17,24 +17,6 @@ public class DBConnect : Singleton<DBConnect>
         Debug.Log("Connection Test :" + Connection());
     }
 
-    private void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.I))
-        {
-            XmlNodeList selectedData = Select("ranking", $"WHERE id = {2001565}");
-
-            if (selectedData == null)
-            {
-                Insert("ranking", 2001565, "홍길동", 10);
-            }
-            else
-            {
-                Update("ranking", "name", "time", "짱구", 5, "id = 2001565");
-            }
-        }
-    }
-
-
     // MySql 연결 함수
     public bool Connection()
     {
@@ -180,20 +162,40 @@ public class DBConnect : Singleton<DBConnect>
         return m_OnChange($"INSERT INTO {tableName} ({fieldName}) VALUES ('{value}')");
     }
 
-    /// <summary>
-    /// 데이터 입력 (순차적으로 전부 입력됨)
-    /// </summary>
-    /// <param name="tableName">입력할 테이블</param>
-    /// <param name="values">입력할 값 (칼럼 순서대로 적용됨)</param>
-    /// <returns></returns>
-    public static bool Insert(string tableName, int id, string name, int time)
+   
+
+    // Ranking 테이블 Insert
+    public static bool RankingInsert(string tableName, string userName, int score)
     {
         string strValues = string.Empty;
 
-        strValues = $"{id}, '{name}', {time}";
+        strValues = $"'{userName}', {score}";
 
         Debug.Log("Insert Data");
         return m_OnChange($"INSERT INTO {tableName} VALUES ({strValues})");
+    }
+
+    // UserData 테이블 Insert
+    public static bool UserDataInsert(string userName, int wave)
+    {
+        string strValues = string.Empty;
+
+        strValues = $"'{userName}',";
+
+        for(int i = 1; i < wave; i++)
+        {
+            if(i < wave - 1)
+            {
+                strValues += "1, ";
+            }
+            else
+            {
+                strValues += "1";
+            }
+        }
+
+        Debug.Log("Insert Data");
+        return m_OnChange($"INSERT INTO usesData VALUES ({strValues})");
     }
 
     /// <summary>
@@ -204,10 +206,10 @@ public class DBConnect : Singleton<DBConnect>
     /// <param name="value">입력할 값</param>
     /// <param name="condition">조건</param>
     /// <returns></returns>
-    public static bool Update(string tableName, string fieldName1, string fieldName2, string name, int time, string condition)
+    public static bool UpdateRanking(string tableName, string fieldName, int score, string condition)
     {
         Debug.Log("Update Data");
-        return m_OnChange($"UPDATE {tableName} SET {fieldName1}='{name}', {fieldName2}={time} WHERE {condition}");
+        return m_OnChange($"UPDATE {tableName} SET {fieldName}={score} WHERE {condition}");
     }
 
 

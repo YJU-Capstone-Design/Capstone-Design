@@ -11,7 +11,7 @@ public class RankItem : MonoBehaviour
     [SerializeField] TextMeshProUGUI play_Time; // 플레이어 시간 텍스트
     [SerializeField] TextMeshProUGUI player_No; // 플레이어 번호 텍스트
 
-    public void SetRankingData(int rank, string name, int time, int id)
+    public void SetRankingData(string name, int score)
     {
         // Rank를 2자리 숫자로 분리하여 이미지에 설정
         //rankImg.sprite = rankImg_No[rank / 10]; // 앞자리
@@ -19,10 +19,11 @@ public class RankItem : MonoBehaviour
 
         // 나머지 데이터 설정
         player_Name.text = name;
-        player_No.text = id.ToString();
+        //player_No.text = id.ToString();
 
-        int minutes = Mathf.FloorToInt(time / 60);
-        int seconds = Mathf.FloorToInt(time % 60);
+        // 일단 테스트(임시) 로 형태는 그대로 놔둠.
+        int minutes = Mathf.FloorToInt(score / 60);
+        int seconds = Mathf.FloorToInt(score % 60);
 
         play_Time.text = string.Format("{0:00} : {1:00}", minutes, seconds);
     }

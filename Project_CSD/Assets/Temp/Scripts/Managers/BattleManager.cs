@@ -233,6 +233,8 @@ public class BattleManager :Singleton<BattleManager>
             result_Time.text = string.Format("{0:00} : {1:00}", minutes, seconds);
             victory = true;
 
+            // userData 데이터 입력
+            DBConnect.UserDataInsert(player_Name.text, waveCount + 1);
         }
         else if(whether == "Lose")
         {
@@ -245,35 +247,32 @@ public class BattleManager :Singleton<BattleManager>
             int minutes = Mathf.FloorToInt(endTime / 60);
             int seconds = Mathf.FloorToInt(endTime % 60);
             result_Time.text = string.Format("{0:00} : {1:00}", minutes, seconds);
+
+            if (waveCount >= 2)
+            {
+                // userData 데이터 입력
+                DBConnect.UserDataInsert(player_Name.text, waveCount);
+            }
         }
     }
 
     // 게임 승리 후, 데이터베이스에 데이터 입력 버튼 함수
     public void SaveUserData()
     {
-        if(!string.IsNullOrEmpty(player_Name.text) && !string.IsNullOrEmpty(player_No.text))
+        if(!string.IsNullOrEmpty(player_Name.text))
         {
             Debug.Log(player_Name.text + "    " + player_Name.text);
+
             // 데이터베이스 입력
-            XmlNodeList selectedData = DBConnect.Select("ranking", $"WHERE id = {int.Parse(player_No.text)}");
+            XmlNodeList selectedData = DBConnect.Select("userData", $"WHERE userName = {player_Name}");
 
-            // player_No 값이 int 형인지 확인 후, 데이터 입력
-            if (int.TryParse(player_No.text, out int playerId))
+            if (selectedData == null)
             {
-                if (selectedData == null)
-                {
-                    DBConnect.Insert("ranking", int.Parse(player_No.text), player_Name.text, (int)endTime);
-                }
-                else
-                {
-                    DBConnect.Update("ranking", "name", "time", player_Name.text, (int)endTime, $"id = {int.Parse(player_No.text)}");
-                }
-
-                // 로비 복귀 로직 추가 필요
+                DBConnect.RankingInsert("ranking", player_Name.text, (int)endTime); // endTime -> score 로 변경 필요
             }
             else
             {
-                Debug.Log("학번이 잘못되었습니다.");
+                DBConnect.UpdateRanking("ranking", "score", (int)endTime, $"name = {player_Name}"); // endTime -> score 로 변경 필요
             }
         }
         else
