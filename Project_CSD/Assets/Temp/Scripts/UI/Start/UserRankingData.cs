@@ -42,11 +42,10 @@ public class UserRankingData : MonoBehaviour
 
     public void Login()//로그인 창 id글자는 5개 제한 번호는 숫자만으로 제한됨
     {
-        if (player_Name != null && player_No !=null)
+        if (!string.IsNullOrEmpty(player_Name.text))
         {
             if (AudioManager.instance != null) { AudioManager.instance.ButtonSound(); }
             playerName = player_Name.text;
-            playerNo = int.Parse(player_No.text);
             
             SceneMgr.Instance.GoSceneSelect("NomalMode");
         }
