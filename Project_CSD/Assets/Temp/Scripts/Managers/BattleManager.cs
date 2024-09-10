@@ -240,9 +240,6 @@ public class BattleManager :Singleton<BattleManager>
             int seconds = Mathf.FloorToInt(endTime % 60);
             result_Time.text = string.Format("{0:00} : {1:00}", minutes, seconds);
             victory = true;
-
-            // userData 데이터 입력
-            DBConnect.UserDataInsert(UserRankingData.instance.playerName, waveCount + 1);
         }
         else if(whether == "Lose")
         {
@@ -255,11 +252,31 @@ public class BattleManager :Singleton<BattleManager>
             int minutes = Mathf.FloorToInt(endTime / 60);
             int seconds = Mathf.FloorToInt(endTime % 60);
             result_Time.text = string.Format("{0:00} : {1:00}", minutes, seconds);
+        }
 
-            if (waveCount >= 2)
+        // 데이터베이스 입력
+        XmlNodeList selectedData = DBConnect.Select("userData", $"WHERE userName = '{UserRankingData.instance.playerName}'");
+
+        if (selectedData == null)
+        {
+            if(whether == "Win")
             {
-                // userData 데이터 입력
+                DBConnect.UserDataInsert(UserRankingData.instance.playerName, waveCount + 1);
+            }
+            else if(whether == "Lose" && waveCount >= 2)
+            {
                 DBConnect.UserDataInsert(UserRankingData.instance.playerName, waveCount);
+            }
+        }
+        else
+        {
+            if (whether == "Win")
+            {
+                DBConnect.UserDataUpdate(UserRankingData.instance.playerName, waveCount + 1);
+            }
+            else if (whether == "Lose" && waveCount >= 2)
+            {
+                DBConnect.UserDataUpdate(UserRankingData.instance.playerName, waveCount);
             }
         }
     }
@@ -297,9 +314,9 @@ public class BattleManager :Singleton<BattleManager>
         for (int i = 0; i < resultObjsAnim.Length; i++)
         {
             Animator anim = resultObjsAnim[i];
-            if (i == resultObjsAnim.Length - 1 && !victory || i == resultObjsAnim.Length - 2 && !victory)
+            if ((i == resultObjsAnim.Length - 1 && wave == 0) || (i == resultObjsAnim.Length - 2 && wave == 0))
             {
-                // victory가 false인 경우, 마지막 오브젝트는 애니메이션을 적용하지 않음
+                // 첫번째 wave인 경우, 랭킹 버튼 오브젝트들은 애니메이션을 적용하지 않음
                 continue;
             }
             anim.SetBool("end", true);
@@ -310,9 +327,9 @@ public class BattleManager :Singleton<BattleManager>
         for (int i = 0; i < resultButtons.Length; i++)
         {
             Button resultBtn = resultButtons[i];
-            if (i == resultButtons.Length - 1 && !victory)
+            if ((i == resultObjsAnim.Length - 1 && wave == 0) || (i == resultObjsAnim.Length - 2 && wave == 0))
             {
-                // victory가 false인 경우, 마지막 버튼은 활성화하지 않음
+                // 첫번째 wave인 경우, 랭킹 버튼 오브젝트들은 비활성화 상태를 유지함
                 continue;
             }
             resultBtn.enabled = true;

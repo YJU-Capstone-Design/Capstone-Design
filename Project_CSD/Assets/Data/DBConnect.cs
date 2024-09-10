@@ -162,8 +162,6 @@ public class DBConnect : Singleton<DBConnect>
         return m_OnChange($"INSERT INTO {tableName} ({fieldName}) VALUES ('{value}')");
     }
 
-   
-
     // Ranking 테이블 Insert
     public static bool RankingInsert(string tableName, string userName, int score)
     {
@@ -225,6 +223,42 @@ public class DBConnect : Singleton<DBConnect>
     {
         Debug.Log("Update Data");
         return m_OnChange($"UPDATE {tableName} SET {fieldName}={score} WHERE {condition}");
+    }
+
+    // UserData 테이블 Update
+    public static bool UserDataUpdate(string userName, int wave)
+    {
+        string strValues = string.Empty;
+
+        // 도달 라운드 Value 값
+        for (int i = 1; i < wave; i++)
+        {
+            if (i == wave - 1 && wave == 11)
+            {
+                strValues += $"stage_clear = 1";
+            }
+            else
+            {
+                strValues += $"stage_{i + 1} = 1, ";
+            }
+        }
+
+        // 도달 실패 라운드 Value 값
+        for (int i = wave; i < 11; i++)
+        {
+            if (i == 10)
+            {
+                strValues += $"stage_clear = 0";
+            }
+            else
+            {
+                strValues += $"stage_{i + 1} = 0, ";
+            }
+        }
+
+        Debug.Log(strValues);
+        Debug.Log("Insert Data");
+        return m_OnChange($"UPDATE userData SET {strValues} WHERE userName = '{userName}'");
     }
 
 
