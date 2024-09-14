@@ -398,6 +398,9 @@ public class EnemyUnit : UnitBase
         // 애니메이션
         anim.Die();
 
+        // Player Score 에 점수 추가 (임시)
+        BattleManager.Instance.playerScore += 100;
+
         yield return new WaitForSeconds(anim.GetTime());
 
         StateSetting(0);

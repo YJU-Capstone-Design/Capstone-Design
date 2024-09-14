@@ -73,14 +73,15 @@ public class BattleManager :Singleton<BattleManager>
     [Header("# 랭킹")]
     [SerializeField] GameObject rank_Obj;
     [SerializeField] GameObject rank_Item;
-    [SerializeField] TMP_InputField player_Name;
-    [SerializeField] TMP_InputField player_No;
+    public TextMeshProUGUI playerScoreText;
+    public int playerScore;
 
     private void Awake()
     {
         // 전투 시작
         battleState = BattleState.Start;
         wave = 0;
+        playerScore = 0;
         StartCoroutine(Wave());
 
         // 전투 기본 세팅
@@ -222,6 +223,9 @@ public class BattleManager :Singleton<BattleManager>
         int ten = waveCount / 10 > 0 ? waveCount / 10 : 0;
         int one = waveCount % 10;
 
+        // 랭킹 등록 UI 에 Player 점수 최신화
+        playerScoreText.text = playerScore.ToString();
+
         resultWaveImg[0].sprite = waveNumImg[one];
         resultWaveImg[1].sprite = waveNumImg[ten];
         waveImg.sprite = waveNumImg[ten];
@@ -235,10 +239,10 @@ public class BattleManager :Singleton<BattleManager>
             if (CashManager.instance != null) { CashManager.instance.player_Gold += 100 * wave; }
             if (PlayerData.instance != null) { PlayerData.instance.Lv++; }
             StartCoroutine(ResultUI(2));
-            endTime = limite_time;
-            int minutes = Mathf.FloorToInt(endTime / 60);
-            int seconds = Mathf.FloorToInt(endTime % 60);
-            result_Time.text = string.Format("{0:00} : {1:00}", minutes, seconds);
+            //endTime = limite_time;
+            //int minutes = Mathf.FloorToInt(endTime / 60);
+            //int seconds = Mathf.FloorToInt(endTime % 60);
+            //result_Time.text = string.Format("{0:00} : {1:00}", minutes, seconds);
             victory = true;
         }
         else if(whether == "Lose")
@@ -248,59 +252,59 @@ public class BattleManager :Singleton<BattleManager>
             if (AudioManager.instance != null) { AudioManager.instance.BattleEndSound(false); }
             Debug.Log("Lose");
             StartCoroutine(ResultUI(0));
-            endTime = limite_time;
-            int minutes = Mathf.FloorToInt(endTime / 60);
-            int seconds = Mathf.FloorToInt(endTime % 60);
-            result_Time.text = string.Format("{0:00} : {1:00}", minutes, seconds);
+            //endTime = limite_time;
+            //int minutes = Mathf.FloorToInt(endTime / 60);
+            //int seconds = Mathf.FloorToInt(endTime % 60);
+            //result_Time.text = string.Format("{0:00} : {1:00}", minutes, seconds);
         }
 
+        // 데이터베이스 입력 (userData Table)
+        SaveUserData(whether, waveCount);
+    }
+
+    // 게임 후, 데이터베이스에 데이터 입력 버튼 함수 (ranking Table)
+    public void SaveUserRanking()
+    {
         // 데이터베이스 입력
+        XmlNodeList selectedData = DBConnect.Select("ranking", $"WHERE userName = '{UserRankingData.instance.playerName}'");
+
+        if (selectedData == null)
+        {
+            DBConnect.RankingInsert("ranking", UserRankingData.instance.playerName, playerScore);
+        }
+        else
+        {
+            DBConnect.UpdateRanking("ranking", "score", playerScore, $"userName = '{UserRankingData.instance.playerName}'");
+        }
+    }
+
+    // 게임 종료 후 유저의 게임 결과를 저장하는 함수 (userData Table)
+    void SaveUserData(string whether, int wave)
+    {
+        // 데이터베이스 입력 (userData Table)
         XmlNodeList selectedData = DBConnect.Select("userData", $"WHERE userName = '{UserRankingData.instance.playerName}'");
 
         if (selectedData == null)
         {
-            if(whether == "Win")
+            if (whether == "Win")
             {
-                DBConnect.UserDataInsert(UserRankingData.instance.playerName, waveCount + 1);
+                DBConnect.UserDataInsert(UserRankingData.instance.playerName, wave + 1);
             }
-            else if(whether == "Lose" && waveCount >= 2)
+            else if (whether == "Lose" && wave >= 2)
             {
-                DBConnect.UserDataInsert(UserRankingData.instance.playerName, waveCount);
+                DBConnect.UserDataInsert(UserRankingData.instance.playerName, wave);
             }
         }
         else
         {
             if (whether == "Win")
             {
-                DBConnect.UserDataUpdate(UserRankingData.instance.playerName, waveCount + 1);
+                DBConnect.UserDataUpdate(UserRankingData.instance.playerName, wave + 1);
             }
-            else if (whether == "Lose" && waveCount >= 2)
+            else if (whether == "Lose" && wave >= 2)
             {
-                DBConnect.UserDataUpdate(UserRankingData.instance.playerName, waveCount);
+                DBConnect.UserDataUpdate(UserRankingData.instance.playerName, wave);
             }
-        }
-    }
-
-    // 게임 승리 후, 데이터베이스에 데이터 입력 버튼 함수
-    public void SaveUserData()
-    {
-        if(!string.IsNullOrEmpty(UserRankingData.instance.playerName))
-        {
-            // 데이터베이스 입력
-            XmlNodeList selectedData = DBConnect.Select("ranking", $"WHERE userName = '{UserRankingData.instance.playerName}'");
-
-            if (selectedData == null)
-            {
-                DBConnect.RankingInsert("ranking", UserRankingData.instance.playerName, (int)endTime); // endTime -> score 로 변경 필요
-            }
-            else
-            {
-                DBConnect.UpdateRanking("ranking", "score", (int)endTime, $"userName = '{UserRankingData.instance.playerName}'"); // endTime -> score 로 변경 필요
-            }
-        }
-        else
-        {
-            Debug.Log("입력값이 비어있습니다.");
         }
     }
 

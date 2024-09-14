@@ -12,14 +12,14 @@ public class UserRankingData : MonoBehaviour
     [Header("유저 데이터 랭킹 변수")]
     public int stage = 1; //현재 스테이지
     public int clear_Stage = 1; // 클리어한 스테이지
-    public int score;
+    public int score = 0;
     
     [Header("플레이어 정보")]
     [SerializeField] TMP_InputField player_Name;
-    [SerializeField] TMP_InputField player_No;
+    [SerializeField] TMP_InputField player_Pwd;
     [SerializeField] GameObject loginBox;//로그인 창
     public string playerName;//이름
-    public int playerNo;//학번
+    public int playerPwd;//학번
 
     private void Awake()
     {
