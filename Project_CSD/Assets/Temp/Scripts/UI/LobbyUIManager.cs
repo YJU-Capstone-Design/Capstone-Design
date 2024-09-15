@@ -4,10 +4,10 @@ using System.Xml;
 using TMPro;
 using UnityEngine;
 
-public class LobbyUIManager : MonoBehaviour
+public class LobbyUIManager : Singleton<LobbyUIManager>
 {
     [Header("# Login UI")]
-    [SerializeField] TMP_InputField playerNameInput;
+    public TMP_InputField playerNameInput;
     [SerializeField] TMP_InputField playerPwdInput;
     [SerializeField] GameObject loginUI; //로그인 창
     [SerializeField] GameObject alertUI;
@@ -30,27 +30,36 @@ public class LobbyUIManager : MonoBehaviour
             string playerName = playerNameInput.text;
             int playerPwd = int.Parse(playerPwdInput.text);
 
-            // 입력한 이름이 DB 에 있는 지 확인
-            XmlNodeList user = DBConnect.Select("account", $"WHERE userName = '{playerName}'");
-
-            if (user != null)
+            // 비속어 필터링
+            if (NewBehaviourScript.Instance.CheckWord(playerName))
             {
-                if (playerPwd == int.Parse(user[0]["password"].InnerText))
-                {
-                    GameStart();
-                }
-                else
-                {
-                    OpenUI("alert");
-                    alertText.text = "비밀번호가 잘못되었습니다.";
-                }
+                OpenUI("alert");
+                alertText.text = "사용할 수 없는 이름입니다.";
             }
             else
             {
-                GameStart();
+                // 입력한 이름이 DB 에 있는 지 확인
+                XmlNodeList user = DBConnect.Select("account", $"WHERE userName = '{playerName}'");
 
-                // 새로운 User 데이터 DB에 입력
-                DBConnect.Insert("account", $"'{playerName}', {playerPwd}");
+                if (user != null)
+                {
+                    if (playerPwd == int.Parse(user[0]["password"].InnerText))
+                    {
+                        GameStart();
+                    }
+                    else
+                    {
+                        OpenUI("alert");
+                        alertText.text = "비밀번호가 잘못되었습니다.";
+                    }
+                }
+                else
+                {
+                    GameStart();
+
+                    // 새로운 User 데이터 DB에 입력
+                    DBConnect.Insert("account", $"'{playerName}', {playerPwd}");
+                }
             }
         }
         else if (string.IsNullOrEmpty(playerNameInput.text) || (!string.IsNullOrEmpty(playerPwdInput.text) && string.IsNullOrEmpty(playerNameInput.text)))
