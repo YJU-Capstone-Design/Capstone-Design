@@ -56,6 +56,7 @@ public class BattleManager :Singleton<BattleManager>
     [SerializeField] TextMeshProUGUI rainkg_Btn_Text;
     [SerializeField] public Button reRoll;
     [SerializeField] TextMeshProUGUI enemyCountText; // 적의 수를 표시할 UI Text
+    [SerializeField] Animator reroll_Anim;
 
     enum UnitType { Bread, Pupnut, Kitchu, Ramo, Sorang, Croirang }; // 테스트(제작)용
     UnitType unitType;
@@ -64,7 +65,7 @@ public class BattleManager :Singleton<BattleManager>
     [SerializeField] TextMeshProUGUI time;
     [SerializeField] TextMeshProUGUI result_Time;
     public float timer = 180;
-    private float limite_time = 0f;
+    private float limite_time = 600f;
     [SerializeField] Image waveImg;
     [SerializeField] Image waveImg2;
     public float endTime=0f;
@@ -158,20 +159,21 @@ public class BattleManager :Singleton<BattleManager>
     {
         //클리어까지의 시간
 
-        
+        /*
         limite_time += Time.deltaTime;
         int minutes = Mathf.FloorToInt(limite_time / 60);
         int seconds = Mathf.FloorToInt(limite_time % 60);
 
-        time.text = string.Format("{0:00} : {1:00}", minutes, seconds);
+        time.text = string.Format("{0:00} : {1:00}", minutes, seconds);*/
 
         //타임 어택
-        /*limite_time -= Time.deltaTime;
+        limite_time -= Time.deltaTime;
         if (limite_time <= 0)
         {
             battleState = BattleState.Win;
             unitSpawnRange.SetActive(false);
             EndGame("Win");
+            //지금 10분을 버텨내면 승리 조건 10분안에 클리어 못하면 패배하는걸로 바꿔야 될까?
         }
         if (limite_time >= 0)
         {
@@ -179,7 +181,7 @@ public class BattleManager :Singleton<BattleManager>
             int seconds = Mathf.FloorToInt(limite_time % 60);
 
             time.text = string.Format("{0:00} : {1:00}", minutes, seconds);
-        }*/
+        }
 
 
     }
@@ -400,8 +402,10 @@ public class BattleManager :Singleton<BattleManager>
     public void CardShuffle(bool Recost)
     {
         if (AudioManager.instance != null) { AudioManager.instance.ButtonSound(); }
+        
         if (UiManager.Instance.cost >= 1&&Recost)
         {
+            reroll_Anim.SetTrigger("ReRoll");
             foreach (GameObject card in cardObj)
             {
                 Destroy(card);
