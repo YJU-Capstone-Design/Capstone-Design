@@ -272,7 +272,7 @@ public class BattleManager :Singleton<BattleManager>
 
         if (selectedData == null)
         {
-            DBConnect.RankingInsert("ranking", UserRankingData.instance.playerName, playerScore);
+            DBConnect.Insert("ranking", $"{UserRankingData.instance.playerName}, {playerScore}");
         }
         else
         {

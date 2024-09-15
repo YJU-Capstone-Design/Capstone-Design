@@ -157,20 +157,13 @@ public class DBConnect : Singleton<DBConnect>
     /// <param name="fieldName">입력할 필드 이름</param>
     /// <param name="value">입력할 값</param>
     /// <returns></returns>
+    public static bool Insert(string tableName, string value)
+    {
+        return m_OnChange($"INSERT INTO {tableName} VALUES ({value})");
+    }
     public static bool Insert(string tableName, string fieldName, string value)
     {
-        return m_OnChange($"INSERT INTO {tableName} ({fieldName}) VALUES ('{value}')");
-    }
-
-    // Ranking 테이블 Insert
-    public static bool RankingInsert(string tableName, string userName, int score)
-    {
-        string strValues = string.Empty;
-
-        strValues = $"'{userName}', {score}";
-
-        Debug.Log("Insert Data");
-        return m_OnChange($"INSERT INTO {tableName} VALUES ({strValues})");
+        return m_OnChange($"INSERT INTO {tableName} ({fieldName}) VALUES ({value})");
     }
 
     // UserData 테이블 Insert
