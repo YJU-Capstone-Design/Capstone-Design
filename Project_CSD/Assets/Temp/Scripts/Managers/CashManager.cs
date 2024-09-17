@@ -56,7 +56,7 @@ public class CashManager : MonoBehaviour
         UpGold();
     }
 
-    public void UpGold() //CHAT GPT »ç¿ëÇÔ
+    public void UpGold() 
     {
         if (obj1 != null)
         {
