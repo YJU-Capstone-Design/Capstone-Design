@@ -146,7 +146,7 @@ public class BattleManager :Singleton<BattleManager>
         }
 
         // 적 처치 후 남은 적의 수 업데이트
-        if (!spawnEnd && CardManager.Instance.enemys.Count > 0)
+        if (/*!spawnEnd &&*/ CardManager.Instance.enemys.Count >= 0)
         {
             UpdateEnemyCountUI();
         }

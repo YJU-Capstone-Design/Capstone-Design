@@ -18,7 +18,7 @@ MonoBehaviour:
   cost: 3
   health: 1000
   power: 300
-  moveSpeed: 1
+  moveSpeed: 2.5
   attackTime: 5
   item_Type: 1
   unit_Img: {fileID: 21300000, guid: 885927e01bdf5ef40bbf4d96757bc52e, type: 3}
