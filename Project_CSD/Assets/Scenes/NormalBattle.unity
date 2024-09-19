@@ -506,7 +506,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 34676c76eb9d88243bf52b7769c22845, type: 3}
   - {fileID: 21300000, guid: 9f0ea991174daa84d892cb9ea9008a98, type: 3}
   cost: 0
-  supply: 2
+  supply: 5
   costTime: 0
   timeInterver: 5
   costText: {fileID: 1477738116}
