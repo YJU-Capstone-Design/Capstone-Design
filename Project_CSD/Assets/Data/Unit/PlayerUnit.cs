@@ -30,7 +30,7 @@ public class PlayerUnit : UnitBase
     protected RaycastHit2D[] attackTargets; // 스캔 결과 배열
     [SerializeField] protected Transform nearestAttackTarget; // 가장 가까운 목표
     [SerializeField] protected Transform[] multipleAttackTargets; // 다수 공격 목표
-    Vector3 firstPos;
+    [SerializeField] Vector3 firstPos;
     protected Coroutine smash;
     protected Coroutine arrow;
     protected Coroutine lerp;
@@ -89,10 +89,7 @@ public class PlayerUnit : UnitBase
             } 
             else if(BattleManager.Instance.battleState == BattleManager.BattleState.Win) // 승리 시
             {
-                unitState = UnitState.Win;
-                startMoveFinish = true;
-                StopCoroutine(lerp); // 이동 멈춤
-                StartAnimation("Win", true, 1);
+                Win();
             }
             else
             {
@@ -141,7 +138,6 @@ public class PlayerUnit : UnitBase
             if (hp >= 1) { health *= hp; }
             Debug.Log("변경후 : " + power);
         }
-
 
         // 설정값
         col.enabled = true;
@@ -356,6 +352,22 @@ public class PlayerUnit : UnitBase
         StartAnimation("Idle", true, 1.5f);
     }
 
+    void Win()
+    {
+        unitState = UnitState.Win;
+        startMoveFinish = true;
+        nearestAttackTarget = null;
+        scanner.nearestTarget = null;
+
+        firstPos = transform.position;
+        moveVec = Vector3.zero;
+        moveSpeed = 0;
+        StopCoroutine(lerp); // 이동 멈춤
+        lerp = StartCoroutine(lerpCoroutine(transform.position, firstPos, moveSpeed));
+        StopCoroutine(lerp); // 이동 멈춤
+        StartAnimation("Win", true, 1);
+    }
+
     IEnumerator Die()
     {
         unitState = UnitState.Die;
@@ -399,7 +411,7 @@ public class PlayerUnit : UnitBase
 
         this.transform.position = current;
 
-        while (elapsedTime < time && !scanner.nearestTarget && current != target)
+        while (elapsedTime < time && !scanner.nearestTarget && current != target && BattleManager.Instance.battleState != BattleManager.BattleState.Win)
         {
             elapsedTime += Time.deltaTime;
 
@@ -408,6 +420,7 @@ public class PlayerUnit : UnitBase
             yield return null;
 
             unitState = UnitState.Move;
+            Debug.Log(gameObject.name + "  Move");
 
             // 가는 방향에 따라 Sprite 방향 변경
             SpriteDir(target, current);
