@@ -457,15 +457,16 @@ public class PlayerUnit : UnitBase
         switch (spellType)
         {
             case SpellTypes.Attack:
-                buffEffect[0].SetActive(true);
+                buffEffect[0].SetActive(isBuff); // isBuff가 true면 활성화, false면 비활성화
                 break;
             case SpellTypes.Buff:
-                buffEffect[1].SetActive(true);
+                buffEffect[1].SetActive(isBuff); // isBuff가 true면 활성화, false면 비활성화
                 break;
             case SpellTypes.Debuff:
-                buffEffect[2].SetActive(true);
+                buffEffect[2].SetActive(isBuff); // isBuff가 true면 활성화, false면 비활성화
                 break;
         }
     }
+
 
 }

@@ -83,6 +83,7 @@ public class CardManager : Singleton<CardManager>
         {
             yield return new WaitForSeconds(1f);
             time += 1f;
+            Debug.Log(status.name + " 버프 지속중");
         }
 
         //status.health -= maxHpUpPoint;
@@ -91,6 +92,7 @@ public class CardManager : Singleton<CardManager>
         status.moveSpeed -= moveSpeedUpPoint;
         Debug.Log("power = " + status.power + ", attackTime = " + status.attackTime + ", moveSpeed = " + status.moveSpeed + ", spellID = " + spell.spellName);
         unit.GetComponent<PlayerUnit>().Buff_Effect(spell.spellType, false);
+        Debug.Log(status.name + " 버프 종료");
     }
 
     public IEnumerator Buff_Logic_Enemy(GameObject enemy, Spell spell)
@@ -116,6 +118,7 @@ public class CardManager : Singleton<CardManager>
         {
             yield return new WaitForSeconds(1f);
             time += 1f;
+            Debug.Log(status.name + " 디버프 지속중");
         }
 
         //status.health -= maxHpUpPoint;
@@ -124,5 +127,6 @@ public class CardManager : Singleton<CardManager>
         status.moveSpeed -= moveSpeedUpPoint;
         Debug.Log("power = " + status.power + ", attackTime = " + status.attackTime + ", moveSpeed = " + status.moveSpeed + ", spellID = " + spell.spellName);
         enemy.GetComponent<EnemyUnit>().Buff_Effect(spell.spellType, false);
+        Debug.Log(status.name +" 디버프 종료");
     }
 }

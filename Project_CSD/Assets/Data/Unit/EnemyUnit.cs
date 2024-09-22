@@ -419,14 +419,19 @@ public class EnemyUnit : UnitBase
         switch (spellType)
         {
             case SpellTypes.Debuff:
-                buffEffect[0].SetActive(true);
+                if (isBuff)
+                {
+                    buffEffect[0].SetActive(true);  // 버프 적용
+                }
+                else
+                {
+                    buffEffect[0].SetActive(false); // 버프 해제
+                }
                 break;
-            /*case SpellTypes.Buff:
-                buffEffect[1].SetActive(true);
-                break;
-            case SpellTypes.Debuff:
-                buffEffect[2].SetActive(true);
-                break;*/
+
+
+                // 추가적인 케이스가 필요하다면 여기에 추가
         }
     }
+
 }
