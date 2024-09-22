@@ -108,7 +108,7 @@ public class CardManager : Singleton<CardManager>
         status.attackTime -= actualAttackTimeDownPoint;
         status.moveSpeed += moveSpeedUpPoint;
         Debug.Log("power = " + status.power + ", attackTime = " + status.attackTime + ", moveSpeed = " + status.moveSpeed + ", spellID = " + spell.spellName);
-        //enemy.GetComponent<EnemyUnit>().Buff_Effect(spell.spellType, true);
+        enemy.GetComponent<EnemyUnit>().Buff_Effect(spell.spellType, true);
 
         float time = 0;
 
@@ -123,6 +123,6 @@ public class CardManager : Singleton<CardManager>
         status.attackTime += actualAttackTimeDownPoint;
         status.moveSpeed -= moveSpeedUpPoint;
         Debug.Log("power = " + status.power + ", attackTime = " + status.attackTime + ", moveSpeed = " + status.moveSpeed + ", spellID = " + spell.spellName);
-        //enemy.GetComponent<EnemyUnit>().Buff_Effect(spell.spellType, false);
+        enemy.GetComponent<EnemyUnit>().Buff_Effect(spell.spellType, false);
     }
 }

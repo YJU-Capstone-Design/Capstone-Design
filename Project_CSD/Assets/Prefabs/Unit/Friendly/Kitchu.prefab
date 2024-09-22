@@ -211,6 +211,7 @@ MonoBehaviour:
   attackRaySize: {x: 0.6, y: 0.35}
   nearestAttackTarget: {fileID: 0}
   multipleAttackTargets: []
+  firstPos: {x: 0, y: 0, z: 0}
 --- !u!114 &1493435363915349360
 MonoBehaviour:
   m_ObjectHideFlags: 0

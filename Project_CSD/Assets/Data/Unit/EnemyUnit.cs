@@ -6,9 +6,12 @@ using Unity.VisualScripting;
 //using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
-
+using static SpellBase;
 public class EnemyUnit : UnitBase
 {
+    [Header("# Enemy Effect")]
+    public List<GameObject> buffEffect = new List<GameObject>();
+
     [Header("# Unit Setting")]
     public Scanner scanner;
     public UnitData unitData;
@@ -408,5 +411,22 @@ public class EnemyUnit : UnitBase
         // 부모 오브젝트를 종료
         transform.parent.gameObject.SetActive(false);
         //transform.gameObject.SetActive(false);
+    }
+
+
+    public void Buff_Effect(SpellTypes spellType, bool isBuff)
+    {
+        switch (spellType)
+        {
+            case SpellTypes.Debuff:
+                buffEffect[0].SetActive(true);
+                break;
+            /*case SpellTypes.Buff:
+                buffEffect[1].SetActive(true);
+                break;
+            case SpellTypes.Debuff:
+                buffEffect[2].SetActive(true);
+                break;*/
+        }
     }
 }
