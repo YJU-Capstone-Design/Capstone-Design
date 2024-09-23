@@ -227,12 +227,12 @@ public class DBConnect : Singleton<DBConnect>
         }
         else
         {
-            XmlNodeList selectUser = SelectOriginal("userData", $"SELECT COUNT(*) FROM userData WHERE stage_{wave} = 1;");
+            XmlNodeList selectUser = SelectOriginal("userData", $"SELECT COUNT(*) FROM userData WHERE stage_{wave - 1} = 1;");
             selectUserCount = selectUser.Count;
         }
 
         percent = (selectUserCount / allUserCount) * 100;
-        Debug.Log(percent);
+        Debug.Log("¿þÀÌºê : " + wave + " percent : " + percent);
 
         Debug.Log(strValues);
         Debug.Log("Insert Data");

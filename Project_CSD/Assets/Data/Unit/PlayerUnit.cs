@@ -420,7 +420,6 @@ public class PlayerUnit : UnitBase
             yield return null;
 
             unitState = UnitState.Move;
-            Debug.Log(gameObject.name + "  Move");
 
             // 가는 방향에 따라 Sprite 방향 변경
             SpriteDir(target, current);
