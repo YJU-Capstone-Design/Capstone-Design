@@ -77,6 +77,12 @@ public class BattleManager :Singleton<BattleManager>
     public TextMeshProUGUI playerScoreText;
     public int playerScore;
 
+    [Header("# percentData")]
+    public static float percent = 0.0f;
+    public static int allUserCount = 0;
+    public static int selectUserCount = 0;
+
+
     private void Awake()
     {
         // 전투 시작
@@ -262,6 +268,21 @@ public class BattleManager :Singleton<BattleManager>
 
         // 데이터베이스 입력 (userData Table)
         SaveUserData(whether, waveCount);
+
+        // 상위 퍼센트 출력 (Wave 도달로 판단)
+        if (waveCount >= 2)
+        {
+            Debug.Log("Get Wave Reach Percentage");
+
+            if(whether == "Win" && waveCount == 10)
+            {
+                GetWaveReachPercentage(waveCount + 1);
+            }
+            else
+            {
+                GetWaveReachPercentage(waveCount);
+            }
+        }
     }
 
     // 게임 후, 데이터베이스에 데이터 입력 버튼 함수 (ranking Table)
@@ -530,5 +551,28 @@ public class BattleManager :Singleton<BattleManager>
     {
         if (AudioManager.instance != null) { AudioManager.instance.BattleSound(); }
         rank_Obj.SetActive(false);
+    }
+
+
+    void GetWaveReachPercentage(int wave)
+    {
+        // 상위 퍼센트 출력 (도달 웨이브로 판단)
+
+        XmlNodeList allUser = DBConnect.SelectOriginal("userData", "SELECT COUNT(*) FROM userData");
+        allUserCount = allUser.Count;
+
+        if (wave == 11)
+        {
+            XmlNodeList selectUser = DBConnect.SelectOriginal("userData", "SELECT COUNT(*) FROM userData WHERE stage_clear = 1;");
+            selectUserCount = selectUser.Count;
+        }
+        else
+        {
+            XmlNodeList selectUser = DBConnect.SelectOriginal("userData", $"SELECT COUNT(*) FROM userData WHERE stage_{wave} = 1;");
+            selectUserCount = selectUser.Count;
+        }
+
+        percent = (selectUserCount / allUserCount) * 100;
+        Debug.Log("웨이브 : " + (wave) + " percent : " + percent);
     }
 }
