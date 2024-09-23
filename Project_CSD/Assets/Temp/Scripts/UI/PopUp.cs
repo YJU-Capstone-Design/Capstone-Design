@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PopUp : MonoBehaviour
 {
@@ -103,7 +104,8 @@ public class PopUp : MonoBehaviour
     {
         if (AudioManager.instance != null) { AudioManager.instance.ButtonSound(); }
 
-        LodingSceneMgr.LoadScene("Start");
+        /*LodingSceneMgr.LoadScene("Start");*/
+        SceneManager.LoadScene("Start");
             Time.timeScale = 1;
         
         if (AudioManager.instance != null) { AudioManager.instance.MainSound(); }
