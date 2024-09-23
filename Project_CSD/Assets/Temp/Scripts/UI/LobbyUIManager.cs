@@ -81,7 +81,7 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
         UserRankingData.instance.playerName = playerNameInput.text;
 
         /*SceneMgr.Instance.GoSceneSelect("NomalMode");*/
-        SceneManager.LoadScene("NomalMode");
+        SceneManager.LoadScene("NormalBattle");
     }
 
     public void OpenUI(string UIName)

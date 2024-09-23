@@ -6,6 +6,7 @@ using System.IO;
 using System.Drawing;
 using TMPro;
 using System.Xml;
+using System;
 public class BattleManager :Singleton<BattleManager>
 {
     public enum BattleState { Start, Win, Lose, BreakTime }
@@ -76,11 +77,12 @@ public class BattleManager :Singleton<BattleManager>
     [SerializeField] GameObject rank_Item;
     public TextMeshProUGUI playerScoreText;
     public int playerScore;
+    [SerializeField] TextMeshProUGUI percentageText;
 
     [Header("# percentData")]
-    public static float percent = 0.0f;
-    public static int allUserCount = 0;
-    public static int selectUserCount = 0;
+    public float percent = 0.0f;
+    public int allUserCount = 0;
+    public int selectUserCount = 0;
 
 
     private void Awake()
@@ -409,7 +411,7 @@ public class BattleManager :Singleton<BattleManager>
 
         for (int i = 0; i < 3; i++)
         {
-            int ran_card = Random.Range(0, card.Length);
+            int ran_card = UnityEngine.Random.Range(0, card.Length);
             GameObject myInstance;
 
             myInstance = Instantiate(card[ran_card], shopParent);
@@ -573,6 +575,11 @@ public class BattleManager :Singleton<BattleManager>
         }
 
         percent = (selectUserCount / allUserCount) * 100;
+        percent = (float)Math.Round(percent, 2); // 소수점 2자리 반올림
         Debug.Log("웨이브 : " + (wave) + " percent : " + percent);
+
+
+        // 텍스트 입력
+        percentageText.text = $"전체 유저 중 {percent}%가\r\n동일한 웨이브에 도달했습니다.";
     }
 }
