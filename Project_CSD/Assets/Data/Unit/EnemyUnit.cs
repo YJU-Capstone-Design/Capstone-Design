@@ -412,26 +412,55 @@ public class EnemyUnit : UnitBase
         transform.parent.gameObject.SetActive(false);
         //transform.gameObject.SetActive(false);
     }
+    /*디버프 이펙트
+        23001 - D_Sp_Spell      속도 다운
+        23002 - D_SpAt_Spell    스피드 다운 & 공속 다운 영구다운
+        23003 - D_SpAt_DSpell   스피드 & 공속 다운 지속시간 30초
+        23004 - D_At_Spell      공격력 다운
+        23005 - D_Hp_Spell      hp 10초간 다운
+     * 
+     */
 
-
-    public void Buff_Effect(SpellTypes spellType, bool isBuff)
+    public void Buff_Effect(SpellTypes spellType, bool isBuff, int id)
     {
         switch (spellType)
         {
             case SpellTypes.Debuff:
-                if (isBuff)
-                {
-                    buffEffect[0].SetActive(true);  // 버프 적용
+                
+                    if(id == 23001)
+                    {
+                        buffEffect[0].SetActive(isBuff);  // 버프 적용
+                        Debug.Log(buffEffect[0].name);
+                    }
+                    else if(id == 23002)
+                    {
+                        buffEffect[1].SetActive(isBuff);  // 버프 적용
+                        Debug.Log(buffEffect[1].name);
                 }
-                else
-                {
-                    buffEffect[0].SetActive(false); // 버프 해제
+                    else if (id == 23003)
+                    {
+                        buffEffect[2].SetActive(isBuff);  // 버프 적용
+                        Debug.Log(buffEffect[2].name);
                 }
-                break;
+                    else if (id == 23004)
+                    {
+                        buffEffect[3].SetActive(isBuff);  // 버프 적용
+                        Debug.Log(buffEffect[3].name);
+                }
+                    else if (id == 23005)
+                    {
+                        buffEffect[4].SetActive(isBuff);  // 버프 적용
+                        Debug.Log(buffEffect[4].name);
+                }
+
+                    break;
+            
+            }
+                
 
 
                 // 추가적인 케이스가 필요하다면 여기에 추가
         }
     }
 
-}
+

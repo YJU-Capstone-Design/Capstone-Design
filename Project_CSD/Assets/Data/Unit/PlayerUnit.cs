@@ -451,8 +451,15 @@ public class PlayerUnit : UnitBase
         //현재 재생되고 있는 애니메이션 값을 변경
         CurrentAnimation = animName;
     }
-
-    public void Buff_Effect(SpellTypes spellType, bool isBuff)
+    /*  이펙트 프리펩
+    22001 - B_Hp_Spell hp최대치 30초간 증가
+    22002 - B_Pw_Spell 파워 증가 20초
+    22004 - B_Hp_HSpell 하이hp최대치 증가 30초간
+    22005 - B_Mix_Spell 파워, 이속, 공속 30초간 증가
+    22006 - B_Mix_HSpell 하이 파워,이속,공속 10초간 증가
+    22007 - B_HS_HSpell 하이스피드 이동속도 초 증가 10초간
+*/
+    public void Buff_Effect(SpellTypes spellType, bool isBuff, int id)
     {
         switch (spellType)
         {
