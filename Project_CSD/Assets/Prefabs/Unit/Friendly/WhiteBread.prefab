@@ -171,7 +171,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.8, y: 0.4}
+  m_Size: {x: 1, y: 0.4}
   m_EdgeRadius: 0
 --- !u!114 &8914559935959349198
 MonoBehaviour:
@@ -208,7 +208,7 @@ MonoBehaviour:
   - {fileID: 7812418327822481071}
   scanner: {fileID: 0}
   unitData: {fileID: 11400000, guid: 5c555b720eee4eb4fbcc373caaa241b4, type: 2}
-  attackRayPos: {x: 0.6, y: 0.35, z: 0}
+  attackRayPos: {x: 0.8, y: 0.35, z: 0}
   attackRaySize: {x: 1, y: 0.35}
   nearestAttackTarget: {fileID: 0}
   multipleAttackTargets: []
@@ -225,8 +225,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52279921ff6dbe14f88026711e89ae42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scannerPos: {x: -3, y: 0, z: 0}
-  scanRange: {x: 35, y: 8}
+  scannerPos: {x: 0, y: 0, z: 0}
+  scanRange: {x: 15, y: 8}
   targetLayer:
     serializedVersion: 2
     m_Bits: 128

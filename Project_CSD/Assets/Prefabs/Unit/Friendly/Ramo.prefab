@@ -217,7 +217,7 @@ MonoBehaviour:
   scanner: {fileID: 0}
   unitData: {fileID: 11400000, guid: 3432d7c5b5226954187957314341727e, type: 2}
   attackRayPos: {x: 0, y: 0.3, z: 0}
-  attackRaySize: {x: 25, y: 6}
+  attackRaySize: {x: 20, y: 6}
   nearestAttackTarget: {fileID: 0}
   multipleAttackTargets: []
   firstPos: {x: 0, y: 0, z: 0}
@@ -234,7 +234,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scannerPos: {x: 0, y: 0, z: 0}
-  scanRange: {x: 30, y: 8}
+  scanRange: {x: 25, y: 8}
   targetLayer:
     serializedVersion: 2
     m_Bits: 128
