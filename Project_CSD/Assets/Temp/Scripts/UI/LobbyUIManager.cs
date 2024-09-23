@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Xml;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LobbyUIManager : Singleton<LobbyUIManager>
 {
@@ -79,7 +80,8 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
         if (AudioManager.instance != null) { AudioManager.instance.ButtonSound(); }
         UserRankingData.instance.playerName = playerNameInput.text;
 
-        SceneMgr.Instance.GoSceneSelect("NomalMode");
+        /*SceneMgr.Instance.GoSceneSelect("NomalMode");*/
+        SceneManager.LoadScene("NomalMode");
     }
 
     public void OpenUI(string UIName)
