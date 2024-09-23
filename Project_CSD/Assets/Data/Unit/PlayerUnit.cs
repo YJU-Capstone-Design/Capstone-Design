@@ -467,7 +467,37 @@ public class PlayerUnit : UnitBase
                 buffEffect[0].SetActive(isBuff); // isBuff가 true면 활성화, false면 비활성화
                 break;
             case SpellTypes.Buff:
-                buffEffect[1].SetActive(isBuff); // isBuff가 true면 활성화, false면 비활성화
+                if(id == 22001)
+                    {
+                    buffEffect[0].SetActive(isBuff);  // 버프 적용
+                    Debug.Log(buffEffect[0].name);
+                }
+                    else if (id == 22002)
+                {
+                    buffEffect[1].SetActive(isBuff);  // 버프 적용
+                    Debug.Log(buffEffect[1].name);
+                }
+                else if (id == 22004)
+                {
+                    buffEffect[2].SetActive(isBuff);  // 버프 적용
+                    Debug.Log(buffEffect[2].name);
+                }
+                else if (id == 22005)
+                {
+                    buffEffect[3].SetActive(isBuff);  // 버프 적용
+                    Debug.Log(buffEffect[3].name);
+                }
+                else if (id == 22006)
+                {
+                    buffEffect[4].SetActive(isBuff);  // 버프 적용
+                    Debug.Log(buffEffect[4].name);
+                }
+                else if (id == 22007)
+                {
+                    buffEffect[5].SetActive(isBuff);  // 버프 적용
+                    Debug.Log(buffEffect[5].name);
+                }
+                
                 break;
             case SpellTypes.Debuff:
                 buffEffect[2].SetActive(isBuff); // isBuff가 true면 활성화, false면 비활성화
