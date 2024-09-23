@@ -5648,7 +5648,8 @@ MonoBehaviour:
   - {fileID: 308611781}
   - {fileID: 1588485322}
   enemySpawnFile:
-  - {fileID: 4900000, guid: 8de3a0dc85ab4ac418de2a6e476b7f02, type: 3}
+  - {fileID: 4900000, guid: 8e250c2143cbea84d82fa41bc8d370f0, type: 3}
+  - {fileID: 4900000, guid: 8e250c2143cbea84d82fa41bc8d370f0, type: 3}
   unitSpawnRange: {fileID: 974946586}
   totalEnemyCount: 0
   waveUI: {fileID: 7526724413939370857}

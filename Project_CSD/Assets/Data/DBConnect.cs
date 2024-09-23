@@ -150,6 +150,19 @@ public class DBConnect : Singleton<DBConnect>
         return xmlDocument.GetElementsByTagName(tableName);
     }
 
+    public static XmlNodeList SelectOriginal(string tableName, string query)
+    {
+        DataSet dataSet = m_OnLoad(tableName, query);
+
+        if (dataSet == null || dataSet.Tables.Count == 0 || dataSet.Tables[0].Rows.Count == 0)
+            return null;
+
+        XmlDocument xmlDocument = new XmlDocument();
+        xmlDocument.LoadXml(dataSet.GetXml());
+
+        return xmlDocument.GetElementsByTagName(tableName);
+    }
+
     /// <summary>
     /// 데이터 입력
     /// </summary>
@@ -198,6 +211,28 @@ public class DBConnect : Singleton<DBConnect>
                 strValues += "0, ";
             }
         }
+
+        float percent = 0.0f;
+        int allUserCount = 0;
+        int selectUserCount = 0;
+        // 상위 퍼센트 출력 (도달 웨이브로 판단)
+
+        XmlNodeList allUser = SelectOriginal("userData", "SELECT COUNT(*) FROM userData");
+        allUserCount = allUser.Count;
+
+        if (wave == 11)
+        {
+            XmlNodeList selectUser = SelectOriginal("userData", "SELECT COUNT(*) FROM userData WHERE stage_clear = 1;");
+            selectUserCount = selectUser.Count;
+        }
+        else
+        {
+            XmlNodeList selectUser = SelectOriginal("userData", $"SELECT COUNT(*) FROM userData WHERE stage_{wave} = 1;");
+            selectUserCount = selectUser.Count;
+        }
+
+        percent = (selectUserCount / allUserCount) * 100;
+        Debug.Log(percent);
 
         Debug.Log(strValues);
         Debug.Log("Insert Data");
