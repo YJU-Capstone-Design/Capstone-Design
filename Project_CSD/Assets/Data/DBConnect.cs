@@ -225,9 +225,14 @@ public class DBConnect : Singleton<DBConnect>
     /// <param name="value">입력할 값</param>
     /// <param name="condition">조건</param>
     /// <returns></returns>
-    public static bool UpdateRanking(string tableName, string fieldName, int score, string condition)
+    public static bool UpdateOriginal(string query)
     {
         Debug.Log("Update Data");
+        return m_OnChange(query);
+    }
+    public static bool UpdateRanking(string tableName, string fieldName, int score, string condition)
+    {
+        Debug.Log("Update Ranking Data");
         return m_OnChange($"UPDATE {tableName} SET {fieldName}={score} WHERE {condition}");
     }
 

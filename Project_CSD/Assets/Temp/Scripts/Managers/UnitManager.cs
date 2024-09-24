@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Xml;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -112,6 +113,20 @@ public class UnitManager : MonoBehaviour
 
         BattleManager.Instance.unitSpawnRange.SetActive(false);
         BattleManager.Instance.CardShuffle(false);
+
+        // usingCount 테이블에 해당 ID 의 컬럼에 count 값에 +1, 해당 ID 컬럼이 없으면 먼저 추가
+        XmlNodeList cardData = DBConnect.Select("usingCount", $"WHERE cardID = {unitID}");
+
+        if (cardData != null)
+        {
+            DBConnect.UpdateOriginal($"UPDATE usingCount SET count = count + 1 WHERE cardID = {unitID}");
+        }
+        else
+        {
+            Debug.Log("입력되어있는 카드값이 없습니다. 그러니 새로 추가 합니다.");
+            // 새로 컬럼 추가
+            DBConnect.Insert("usingCount", $"{unitID}, 1");
+        }
     }
 
 
