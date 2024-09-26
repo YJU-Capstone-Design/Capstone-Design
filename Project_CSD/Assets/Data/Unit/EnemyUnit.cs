@@ -378,13 +378,18 @@ public class EnemyUnit : UnitBase
         col.enabled = false;
         hpBar.SetActive(false);
         Debug.Log("Die");
-
+      
+        // 현재 유닛이 죽을 때는 적의 상태를 변경할 필요가 없다
         if (nearestAttackTarget != null)
         {
             PlayerUnit enemyLogic = nearestAttackTarget.GetComponent<PlayerUnit>();
-            enemyLogic.unitState = UnitState.Move;
+            if (enemyLogic != null)
+            {
+                // 적 유닛의 상태 변경은 필요 없으므로 이 부분을 제거하거나 수정
+               enemyLogic.unitState = UnitState.Move;
+            }
 
-            nearestAttackTarget = null;
+            nearestAttackTarget = null; // 공격 대상을 초기화
         }
 
         // 작동중인 다른 Coroutine 함수 중지
@@ -400,7 +405,7 @@ public class EnemyUnit : UnitBase
 
         // 애니메이션
         anim.Die();
-
+        Debug.Log(gameObject.name + " 사망");
         // Player Score 에 점수 추가 (임시)
         BattleManager.Instance.playerScore += 100;
 
