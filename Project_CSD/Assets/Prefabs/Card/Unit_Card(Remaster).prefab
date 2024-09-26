@@ -190,6 +190,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 5c555b720eee4eb4fbcc373caaa241b4, type: 2}
   - {fileID: 11400000, guid: 6342ce5480d225c4a81e8c7adad08a2f, type: 2}
   - {fileID: 11400000, guid: 805ad7c05fad00a49902805413b37246, type: 2}
+  - {fileID: 11400000, guid: 9a5a9a6d17f3cfc48b8cbe37a0c69de8, type: 2}
   data: {fileID: 0}
   cardImg: {fileID: 6591528900244574380}
   unitCost: {fileID: 525661005704680901}
