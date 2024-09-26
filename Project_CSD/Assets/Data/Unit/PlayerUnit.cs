@@ -23,7 +23,7 @@ public class PlayerUnit : UnitBase
     protected Vector3 moveVec; // 거리
     [SerializeField] protected Vector3 attackRayPos; // attackRay 위치 = 현재 위치 + attackRayPos
     [SerializeField] protected Vector2 attackRaySize;
-    GameObject hpBar; // 체력바
+    GameObject hpBar; // 체력바 
 
     [Header("# Unit Activity")]
     Collider2D col;
@@ -71,8 +71,6 @@ public class PlayerUnit : UnitBase
         initialMoveSpeed = unitData.MoveSpeed;
         initialPower = unitData.Power;
         initialAttackTime = unitData.AttackTime;
-        
-
     }
 
     void Update()
@@ -82,7 +80,6 @@ public class PlayerUnit : UnitBase
             // 체력 실시간 적용
             HpBar hpBarLogic = hpBar.GetComponent<HpBar>();
             hpBarLogic.nowHp = health;
-
             if (health <= 0 || BattleManager.Instance.battleState == BattleManager.BattleState.Lose) // hp 가 0 이 되거나 게임에서 졌을 경우
             {
                 StartCoroutine(Die());
@@ -173,10 +170,28 @@ public class PlayerUnit : UnitBase
             // 이동
             transform.position += moveVec.normalized * moveSpeed * Time.deltaTime;
             unitState = UnitState.Move;
+            //eggball 전용
+            if (unitData.UnitID == 11005)
+            {
+                float healthPercentage = health / unitData.Health; // 현재 체력 비율
 
-            // 애니메이션
-            StartAnimation("Walk", true, 1f);
-
+                if (healthPercentage > 0.66f) // 67% 이상
+                {
+                    StartAnimation("walk_3unit", true, 1f);
+                }
+                else if (healthPercentage > 0.33f) // 34% 이상 67% 미만
+                {
+                    StartAnimation("walk_2unit", true, 1f);
+                }
+                else // 33% 이하
+                {
+                    StartAnimation("walk_1unit", true, 1f);
+                }
+            }
+            if (unitData.UnitID != 11005)
+            {
+                StartAnimation("Walk", true, 1.2f);
+            }
             // 가는 방향에 따라 Sprite 방향 변경
             SpriteDir(moveVec, Vector3.zero);
         }
@@ -192,9 +207,29 @@ public class PlayerUnit : UnitBase
                     moveVec = Vector3.zero;
                     unitState = UnitState.Idle;
                     transform.localScale = new Vector3(1f, 1f, 1f);
+                    //egg ball 전용
+                    if (unitData.UnitID == 11005)
+                    {
+                        float healthPercentage = health / unitData.Health; // 현재 체력 비율
 
+                        if (healthPercentage > 0.66f) // 67% 이상
+                        {
+                            StartAnimation("idle_3unit", true, 1f);
+                        }
+                        else if (healthPercentage > 0.33f) // 34% 이상 67% 미만
+                        {
+                            StartAnimation("idle_2unit", true, 1f);
+                        }
+                        else // 33% 이하
+                        {
+                            StartAnimation("idle_1unit", true, 1f);
+                        }
+                    }
                     // 애니메이션
-                    StartAnimation("Idle", true, 1.5f);
+                    if (unitData.UnitID != 11005)
+                    {
+                        StartAnimation("Idle", true, 1.2f);
+                    }
                 }
             }
         }
@@ -282,9 +317,30 @@ public class PlayerUnit : UnitBase
             if (smash != null) { StopCoroutine(smash); smash = null; }
         }
 
-        // 애니메이션
-        StartAnimation("Attack", false, 1f);
 
+        // 애니메이션 
+        //egg ball 전용
+        if (unitData.UnitID == 11005)
+        {
+            float healthPercentage = health / unitData.Health; // 현재 체력 비율
+
+            if (healthPercentage > 0.66f) // 67% 이상
+            {
+                StartAnimation("attack_3unit", false, 1f);
+            }
+            else if (healthPercentage > 0.33f) // 34% 이상 67% 미만
+            {
+                StartAnimation("attack_2unit", false, 1f);
+            }
+            else // 33% 이하
+            {
+                StartAnimation("attack_1unit", false, 1f);
+            }
+        }
+        if (unitData.UnitID != 11005)
+        {
+            StartAnimation("Attack", false, 1f);
+        }
         yield return new WaitForSeconds(0.6f); // 애니메이션 시간
 
         if ((unitID % 10000) / 1000 == 2) // 탱커, Croirang -> 다수 공격
@@ -301,8 +357,29 @@ public class PlayerUnit : UnitBase
 
         yield return new WaitForSeconds(0.4f); // 애니메이션 시간
 
+       //eggball 전용
+        if (unitData.UnitID == 11005)
+        {
+            float healthPercentage = health / unitData.Health; // 현재 체력 비율
+
+            if (healthPercentage > 0.66f) // 67% 이상
+            {
+                StartAnimation("idle_3unit", true, 1.5f);
+            }
+            else if (healthPercentage > 0.33f) // 34% 이상 67% 미만
+            {
+                StartAnimation("idle_2unit", true, 1.5f);
+            }
+            else // 33% 이하
+            {
+                StartAnimation("idle_1unit", true, 1.5f);
+            }
+        }
         // 애니메이션
-        StartAnimation("Idle", true, 1.5f);
+        if (unitData.UnitID != 11005)
+        {
+            StartAnimation("Idle", true, 1.5f);
+        }
     }
 
     protected void SetEnemyState(Transform target)
@@ -347,9 +424,30 @@ public class PlayerUnit : UnitBase
         }
 
         yield return new WaitForSeconds(0.4f); // 애니메이션 시간
+      //eggball 전용
+        if (unitData.UnitID == 11005)
+        {
+            float healthPercentage = health / unitData.Health; // 현재 체력 비율
 
+            if (healthPercentage > 0.66f) // 67% 이상
+            {
+                StartAnimation("idle_3unit", true, 1.5f);
+            }
+            else if (healthPercentage > 0.33f) // 34% 이상 67% 미만
+            {
+                StartAnimation("idle_2unit", true, 1.5f);
+            }
+            else // 33% 이하
+            {
+                StartAnimation("idle_1unit", true, 1.5f);
+            }
+        }
         // 애니메이션
-        StartAnimation("Idle", true, 1.5f);
+        if (unitData.UnitID != 11005)
+        {
+            StartAnimation("Idle", true, 1.5f);
+        }
+
     }
 
     void Win()
@@ -424,8 +522,29 @@ public class PlayerUnit : UnitBase
             // 가는 방향에 따라 Sprite 방향 변경
             SpriteDir(target, current);
 
+            //eggball 전용
+            if (unitData.UnitID == 11005)
+            {
+                float healthPercentage = health / unitData.Health; // 현재 체력 비율
+
+                if (healthPercentage> 0.66f) // 67% 이상
+                {
+                    StartAnimation("walk_3unit", true, 1.2f);
+                }
+                else if (healthPercentage > 0.33f) // 34% 이상 67% 미만
+                {
+                    StartAnimation("walk_2unit", true, 1.2f);
+                }
+                else // 33% 이하
+                {
+                    StartAnimation("walk_1unit", true, 1.2f);
+                }
+            }
             // 애니메이션
-            StartAnimation("Walk", true, 1.2f);
+            if (unitData.UnitID != 11005)
+            {
+                StartAnimation("Walk", true, 1.2f);
+            }
         }
 
         startMoveFinish = true;
@@ -503,6 +622,5 @@ public class PlayerUnit : UnitBase
                 break;
         }
     }
-
 
 }

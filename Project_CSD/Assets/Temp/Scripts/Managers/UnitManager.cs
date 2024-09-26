@@ -103,6 +103,9 @@ public class UnitManager : MonoBehaviour
             case 11004: // Croirang
                 pool.Get(0, 5);
                 break;
+            case 11005: // Eggball
+                pool.Get(0, 6);
+                break;
         }
 
         foreach (GameObject card in BattleManager.Instance.cardObj)
