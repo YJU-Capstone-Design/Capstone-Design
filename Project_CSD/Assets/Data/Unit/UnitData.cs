@@ -1,3 +1,5 @@
+using Spine;
+using Spine.Unity;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -52,7 +54,11 @@ public class UnitData : ScriptableObject
     private Sprite unit_CardImg;
     public Sprite Unit_CardImg { get { return unit_CardImg; } }
 
-    
+    [SerializeField] // РЏДж Skeleton Data (Spine)
+    private SkeletonDataAsset unit_skeletonData;
+    public SkeletonDataAsset Unit_skeletonData { get { return unit_skeletonData; } }
+
+
 
     //[Header("# Level State")]
 

@@ -1,3 +1,4 @@
+using Spine.Unity;
 using System.Collections;
 using System.Collections.Generic;
 using System.Xml;
@@ -17,11 +18,23 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
     [Header("# etc UI")]
     [SerializeField] GameObject helpUI;
 
+    [Header("# Collection")]
+    [SerializeField] GameObject unitCollectionUI;
+    [SerializeField] GameObject speelCollectionUI;
+    [SerializeField] TextMeshProUGUI unitNameText;
+    [SerializeField] TextMeshProUGUI unitHPText;
+    [SerializeField] TextMeshProUGUI unitPowerText;
+    [SerializeField] TextMeshProUGUI unitCostText;
+    [SerializeField] TextMeshProUGUI unitSpeedText;
+    [SerializeField] TextMeshProUGUI unitAtkSpeedText;
+    [SerializeField] GameObject unitGraphic;
+
     private void Awake()
     {
         loginUI.SetActive(false);
         alertUI.SetActive(false);
         helpUI.SetActive(false);
+        //CollectionClear();
     }
 
     public void LoginButton()//로그인 창 id글자는 5개 제한 번호는 숫자만으로 제한됨
@@ -97,6 +110,14 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
             case "alert":
                 alertUI.SetActive(true);
                 break;
+            case "unitCollection":
+                unitCollectionUI.SetActive(true);
+                speelCollectionUI.SetActive(false);
+                break;
+            case "spellCollection":
+                unitCollectionUI.SetActive(false);
+                speelCollectionUI.SetActive(true);
+                break;
         }
 
         // 사운드
@@ -116,6 +137,9 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
             case "alert":
                 alertUI.SetActive(false);
                 break;
+            case "collection":
+                CollectionClear();
+                break;
         }
 
         // 사운드
@@ -126,5 +150,43 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
     {
 
         //액셀에 카드 아이디랑 값은 컬럼에 count += 1;
+    }
+
+
+    void CollectionClear()
+    {
+        unitCollectionUI.SetActive(false);
+        speelCollectionUI.SetActive(false);
+        unitNameText.text = "";
+        unitHPText.text = "";
+        unitPowerText.text = "";
+        unitCostText.text = "";
+        unitSpeedText.text = "";
+        unitAtkSpeedText.text = "";
+        unitGraphic.SetActive(false);
+
+        if (unitGraphic.GetComponent<SkeletonGraphic>().SkeletonDataAsset != null)
+        {
+            unitGraphic.GetComponent<SkeletonGraphic>().SkeletonDataAsset.Clear();
+        }
+    }
+
+    // 유닛 도감 버튼(유닛 카드) 함수
+    public void GetUnitInfo(UnitData unitData)
+    {
+        unitNameText.text = unitData.UnitName;
+        unitHPText.text = unitData.Health.ToString();
+        unitPowerText.text = unitData.Power.ToString();
+        unitCostText.text = unitData.Cost.ToString();
+        unitSpeedText.text = unitData.MoveSpeed.ToString();
+        unitAtkSpeedText.text = unitData.AttackTime.ToString();
+
+        // 유닛 Spine UI
+        unitGraphic.SetActive(false);
+        SkeletonGraphic unitSkeletonGraphic = unitGraphic.GetComponent<SkeletonGraphic>();
+        unitSkeletonGraphic.skeletonDataAsset = unitData.Unit_skeletonData;
+        unitSkeletonGraphic.Initialize(true); // skeletonDataAsset 를 ReLoad
+        unitSkeletonGraphic.startingLoop = true;
+        unitGraphic.SetActive(true);
     }
 }
