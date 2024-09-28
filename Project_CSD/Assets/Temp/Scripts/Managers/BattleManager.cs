@@ -81,8 +81,8 @@ public class BattleManager :Singleton<BattleManager>
 
     [Header("# percentData")]
     public float percent = 0.0f;
-    public int allUserCount = 0;
-    public int selectUserCount = 0;
+    public float allUserCount = 0;
+    public float selectUserCount = 0;
 
 
     private void Awake()
@@ -562,6 +562,7 @@ public class BattleManager :Singleton<BattleManager>
 
         XmlNodeList allUser = DBConnect.SelectOriginal("userData", "SELECT COUNT(*) FROM userData");
         allUserCount = allUser.Count;
+        Debug.Log("allUserCount : " + allUserCount);
 
         if (wave == 11)
         {

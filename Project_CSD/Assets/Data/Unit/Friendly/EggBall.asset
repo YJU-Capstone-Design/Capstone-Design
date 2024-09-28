@@ -23,3 +23,4 @@ MonoBehaviour:
   item_Type: 1
   unit_Img: {fileID: 21300000, guid: 67afe1c44b60b1b48aee1ca8f21805a3, type: 3}
   unit_CardImg: {fileID: 21300000, guid: 67afe1c44b60b1b48aee1ca8f21805a3, type: 3}
+  unit_skeletonData: {fileID: 11400000, guid: 810824cb8605ae044b866c1d0d6bf96b, type: 2}
