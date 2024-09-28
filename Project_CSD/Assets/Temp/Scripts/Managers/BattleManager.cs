@@ -560,25 +560,24 @@ public class BattleManager :Singleton<BattleManager>
     {
         // 상위 퍼센트 출력 (도달 웨이브로 판단)
 
-        XmlNodeList allUser = DBConnect.SelectOriginal("userData", "SELECT COUNT(*) FROM userData");
+        XmlNodeList allUser = DBConnect.SelectOriginal("userData", "SELECT * FROM userData");
         allUserCount = allUser.Count;
-        Debug.Log("allUserCount : " + allUserCount);
 
         if (wave == 11)
         {
-            XmlNodeList selectUser = DBConnect.SelectOriginal("userData", "SELECT COUNT(*) FROM userData WHERE stage_clear = 1;");
+            XmlNodeList selectUser = DBConnect.SelectOriginal("userData", "SELECT * FROM userData WHERE stage_clear = 1;");
             selectUserCount = selectUser.Count;
         }
         else
         {
-            XmlNodeList selectUser = DBConnect.SelectOriginal("userData", $"SELECT COUNT(*) FROM userData WHERE stage_{wave} = 1;");
+            XmlNodeList selectUser = DBConnect.SelectOriginal("userData", $"SELECT * FROM userData WHERE stage_{wave} = 1;");
             selectUserCount = selectUser.Count;
         }
 
         percent = (selectUserCount / allUserCount) * 100;
         percent = (float)Math.Round(percent, 2); // 소수점 2자리 반올림
-        Debug.Log("웨이브 : " + (wave) + " percent : " + percent);
 
+        Debug.Log($"allUserCount : {allUserCount}, selectUserCount : {selectUserCount}, percent : {percent}, wave : {wave}");
 
         // 텍스트 입력
         percentageText.text = $"전체 유저 중 {percent}%가\r\n동일한 웨이브에 도달했습니다.";
