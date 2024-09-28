@@ -22,12 +22,23 @@ public class CollectionManager : MonoBehaviour
     [SerializeField] GameObject unitGraphic;
     [SerializeField] GameObject animButtons;
     [SerializeField] TextMeshProUGUI attackAnimText;
+    Coroutine sorangAnim;
+    [SerializeField] bool startSorangAnim = false;
 
 
     private void Awake()
     {
         // UnitCollectionClear();
     }
+
+    //private void Update() 수정 중
+    //{
+    //    if (startSorangAnim && sorangAnim == null)
+    //    {
+    //        sorangAnim = StartCoroutine(SorangDefenseAnim());
+    //    }
+    //    if (sorangAnim != null) { Debug.Log("Start Anim"); }
+    //}
 
     public void OpenUI(string UIName)
     {
@@ -100,8 +111,8 @@ public class CollectionManager : MonoBehaviour
         {
             unitSkeletonGraphic.startingAnimation = "Idle";
         }
-        unitSkeletonGraphic.Initialize(true); // skeletonDataAsset 를 ReLoad
         unitSkeletonGraphic.startingLoop = true;
+        unitSkeletonGraphic.Initialize(true); // skeletonDataAsset 를 ReLoad
         unitGraphic.SetActive(true);
 
         if(unitData.UnitName == "빵게")
@@ -145,10 +156,31 @@ public class CollectionManager : MonoBehaviour
                 break;
         }
 
-        unitSkeletonGraphic.Initialize(true); // skeletonDataAsset 를 ReLoad
+
         unitSkeletonGraphic.startingLoop = true;
+        unitSkeletonGraphic.Initialize(true); // skeletonDataAsset 를 ReLoad
     }
 
+    IEnumerator SorangDefenseAnim() // 수정 중
+    {
+        Debug.Log("SorangDefenseAnim Start");
+        startSorangAnim = false;
+
+        SkeletonGraphic unitSkeletonGraphic = unitGraphic.GetComponent<SkeletonGraphic>();
+
+        unitSkeletonGraphic.startingAnimation = "Defense_start";
+        unitSkeletonGraphic.Initialize(true);
+        yield return new WaitForSeconds(1);
+        unitSkeletonGraphic.startingAnimation = "Defense_ing";
+        unitSkeletonGraphic.Initialize(true);
+        yield return new WaitForSeconds(1);
+        unitSkeletonGraphic.startingAnimation = "Defense_end";
+        unitSkeletonGraphic.Initialize(true);
+        yield return new WaitForSeconds(1);
+
+        sorangAnim = null;
+        startSorangAnim = true;
+    }
 
     // 카드 사용 퍼센트 출력 함수
     string GetUsePercentage(int id)

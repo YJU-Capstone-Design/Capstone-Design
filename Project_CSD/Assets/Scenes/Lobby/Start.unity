@@ -32307,8 +32307,8 @@ RectTransform:
   - {fileID: 2106291289}
   - {fileID: 1212900360}
   - {fileID: 496973701}
-  - {fileID: 223360006}
   - {fileID: 1393412850}
+  - {fileID: 223360006}
   m_Father: {fileID: 1814375044}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.05, y: 0}
@@ -43431,6 +43431,7 @@ MonoBehaviour:
   unitGraphic: {fileID: 1895250231}
   animButtons: {fileID: 687560060}
   attackAnimText: {fileID: 338117617}
+  startSorangAnim: 0
 --- !u!4 &1789736983
 Transform:
   m_ObjectHideFlags: 0
