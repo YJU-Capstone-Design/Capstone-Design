@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spellType: 2
   spellID: 23002
-  spellName: "\uADF8\uB300\uB85C \uBA48\uCDB0\uB77C!"
+  spellName: "\uADF8\uB300\uB85C \uBA48\uCDB0\uB77C !"
   cost: 15
   duration: 1
   damage: 0
