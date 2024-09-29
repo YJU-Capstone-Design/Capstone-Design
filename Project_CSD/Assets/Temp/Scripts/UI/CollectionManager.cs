@@ -52,6 +52,30 @@ public class CollectionManager : MonoBehaviour
     //    }
     //    if (sorangAnim != null) { Debug.Log("Start Anim"); }
     //}
+    private void Update()
+    {
+        // 애니메이션 업데이트
+        if (Time.timeScale == 0)
+        {
+            // 스켈레톤 애니메이션 수동 업데이트
+            SkeletonGraphic unitSkeletonGraphic = unitGraphic.GetComponent<SkeletonGraphic>();
+            unitSkeletonGraphic.Update(Time.unscaledDeltaTime);
+            SkeletonGraphic unitSkeletonGraphic_Spell = unitGraphic_Spell.GetComponent<SkeletonGraphic>();
+            unitSkeletonGraphic_Spell.Update(Time.unscaledDeltaTime);
+            SkeletonGraphic unitSkeletonGraphic_Monster = monster_Spell.GetComponent<SkeletonGraphic>();
+            unitSkeletonGraphic_Monster.Update(Time.unscaledDeltaTime);
+
+            // 파티클 업데이트
+            ParticleSystem particleSystem = unitGraphic_Spell.GetComponent<ParticleSystem>();
+            ParticleSystem particleSystem_Monster = monster_Spell.GetComponent<ParticleSystem>();
+            if (particleSystem != null)
+            {
+                particleSystem.Simulate(Time.unscaledDeltaTime, true, true);
+                particleSystem_Monster.Simulate(Time.unscaledDeltaTime, true, true);
+
+            }
+        }
+    }
 
     public void OpenUI(string UIName)
     {
@@ -77,7 +101,7 @@ public class CollectionManager : MonoBehaviour
     {
         UnitCollectionClear();
         SpellCollectionClear();
-
+        Time.timeScale = 1;
         // 사운드
         if (AudioManager.instance != null) { AudioManager.instance.ButtonSound(); }
     }
