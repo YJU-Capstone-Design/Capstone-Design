@@ -11,7 +11,6 @@ public class CollectionManager : MonoBehaviour
 {
     [Header("# Unit Collection")]
     [SerializeField] GameObject unitCollectionUI;
-    [SerializeField] GameObject spellCollectionUI;
     [SerializeField] TextMeshProUGUI unitNameText;
     [SerializeField] TextMeshProUGUI unitHPText;
     [SerializeField] TextMeshProUGUI unitPowerText;
@@ -25,10 +24,20 @@ public class CollectionManager : MonoBehaviour
     Coroutine sorangAnim;
     [SerializeField] bool startSorangAnim = false;
 
+    [Header("# Unit Collection")]
+    [SerializeField] GameObject spellCollectionUI;
+    [SerializeField] TextMeshProUGUI spellNameText;
+    [SerializeField] TextMeshProUGUI spellCostText;
+    [SerializeField] TextMeshProUGUI spellPercentText;
+    [SerializeField] TextMeshProUGUI durationTimeText;
+    [SerializeField] TextMeshProUGUI spellEffectText;
+    [SerializeField] GameObject unitGraphic_Spell;
+
 
     private void Awake()
     {
         // UnitCollectionClear();
+        // SpellCollectionClear();
     }
 
     //private void Update() 수정 중
@@ -47,6 +56,7 @@ public class CollectionManager : MonoBehaviour
             case "unitCollection":
                 unitCollectionUI.SetActive(true);
                 spellCollectionUI.SetActive(false);
+                SpellCollectionClear();
                 break;
             case "spellCollection":
                 unitCollectionUI.SetActive(false);
@@ -62,6 +72,7 @@ public class CollectionManager : MonoBehaviour
     public void CloseCollection()
     {
         UnitCollectionClear();
+        SpellCollectionClear();
 
         // 사운드
         if (AudioManager.instance != null) { AudioManager.instance.ButtonSound(); }
@@ -87,6 +98,19 @@ public class CollectionManager : MonoBehaviour
         }
     }
 
+    void SpellCollectionClear()
+    {
+        spellCollectionUI.SetActive(false);
+        spellNameText.text = "";
+        spellCostText.text = "";
+        spellPercentText.text = "";
+        durationTimeText.text = "";
+        spellEffectText.text = "";
+        unitGraphic_Spell.SetActive(false);
+
+        unitGraphic_Spell.GetComponent<SkeletonGraphic>().startingAnimation = "Idle";
+    }
+
     // 유닛 도감 버튼(유닛 카드) 함수
     public void GetUnitInfo(UnitData unitData)
     {
@@ -95,7 +119,7 @@ public class CollectionManager : MonoBehaviour
         unitPowerText.text = unitData.Power.ToString();
         unitCostText.text = unitData.Cost.ToString();
         unitSpeedText.text = unitData.MoveSpeed.ToString();
-        unitAtkSpeedText.text = unitData.AttackTime.ToString();
+        unitAtkSpeedText.text = unitData.AttackTime.ToString() + "s";
         usePercentText.text = GetUsePercentage(unitData.UnitID);
         animButtons.SetActive(true);
 
@@ -122,6 +146,45 @@ public class CollectionManager : MonoBehaviour
         else
         {
             attackAnimText.text = "공격";
+        }
+    }
+
+    // 스펠 도감 버튼(스펠 카드) 함수
+    public void GetSpellInfo(SpellData spellData)
+    {
+        spellNameText.text = spellData.SpellName.ToString();
+        spellCostText.text = spellData.Cost.ToString();
+        spellPercentText.text = GetUsePercentage(spellData.SpellID);
+        durationTimeText.text = spellData.Duration.ToString() + "s";
+        spellEffectText.text = spellData.Spell_Effect;
+
+        if(spellData.SpellType == SpellData.SpellTypes.Buff)
+        {
+            unitGraphic_Spell.SetActive(true);
+
+            SkeletonGraphic unitGraphic = unitGraphic_Spell.GetComponent<SkeletonGraphic>();
+
+            switch (spellData.SpellID)
+            {
+                case 22002:
+                case 22005:
+                case 22006:
+                    unitGraphic.startingAnimation = "Attack";
+                    unitGraphic.Initialize(true);
+                    break;
+                case 22007:
+                    unitGraphic.startingAnimation = "Walk";
+                    unitGraphic.Initialize(true);
+                    break;
+                default:
+                    unitGraphic.startingAnimation = "Idle";
+                    unitGraphic.Initialize(true);
+                    break;
+            }
+        }
+        else if(spellData.SpellType == SpellData.SpellTypes.Debuff)
+        {
+            unitGraphic_Spell.SetActive(false);
         }
     }
 

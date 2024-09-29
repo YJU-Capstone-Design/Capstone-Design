@@ -10,7 +10,7 @@ public class SpellData : ScriptableObject
 
     [Header("# Spell Type")]
     [SerializeField]
-    private SpellTypes spellType;
+    public SpellTypes spellType;
     public SpellTypes SpellType { get { return spellType; } }
 
     [Header("# Spell State")]
@@ -54,7 +54,11 @@ public class SpellData : ScriptableObject
     private int item_Type;
     public float Item_Type { get { return item_Type; } }
 
-    [SerializeField] // 유닛 카드 이미지
+    [SerializeField] // 스펠 카드 이미지
     private Sprite spell_CardImg;
     public Sprite Spell_CardImg { get { return spell_CardImg; } }
+
+    [SerializeField] // 스펠 카드 효과 Text
+    private string spell_Effect;
+    public string Spell_Effect { get { return spell_Effect; } }
 }

@@ -24,3 +24,5 @@ MonoBehaviour:
   attackTimeDown: -25
   item_Type: 2
   spell_CardImg: {fileID: 21300000, guid: 224684abbc7983948a75e07d2a326859, type: 3}
+  spell_Effect: "\uBAAC\uC2A4\uD130 :  \uC774\uB3D9 \uC18D\uB3C4 -10%, \uACF5\uACA9
+    \uC8FC\uAE30 +25%"
