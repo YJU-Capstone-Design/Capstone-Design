@@ -32,6 +32,8 @@ public class CollectionManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI durationTimeText;
     [SerializeField] TextMeshProUGUI spellEffectText;
     [SerializeField] GameObject unitGraphic_Spell;
+    [SerializeField] GameObject unitGraphic_SpellBG;
+    [SerializeField] GameObject[] uiEffects;
 
 
     private void Awake()
@@ -107,6 +109,7 @@ public class CollectionManager : MonoBehaviour
         durationTimeText.text = "";
         spellEffectText.text = "";
         unitGraphic_Spell.SetActive(false);
+        unitGraphic_SpellBG.SetActive(false);
 
         unitGraphic_Spell.GetComponent<SkeletonGraphic>().startingAnimation = "Idle";
     }
@@ -161,6 +164,7 @@ public class CollectionManager : MonoBehaviour
         if(spellData.SpellType == SpellData.SpellTypes.Buff)
         {
             unitGraphic_Spell.SetActive(true);
+            unitGraphic_SpellBG.SetActive(true);
 
             SkeletonGraphic unitGraphic = unitGraphic_Spell.GetComponent<SkeletonGraphic>();
 
@@ -185,6 +189,41 @@ public class CollectionManager : MonoBehaviour
         else if(spellData.SpellType == SpellData.SpellTypes.Debuff)
         {
             unitGraphic_Spell.SetActive(false);
+            unitGraphic_SpellBG.SetActive(false);
+        }
+
+
+        // Ω∫∆Á UI ¿Ã∆Â∆Æ
+        switch (spellData.SpellID)
+        {
+            case 22001:
+                SetUIEffect(0);
+                break;
+            case 22002:
+                SetUIEffect(1);
+                break;
+            case 22004:
+                SetUIEffect(2);
+                break;
+            case 22005:
+                SetUIEffect(3);
+                break;
+            case 22006:
+                SetUIEffect(4);
+                break;
+            case 22007:
+                SetUIEffect(5);
+                break;
+        }
+    }
+
+    void SetUIEffect(int effectIndex)
+    {
+        Debug.Log("uiEffects Count : " + uiEffects.Length);
+        for (int i = 0; i < uiEffects.Length; i++)
+        {
+            uiEffects[i].SetActive(i == effectIndex);
+            Debug.Log("effect Index : " + i);
         }
     }
 
