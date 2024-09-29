@@ -24,7 +24,7 @@ public class CollectionManager : MonoBehaviour
     Coroutine sorangAnim;
     [SerializeField] bool startSorangAnim = false;
 
-    [Header("# Unit Collection")]
+    [Header("# Spell Collection")]
     [SerializeField] GameObject spellCollectionUI;
     [SerializeField] TextMeshProUGUI spellNameText;
     [SerializeField] TextMeshProUGUI spellCostText;
@@ -32,14 +32,16 @@ public class CollectionManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI durationTimeText;
     [SerializeField] TextMeshProUGUI spellEffectText;
     [SerializeField] GameObject unitGraphic_Spell;
-    [SerializeField] GameObject unitGraphic_SpellBG;
-    [SerializeField] GameObject[] uiEffects;
+    [SerializeField] GameObject monster_Spell;
+    [SerializeField] GameObject unit_BG;
+    [SerializeField] GameObject[] buffUIEffects;
+    [SerializeField] GameObject[] deBuffUIEffects;
 
 
     private void Awake()
     {
-        // UnitCollectionClear();
-        // SpellCollectionClear();
+        UnitCollectionClear();
+        SpellCollectionClear();
     }
 
     //private void Update() 수정 중
@@ -109,9 +111,14 @@ public class CollectionManager : MonoBehaviour
         durationTimeText.text = "";
         spellEffectText.text = "";
         unitGraphic_Spell.SetActive(false);
-        unitGraphic_SpellBG.SetActive(false);
+        monster_Spell.SetActive(false);
+        unit_BG.SetActive(false);
 
         unitGraphic_Spell.GetComponent<SkeletonGraphic>().startingAnimation = "Idle";
+
+        // 모든 이펙트 종료
+        SetUIEffect(buffUIEffects, -1);
+        SetUIEffect(deBuffUIEffects, -1);
     }
 
     // 유닛 도감 버튼(유닛 카드) 함수
@@ -160,11 +167,12 @@ public class CollectionManager : MonoBehaviour
         spellPercentText.text = GetUsePercentage(spellData.SpellID);
         durationTimeText.text = spellData.Duration.ToString() + "s";
         spellEffectText.text = spellData.Spell_Effect;
+        unit_BG.SetActive(true);
 
-        if(spellData.SpellType == SpellData.SpellTypes.Buff)
+        if (spellData.SpellType == SpellData.SpellTypes.Buff)
         {
             unitGraphic_Spell.SetActive(true);
-            unitGraphic_SpellBG.SetActive(true);
+            monster_Spell.SetActive(false);
 
             SkeletonGraphic unitGraphic = unitGraphic_Spell.GetComponent<SkeletonGraphic>();
 
@@ -189,7 +197,7 @@ public class CollectionManager : MonoBehaviour
         else if(spellData.SpellType == SpellData.SpellTypes.Debuff)
         {
             unitGraphic_Spell.SetActive(false);
-            unitGraphic_SpellBG.SetActive(false);
+            monster_Spell.SetActive(true);
         }
 
 
@@ -197,37 +205,53 @@ public class CollectionManager : MonoBehaviour
         switch (spellData.SpellID)
         {
             case 22001:
-                SetUIEffect(0);
+                SetUIEffect(buffUIEffects, 0);
                 break;
             case 22002:
-                SetUIEffect(1);
+                SetUIEffect(buffUIEffects, 1);
                 break;
             case 22004:
-                SetUIEffect(2);
+                SetUIEffect(buffUIEffects, 2);
                 break;
             case 22005:
-                SetUIEffect(3);
+                SetUIEffect(buffUIEffects, 3);
                 break;
             case 22006:
-                SetUIEffect(4);
+                SetUIEffect(buffUIEffects, 4);
                 break;
             case 22007:
-                SetUIEffect(5);
+                SetUIEffect(buffUIEffects, 5);
                 break;
+            case 23001:
+                SetUIEffect(deBuffUIEffects, 0);
+                break;
+            case 23002:
+                SetUIEffect(deBuffUIEffects, 1);
+                break;
+            case 23003:
+                SetUIEffect(deBuffUIEffects, 2);
+                break;
+            case 23004:
+                SetUIEffect(deBuffUIEffects, 3);
+                break;
+
+            case 23005:
+                SetUIEffect(deBuffUIEffects, 4);
+                break;
+
         }
     }
 
-    void SetUIEffect(int effectIndex)
+    // 스펠 이펙트 활성화/비활성화 함수
+    void SetUIEffect(GameObject[] effets,int effectIndex)
     {
-        Debug.Log("uiEffects Count : " + uiEffects.Length);
-        for (int i = 0; i < uiEffects.Length; i++)
+        for (int i = 0; i < effets.Length; i++)
         {
-            uiEffects[i].SetActive(i == effectIndex);
-            Debug.Log("effect Index : " + i);
+            effets[i].SetActive(i == effectIndex);
         }
     }
 
-    // SkeletonGraphic 애니메이션 버튼
+    // 캐릭터 도감 SkeletonGraphic 애니메이션 버튼
     public void UnitAnimButton(string animName)
     {
         SkeletonGraphic unitSkeletonGraphic = unitGraphic.GetComponent<SkeletonGraphic>();
