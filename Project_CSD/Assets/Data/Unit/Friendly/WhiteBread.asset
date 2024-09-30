@@ -15,11 +15,11 @@ MonoBehaviour:
   unitType: 0
   unitID: 12001
   unitName: "\uC2DD\uBE75"
-  cost: 10
-  health: 1000
-  power: 200
+  cost: 5
+  health: 700
+  power: 100
   moveSpeed: 1.5
-  attackTime: 10
+  attackTime: 2
   item_Type: 1
   unit_Img: {fileID: 21300000, guid: 875187fe3fb87924998a208129503379, type: 3}
   unit_CardImg: {fileID: 21300000, guid: 875187fe3fb87924998a208129503379, type: 3}
