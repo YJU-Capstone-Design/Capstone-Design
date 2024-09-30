@@ -6,6 +6,7 @@ using UnityEditor;
 using UnityEngine;
 using System.Xml;
 using System;
+using System.Reflection;
 
 public class CollectionManager : MonoBehaviour
 {
@@ -36,7 +37,9 @@ public class CollectionManager : MonoBehaviour
     [SerializeField] GameObject unit_BG;
     [SerializeField] GameObject[] buffUIEffects;
     [SerializeField] GameObject[] deBuffUIEffects;
-
+    [Header("# BattleBanner")]
+    [SerializeField] GameObject banner;
+    [SerializeField] GameObject card_Box;
 
     private void Awake()
     {
@@ -50,9 +53,18 @@ public class CollectionManager : MonoBehaviour
         {
             sorangAnim = StartCoroutine(SorangDefenseAnim());
         }
-    }
+        // 애니메이션 업데이트
+        if (Time.timeScale == 0)
+        {
+            // 스켈레톤 애니메이션 수동 업데이트
+            SkeletonGraphic unitSkeletonGraphic = unitGraphic.GetComponent<SkeletonGraphic>();
+            unitSkeletonGraphic.Update(Time.unscaledDeltaTime);
+            SkeletonGraphic unitSkeletonGraphic_Spell = unitGraphic_Spell.GetComponent<SkeletonGraphic>();
+            unitSkeletonGraphic_Spell.Update(Time.unscaledDeltaTime);
+        }
+        }
 
-    public void OpenUI(string UIName)
+        public void OpenUI(string UIName)
     {
         switch (UIName)
         {
@@ -67,7 +79,12 @@ public class CollectionManager : MonoBehaviour
                 UnitCollectionClear();
                 break;
         }
-
+        if (card_Box != null)
+        {
+            Time.timeScale = 0;
+            banner.transform.localScale = Vector3.zero;
+            card_Box.transform.localScale = Vector3.zero;
+        }
         // 사운드
         if (AudioManager.instance != null) { AudioManager.instance.ButtonSound(); }
     }
@@ -76,7 +93,12 @@ public class CollectionManager : MonoBehaviour
     {
         UnitCollectionClear();
         SpellCollectionClear();
-
+      
+        if (card_Box != null)
+        {
+            banner.transform.localScale = Vector3.one;
+            card_Box.transform.localScale = Vector3.one;
+        }
         // 사운드
         if (AudioManager.instance != null) { AudioManager.instance.ButtonSound(); }
     }
