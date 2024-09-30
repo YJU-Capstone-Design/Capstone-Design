@@ -490,8 +490,17 @@ public class PlayerUnit : UnitBase
         if (smash != null) { StopCoroutine(smash); smash = null; }
         if (arrow != null) { StopCoroutine(arrow); arrow = null; }
 
+        //eggball 전용
+        if (unitData.UnitID == 11005)
+        {
+            StartAnimation("die_1unit", true, 1f);
+        }
         // 애니메이션
-        StartAnimation("Die", true, 1f);
+        if (unitData.UnitID != 11005)
+        {
+            StartAnimation("Die", true, 1f);
+        }
+
 
         yield return new WaitForSeconds(1f);
 
