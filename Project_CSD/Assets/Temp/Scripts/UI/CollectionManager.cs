@@ -62,8 +62,7 @@ public class CollectionManager : MonoBehaviour
             unitSkeletonGraphic.Update(Time.unscaledDeltaTime);
             SkeletonGraphic unitSkeletonGraphic_Spell = unitGraphic_Spell.GetComponent<SkeletonGraphic>();
             unitSkeletonGraphic_Spell.Update(Time.unscaledDeltaTime);
-            SkeletonGraphic unitSkeletonGraphic_Monster = monster_Spell.GetComponent<SkeletonGraphic>();
-            unitSkeletonGraphic_Monster.Update(Time.unscaledDeltaTime);
+    
 
             // 파티클 업데이트
             ParticleSystem particleSystem = unitGraphic_Spell.GetComponent<ParticleSystem>();
