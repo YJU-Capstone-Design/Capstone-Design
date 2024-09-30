@@ -37,7 +37,9 @@ public class CollectionManager : MonoBehaviour
     [SerializeField] GameObject[] buffUIEffects;
     [SerializeField] GameObject[] deBuffUIEffects;
 
-
+    [Header("# BattleBanner")]
+    [SerializeField] GameObject banner;
+    [SerializeField] GameObject card_Box;
     private void Awake()
     {
         UnitCollectionClear();
@@ -65,14 +67,14 @@ public class CollectionManager : MonoBehaviour
     
 
             // 파티클 업데이트
-            ParticleSystem particleSystem = unitGraphic_Spell.GetComponent<ParticleSystem>();
+            /*ParticleSystem particleSystem = unitGraphic_Spell.GetComponent<ParticleSystem>();
             ParticleSystem particleSystem_Monster = monster_Spell.GetComponent<ParticleSystem>();
             if (particleSystem != null)
             {
                 particleSystem.Simulate(Time.unscaledDeltaTime, true, true);
                 particleSystem_Monster.Simulate(Time.unscaledDeltaTime, true, true);
 
-            }
+            }*/
         }
     }
 
@@ -92,6 +94,13 @@ public class CollectionManager : MonoBehaviour
                 break;
         }
 
+        
+        if (card_Box != null)
+        {
+            Time.timeScale = 0;
+            banner.transform.localScale = Vector3.zero;
+            card_Box.transform.localScale = Vector3.zero;
+        }
         // 사운드
         if (AudioManager.instance != null) { AudioManager.instance.ButtonSound(); }
     }
@@ -101,6 +110,13 @@ public class CollectionManager : MonoBehaviour
         UnitCollectionClear();
         SpellCollectionClear();
         Time.timeScale = 1;
+
+        if (card_Box != null)
+        {
+            banner.transform.localScale = Vector3.one;
+            card_Box.transform.localScale = Vector3.one;
+        }
+
         // 사운드
         if (AudioManager.instance != null) { AudioManager.instance.ButtonSound(); }
     }
