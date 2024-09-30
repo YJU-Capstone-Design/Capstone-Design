@@ -15,8 +15,8 @@ MonoBehaviour:
   unitType: 0
   unitID: 12002
   unitName: "\uBE75\uAC8C"
-  cost: 10
-  health: 5000
+  cost: 20
+  health: 2000
   power: 0
   moveSpeed: 1.5
   attackTime: 1.5

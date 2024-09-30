@@ -16,10 +16,10 @@ MonoBehaviour:
   unitID: 11001
   unitName: "\uD0B7\uCE04"
   cost: 3
-  health: 1000
-  power: 300
+  health: 350
+  power: 200
   moveSpeed: 2.5
-  attackTime: 5
+  attackTime: 2
   item_Type: 1
   unit_Img: {fileID: 21300000, guid: 885927e01bdf5ef40bbf4d96757bc52e, type: 3}
   unit_CardImg: {fileID: 21300000, guid: 885927e01bdf5ef40bbf4d96757bc52e, type: 3}

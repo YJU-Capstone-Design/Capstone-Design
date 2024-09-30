@@ -16,10 +16,11 @@ MonoBehaviour:
   unitID: 31008
   unitName: "\uACE0\uBE14\uB9B0"
   cost: 0
-  health: 800
-  power: 300
+  health: 400
+  power: 200
   moveSpeed: 2.5
   attackTime: 5
   item_Type: 0
   unit_Img: {fileID: 0}
   unit_CardImg: {fileID: 0}
+  unit_skeletonData: {fileID: 0}

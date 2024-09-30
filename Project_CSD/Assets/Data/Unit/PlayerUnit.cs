@@ -341,7 +341,7 @@ public class PlayerUnit : UnitBase
         {
             StartAnimation("Attack", false, 1f);
         }
-        yield return new WaitForSeconds(0.6f); // 애니메이션 시간
+        yield return new WaitForSeconds(0.4f); // 애니메이션 시간
 
         if ((unitID % 10000) / 1000 == 2) // 탱커, Croirang -> 다수 공격
         {
