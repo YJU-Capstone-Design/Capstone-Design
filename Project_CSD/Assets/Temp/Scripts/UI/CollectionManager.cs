@@ -44,14 +44,13 @@ public class CollectionManager : MonoBehaviour
         SpellCollectionClear();
     }
 
-    //private void Update() 수정 중
-    //{
-    //    if (startSorangAnim && sorangAnim == null)
-    //    {
-    //        sorangAnim = StartCoroutine(SorangDefenseAnim());
-    //    }
-    //    if (sorangAnim != null) { Debug.Log("Start Anim"); }
-    //}
+    private void Update()
+    {
+        if (startSorangAnim)
+        {
+            sorangAnim = StartCoroutine(SorangDefenseAnim());
+        }
+    }
 
     public void OpenUI(string UIName)
     {
@@ -133,6 +132,9 @@ public class CollectionManager : MonoBehaviour
         usePercentText.text = GetUsePercentage(unitData.UnitID);
         animButtons.SetActive(true);
 
+        if (sorangAnim != null) { StopCoroutine(sorangAnim); sorangAnim = null; startSorangAnim = false; Debug.Log("Strop SorangAnim"); }
+
+
         // 유닛 Spine UI
         unitGraphic.SetActive(false);
         SkeletonGraphic unitSkeletonGraphic = unitGraphic.GetComponent<SkeletonGraphic>();
@@ -149,7 +151,7 @@ public class CollectionManager : MonoBehaviour
         unitSkeletonGraphic.Initialize(true); // skeletonDataAsset 를 ReLoad
         unitGraphic.SetActive(true);
 
-        if(unitData.UnitName == "빵게")
+        if (unitData.UnitName == "빵게")
         {
             attackAnimText.text = "방어";
         }
@@ -194,7 +196,7 @@ public class CollectionManager : MonoBehaviour
                     break;
             }
         }
-        else if(spellData.SpellType == SpellData.SpellTypes.Debuff)
+        else if (spellData.SpellType == SpellData.SpellTypes.Debuff)
         {
             unitGraphic_Spell.SetActive(false);
             monster_Spell.SetActive(true);
@@ -243,7 +245,7 @@ public class CollectionManager : MonoBehaviour
     }
 
     // 스펠 이펙트 활성화/비활성화 함수
-    void SetUIEffect(GameObject[] effets,int effectIndex)
+    void SetUIEffect(GameObject[] effets, int effectIndex)
     {
         for (int i = 0; i < effets.Length; i++)
         {
@@ -254,13 +256,16 @@ public class CollectionManager : MonoBehaviour
     // 캐릭터 도감 SkeletonGraphic 애니메이션 버튼
     public void UnitAnimButton(string animName)
     {
+        if (sorangAnim != null) { StopCoroutine(sorangAnim); sorangAnim = null; startSorangAnim = false; Debug.Log("Strop SorangAnim"); }
+
         SkeletonGraphic unitSkeletonGraphic = unitGraphic.GetComponent<SkeletonGraphic>();
 
         // 다른 애니메이션을 가진 unit 수정
         switch ((unitNameText.text, animName))
         {
             case ("빵게", "Attack"):
-                unitSkeletonGraphic.startingAnimation = "Defense_start";
+                // unitSkeletonGraphic.startingAnimation = "Defense_start";
+                startSorangAnim = true;
                 break;
             case ("에그볼", "Idle"):
                 unitSkeletonGraphic.startingAnimation = "idle_3unit";
@@ -290,22 +295,23 @@ public class CollectionManager : MonoBehaviour
     IEnumerator SorangDefenseAnim() // 수정 중
     {
         Debug.Log("SorangDefenseAnim Start");
+
+        yield return null;
         startSorangAnim = false;
 
         SkeletonGraphic unitSkeletonGraphic = unitGraphic.GetComponent<SkeletonGraphic>();
 
         unitSkeletonGraphic.startingAnimation = "Defense_start";
         unitSkeletonGraphic.Initialize(true);
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(0.9f);
         unitSkeletonGraphic.startingAnimation = "Defense_ing";
         unitSkeletonGraphic.Initialize(true);
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(0.9f);
         unitSkeletonGraphic.startingAnimation = "Defense_end";
         unitSkeletonGraphic.Initialize(true);
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(0.9f);
 
-        sorangAnim = null;
-        startSorangAnim = true;
+        if (sorangAnim != null) { StopCoroutine(sorangAnim); sorangAnim = null; startSorangAnim = true; }
     }
 
     // 카드 사용 퍼센트 출력 함수
@@ -317,14 +323,14 @@ public class CollectionManager : MonoBehaviour
 
         XmlNodeList allCardData = DBConnect.SelectOriginal("usingCount", "SELECT * FROM usingCount");
 
-        for(int i = 0; i < allCardData.Count; i++)
+        for (int i = 0; i < allCardData.Count; i++)
         {
             allUseCount += int.Parse(allCardData[i].SelectSingleNode("count").InnerText);
         }
 
         XmlNodeList selectedCard = DBConnect.SelectOriginal("usingCount", $"SELECT count FROM usingCount WHERE cardID = {id};");
-        
-        if(selectedCard != null)
+
+        if (selectedCard != null)
         {
             useCount = int.Parse(selectedCard[0].InnerText);
         }
