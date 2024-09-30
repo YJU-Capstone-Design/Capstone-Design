@@ -99,6 +99,7 @@ public class CollectionManager : MonoBehaviour
             banner.transform.localScale = Vector3.one;
             card_Box.transform.localScale = Vector3.one;
         }
+        Time.timeScale = 1;
         // »ç¿îµå
         if (AudioManager.instance != null) { AudioManager.instance.ButtonSound(); }
     }
