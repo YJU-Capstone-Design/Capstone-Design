@@ -248,12 +248,13 @@ public class BattleManager :Singleton<BattleManager>
             if (AudioManager.instance != null) { AudioManager.instance.BattleEndSound(true); }
             if (CashManager.instance != null) { CashManager.instance.player_Gold += 100 * wave; }
             if (PlayerData.instance != null) { PlayerData.instance.Lv++; }
+            victory = true;
             StartCoroutine(ResultUI(2));
             //endTime = limite_time;
             //int minutes = Mathf.FloorToInt(endTime / 60);
             //int seconds = Mathf.FloorToInt(endTime % 60);
             //result_Time.text = string.Format("{0:00} : {1:00}", minutes, seconds);
-            victory = true;
+           
         }
         else if(whether == "Lose")
         {
@@ -343,7 +344,7 @@ public class BattleManager :Singleton<BattleManager>
         for (int i = 0; i < resultObjsAnim.Length; i++)
         {
             Animator anim = resultObjsAnim[i];
-            if ((i == resultObjsAnim.Length - 1 && wave == 0) || (i == resultObjsAnim.Length - 2 && wave == 0))
+            if ((i == resultObjsAnim.Length - 1 && !victory) || (i == resultObjsAnim.Length - 2 && !victory))
             {
                 // 첫번째 wave인 경우, 랭킹 버튼 오브젝트들은 애니메이션을 적용하지 않음
                 continue;
@@ -356,7 +357,7 @@ public class BattleManager :Singleton<BattleManager>
         for (int i = 0; i < resultButtons.Length; i++)
         {
             Button resultBtn = resultButtons[i];
-            if ((i == resultObjsAnim.Length - 1 && wave == 0) || (i == resultObjsAnim.Length - 2 && wave == 0))
+            if ((i == resultObjsAnim.Length - 1 && !victory) || (i == resultObjsAnim.Length - 2 && !victory))
             {
                 // 첫번째 wave인 경우, 랭킹 버튼 오브젝트들은 비활성화 상태를 유지함
                 continue;
