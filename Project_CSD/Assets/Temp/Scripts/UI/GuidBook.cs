@@ -18,6 +18,7 @@ public class GuidBook : MonoBehaviour
     }
     public void Guid(int page)
     {
+        if (AudioManager.instance != null) { AudioManager.instance.ButtonSound(); }
         guid.sprite = guid_Img[page];
      
         for (int i = 0; i < guid_Chceck.Length; i++)
@@ -47,11 +48,13 @@ public class GuidBook : MonoBehaviour
     {
         GuidClear();
         guid_Book.SetActive(true);
+        if (AudioManager.instance != null) { AudioManager.instance.ButtonSound(); }
     }
     public void Close_GuidBook()
     {
         GuidClear();
         guid_Book.SetActive(false);
+        if (AudioManager.instance != null) { AudioManager.instance.ButtonSound(); }
 
     }
 }
