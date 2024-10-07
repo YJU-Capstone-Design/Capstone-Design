@@ -37,7 +37,7 @@ public class UiManager : Singleton<UiManager>
 
         if (AudioManager.instance != null) { AudioManager.instance.BattleSound(); }
 
-        cost = 0;
+        cost = 10;
         costText.text = cost.ToString();
     }
     private void Start()

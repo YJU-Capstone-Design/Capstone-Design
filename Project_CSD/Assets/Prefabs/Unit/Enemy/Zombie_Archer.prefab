@@ -1176,7 +1176,7 @@ MonoBehaviour:
   attackRayUpPos: 0
   attackRayDownPos: 0
   attackRayPos: {x: 0, y: 0.3, z: 0}
-  attackRaySize: {x: 25, y: 6}
+  attackRaySize: {x: 15, y: 6}
   allChildren: []
   nearestAttackTarget: {fileID: 0}
   multipleAttackTargets: []
@@ -1193,7 +1193,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scannerPos: {x: 0, y: 0, z: 0}
-  scanRange: {x: 30, y: 8}
+  scanRange: {x: 20, y: 8}
   targetLayer:
     serializedVersion: 2
     m_Bits: 64
