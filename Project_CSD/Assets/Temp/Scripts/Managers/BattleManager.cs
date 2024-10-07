@@ -273,18 +273,15 @@ public class BattleManager :Singleton<BattleManager>
         SaveUserData(whether, waveCount);
 
         // 상위 퍼센트 출력 (Wave 도달로 판단)
-        if (waveCount >= 2)
-        {
-            Debug.Log("Get Wave Reach Percentage");
+        Debug.Log("Get Wave Reach Percentage");
 
-            if(whether == "Win" && waveCount == 10)
-            {
-                GetWaveReachPercentage(waveCount + 1);
-            }
-            else
-            {
-                GetWaveReachPercentage(waveCount);
-            }
+        if (whether == "Win" && waveCount == 10)
+        {
+            GetWaveReachPercentage(waveCount + 1);
+        }
+        else
+        {
+            GetWaveReachPercentage(waveCount);
         }
     }
 
@@ -319,7 +316,7 @@ public class BattleManager :Singleton<BattleManager>
             {
                 DBConnect.UserDataInsert(UserRankingData.instance.playerName, wave + 1);
             }
-            else if (whether == "Lose" && wave >= 2)
+            else if (whether == "Lose")
             {
                 DBConnect.UserDataInsert(UserRankingData.instance.playerName, wave);
             }
@@ -330,7 +327,7 @@ public class BattleManager :Singleton<BattleManager>
             {
                 DBConnect.UserDataUpdate(UserRankingData.instance.playerName, wave + 1);
             }
-            else if (whether == "Lose" && wave >= 2)
+            else if (whether == "Lose")
             {
                 DBConnect.UserDataUpdate(UserRankingData.instance.playerName, wave);
             }
@@ -347,11 +344,7 @@ public class BattleManager :Singleton<BattleManager>
         for (int i = 0; i < resultObjsAnim.Length; i++)
         {
             Animator anim = resultObjsAnim[i];
-            if ((i == resultObjsAnim.Length - 1 && !victory) || (i == resultObjsAnim.Length - 2 && !victory))
-            {
-                // 첫번째 wave인 경우, 랭킹 버튼 오브젝트들은 애니메이션을 적용하지 않음
-                continue;
-            }
+
             anim.SetBool("end", true);
         }
 
@@ -360,11 +353,7 @@ public class BattleManager :Singleton<BattleManager>
         for (int i = 0; i < resultButtons.Length; i++)
         {
             Button resultBtn = resultButtons[i];
-            if ((i == resultObjsAnim.Length - 1 && !victory) || (i == resultObjsAnim.Length - 2 && !victory))
-            {
-                // 첫번째 wave인 경우, 랭킹 버튼 오브젝트들은 비활성화 상태를 유지함
-                continue;
-            }
+
             resultBtn.enabled = true;
         }
     }
