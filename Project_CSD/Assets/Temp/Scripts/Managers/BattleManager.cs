@@ -302,6 +302,9 @@ public class BattleManager :Singleton<BattleManager>
         {
             DBConnect.UpdateRanking("ranking", "score", playerScore, $"userName = '{UserRankingData.instance.playerName}'");
         }
+
+        // 랭킹 등록 UI 비활성화
+        rank_Obj.SetActive(false);
     }
 
     // 게임 종료 후 유저의 게임 결과를 저장하는 함수 (userData Table)
