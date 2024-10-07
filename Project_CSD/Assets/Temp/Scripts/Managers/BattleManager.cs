@@ -178,9 +178,9 @@ public class BattleManager :Singleton<BattleManager>
         limite_time -= Time.deltaTime;
         if (limite_time <= 0)
         {
-            battleState = BattleState.Win;
+            battleState = BattleState.Lose;
             unitSpawnRange.SetActive(false);
-            EndGame("Win");
+            EndGame("Lose");
             //지금 10분을 버텨내면 승리 조건 10분안에 클리어 못하면 패배하는걸로 바꿔야 될까?
         }
         if (limite_time >= 0)
