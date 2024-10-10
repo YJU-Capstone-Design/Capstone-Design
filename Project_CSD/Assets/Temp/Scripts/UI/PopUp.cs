@@ -103,7 +103,7 @@ public class PopUp : MonoBehaviour
     public void MoveScene2()
     {
         if (AudioManager.instance != null) { AudioManager.instance.ButtonSound(); }
-
+        AudioManager.instance.lobbyscene = true;// 로비씬 버튼 이벤트 빠짐 문제로 추가
         /*LodingSceneMgr.LoadScene("Start");*/
         SceneManager.LoadScene("Start");
             Time.timeScale = 1;

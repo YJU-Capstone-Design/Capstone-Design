@@ -22,7 +22,10 @@ public class AudioManager : MonoBehaviour
     public Slider sfx_slider;
 
 
-
+    [Header("버튼")]
+    public bool lobbyscene=true;
+    public GameObject soundBtn;
+    public GameObject endBtn;
 
     private void Awake()
     {
@@ -48,6 +51,20 @@ public class AudioManager : MonoBehaviour
     {
 
         MainSound();
+       if(soundBtn == null)
+        {
+            soundBtn = GameObject.Find("SoundBtn");
+            Button btn = soundBtn.GetComponent<Button>();
+            btn.onClick.AddListener(OpenAudioBox);
+        }
+        if(endBtn == null)
+        {
+            endBtn = GameObject.Find("EndBtn");
+            Button btn = endBtn.GetComponent<Button>();
+            btn.onClick.AddListener(EndGame);
+        }
+           
+        
     }
 
     public void GachaSound() {audioSource_Bg.clip = audioClip_Bg[1]; audioSource_Bg.Play();}//가챠룸 사운드
@@ -91,7 +108,10 @@ public class AudioManager : MonoBehaviour
         }
 
     }
-    public void OpenAudioBox() { audioBox.SetActive(true);  ButtonSound();  }
+    public void OpenAudioBox() {
+        
+        audioBox.SetActive(true);  ButtonSound(); Debug.Log("사운드 설정");
+    }
     public void CloseAudioBox() { audioBox.SetActive(false);  ButtonSound();  }
 
 
@@ -113,9 +133,28 @@ public class AudioManager : MonoBehaviour
         audioSource_Effect.volume = value;
     }
 
+    public void BtnClear()
+    {
+        if (lobbyscene)
+        {
+            endBtn = GameObject.Find("EndBtn");
+            Button btn = endBtn.GetComponent<Button>();
+            btn.onClick.AddListener(EndGame);
+            Debug.Log("종료 버튼 찾음");
+        }
+        if (lobbyscene)
+        {
+            soundBtn = GameObject.Find("SoundBtn");
+            Button btn = soundBtn.GetComponent<Button>();
+            btn.onClick.AddListener(OpenAudioBox);
+            Debug.Log("오디오 버튼 찾음");
+        }
+    }
 
     public void EndGame()
     {
+      
         Application.Quit();
+        Debug.Log("게임 종료");
     }
 }

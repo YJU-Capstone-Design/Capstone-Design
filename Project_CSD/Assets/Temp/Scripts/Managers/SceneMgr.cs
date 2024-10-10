@@ -22,6 +22,7 @@ public class SceneMgr : Singleton<SceneMgr>
         }
         else if(type.Equals("NomalMode"))
         {
+            AudioManager.instance.lobbyscene = false;
             LodingSceneMgr.LoadScene("NormalBattle");
             //SceneManager.LoadScene("NormalBattle");
             

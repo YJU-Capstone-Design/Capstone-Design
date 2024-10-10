@@ -10,10 +10,13 @@ public class LodingSceneMgr : MonoBehaviour
     [SerializeField] Slider progressBar;
     [SerializeField] TextMeshProUGUI time;
     [SerializeField] private float speed;
-
+    [SerializeField] Sprite[] bg;
+    [SerializeField] Image bg_Obj;
     private void Start()
     {
         StartCoroutine(LoadScene());
+        
+        bg_Obj.sprite = bg[Random.Range(0,bg.Length)];
     }
 
     public static void LoadScene(string sceneName)

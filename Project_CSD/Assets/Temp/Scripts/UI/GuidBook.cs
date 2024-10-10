@@ -15,6 +15,7 @@ public class GuidBook : MonoBehaviour
     {
         guid_Book.SetActive(false);
         GuidClear();
+        AudioManager.instance.BtnClear();
     }
     public void Guid(int page)
     {

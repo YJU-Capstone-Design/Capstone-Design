@@ -36,7 +36,7 @@ public class Loading : MonoBehaviour
                 break;
             case "NomalMode":
                 LodingSceneMgr.LoadScene("NormalBattle");
-               
+                AudioManager.instance.lobbyscene = true;// 로비씬 버튼 이벤트 빠짐 문제로 추가
                 BreakRackMgr.Instance.transform.localScale = Vector3.zero;
                 Debug.Log("BattleMode");
                 break;
