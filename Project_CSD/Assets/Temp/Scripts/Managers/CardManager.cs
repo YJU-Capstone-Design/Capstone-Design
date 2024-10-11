@@ -9,7 +9,6 @@ using static UnityEngine.UI.CanvasScaler;
 public class CardManager : Singleton<CardManager>
 {
     public BattleData battleData;
-
     public List<GameObject> units;
     public List<GameObject> enemys;
 

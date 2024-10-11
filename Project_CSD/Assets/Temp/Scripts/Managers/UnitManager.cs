@@ -100,6 +100,9 @@ public class UnitManager : MonoBehaviour
             case 12002: // BreadCrab
                 pool.Get(0, 4);
                 break;
+            case 12003: // PanCake
+                pool.Get(0, 7);
+                break;
             case 11004: // Croirang
                 pool.Get(0, 5);
                 break;

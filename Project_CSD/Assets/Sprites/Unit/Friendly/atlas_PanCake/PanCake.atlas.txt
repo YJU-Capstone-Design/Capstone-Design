@@ -1,0 +1,40 @@
+PanCake.png
+	size: 378, 139
+	filter: Linear, Linear
+	pma: true
+	scale: 0.5
+armL
+	bounds: 366, 5, 8, 49
+armR
+	bounds: 366, 5, 8, 49
+body1
+	bounds: 2, 74, 167, 63
+body2
+	bounds: 171, 74, 167, 63
+body3
+	bounds: 2, 9, 167, 63
+effect_ring
+	bounds: 340, 103, 34, 34
+	offsets: 0, 0, 35, 35
+effect_shild
+	bounds: 171, 43, 29, 149
+	offsets: 1, 0, 30, 150
+	rotate: 90
+eye1
+	bounds: 335, 6, 17, 17
+eye2
+	bounds: 366, 77, 24, 10
+	offsets: 0, 0, 24, 11
+	rotate: 90
+eyebrow
+	bounds: 366, 56, 19, 10
+	rotate: 90
+head2 a
+	bounds: 312, 2, 39, 21
+	offsets: 0, 0, 39, 22
+	rotate: 90
+head2 b
+	bounds: 171, 5, 139, 36
+shadow
+	bounds: 340, 25, 76, 24
+	rotate: 90

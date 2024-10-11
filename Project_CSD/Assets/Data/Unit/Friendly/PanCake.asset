@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a845f90d0e6947f41a945dcd5a979615, type: 3}
+  m_Name: PanCake
+  m_EditorClassIdentifier: 
+  unitType: 0
+  unitID: 12003
+  unitName: "\uD32C\uCF00\uC774\uD06C"
+  cost: 14
+  health: 1400
+  power: 0
+  moveSpeed: 1
+  attackTime: 1.5
+  item_Type: 1
+  unit_Img: {fileID: 21300000, guid: d90118e292da4d44f90bee566cce8b03, type: 3}
+  unit_CardImg: {fileID: 21300000, guid: d90118e292da4d44f90bee566cce8b03, type: 3}
+  unit_skeletonData: {fileID: 11400000, guid: 83176f7d8ec9de04d95a3a1dd827c7f0, type: 2}
