@@ -317,6 +317,9 @@ public class CollectionManager : MonoBehaviour
             case ("¿¡±×º¼", "Die"):
                 unitSkeletonGraphic.startingAnimation = "die_3unit";
                 break;
+            case ("°ÅºÏ·Ð»§", "Attack"):
+                unitSkeletonGraphic.startingAnimation = "Attack_ing";
+                break;
             default:
                 unitSkeletonGraphic.startingAnimation = animName;
                 break;
