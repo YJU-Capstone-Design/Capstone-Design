@@ -316,7 +316,17 @@ public class PlayerUnit : UnitBase
         if (nearestAttackTarget == null) {
             if (smash != null) { StopCoroutine(smash); smash = null; }
         }
-
+        //터틀
+        if (unitData.UnitID == 11006) 
+        {
+            Debug.Log("거북론빵 공격");
+            StartAnimation("Attack_start", false, 1f);
+            yield return new WaitForSeconds(0.4f); // 애니메이션 시간
+            StartAnimation("Attack_ing", false, 1f);
+            yield return new WaitForSeconds(0.4f); // 애니메이션 시간
+            StartAnimation("Attack_end", false, 1f);
+          
+        }
 
         // 애니메이션 
         //egg ball 전용
@@ -327,6 +337,7 @@ public class PlayerUnit : UnitBase
             if (healthPercentage > 0.66f) // 67% 이상
             {
                 StartAnimation("attack_3unit", false, 1f);
+          
             }
             else if (healthPercentage > 0.33f) // 34% 이상 67% 미만
             {
@@ -337,14 +348,16 @@ public class PlayerUnit : UnitBase
                 StartAnimation("attack_1unit", false, 1f);
             }
         }
-        if (unitData.UnitID != 11005)
+        if (unitData.UnitID != 11005&& unitData.UnitID != 11006)
         {
+            Debug.Log(unitData.UnitID + " 공격");
             StartAnimation("Attack", false, 1f);
+          
         }
 
         yield return new WaitForSeconds(0.4f); // 애니메이션 시간
 
-        if ((unitID % 10000) / 1000 == 2) // 탱커, Croirang -> 다수 공격
+        if ((unitID % 10000) / 1000 == 2 && unitData.UnitID != 11006) // 탱커, Croirang -> 다수 공격
         {
             foreach (Transform enemy in multipleAttackTargets)
             {
