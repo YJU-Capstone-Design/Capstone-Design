@@ -341,6 +341,7 @@ public class PlayerUnit : UnitBase
         {
             StartAnimation("Attack", false, 1f);
         }
+
         yield return new WaitForSeconds(0.4f); // 애니메이션 시간
 
         if ((unitID % 10000) / 1000 == 2) // 탱커, Croirang -> 다수 공격
@@ -468,6 +469,7 @@ public class PlayerUnit : UnitBase
 
     IEnumerator Die()
     {
+       
         unitState = UnitState.Die;
         moveVec = Vector2.zero;
         col.enabled = false;

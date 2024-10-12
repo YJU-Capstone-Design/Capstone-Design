@@ -109,6 +109,9 @@ public class UnitManager : MonoBehaviour
             case 11005: // Eggball
                 pool.Get(0, 6);
                 break;
+            case 12004:
+                pool.Get(0, 8);
+                break;
         }
 
         foreach (GameObject card in BattleManager.Instance.cardObj)
