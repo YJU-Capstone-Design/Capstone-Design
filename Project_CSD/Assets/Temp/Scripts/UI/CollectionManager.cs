@@ -156,8 +156,8 @@ public class CollectionManager : MonoBehaviour
     public void GetUnitInfo(UnitData unitData)
     {
         // ªÁ¿Ã¡Ó ∫Ø∞Ê
-        if(unitData.UnitID == 12003|| unitData.UnitID == 11006) 
-        { unitGraphic.gameObject.transform.localScale = new Vector3(0.8f, 0.8f,1.3f); } //∆“ƒ…¿Ã≈©, ∞≈∫œ
+        if(unitData.UnitID == 12003) 
+        { unitGraphic.gameObject.transform.localScale = new Vector3(0.6f, 0.6f,1.3f); } //∆“ƒ…¿Ã≈©, ∞≈∫œ
         else 
         { unitGraphic.gameObject.transform.localScale = new Vector3(1.3f, 1.3f, 1.3f); }
 
