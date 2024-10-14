@@ -22,8 +22,8 @@ public class CollectionManager : MonoBehaviour
     [SerializeField] GameObject unitGraphic;
     [SerializeField] GameObject animButtons;
     [SerializeField] TextMeshProUGUI attackAnimText;
-    Coroutine sorangAnim;
-    [SerializeField] bool startSorangAnim = false;
+    Coroutine defenseAnim;
+    [SerializeField] bool startDefenseAnim = false;
 
     [Header("# Spell Collection")]
     [SerializeField] GameObject spellCollectionUI;
@@ -49,10 +49,11 @@ public class CollectionManager : MonoBehaviour
 
     private void Update()
     {
-        if (startSorangAnim)
+        if (startDefenseAnim)
         {
-            sorangAnim = StartCoroutine(SorangDefenseAnim());
+            defenseAnim = StartCoroutine(TankerDefenseAnim());
         }
+
         // 애니메이션 업데이트
         if (Time.timeScale == 0)
         {
@@ -155,7 +156,7 @@ public class CollectionManager : MonoBehaviour
         usePercentText.text = GetUsePercentage(unitData.UnitID);
         animButtons.SetActive(true);
 
-        if (sorangAnim != null) { StopCoroutine(sorangAnim); sorangAnim = null; startSorangAnim = false; Debug.Log("Strop SorangAnim"); }
+        if (defenseAnim != null) { StopCoroutine(defenseAnim); defenseAnim = null; startDefenseAnim = false; Debug.Log("Strop SorangAnim"); }
 
 
         // 유닛 Spine UI
@@ -174,7 +175,7 @@ public class CollectionManager : MonoBehaviour
         unitSkeletonGraphic.Initialize(true); // skeletonDataAsset 를 ReLoad
         unitGraphic.SetActive(true);
 
-        if (unitData.UnitName == "빵게")
+        if (unitData.UnitName == "빵게" || unitData.UnitName == "팬케이크")
         {
             attackAnimText.text = "방어";
         }
@@ -279,7 +280,7 @@ public class CollectionManager : MonoBehaviour
     // 캐릭터 도감 SkeletonGraphic 애니메이션 버튼
     public void UnitAnimButton(string animName)
     {
-        if (sorangAnim != null) { StopCoroutine(sorangAnim); sorangAnim = null; startSorangAnim = false; Debug.Log("Strop SorangAnim"); }
+        if (defenseAnim != null) { StopCoroutine(defenseAnim); defenseAnim = null; startDefenseAnim = false; Debug.Log("Stop SorangAnim"); }
 
         SkeletonGraphic unitSkeletonGraphic = unitGraphic.GetComponent<SkeletonGraphic>();
 
@@ -287,8 +288,8 @@ public class CollectionManager : MonoBehaviour
         switch ((unitNameText.text, animName))
         {
             case ("빵게", "Attack"):
-                // unitSkeletonGraphic.startingAnimation = "Defense_start";
-                startSorangAnim = true;
+            case ("팬케이크", "Attack"):
+                startDefenseAnim = true;
                 break;
             case ("에그볼", "Idle"):
                 unitSkeletonGraphic.startingAnimation = "idle_3unit";
@@ -315,26 +316,32 @@ public class CollectionManager : MonoBehaviour
         unitSkeletonGraphic.Initialize(true); // skeletonDataAsset 를 ReLoad
     }
 
-    IEnumerator SorangDefenseAnim() // 수정 중
+    IEnumerator TankerDefenseAnim() // 수정 중
     {
-        Debug.Log("SorangDefenseAnim Start");
+        Debug.Log("TankerDefenseAnim Start");
 
-        yield return null;
-        startSorangAnim = false;
+        startDefenseAnim = false;
 
         SkeletonGraphic unitSkeletonGraphic = unitGraphic.GetComponent<SkeletonGraphic>();
 
         unitSkeletonGraphic.startingAnimation = "Defense_start";
         unitSkeletonGraphic.Initialize(true);
-        yield return new WaitForSeconds(0.9f);
+
+        if(unitNameText.text == "빵게") { yield return new WaitForSeconds(0.9f); }
+        else if(unitNameText.text == "팬케이크") { yield return new WaitForSeconds(1.9f); }
+
         unitSkeletonGraphic.startingAnimation = "Defense_ing";
         unitSkeletonGraphic.Initialize(true);
-        yield return new WaitForSeconds(0.9f);
-        unitSkeletonGraphic.startingAnimation = "Defense_end";
-        unitSkeletonGraphic.Initialize(true);
+
         yield return new WaitForSeconds(0.9f);
 
-        if (sorangAnim != null) { StopCoroutine(sorangAnim); sorangAnim = null; startSorangAnim = true; }
+        unitSkeletonGraphic.startingAnimation = "Defense_end";
+        unitSkeletonGraphic.Initialize(true);
+
+        if (unitNameText.text == "빵게") { yield return new WaitForSeconds(0.9f); }
+        else if (unitNameText.text == "팬케이크") { yield return new WaitForSeconds(1.9f); }
+
+        if (defenseAnim != null) { StopCoroutine(defenseAnim); defenseAnim = null; startDefenseAnim = true; }
     }
 
     // 카드 사용 퍼센트 출력 함수
