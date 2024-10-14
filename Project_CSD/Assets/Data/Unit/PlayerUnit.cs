@@ -373,7 +373,7 @@ public class PlayerUnit : UnitBase
             yield return new WaitForSeconds(0.4f);
         }
 
-        //터틀
+       //터틀
         if (unitData.UnitID == 11006)
         {
             Debug.Log("거북론빵 공격");
@@ -420,11 +420,16 @@ public class PlayerUnit : UnitBase
             yield return new WaitForSeconds(0.59f);
 
             StartAnimation("Idle", true, 1.5f);
-            Debug.Log("일반 유닛 공격 종료");
+           
         }
-
+        yield return new WaitForSeconds(1f);
+        Debug.Log("현재 공격 대상 존재 여부 판별: "); 
+            // 타겟이 존재할 때의 동작
+        
+      
+        //string enemy_Check = scanner.nearestTarget.tag;
         // 거북론빵
-        if (unitData.UnitID == 11006)
+        if (unitData.UnitID == 11006 && (scanner.nearestTarget == null || (scanner.nearestTarget != null && !scanner.nearestTarget.tag.Equals("EnemyUnit"))))
         {
             Debug.Log("거북론빵 공격 종료 1");
        
@@ -436,7 +441,7 @@ public class PlayerUnit : UnitBase
             attack_ing = false;
         }
     }
-
+   
     protected void SetEnemyState(Transform target)
     {
         if(target == null)
