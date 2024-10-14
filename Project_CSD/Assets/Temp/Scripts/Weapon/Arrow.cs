@@ -29,6 +29,12 @@ public class Arrow : MonoBehaviour
             gameObject.SetActive(false);
             return;
         }
+        else if (!target.activeInHierarchy)
+        {
+            // 오브젝트 비활성화
+            gameObject.SetActive(false);
+            return;
+        }
         else
         {
             gameObject.SetActive(true);
