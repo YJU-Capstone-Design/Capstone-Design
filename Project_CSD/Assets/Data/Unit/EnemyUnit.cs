@@ -98,19 +98,19 @@ public class EnemyUnit : UnitBase
                 int orderLayer = Mathf.FloorToInt(yPos); // 소수점 제외
                 if(bodySprite.gameObject.name.Contains("Shadow"))
                 {
-                    bodySprite.sortingOrder = Mathf.Abs(orderLayer) - 1; // 그림자는 -1
+                    bodySprite.sortingOrder = Mathf.Abs(orderLayer) - 2; // 그림자는 -2
                 }
                 else
                 {
-                    bodySprite.sortingOrder = Mathf.Abs(orderLayer); // 절대값으로 변경 후 적용
+                    bodySprite.sortingOrder = Mathf.Abs(orderLayer)- 1; // 절대값으로 변경 후 적용
                 }
 
                 // 체력바 OrderLayer
                 if(hpBar != null)
                 {
                     HpBar hpBarLogic = hpBar.GetComponent<HpBar>();
-                    hpBarLogic.realHpSprite.sortingOrder = Mathf.Abs(orderLayer) - 1;
-                    hpBarLogic.hpFrameSprite.sortingOrder = Mathf.Abs(orderLayer);
+                    hpBarLogic.realHpSprite.sortingOrder = Mathf.Abs(orderLayer) - 2;
+                    hpBarLogic.hpFrameSprite.sortingOrder = Mathf.Abs(orderLayer) - 1;
                 }
             }
         }
