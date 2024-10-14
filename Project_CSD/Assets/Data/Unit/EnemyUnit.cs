@@ -94,23 +94,23 @@ public class EnemyUnit : UnitBase
             // SpriteRenderer 가 있을 경우에는 본체의 y 축 값의 소수점을 제외한 값을 Order Layer 에 적용
             if(bodySprite != null)
             {
-                float yPos = transform.position.y * 100 - 401; // 넓게 분배하기 위해 * 100 음수/양수 처리를 위해 -401 -> 파츠별로 나눠져 있어서 PlayerUnit 보다 -1;
+                float yPos = transform.position.y * 100 - 403; // 넓게 분배하기 위해 * 100 음수/양수 처리를 위해 -403 -> 파츠별로 나눠져 있어서 PlayerUnit 보다 -3;
                 int orderLayer = Mathf.FloorToInt(yPos); // 소수점 제외
                 if(bodySprite.gameObject.name.Contains("Shadow"))
                 {
-                    bodySprite.sortingOrder = Mathf.Abs(orderLayer) - 2; // 그림자는 -2
+                    bodySprite.sortingOrder = Mathf.Abs(orderLayer) - 1; // 그림자는 -1
                 }
                 else
                 {
-                    bodySprite.sortingOrder = Mathf.Abs(orderLayer)- 1; // 절대값으로 변경 후 적용
+                    bodySprite.sortingOrder = Mathf.Abs(orderLayer); // 절대값으로 변경 후 적용
                 }
 
                 // 체력바 OrderLayer
                 if(hpBar != null)
                 {
                     HpBar hpBarLogic = hpBar.GetComponent<HpBar>();
-                    hpBarLogic.realHpSprite.sortingOrder = Mathf.Abs(orderLayer) - 2;
-                    hpBarLogic.hpFrameSprite.sortingOrder = Mathf.Abs(orderLayer) - 1;
+                    hpBarLogic.realHpSprite.sortingOrder = Mathf.Abs(orderLayer) - 1;
+                    hpBarLogic.hpFrameSprite.sortingOrder = Mathf.Abs(orderLayer);
                 }
             }
         }
