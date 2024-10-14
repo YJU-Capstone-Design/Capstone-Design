@@ -149,7 +149,7 @@ public class CollectionManager : MonoBehaviour
     // 유닛 도감 버튼(유닛 카드) 함수
     public void GetUnitInfo(UnitData unitData)
     {
-        if(unitData.UnitID >= 12003)//팬케이크, 거북
+        if(unitData.UnitID == 12003|| unitData.UnitID == 11006)//팬케이크, 거북
         {
             size_Obj.gameObject.transform.localScale = new Vector3(0.8f, 0.8f,1.3f);
         }
