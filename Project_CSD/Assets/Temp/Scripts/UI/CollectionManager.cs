@@ -44,9 +44,6 @@ public class CollectionManager : MonoBehaviour
     [SerializeField] GameObject banner;
     [SerializeField] GameObject card_Box;
 
-
-    [Header("# Object Size")]//대형 유닛 사이즈 조절
-    [SerializeField] GameObject size_Obj;
     private void Awake()
     {
         UnitCollectionClear();
@@ -158,14 +155,11 @@ public class CollectionManager : MonoBehaviour
     // 유닛 도감 버튼(유닛 카드) 함수
     public void GetUnitInfo(UnitData unitData)
     {
-        if(unitData.UnitID == 12003|| unitData.UnitID == 11006)//팬케이크, 거북
-        {
-            size_Obj.gameObject.transform.localScale = new Vector3(0.8f, 0.8f,1.3f);
-        }
-        else
-        {
-            size_Obj.gameObject.transform.localScale = new Vector3(1.3f, 1.3f, 1.3f);
-        }
+        // 사이즈 변경
+        if(unitData.UnitID == 12003|| unitData.UnitID == 11006) 
+        { unitGraphic.gameObject.transform.localScale = new Vector3(0.8f, 0.8f,1.3f); } //팬케이크, 거북
+        else 
+        { unitGraphic.gameObject.transform.localScale = new Vector3(1.3f, 1.3f, 1.3f); }
 
         unitNameText.text = unitData.UnitName;
         unitHPText.text = unitData.Health.ToString();
@@ -196,14 +190,9 @@ public class CollectionManager : MonoBehaviour
         unitSkeletonGraphic.Initialize(true); // skeletonDataAsset 를 ReLoad
         unitGraphic.SetActive(true);
 
-        if (unitData.UnitName == "빵게" || unitData.UnitName == "팬케이크")
-        {
-            attackAnimText.text = "방어";
-        }
-        else
-        {
-            attackAnimText.text = "공격";
-        }
+        // 버튼 텍스트 변경
+        if (unitData.UnitName == "빵게" || unitData.UnitName == "팬케이크") { attackAnimText.text = "방어"; }
+        else { attackAnimText.text = "공격"; }
     }
 
     // 스펠 도감 버튼(스펠 카드) 함수
