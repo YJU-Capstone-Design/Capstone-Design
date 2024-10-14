@@ -41,6 +41,9 @@ public class CollectionManager : MonoBehaviour
     [SerializeField] GameObject banner;
     [SerializeField] GameObject card_Box;
 
+
+    [Header("# Object Size")]//대형 유닛 사이즈 조절
+    [SerializeField] GameObject size_Obj;
     private void Awake()
     {
         UnitCollectionClear();
@@ -147,6 +150,15 @@ public class CollectionManager : MonoBehaviour
     // 유닛 도감 버튼(유닛 카드) 함수
     public void GetUnitInfo(UnitData unitData)
     {
+        if(unitData.UnitID == 12003|| unitData.UnitID == 11006)//팬케이크, 거북
+        {
+            size_Obj.gameObject.transform.localScale = new Vector3(0.8f, 0.8f,1.3f);
+        }
+        else
+        {
+            size_Obj.gameObject.transform.localScale = new Vector3(1.3f, 1.3f, 1.3f);
+        }
+
         unitNameText.text = unitData.UnitName;
         unitHPText.text = unitData.Health.ToString();
         unitPowerText.text = unitData.Power.ToString();
@@ -305,6 +317,9 @@ public class CollectionManager : MonoBehaviour
                 break;
             case ("에그볼", "Die"):
                 unitSkeletonGraphic.startingAnimation = "die_3unit";
+                break;
+            case ("거북론빵", "Attack"):
+                unitSkeletonGraphic.startingAnimation = "Attack_ing";
                 break;
             default:
                 unitSkeletonGraphic.startingAnimation = animName;
