@@ -1,0 +1,52 @@
+Froll.png
+	size: 1058, 269
+	filter: Linear, Linear
+	pma: true
+	scale: 0.5
+arm
+	bounds: 1016, 134, 133, 36
+	rotate: 90
+bodyA
+	bounds: 627, 14, 124, 55
+bodyB
+	bounds: 511, 2, 114, 67
+effect_death1
+	bounds: 878, 122, 136, 145
+effect_death2
+	bounds: 709, 96, 171, 167
+	offsets: 1, 0, 172, 167
+	rotate: 90
+effect_death3
+	bounds: 511, 71, 196, 196
+	offsets: 0, 1, 196, 197
+effect_death4
+	bounds: 270, 18, 249, 239
+	offsets: 0, 0, 249, 240
+	rotate: 90
+effect_death5
+	bounds: 2, 11, 266, 256
+	offsets: 0, 1, 266, 257
+eye1
+	bounds: 878, 100, 88, 20
+eye2
+	bounds: 270, 6, 78, 10
+head
+	bounds: 853, 20, 146, 74
+legL
+	bounds: 1001, 51, 33, 40
+	rotate: 90
+legR
+	bounds: 1001, 9, 29, 40
+	offsets: 0, 0, 30, 40
+lips
+	bounds: 350, 5, 63, 11
+	offsets: 0, 0, 64, 11
+mouse
+	bounds: 1001, 86, 55, 34
+shadow
+	bounds: 753, 7, 76, 24
+tougue1
+	bounds: 709, 74, 142, 20
+tougue2
+	bounds: 753, 33, 89, 39
+	offsets: 0, 1, 90, 40
