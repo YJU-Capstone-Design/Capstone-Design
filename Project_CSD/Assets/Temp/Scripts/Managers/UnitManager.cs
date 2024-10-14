@@ -109,8 +109,11 @@ public class UnitManager : MonoBehaviour
             case 11005: // Eggball
                 pool.Get(0, 6);
                 break;
-            case 11006:
+            case 11006: //Turtle
                 pool.Get(0, 8);
+                break;
+            case 11007: // Froll
+                pool.Get(0, 9);
                 break;
         }
 
