@@ -36,7 +36,7 @@ public class PlayerUnit : UnitBase
     protected Coroutine lerp;
 
     [Header("# Spine")]
-    SkeletonAnimation skeletonAnimation;
+    protected SkeletonAnimation skeletonAnimation;
     string CurrentAnimation; //현재 어떤 애니메이션이 재생되고 있는지에 대한 변수
 
     void Awake()

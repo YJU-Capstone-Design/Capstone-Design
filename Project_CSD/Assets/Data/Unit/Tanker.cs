@@ -1,3 +1,4 @@
+using Spine.Unity;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -111,7 +112,7 @@ public class Tanker : PlayerUnit
 
         yield return new WaitForSeconds(0.4f); // 애니메이션 시간
 
-        StartAnimation("Defense_ing", false, 1f);
+        StartAnimation("Defense_ing", true, 1f);
 
         isDefending = true;
     }
