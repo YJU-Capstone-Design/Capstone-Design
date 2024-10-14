@@ -23,7 +23,9 @@ public class CollectionManager : MonoBehaviour
     [SerializeField] GameObject animButtons;
     [SerializeField] TextMeshProUGUI attackAnimText;
     Coroutine defenseAnim;
+    Coroutine attackAnim;
     [SerializeField] bool startDefenseAnim = false;
+    [SerializeField] bool startAttackAnim = false;
 
     [Header("# Spell Collection")]
     [SerializeField] GameObject spellCollectionUI;
@@ -37,6 +39,7 @@ public class CollectionManager : MonoBehaviour
     [SerializeField] GameObject unit_BG;
     [SerializeField] GameObject[] buffUIEffects;
     [SerializeField] GameObject[] deBuffUIEffects;
+
     [Header("# BattleBanner")]
     [SerializeField] GameObject banner;
     [SerializeField] GameObject card_Box;
@@ -55,6 +58,11 @@ public class CollectionManager : MonoBehaviour
         if (startDefenseAnim)
         {
             defenseAnim = StartCoroutine(TankerDefenseAnim());
+        }
+
+        if (startAttackAnim)
+        {
+            attackAnim = StartCoroutine(AttackAnim());
         }
 
         // 애니메이션 업데이트
@@ -168,7 +176,8 @@ public class CollectionManager : MonoBehaviour
         usePercentText.text = GetUsePercentage(unitData.UnitID);
         animButtons.SetActive(true);
 
-        if (defenseAnim != null) { StopCoroutine(defenseAnim); defenseAnim = null; startDefenseAnim = false; Debug.Log("Strop SorangAnim"); }
+        if (defenseAnim != null) { StopCoroutine(defenseAnim); defenseAnim = null; startDefenseAnim = false; Debug.Log("Strop DefenseAnim"); }
+        if (attackAnim != null) { StopCoroutine(attackAnim); attackAnim = null; startAttackAnim = false; Debug.Log("Stop AttackAnim"); }
 
 
         // 유닛 Spine UI
@@ -292,7 +301,8 @@ public class CollectionManager : MonoBehaviour
     // 캐릭터 도감 SkeletonGraphic 애니메이션 버튼
     public void UnitAnimButton(string animName)
     {
-        if (defenseAnim != null) { StopCoroutine(defenseAnim); defenseAnim = null; startDefenseAnim = false; Debug.Log("Stop SorangAnim"); }
+        if (defenseAnim != null) { StopCoroutine(defenseAnim); defenseAnim = null; startDefenseAnim = false; Debug.Log("Stop DefenseAnim"); }
+        if (attackAnim != null) { StopCoroutine(attackAnim); attackAnim = null; startAttackAnim = false; Debug.Log("Stop AttackAnim"); }
 
         SkeletonGraphic unitSkeletonGraphic = unitGraphic.GetComponent<SkeletonGraphic>();
 
@@ -319,7 +329,7 @@ public class CollectionManager : MonoBehaviour
                 unitSkeletonGraphic.startingAnimation = "die_3unit";
                 break;
             case ("거북론빵", "Attack"):
-                unitSkeletonGraphic.startingAnimation = "Attack_ing";
+                startAttackAnim = true;
                 break;
             default:
                 unitSkeletonGraphic.startingAnimation = animName;
@@ -331,7 +341,7 @@ public class CollectionManager : MonoBehaviour
         unitSkeletonGraphic.Initialize(true); // skeletonDataAsset 를 ReLoad
     }
 
-    IEnumerator TankerDefenseAnim() // 수정 중
+    IEnumerator TankerDefenseAnim()
     {
         Debug.Log("TankerDefenseAnim Start");
 
@@ -357,6 +367,32 @@ public class CollectionManager : MonoBehaviour
         else if (unitNameText.text == "팬케이크") { yield return new WaitForSeconds(1.9f); }
 
         if (defenseAnim != null) { StopCoroutine(defenseAnim); defenseAnim = null; startDefenseAnim = true; }
+    }
+
+    IEnumerator AttackAnim()
+    {
+        Debug.Log("AttackAnim Start");
+
+        startAttackAnim = false;
+
+        SkeletonGraphic unitSkeletonGraphic = unitGraphic.GetComponent<SkeletonGraphic>();
+
+        unitSkeletonGraphic.startingAnimation = "Attack_start";
+        unitSkeletonGraphic.Initialize(true);
+
+        yield return new WaitForSeconds(1.9f);
+
+        unitSkeletonGraphic.startingAnimation = "Attack_ing";
+        unitSkeletonGraphic.Initialize(true);
+
+        yield return new WaitForSeconds(0.35f);
+
+        unitSkeletonGraphic.startingAnimation = "Attack_end";
+        unitSkeletonGraphic.Initialize(true);
+
+        yield return new WaitForSeconds(3.9f);
+
+        if (attackAnim != null) { StopCoroutine(attackAnim); attackAnim = null; startAttackAnim = true; }
     }
 
     // 카드 사용 퍼센트 출력 함수
