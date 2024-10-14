@@ -165,9 +165,7 @@ MonoBehaviour:
   moveSpeedUp: 0
   attackTimeDown: 0
   spells:
-  - {fileID: 11400000, guid: 9d535d802c402d54baba3edd50e5e887, type: 2}
   - {fileID: 11400000, guid: 9b9e17c03b28fef41a8a4e497b9bed4a, type: 2}
-  - {fileID: 11400000, guid: 019547aff5e70ee46aacbc00f0fe536b, type: 2}
   - {fileID: 11400000, guid: 738b9018fe6a3514198d38e6134b606e, type: 2}
   - {fileID: 11400000, guid: 08702786e5246cf429aaf9491d0c1ff7, type: 2}
   - {fileID: 11400000, guid: 2d1478112f03a57459719a0f779cfb6f, type: 2}
@@ -175,7 +173,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ae8e6b45f20a14942acef74fbda418fa, type: 2}
   - {fileID: 11400000, guid: 29046aa1b6f412d41b6f401bd80bb9bc, type: 2}
   - {fileID: 11400000, guid: 4b25a7d0fab63ab4eb7fbffbfa80a7d6, type: 2}
-  - {fileID: 11400000, guid: b08925a7c5fe44149b688f090c9d0388, type: 2}
   cardImg: {fileID: 6591528900244574380}
   spellCost: {fileID: 525661005704680901}
   spelltext: {fileID: 3572325047536105409}

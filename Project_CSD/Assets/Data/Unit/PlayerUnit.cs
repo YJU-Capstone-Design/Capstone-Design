@@ -39,6 +39,9 @@ public class PlayerUnit : UnitBase
     protected SkeletonAnimation skeletonAnimation;
     string CurrentAnimation; //현재 어떤 애니메이션이 재생되고 있는지에 대한 변수
 
+    [Header("# Turtle")]
+    private bool attack_ing=false;
+
     void Awake()
     {
         scanner = GetComponentInChildren<Scanner>();
@@ -188,7 +191,15 @@ public class PlayerUnit : UnitBase
                     StartAnimation("walk_1unit", true, 1f);
                 }
             }
-            if (unitData.UnitID != 11005)
+            if(unitData.UnitID == 11006&&attack_ing)
+            {
+                StartAnimation("Attack_ing", true, 1f);
+            }
+            else
+            {
+                StartAnimation("Walk", true, 1.2f);
+            }
+            if (unitData.UnitID != 11005&& unitData.UnitID != 11006)
             {
                 StartAnimation("Walk", true, 1.2f);
             }
@@ -317,15 +328,13 @@ public class PlayerUnit : UnitBase
             if (smash != null) { StopCoroutine(smash); smash = null; }
         }
         //터틀
-        if (unitData.UnitID == 11006) 
+        if (unitData.UnitID == 11006&& !attack_ing) 
         {
             Debug.Log("거북론빵 공격");
+            attack_ing = true;
             StartAnimation("Attack_start", false, 1f);
-            yield return new WaitForSeconds(0.4f); // 애니메이션 시간
-            StartAnimation("Attack_ing", false, 1f);
-            yield return new WaitForSeconds(0.4f); // 애니메이션 시간
-            StartAnimation("Attack_end", false, 1f);
-          
+            yield return new WaitForSeconds(1.9f); // 애니메이션 시간
+
         }
 
         // 애니메이션 
@@ -354,9 +363,10 @@ public class PlayerUnit : UnitBase
             StartAnimation("Attack", false, 1f);
           
         }
-
-        yield return new WaitForSeconds(0.4f); // 애니메이션 시간
-
+        if(unitData.UnitID != 11006)
+        {
+            yield return new WaitForSeconds(0.4f); // 애니메이션 시간
+        }
         if ((unitID % 10000) / 1000 == 2 && unitData.UnitID != 11006) // 탱커, Croirang -> 다수 공격
         {
             foreach (Transform enemy in multipleAttackTargets)
@@ -370,8 +380,17 @@ public class PlayerUnit : UnitBase
         }
 
         yield return new WaitForSeconds(0.4f); // 애니메이션 시간
+        //터틀
+        if (unitData.UnitID == 11006  )
+        {
+            Debug.Log("거북론빵 공격");
+            
+            StartAnimation("Attack_ing", true, 1f);
 
-       //eggball 전용
+            yield return new WaitForSeconds(0.4f); // 애니메이션 시간
+
+        }
+        //eggball 전용
         if (unitData.UnitID == 11005)
         {
             float healthPercentage = health / unitData.Health; // 현재 체력 비율
@@ -389,8 +408,18 @@ public class PlayerUnit : UnitBase
                 StartAnimation("idle_1unit", true, 1.5f);
             }
         }
+        if (unitData.UnitID == 11006 && smash == null)
+        {
+            Debug.Log("거북론빵 공격 종료");
+            attack_ing = false;
+       
+            StartAnimation("Attack_end", true, 1f);
+            yield return new WaitForSeconds(3.9f); // 애니메이션 시간
+
+            StartAnimation("Idle", true, 1.5f);
+        }
         // 애니메이션
-        if (unitData.UnitID != 11005)
+        if (unitData.UnitID != 11005 && unitData.UnitID != 11006)
         {
             StartAnimation("Idle", true, 1.5f);
         }
