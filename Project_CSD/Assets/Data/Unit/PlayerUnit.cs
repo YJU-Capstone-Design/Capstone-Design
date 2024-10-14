@@ -208,7 +208,7 @@ public class PlayerUnit : UnitBase
         }
         else
         {
-            if (startMoveFinish)
+            if (startMoveFinish && !attack_ing)
             {
                 // 유닛의 처음 위치로 귀환
                 lerp = StartCoroutine(lerpCoroutine(transform.position, firstPos, moveSpeed));
@@ -327,18 +327,23 @@ public class PlayerUnit : UnitBase
         if (nearestAttackTarget == null) {
             if (smash != null) { StopCoroutine(smash); smash = null; }
         }
-        //터틀
-        if (unitData.UnitID == 11006&& !attack_ing) 
+
+        // 터틀 공격 시작 
+        if (unitData.UnitID == 11006 && !attack_ing) 
         {
-            Debug.Log("거북론빵 공격");
+            // 공격 준비 애니메이션
+            Debug.Log("거북론빵 공격 시작");
             attack_ing = true;
             StartAnimation("Attack_start", false, 1f);
             yield return new WaitForSeconds(1.9f); // 애니메이션 시간
 
+            // 공격 애니메이션
+            StartAnimation("Attack_ing", true, 1f);
+
+            yield return new WaitForSeconds(0.2f); // 애니메이션 시간 (0.2초, 0.19초로 나눔)
         }
 
-        // 애니메이션 
-        //egg ball 전용
+        //egg ball 공격 애니메이션
         if (unitData.UnitID == 11005)
         {
             float healthPercentage = health / unitData.Health; // 현재 체력 비율
@@ -356,17 +361,27 @@ public class PlayerUnit : UnitBase
             {
                 StartAnimation("attack_1unit", false, 1f);
             }
+
+            yield return new WaitForSeconds(0.4f);
         }
-        if (unitData.UnitID != 11005&& unitData.UnitID != 11006)
+
+        // 일반 유닛 공격 애니메이션
+        if (unitData.UnitID != 11005 && unitData.UnitID != 11006)
         {
             Debug.Log(unitData.UnitID + " 공격");
             StartAnimation("Attack", false, 1f);
-          
+            yield return new WaitForSeconds(0.4f);
         }
-        if(unitData.UnitID != 11006)
+
+        //터틀
+        if (unitData.UnitID == 11006)
         {
-            yield return new WaitForSeconds(0.4f); // 애니메이션 시간
+            Debug.Log("거북론빵 공격");
+
+            yield return new WaitForSeconds(0.19f); // 애니메이션 시간
         }
+
+        // 공격 데미지 코드
         if ((unitID % 10000) / 1000 == 2 && unitData.UnitID != 11006) // 탱커, Croirang -> 다수 공격
         {
             foreach (Transform enemy in multipleAttackTargets)
@@ -379,17 +394,6 @@ public class PlayerUnit : UnitBase
             SetEnemyState(nearestAttackTarget);
         }
 
-        yield return new WaitForSeconds(0.4f); // 애니메이션 시간
-        //터틀
-        if (unitData.UnitID == 11006  )
-        {
-            Debug.Log("거북론빵 공격");
-            
-            StartAnimation("Attack_ing", true, 1f);
-
-            yield return new WaitForSeconds(0.4f); // 애니메이션 시간
-
-        }
         //eggball 전용
         if (unitData.UnitID == 11005)
         {
@@ -408,20 +412,28 @@ public class PlayerUnit : UnitBase
                 StartAnimation("idle_1unit", true, 1.5f);
             }
         }
-        if (unitData.UnitID == 11006 && smash == null)
-        {
-            Debug.Log("거북론빵 공격 종료");
-            attack_ing = false;
-       
-            StartAnimation("Attack_end", true, 1f);
-            yield return new WaitForSeconds(3.9f); // 애니메이션 시간
 
-            StartAnimation("Idle", true, 1.5f);
-        }
-        // 애니메이션
+        // 일반 유닛 애니메이션
         if (unitData.UnitID != 11005 && unitData.UnitID != 11006)
         {
+            // 공격 애니메이션 대기 (0.4초, 0.59초 두번으로 나눔)
+            yield return new WaitForSeconds(0.59f);
+
             StartAnimation("Idle", true, 1.5f);
+            Debug.Log("일반 유닛 공격 종료");
+        }
+
+        // 거북론빵
+        if (unitData.UnitID == 11006)
+        {
+            Debug.Log("거북론빵 공격 종료 1");
+       
+            StartAnimation("Attack_end", false, 1f);
+            yield return new WaitForSeconds(3.9f); // 애니메이션 시간
+
+            Debug.Log("거북론빵 공격 종료 2");
+            StartAnimation("Idle", true, 1.5f);
+            attack_ing = false;
         }
     }
 
