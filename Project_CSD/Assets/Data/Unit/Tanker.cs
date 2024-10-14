@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using System.Threading.Tasks;
 
 public class Tanker : PlayerUnit
 {
@@ -14,11 +15,13 @@ public class Tanker : PlayerUnit
         {
             // 애니메이션
             StartAnimation("Defense_end", false, 1f);
-
             isDefending = false;
         }
 
-        base.Scanner();
+        if (!isDefending)
+        {
+            base.Scanner();
+        }
     }
 
     protected override void AttackRay()
