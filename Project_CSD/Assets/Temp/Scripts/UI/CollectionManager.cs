@@ -155,11 +155,11 @@ public class CollectionManager : MonoBehaviour
     // 유닛 도감 버튼(유닛 카드) 함수
     public void GetUnitInfo(UnitData unitData)
     {
-        // 사이즈 변경
+        /*// 사이즈 변경
         if(unitData.UnitID == 12003) 
         { unitGraphic.gameObject.transform.localScale = new Vector3(0.6f, 0.6f,1.3f); } //팬케이크, 거북
         else 
-        { unitGraphic.gameObject.transform.localScale = new Vector3(1.3f, 1.3f, 1.3f); }
+        { unitGraphic.gameObject.transform.localScale = new Vector3(1.3f, 1.3f, 1.3f); }*/
 
         unitNameText.text = unitData.UnitName;
         unitHPText.text = unitData.Health.ToString();

@@ -126,7 +126,7 @@ MonoBehaviour:
   updateTiming: 1
   unscaledTime: 0
   _animationName: Walk
-  loop: 1
+  loop: 0
   timeScale: 1
 --- !u!33 &2800002053360012643
 MeshFilter:
