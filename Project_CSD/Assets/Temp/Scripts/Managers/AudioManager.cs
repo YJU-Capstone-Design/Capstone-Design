@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 public class AudioManager : MonoBehaviour
@@ -153,8 +154,12 @@ public class AudioManager : MonoBehaviour
 
     public void EndGame()
     {
-      
-        Application.Quit();
-        Debug.Log("게임 종료");
+        #if UNITY_EDITOR // 유니티 에디터에서 실행 중일 때
+            EditorApplication.isPlaying = false;
+            Debug.Log("디버그 모드에서 게임 종료");
+        #else // 빌드된 파일에서 실행 중일 때
+            Application.Quit();
+            Debug.Log("빌드된 파일에서 게임 종료");
+        #endif
     }
 }
