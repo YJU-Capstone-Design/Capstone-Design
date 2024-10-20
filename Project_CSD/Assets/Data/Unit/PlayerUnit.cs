@@ -173,6 +173,7 @@ public class PlayerUnit : UnitBase
             // 이동
             transform.position += moveVec.normalized * moveSpeed * Time.deltaTime;
             unitState = UnitState.Move;
+
             //eggball 전용
             if (unitData.UnitID == 11005)
             {
@@ -191,15 +192,11 @@ public class PlayerUnit : UnitBase
                     StartAnimation("walk_1unit", true, 1f);
                 }
             }
-            if(unitData.UnitID == 11006&&attack_ing)
+            else if(unitData.UnitID == 11006 && attack_ing)
             {
                 StartAnimation("Attack_ing", true, 1f);
             }
-            else
-            {
-                StartAnimation("Walk", true, 1.2f);
-            }
-            if (unitData.UnitID != 11005&& unitData.UnitID != 11006)
+            else if (unitData.UnitID != 11005 && unitData.UnitID != 11006)
             {
                 StartAnimation("Walk", true, 1.2f);
             }
@@ -484,7 +481,8 @@ public class PlayerUnit : UnitBase
         }
 
         yield return new WaitForSeconds(0.4f); // 애니메이션 시간
-      //eggball 전용
+      
+        // 애니메이션
         if (unitData.UnitID == 11005)
         {
             float healthPercentage = health / unitData.Health; // 현재 체력 비율
@@ -502,8 +500,7 @@ public class PlayerUnit : UnitBase
                 StartAnimation("idle_1unit", true, 1.5f);
             }
         }
-        // 애니메이션
-        if (unitData.UnitID != 11005)
+        else
         {
             StartAnimation("Idle", true, 1.5f);
         }
@@ -523,7 +520,29 @@ public class PlayerUnit : UnitBase
         StopCoroutine(lerp); // 이동 멈춤
         lerp = StartCoroutine(lerpCoroutine(transform.position, firstPos, moveSpeed));
         StopCoroutine(lerp); // 이동 멈춤
-        StartAnimation("Win", true, 1);
+
+        // 애니메이션
+        if (unitData.UnitID == 11005)
+        {
+            float healthPercentage = health / unitData.Health; // 현재 체력 비율
+
+            if (healthPercentage > 0.66f) // 67% 이상
+            {
+                StartAnimation("win_3unit", true, 1.5f);
+            }
+            else if (healthPercentage > 0.33f) // 34% 이상 67% 미만
+            {
+                StartAnimation("win_2unit", true, 1.5f);
+            }
+            else // 33% 이하
+            {
+                StartAnimation("win_1unit", true, 1.5f);
+            }
+        }
+        else
+        {
+            StartAnimation("Win", true, 1);
+        }
     }
 
     IEnumerator Die()
@@ -610,8 +629,7 @@ public class PlayerUnit : UnitBase
                     StartAnimation("walk_1unit", true, 1.2f);
                 }
             }
-            // 애니메이션
-            if (unitData.UnitID != 11005)
+            else
             {
                 StartAnimation("Walk", true, 1.2f);
             }
