@@ -396,7 +396,7 @@ public class BattleManager :Singleton<BattleManager>
     {
         float damage = dmg;
         curHealth -= damage;
-        text_Health.text = curHealth.ToString();
+        text_Health.text = maxHealth + " / " + scurHealth.ToString();
         UpdateHealthBar();
 
     }
