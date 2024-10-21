@@ -17,11 +17,11 @@ public class DBConnect : Singleton<DBConnect>
         Debug.Log("Connection Test :" + Connection());
     }
 
-    // MySql 연결 함수
+    // MySql 연결 함수 -> 첫 연결 테스트 용도
     public bool Connection()
     {
         string conStr = string.Format("Server={0};Database={1};Uid={2};Pwd={3};Port={4};SslMode=none;",
-         "34.64.201.214", "cst", "root", "yju123", "3306");
+         "34.64.201.214", "cst", "root", "yju123", "3306"); // IP 주소, DB 이름, ID, 비밀번호, 포트 번호
 
         try
         {
@@ -53,7 +53,7 @@ public class DBConnect : Singleton<DBConnect>
     }
 
     private static MySqlConnection _connection = null;
-    private static MySqlConnection connection // 호출 시 실행되는 구조
+    private static MySqlConnection connection // 호출 시 실행되는 구조 -> 호출 할 때마다 접속
     {
         get
         {
@@ -137,7 +137,7 @@ public class DBConnect : Singleton<DBConnect>
     /// <param name="field">검색할 필드 (입력하지 않을 경우 전체 로드)</param>
     /// <param name="condition">조건</param>
     /// <returns></returns>
-    public static XmlNodeList Select(string tableName, string condition = "")
+    public static XmlNodeList Select(string tableName, string condition = "") // 조건문만 적어서 모든 데이터를 호출
     {
         DataSet dataSet = m_OnLoad(tableName, $"SELECT * FROM {tableName} {condition}");
 
@@ -150,7 +150,8 @@ public class DBConnect : Singleton<DBConnect>
         return xmlDocument.GetElementsByTagName(tableName);
     }
 
-    public static XmlNodeList SelectOriginal(string tableName, string query)
+    
+    public static XmlNodeList SelectOriginal(string tableName, string query) // 직접 쿼리문을 다 적어서 데이터를 호출
     {
         DataSet dataSet = m_OnLoad(tableName, query);
 
@@ -170,11 +171,11 @@ public class DBConnect : Singleton<DBConnect>
     /// <param name="fieldName">입력할 필드 이름</param>
     /// <param name="value">입력할 값</param>
     /// <returns></returns>
-    public static bool Insert(string tableName, string value)
+    public static bool Insert(string tableName, string value)  // 직접 입력 함수
     {
         return m_OnChange($"INSERT INTO {tableName} VALUES ({value})");
     }
-    public static bool Insert(string tableName, string fieldName, string value)
+    public static bool Insert(string tableName, string fieldName, string value)  // 값 하나만 변경할 때 쓰는 함수 -> 편하게 쓰려는 용도
     {
         return m_OnChange($"INSERT INTO {tableName} ({fieldName}) VALUES ({value})");
     }

@@ -45,7 +45,8 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
 
                 if (user != null)
                 {
-                    if (playerPwd == int.Parse(user[0]["password"].InnerText))
+                    // 데이터가 있으면 비밀번호 확인
+                    if (playerPwd == int.Parse(user[0]["password"].InnerText) && playerPwdInput.text.Length == 4) // 데이터[index][원하는 컬럼]
                     {
                         GameStart();
                     }
@@ -55,12 +56,21 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
                         alertText.text = "비밀번호가 잘못되었습니다.";
                     }
                 }
-                else
+                else // 데이터가 없으면 새로운 데이터 입력 후 게임 시작
                 {
-                    GameStart();
+                    // 비밀번호가 4자리일 경우에만 시작
+                    if(playerPwdInput.text.Length == 4)
+                    {
+                        // 새로운 User 데이터 DB에 입력
+                        DBConnect.Insert("account", $"'{playerName}', {playerPwd}");
 
-                    // 새로운 User 데이터 DB에 입력
-                    DBConnect.Insert("account", $"'{playerName}', {playerPwd}");
+                        GameStart();
+                    }
+                    else
+                    {
+                        OpenUI("alert");
+                        alertText.text = "비밀번호는 4자리 숫자입니다.";
+                    }
                 }
             }
         }
