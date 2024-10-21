@@ -22,6 +22,7 @@ public class BattleManager :Singleton<BattleManager>
     public float maxHealth; //* 최대 체력
     public GameObject healthBar; // 벽 체력바
     public Slider HpBarSlider;
+    [SerializeField] TextMeshProUGUI text_Health;
 
     [Header("BattleMgr")]
     [SerializeField] private GameObject battle;
@@ -99,6 +100,7 @@ public class BattleManager :Singleton<BattleManager>
         CardMake();
         if (PlayerData.instance != null) { if (PlayerData.instance.mainHp_Stu >= 1) { maxHealth *= PlayerData.instance.mainHp_Stu; } }
         curHealth = maxHealth;
+        text_Health.text = maxHealth+" / " +maxHealth.ToString();
         UpdateHealthBar();
 
         spawnList = new List<Spawn>();
@@ -394,6 +396,7 @@ public class BattleManager :Singleton<BattleManager>
     {
         float damage = dmg;
         curHealth -= damage;
+        text_Health.text = curHealth.ToString();
         UpdateHealthBar();
 
     }
@@ -449,6 +452,7 @@ public class BattleManager :Singleton<BattleManager>
 
         float sliderValue = curHealth / maxHealth;
         HpBarSlider.value = sliderValue;
+       
         if (curHealth <= 0)
         {
             Time.timeScale = 1f;
