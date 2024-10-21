@@ -187,7 +187,7 @@ public class DBConnect : Singleton<DBConnect>
         strValues = $"'{userName}',";
 
         // 도달 라운드 Value 값
-        for (int i = 1; i < wave; i++)
+        for (int i = 0; i < wave; i++)
         {
             if(i == wave - 1 && wave == 11)
             {
