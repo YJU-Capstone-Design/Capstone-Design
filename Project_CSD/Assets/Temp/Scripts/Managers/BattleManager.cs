@@ -256,7 +256,7 @@ public class BattleManager :Singleton<BattleManager>
             //int minutes = Mathf.FloorToInt(endTime / 60);
             //int seconds = Mathf.FloorToInt(endTime % 60);
             //result_Time.text = string.Format("{0:00} : {1:00}", minutes, seconds);
-           
+            Invoke("Stop_Anim", 3f);
         }
         else if(whether == "Lose")
         {
@@ -269,6 +269,7 @@ public class BattleManager :Singleton<BattleManager>
             //int minutes = Mathf.FloorToInt(endTime / 60);
             //int seconds = Mathf.FloorToInt(endTime % 60);
             //result_Time.text = string.Format("{0:00} : {1:00}", minutes, seconds);
+            Invoke("Stop_Anim", 2f);
         }
 
         // 데이터베이스 입력 (userData Table)
@@ -286,7 +287,10 @@ public class BattleManager :Singleton<BattleManager>
             GetWaveReachPercentage(waveCount);
         }
     }
-
+   public void Stop_Anim()
+    {
+        AnimationController.instance.StopAllAnimations();///승리 패배 시 모든 애니메이션, 파티클, 스켈렙톤 정지
+    }
     // 게임 후, 데이터베이스에 데이터 입력 버튼 함수 (ranking Table)
     public void SaveUserRanking()
     {
