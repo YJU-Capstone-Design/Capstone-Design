@@ -21,9 +21,10 @@ public class PopUp : MonoBehaviour
     public Texture2D clickCursor; // 클릭 시 바꿀 커서 이미지
     private void Awake()
     {
-        Clear();
+
         // 기본 커서 설정
         Cursor.SetCursor(normalCursor, Vector2.zero, CursorMode.Auto);
+
     }
     private void Update()
     {

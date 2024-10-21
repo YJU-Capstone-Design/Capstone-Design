@@ -1,6 +1,8 @@
+using Spine;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -23,6 +25,31 @@ public class MemberAdd : MonoBehaviour
     [Header("회원 오브젝트")]
     public GameObject memberAdd;
     public GameObject login;
+
+    [Header("Mouse Cursor")]
+    public Texture2D normalCursor; // 기본 커서 이미지
+    public Texture2D clickCursor; // 클릭 시 바꿀 커서 이미지
+    private void Awake()
+    {
+
+        // 기본 커서 설정
+        Cursor.SetCursor(normalCursor, Vector2.zero, CursorMode.Auto);
+
+    }
+    private void Update()
+    {
+        // 마우스 클릭 시
+        if (Input.GetMouseButtonDown(0))
+        {
+            Cursor.SetCursor(clickCursor, Vector2.zero, CursorMode.Auto);
+        }
+
+        // 마우스 버튼을 떼면
+        if (Input.GetMouseButtonUp(0))
+        {
+            Cursor.SetCursor(normalCursor, Vector2.zero, CursorMode.Auto);
+        }
+    }
 
     public void OpenMemeberAdd()
     {
