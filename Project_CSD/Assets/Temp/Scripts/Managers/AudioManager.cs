@@ -53,8 +53,7 @@ public class AudioManager : MonoBehaviour
 
         MainSound();
         // 초기 볼륨 설정
-        ChangeBgmSound(25);
-        ChangeSfxSound(25);
+        MaserSound(0.25f);
         if (soundBtn == null)
         {
             soundBtn = GameObject.Find("SoundBtn");
@@ -121,6 +120,7 @@ public class AudioManager : MonoBehaviour
     void ChangeBgmSound(float value)
     {
         audioSource_Bg.volume = value;
+        bgm_slider.value = value;
     }
 
     void ChangeSfxSound(float value)
@@ -131,8 +131,11 @@ public class AudioManager : MonoBehaviour
     void MaserSound(float value)
     {
         audioSource_Bg.volume = value;
+        master_Sound.value = value;
         audioSource_Btn.volume = value;
+        bgm_slider.value = value;
         audioSource_Effect.volume = value;
+        sfx_slider.value = value;
     }
 
     public void BtnClear()
