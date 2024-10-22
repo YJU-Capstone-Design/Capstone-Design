@@ -48,7 +48,7 @@ public class PlayerUnit : UnitBase
         col = GetComponent<Collider2D>();
         skeletonAnimation = GetComponent<SkeletonAnimation>();
         bodySprite = GetComponent<MeshRenderer>();
-
+        attack_ing = false;
         targetLayer = scanner.targetLayer;
     }
 
@@ -547,7 +547,7 @@ public class PlayerUnit : UnitBase
 
     IEnumerator Die()
     {
-       
+        attack_ing = false;
         unitState = UnitState.Die;
         moveVec = Vector2.zero;
         col.enabled = false;
