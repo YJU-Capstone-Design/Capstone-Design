@@ -392,7 +392,7 @@ public class BattleManager :Singleton<BattleManager>
     {
         float damage = dmg;
         curHealth -= damage;
-        text_Health.text = curHealth.ToString() + " / " + maxHealth ;
+        text_Health.text = curHealth.ToString() + " / " + maxHealth;
         UpdateHealthBar();
 
     }

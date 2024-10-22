@@ -19,7 +19,7 @@ MonoBehaviour:
   health: 500
   power: 350
   moveSpeed: 2
-  attackTime: 3
+  attackTime: 5
   item_Type: 1
   unit_Img: {fileID: 21300000, guid: f5d58897cff9a574bbe8b7d7535c20e0, type: 3}
   unit_CardImg: {fileID: 21300000, guid: f5d58897cff9a574bbe8b7d7535c20e0, type: 3}
