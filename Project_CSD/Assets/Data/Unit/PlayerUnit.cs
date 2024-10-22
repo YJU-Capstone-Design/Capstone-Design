@@ -40,7 +40,7 @@ public class PlayerUnit : UnitBase
     string CurrentAnimation; //현재 어떤 애니메이션이 재생되고 있는지에 대한 변수
 
     [Header("# Turtle")]
-    private bool attack_ing=false;
+    private bool attack_ing = false;
 
     void Awake()
     {
@@ -50,7 +50,7 @@ public class PlayerUnit : UnitBase
         bodySprite = GetComponent<MeshRenderer>();
         attack_ing = false;
         targetLayer = scanner.targetLayer;
-      
+
     }
 
     void OnEnable()
@@ -65,8 +65,7 @@ public class PlayerUnit : UnitBase
         float xPos = startPos.x + targetPos.x * (targetPos.x < 0 ? -0.4f : 0.4f);
 
         // 클릭 지점으로 이동 -> 나머지는 Scanner 함수 에서 실행 (y 축만 먼저 빠르게 이동)
-        lerp = StartCoroutine(lerpCoroutine(startPos,new Vector3((xPos > targetPos.x ? targetPos.x : xPos), targetPos.y, 0), moveSpeed)); // y 축 먼저 이동
-
+        lerp = StartCoroutine(lerpCoroutine(startPos, new Vector3((xPos > targetPos.x ? targetPos.x : xPos), targetPos.y, 0), moveSpeed)); // y 축 먼저 이동
     }
 
     private void Start()
@@ -94,8 +93,8 @@ public class PlayerUnit : UnitBase
             if (health <= 0 || BattleManager.Instance.battleState == BattleManager.BattleState.Lose) // hp 가 0 이 되거나 게임에서 졌을 경우
             {
                 StartCoroutine(Die());
-            } 
-            else if(BattleManager.Instance.battleState == BattleManager.BattleState.Win) // 승리 시
+            }
+            else if (BattleManager.Instance.battleState == BattleManager.BattleState.Win) // 승리 시
             {
                 Win();
             }
@@ -123,6 +122,12 @@ public class PlayerUnit : UnitBase
     void OnDisable()
     {
         transform.position = new Vector3(-10, 0, 0); // 위치 초기화 (안해주면 다시 소환되는 순간  Unit 의 Ray 영역 안에 있으면 Ray 에 잠시 인식됨.)
+
+        // 애니메이션 -> 오브젝트 풀링으로 다시 활성화 될 시, Die 애니메이션에서 시작 방지
+        if(unitData.UnitID == 11005) { skeletonAnimation.AnimationName = "walk_3unit"; }
+        else { skeletonAnimation.AnimationName = "Walk"; }
+
+        skeletonAnimation.Initialize(true); // skeletonDataAsset 를 ReLoad
     }
 
     // 기본 설정 초기화 함수
@@ -148,6 +153,7 @@ public class PlayerUnit : UnitBase
         }
 
         // 설정값
+        multipleAttackTargets = new Transform[0];
         col.enabled = true;
         unitState = UnitState.Move;
         moveVec = Vector3.right;
@@ -175,7 +181,7 @@ public class PlayerUnit : UnitBase
         {
             // 위치 차이(방향) = 타겟 위치 - 나의 위치
             moveVec = scanner.nearestTarget.position - transform.position;
-            if(transform.position.y != moveVec.y) { moveVec.x *= 0.5f; moveVec.y *= 2f; } // y 축 먼저 빠르게 이동
+            if (transform.position.y != moveVec.y) { moveVec.x *= 0.5f; moveVec.y *= 2f; } // y 축 먼저 빠르게 이동
             else { moveVec.x *= 1f; moveVec.y *= 1f; } // 정상화
 
             // 이동
@@ -200,13 +206,13 @@ public class PlayerUnit : UnitBase
                     StartAnimation("walk_1unit", true, 1f);
                 }
             }
-            else if(unitData.UnitID == 11006 && attack_ing)
+            else if (unitData.UnitID == 11006 && attack_ing)
             {
-                
+
                 StartAnimation("Attack_ing", true, 1f);
-                
+
             }
-            else if (unitData.UnitID != 11005 )
+            else if (unitData.UnitID != 11005)
             {
                 StartAnimation("Walk", true, 1.2f);
             }
@@ -220,7 +226,8 @@ public class PlayerUnit : UnitBase
                 // 유닛의 처음 위치로 귀환
                 lerp = StartCoroutine(lerpCoroutine(transform.position, firstPos, moveSpeed));
 
-                if (transform.position == firstPos) {
+                if (transform.position == firstPos)
+                {
 
                     moveVec = Vector3.zero;
                     unitState = UnitState.Idle;
@@ -264,7 +271,7 @@ public class PlayerUnit : UnitBase
 
         if (nearestAttackTarget != null)
         {
-            if(!startMoveFinish)
+            if (!startMoveFinish)
             {
                 StopCoroutine(lerp);
                 startMoveFinish = true;
@@ -276,7 +283,7 @@ public class PlayerUnit : UnitBase
             // 적 상태 변경
             if ((unitID % 10000) / 1000 == 2) // 탱커 -> 다수 공격
             {
-                if (multipleAttackTargets == null) 
+                if (multipleAttackTargets == null)
                     return;
 
                 foreach (Transform enemy in multipleAttackTargets)
@@ -291,7 +298,7 @@ public class PlayerUnit : UnitBase
                 if (nearestAttackTarget == null) return;
                 UnitBase enemyState = nearestAttackTarget.gameObject.GetComponent<UnitBase>();
                 enemyState.unitState = UnitState.Fight;
-            }         
+            }
 
             // 공격
             if (attackTime >= unitData.AttackTime)
@@ -331,12 +338,13 @@ public class PlayerUnit : UnitBase
     // 일반 근접 공격 함수
     protected virtual IEnumerator Attack()
     {
-        if (nearestAttackTarget == null) {
+        if (nearestAttackTarget == null)
+        {
             if (smash != null) { StopCoroutine(smash); smash = null; }
         }
-        
-            // 터틀 공격 시작 
-            if (unitData.UnitID == 11006 && !attack_ing) 
+
+        // 터틀 공격 시작 
+        if (unitData.UnitID == 11006 && !attack_ing)
         {
             // 공격 준비 애니메이션
             Debug.Log("거북론빵 공격 시작");
@@ -358,7 +366,7 @@ public class PlayerUnit : UnitBase
             if (healthPercentage > 0.66f) // 67% 이상
             {
                 StartAnimation("attack_3unit", false, 1f);
-          
+
             }
             else if (healthPercentage > 0.33f) // 34% 이상 67% 미만
             {
@@ -373,14 +381,14 @@ public class PlayerUnit : UnitBase
         }
 
         // 일반 유닛 공격 애니메이션
-        if (unitData.UnitID != 11005 && unitData.UnitID != 11006 )
+        if (unitData.UnitID != 11005 && unitData.UnitID != 11006)
         {
             Debug.Log(unitData.UnitID + " 공격");
             StartAnimation("Attack", false, 1f);
             yield return new WaitForSeconds(0.4f);
         }
 
-       //터틀
+        //터틀
         if (unitData.UnitID == 11006)
         {
             Debug.Log("거북론빵 공격");
@@ -427,19 +435,19 @@ public class PlayerUnit : UnitBase
             yield return new WaitForSeconds(0.59f);
 
             StartAnimation("Idle", true, 1.5f);
-           
+
         }
         yield return new WaitForSeconds(1f);
-        Debug.Log("현재 공격 대상 존재 여부 판별: "); 
-            // 타겟이 존재할 때의 동작
-        
-      
+        Debug.Log("현재 공격 대상 존재 여부 판별: ");
+        // 타겟이 존재할 때의 동작
+
+
         //string enemy_Check = scanner.nearestTarget.tag;
         // 거북론빵
         if (unitData.UnitID == 11006 && (scanner.nearestTarget == null || (scanner.nearestTarget != null && !scanner.nearestTarget.tag.Equals("EnemyUnit"))))
         {
             Debug.Log("거북론빵 공격 종료 1");
-       
+
             StartAnimation("Attack_end", false, 1f);
             yield return new WaitForSeconds(3.9f); // 애니메이션 시간
 
@@ -448,10 +456,10 @@ public class PlayerUnit : UnitBase
             attack_ing = false;
         }
     }
-   
+
     protected void SetEnemyState(Transform target)
     {
-        if(target == null)
+        if (target == null)
             return;
 
         EnemyUnit enemyLogic = target.gameObject.GetComponent<EnemyUnit>();
@@ -462,7 +470,8 @@ public class PlayerUnit : UnitBase
     // 화살 공격 함수
     IEnumerator Arrow()
     {
-        if (nearestAttackTarget == null) {
+        if (nearestAttackTarget == null)
+        {
             if (arrow != null) { StopCoroutine(arrow); arrow = null; }
         }
 
@@ -484,14 +493,14 @@ public class PlayerUnit : UnitBase
         arrowLogic.arrowPower = power;
 
         // 화살 목표 오브젝트 설정
-        if(nearestAttackTarget != null)
+        if (nearestAttackTarget != null)
         {
             arrowLogic.target = nearestAttackTarget.gameObject;
             arrowLogic.playerUnit = this.gameObject;
         }
 
         yield return new WaitForSeconds(0.4f); // 애니메이션 시간
-      
+
         // 애니메이션
         if (unitData.UnitID == 11005)
         {
@@ -573,6 +582,7 @@ public class PlayerUnit : UnitBase
 
         moveSpeed = 0;
         attackTime = 0;
+        multipleAttackTargets = new Transform[0];
 
         BattleData.Instance.units.Remove(gameObject);
 
@@ -583,20 +593,19 @@ public class PlayerUnit : UnitBase
         //eggball 전용
         if (unitData.UnitID == 11005)
         {
-            StartAnimation("die_1unit", true, 1f);
+            StartAnimation("die_1unit", false, 1f);
         }
-        if(unitData.UnitID == 11006)
+        else if (unitData.UnitID == 11006)
         {
             StartAnimation("Die", false, 1f);
             yield return new WaitForSeconds(1.33f);
-            
-                Debug.Log("애니메이션 'Die'가 성공적으로 시작되었습니다.");
-        
+
+            Debug.Log("애니메이션 'Die'가 성공적으로 시작되었습니다.");
+
         }
-        // 애니메이션
-        if (unitData.UnitID != 11005&& unitData.UnitID != 11006)
+        else
         {
-            StartAnimation("Die", true, 1f);
+            StartAnimation("Die", false, 1f);
         }
 
 
@@ -634,7 +643,7 @@ public class PlayerUnit : UnitBase
             {
                 float healthPercentage = health / unitData.Health; // 현재 체력 비율
 
-                if (healthPercentage> 0.66f) // 67% 이상
+                if (healthPercentage > 0.66f) // 67% 이상
                 {
                     StartAnimation("walk_3unit", true, 1.2f);
                 }
@@ -691,12 +700,12 @@ public class PlayerUnit : UnitBase
                 buffEffect[0].SetActive(isBuff); // isBuff가 true면 활성화, false면 비활성화
                 break;
             case SpellTypes.Buff:
-                if(id == 22001)
-                    {
+                if (id == 22001)
+                {
                     buffEffect[0].SetActive(isBuff);  // 버프 적용
                     Debug.Log(buffEffect[0].name);
                 }
-                    else if (id == 22002)
+                else if (id == 22002)
                 {
                     buffEffect[1].SetActive(isBuff);  // 버프 적용
                     Debug.Log(buffEffect[1].name);
@@ -721,7 +730,7 @@ public class PlayerUnit : UnitBase
                     buffEffect[5].SetActive(isBuff);  // 버프 적용
                     Debug.Log(buffEffect[5].name);
                 }
-                
+
                 break;
             case SpellTypes.Debuff:
                 buffEffect[2].SetActive(isBuff); // isBuff가 true면 활성화, false면 비활성화
