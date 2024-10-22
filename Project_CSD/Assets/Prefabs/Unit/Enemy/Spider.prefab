@@ -2684,7 +2684,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scannerPos: {x: 0, y: 0, z: 0}
-  scanRange: {x: 10, y: 6}
+  scanRange: {x: 10, y: 1}
   targetLayer:
     serializedVersion: 2
     m_Bits: 64
