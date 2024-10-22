@@ -234,7 +234,23 @@ public class DBConnect : Singleton<DBConnect>
     public static bool UpdateRanking(string tableName, string fieldName, int score, string condition)
     {
         Debug.Log("Update Ranking Data");
-        return m_OnChange($"UPDATE {tableName} SET {fieldName}={score} WHERE {condition}");
+
+        XmlNodeList selectedData = DBConnect.Select("ranking", $"WHERE userName = '{UserRankingData.instance.playerName}'");
+
+        int lastScore = int.Parse(selectedData[0]["score"].InnerText);
+        int currentScore = 0;
+        
+        // 이전 점수가 더 높으면 점수 변경 X
+        if(lastScore > score)
+        {
+            currentScore = lastScore;
+        }
+        else
+        {
+            currentScore = score;
+        }
+
+        return m_OnChange($"UPDATE {tableName} SET {fieldName}={currentScore} WHERE {condition}");
     }
 
     // UserData 테이블 Update
