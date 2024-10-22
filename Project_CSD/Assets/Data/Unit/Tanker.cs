@@ -113,7 +113,8 @@ public class Tanker : PlayerUnit
             }
         }
 
-        yield return new WaitForSeconds(0.4f); // 애니메이션 시간
+        if(unitID == 12003) { yield return new WaitForSeconds(1.38f); }
+        else { yield return new WaitForSeconds(0.4f); }
 
         StartAnimation("Defense_ing", true, 1f);
 
