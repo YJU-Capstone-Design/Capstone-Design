@@ -594,6 +594,7 @@ public class PlayerUnit : UnitBase
         if (unitData.UnitID == 11005)
         {
             StartAnimation("die_1unit", false, 1f);
+            yield return new WaitForSeconds(1f);
         }
         else if (unitData.UnitID == 11006)
         {
@@ -603,13 +604,16 @@ public class PlayerUnit : UnitBase
             Debug.Log("애니메이션 'Die'가 성공적으로 시작되었습니다.");
 
         }
+        else if (unitData.UnitID == 11007)
+        {
+            StartAnimation("Die", false, 1f);
+            yield return new WaitForSeconds(1.67f);
+        }
         else
         {
             StartAnimation("Die", false, 1f);
+            yield return new WaitForSeconds(1f);
         }
-
-
-        yield return new WaitForSeconds(1f);
 
         gameObject.SetActive(false);
     }
