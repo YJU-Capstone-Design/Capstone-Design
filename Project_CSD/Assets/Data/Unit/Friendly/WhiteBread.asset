@@ -15,7 +15,7 @@ MonoBehaviour:
   unitType: 0
   unitID: 12001
   unitName: "\uC2DD\uBE75"
-  cost: 5
+  cost: 4
   health: 750
   power: 75
   moveSpeed: 1.5

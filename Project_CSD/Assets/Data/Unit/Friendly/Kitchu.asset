@@ -15,7 +15,7 @@ MonoBehaviour:
   unitType: 0
   unitID: 11001
   unitName: "\uD0B7\uCE04"
-  cost: 4
+  cost: 2
   health: 450
   power: 150
   moveSpeed: 2.5

@@ -15,7 +15,7 @@ MonoBehaviour:
   unitType: 0
   unitID: 11003
   unitName: "\uD38D\uB11B"
-  cost: 7
+  cost: 5
   health: 500
   power: 350
   moveSpeed: 2
