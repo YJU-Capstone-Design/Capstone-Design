@@ -16,8 +16,8 @@ MonoBehaviour:
   unitID: 31007
   unitName: "\uC950"
   cost: 0
-  health: 200
-  power: 100
+  health: 300
+  power: 50
   moveSpeed: 4
   attackTime: 2
   item_Type: 0
