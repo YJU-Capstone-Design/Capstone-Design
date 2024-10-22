@@ -7,7 +7,7 @@ using System.Drawing;
 using TMPro;
 using System.Xml;
 using System;
-public class BattleManager :Singleton<BattleManager>
+public class BattleManager : Singleton<BattleManager>
 {
     public enum BattleState { Start, Win, Lose, BreakTime }
     public BattleState battleState;
@@ -70,7 +70,7 @@ public class BattleManager :Singleton<BattleManager>
     private float limite_time = 600f;
     [SerializeField] Image waveImg;
     [SerializeField] Image waveImg2;
-    public float endTime=0f;
+    public float endTime = 0f;
     bool victory = false;
 
     [Header("# 랭킹")]
@@ -100,7 +100,7 @@ public class BattleManager :Singleton<BattleManager>
         CardMake();
         if (PlayerData.instance != null) { if (PlayerData.instance.mainHp_Stu >= 1) { maxHealth *= PlayerData.instance.mainHp_Stu; } }
         curHealth = maxHealth;
-        text_Health.text = maxHealth+" / " +maxHealth.ToString();
+        text_Health.text = maxHealth + " / " + maxHealth.ToString();
         UpdateHealthBar();
 
         spawnList = new List<Spawn>();
@@ -108,7 +108,7 @@ public class BattleManager :Singleton<BattleManager>
         ReadSpawnFile(wave); // 적 유닛 스폰 파일 가져오기
 
         unitType = UnitType.Bread; // 테스트(제작)용
-   
+
     }
 
     void Update()
@@ -182,7 +182,8 @@ public class BattleManager :Singleton<BattleManager>
         {
             battleState = BattleState.Lose;
             unitSpawnRange.SetActive(false);
-            EndGame("Lose");
+            HpDamage(curHealth);
+
             //지금 10분을 버텨내면 승리 조건 10분안에 클리어 못하면 패배하는걸로 바꿔야 될까?
         }
         if (limite_time >= 0)
@@ -225,7 +226,7 @@ public class BattleManager :Singleton<BattleManager>
 
     public void EndGame(string whether)
     {
-        if (AudioManager.instance != null) { AudioManager.instance.ButtonSound();}
+        if (AudioManager.instance != null) { AudioManager.instance.ButtonSound(); }
 
         resultUI.SetActive(true);
 
@@ -246,7 +247,7 @@ public class BattleManager :Singleton<BattleManager>
         {
             resultPanel.sprite = resultImg[0];
             resultMenuBar.sprite = resultImg[2];
-            
+
             if (AudioManager.instance != null) { AudioManager.instance.BattleEndSound(true); }
             if (CashManager.instance != null) { CashManager.instance.player_Gold += 100 * wave; }
             if (PlayerData.instance != null) { PlayerData.instance.Lv++; }
@@ -256,9 +257,9 @@ public class BattleManager :Singleton<BattleManager>
             //int minutes = Mathf.FloorToInt(endTime / 60);
             //int seconds = Mathf.FloorToInt(endTime % 60);
             //result_Time.text = string.Format("{0:00} : {1:00}", minutes, seconds);
-            Invoke("Stop_Anim", 5f);
+            Invoke("Stop_Anim", 3f);
         }
-        else if(whether == "Lose")
+        else if (whether == "Lose")
         {
             resultPanel.sprite = resultImg[1];
             resultMenuBar.sprite = resultImg[3];
@@ -269,7 +270,7 @@ public class BattleManager :Singleton<BattleManager>
             //int minutes = Mathf.FloorToInt(endTime / 60);
             //int seconds = Mathf.FloorToInt(endTime % 60);
             //result_Time.text = string.Format("{0:00} : {1:00}", minutes, seconds);
-            Invoke("Stop_Anim", 5f);
+            Invoke("Stop_Anim", 3f);
         }
 
         // 데이터베이스 입력 (userData Table)
@@ -287,13 +288,16 @@ public class BattleManager :Singleton<BattleManager>
             GetWaveReachPercentage(waveCount);
         }
     }
-   public void Stop_Anim()
+    public void Stop_Anim()
     {
         AnimationController.instance.StopAllAnimations();///승리 패배 시 모든 애니메이션, 파티클, 스켈렙톤 정지
     }
     // 게임 후, 데이터베이스에 데이터 입력 버튼 함수 (ranking Table)
     public void SaveUserRanking()
     {
+        if (playerScore <= 0)
+            return;
+
         // 데이터베이스 입력
         XmlNodeList selectedData = DBConnect.Select("ranking", $"WHERE userName = '{UserRankingData.instance.playerName}'");
 
@@ -313,23 +317,31 @@ public class BattleManager :Singleton<BattleManager>
     // 게임 종료 후 유저의 게임 결과를 저장하는 함수 (userData Table)
     void SaveUserData(string whether, int wave)
     {
-        if (playerScore <= 0)
-            return;
-
-        // 데이터베이스 입력
-        XmlNodeList selectedData = DBConnect.Select("ranking", $"WHERE userName = '{UserRankingData.instance.playerName}'");
+        // 유저 데이터 저장 (userData Table)
+        XmlNodeList selectedData = DBConnect.Select("userData", $"WHERE userName = '{UserRankingData.instance.playerName}'");
 
         if (selectedData == null)
         {
-            DBConnect.Insert("ranking", $"'{UserRankingData.instance.playerName}', {playerScore}");
+            if (whether == "Win")
+            {
+                DBConnect.UserDataInsert(UserRankingData.instance.playerName, wave + 1);
+            }
+            else if (whether == "Lose")
+            {
+                DBConnect.UserDataInsert(UserRankingData.instance.playerName, wave);
+            }
         }
         else
         {
-            DBConnect.UpdateRanking("ranking", "score", playerScore, $"userName = '{UserRankingData.instance.playerName}'");
+            if (whether == "Win")
+            {
+                DBConnect.UserDataUpdate(UserRankingData.instance.playerName, wave + 1);
+            }
+            else if (whether == "Lose")
+            {
+                DBConnect.UserDataUpdate(UserRankingData.instance.playerName, wave);
+            }
         }
-
-        // 랭킹 등록 UI 비활성화
-        rank_Obj.SetActive(false);
     }
 
     IEnumerator ResultUI(int second)
@@ -392,7 +404,7 @@ public class BattleManager :Singleton<BattleManager>
     {
         float damage = dmg;
         curHealth -= damage;
-        text_Health.text = curHealth.ToString() + " / " + maxHealth ;
+        text_Health.text = curHealth.ToString() + " / " + maxHealth;
         UpdateHealthBar();
 
     }
@@ -417,8 +429,8 @@ public class BattleManager :Singleton<BattleManager>
     public void CardShuffle(bool Recost)
     {
         if (AudioManager.instance != null) { AudioManager.instance.ButtonSound(); }
-        
-        if (UiManager.Instance.cost >= 1&&Recost)
+
+        if (UiManager.Instance.cost >= 1 && Recost)
         {
             reroll_Anim.SetTrigger("ReRoll");
             foreach (GameObject card in cardObj)
@@ -440,7 +452,7 @@ public class BattleManager :Singleton<BattleManager>
             CardMake();
             Debug.Log("Shuffle");
         }
-        
+
     }
 
     void UpdateHealthBar()
@@ -448,7 +460,7 @@ public class BattleManager :Singleton<BattleManager>
 
         float sliderValue = curHealth / maxHealth;
         HpBarSlider.value = sliderValue;
-       
+
         if (curHealth <= 0)
         {
             Time.timeScale = 1f;
@@ -456,7 +468,7 @@ public class BattleManager :Singleton<BattleManager>
             {
                 EndGame("Lose"); // 결과창 UI 활성화
             }
-            Invoke("Test_GameOver",3f);
+            Invoke("Test_GameOver", 3f);
         }
     }
 
@@ -535,7 +547,7 @@ public class BattleManager :Singleton<BattleManager>
     }
     public void AddRanking()
     {
-        
+
     }
     public void RankingOpen()
     {
