@@ -81,7 +81,7 @@ public class CursorController : MonoBehaviour
 
                 Camera.main.transform.position = new Vector3(clampX, 0, Camera.main.transform.position.z);
             }
-            else if (Camera.main.transform.position.x < 0)
+            if (Camera.main.transform.position.x < 0)
             {
                 Camera.main.transform.position = new Vector3(0, 0, -10);
             }

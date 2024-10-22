@@ -1,0 +1,12 @@
+DoughMana.png
+	size: 88, 76
+	filter: Linear, Linear
+	pma: true
+	scale: 0.5
+DoughMana
+	bounds: 2, 2, 72, 59
+	rotate: 90
+DoughMana_Shadow
+	bounds: 63, 3, 71, 23
+	offsets: 1, 0, 72, 23
+	rotate: 90

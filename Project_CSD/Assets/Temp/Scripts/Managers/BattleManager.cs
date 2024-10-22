@@ -22,6 +22,7 @@ public class BattleManager :Singleton<BattleManager>
     public float maxHealth; //* 최대 체력
     public GameObject healthBar; // 벽 체력바
     public Slider HpBarSlider;
+    [SerializeField] TextMeshProUGUI text_Health;
 
     [Header("BattleMgr")]
     [SerializeField] private GameObject battle;
@@ -99,6 +100,7 @@ public class BattleManager :Singleton<BattleManager>
         CardMake();
         if (PlayerData.instance != null) { if (PlayerData.instance.mainHp_Stu >= 1) { maxHealth *= PlayerData.instance.mainHp_Stu; } }
         curHealth = maxHealth;
+        text_Health.text = maxHealth+" / " +maxHealth.ToString();
         UpdateHealthBar();
 
         spawnList = new List<Spawn>();
@@ -254,7 +256,7 @@ public class BattleManager :Singleton<BattleManager>
             //int minutes = Mathf.FloorToInt(endTime / 60);
             //int seconds = Mathf.FloorToInt(endTime % 60);
             //result_Time.text = string.Format("{0:00} : {1:00}", minutes, seconds);
-           
+            Invoke("Stop_Anim", 3f);
         }
         else if(whether == "Lose")
         {
@@ -267,6 +269,7 @@ public class BattleManager :Singleton<BattleManager>
             //int minutes = Mathf.FloorToInt(endTime / 60);
             //int seconds = Mathf.FloorToInt(endTime % 60);
             //result_Time.text = string.Format("{0:00} : {1:00}", minutes, seconds);
+            Invoke("Stop_Anim", 2f);
         }
 
         // 데이터베이스 입력 (userData Table)
@@ -284,7 +287,10 @@ public class BattleManager :Singleton<BattleManager>
             GetWaveReachPercentage(waveCount);
         }
     }
-
+   public void Stop_Anim()
+    {
+        AnimationController.instance.StopAllAnimations();///승리 패배 시 모든 애니메이션, 파티클, 스켈렙톤 정지
+    }
     // 게임 후, 데이터베이스에 데이터 입력 버튼 함수 (ranking Table)
     public void SaveUserRanking()
     {
@@ -394,6 +400,7 @@ public class BattleManager :Singleton<BattleManager>
     {
         float damage = dmg;
         curHealth -= damage;
+        text_Health.text = maxHealth + " / " + curHealth.ToString();
         UpdateHealthBar();
 
     }
@@ -449,6 +456,7 @@ public class BattleManager :Singleton<BattleManager>
 
         float sliderValue = curHealth / maxHealth;
         HpBarSlider.value = sliderValue;
+       
         if (curHealth <= 0)
         {
             Time.timeScale = 1f;
