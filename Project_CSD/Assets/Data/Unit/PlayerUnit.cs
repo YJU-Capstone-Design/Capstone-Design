@@ -50,10 +50,7 @@ public class PlayerUnit : UnitBase
         bodySprite = GetComponent<MeshRenderer>();
         attack_ing = false;
         targetLayer = scanner.targetLayer;
-        if (unitData.UnitID == 11006)
-        {
-            StartAnimation("Idle", true, 1f);
-        }
+      
     }
 
     void OnEnable()
@@ -69,6 +66,7 @@ public class PlayerUnit : UnitBase
 
         // 클릭 지점으로 이동 -> 나머지는 Scanner 함수 에서 실행 (y 축만 먼저 빠르게 이동)
         lerp = StartCoroutine(lerpCoroutine(startPos,new Vector3((xPos > targetPos.x ? targetPos.x : xPos), targetPos.y, 0), moveSpeed)); // y 축 먼저 이동
+
     }
 
     private void Start()
@@ -78,6 +76,12 @@ public class PlayerUnit : UnitBase
         initialMoveSpeed = unitData.MoveSpeed;
         initialPower = unitData.Power;
         initialAttackTime = unitData.AttackTime;
+        if (unitData.UnitID == 11006)
+        {
+            StartAnimation("Walk", false, 1f);
+            //yield return new WaitForSeconds(1f);
+        }
+
     }
 
     void Update()
@@ -198,7 +202,9 @@ public class PlayerUnit : UnitBase
             }
             else if(unitData.UnitID == 11006 && attack_ing)
             {
+                
                 StartAnimation("Attack_ing", true, 1f);
+                
             }
             else if (unitData.UnitID != 11005 )
             {
@@ -328,9 +334,13 @@ public class PlayerUnit : UnitBase
         if (nearestAttackTarget == null) {
             if (smash != null) { StopCoroutine(smash); smash = null; }
         }
-
-        // 터틀 공격 시작 
-        if (unitData.UnitID == 11006 && !attack_ing) 
+        if(unitData.UnitID == 11007)
+        {
+            StartAnimation("Attack", false, 1f);
+            yield return new WaitForSeconds(1.167f); // 애니메이션 시간
+        }
+            // 터틀 공격 시작 
+            if (unitData.UnitID == 11006 && !attack_ing) 
         {
             // 공격 준비 애니메이션
             Debug.Log("거북론빵 공격 시작");
@@ -367,7 +377,7 @@ public class PlayerUnit : UnitBase
         }
 
         // 일반 유닛 공격 애니메이션
-        if (unitData.UnitID != 11005 && unitData.UnitID != 11006)
+        if (unitData.UnitID != 11005 && unitData.UnitID != 11006 && unitData.UnitID != 11007)
         {
             Debug.Log(unitData.UnitID + " 공격");
             StartAnimation("Attack", false, 1f);
@@ -415,7 +425,7 @@ public class PlayerUnit : UnitBase
         }
 
         // 일반 유닛 애니메이션
-        if (unitData.UnitID != 11005 && unitData.UnitID != 11006)
+        if (unitData.UnitID != 11005 && unitData.UnitID != 11006 && unitData.UnitID != 11007)
         {
             // 공격 애니메이션 대기 (0.4초, 0.59초 두번으로 나눔)
             yield return new WaitForSeconds(0.59f);
@@ -581,11 +591,14 @@ public class PlayerUnit : UnitBase
         }
         if(unitData.UnitID == 11006)
         {
-            StartAnimation("Die", true, 1f);
-            yield return new WaitForSeconds(1.3f);
+            StartAnimation("Die", false, 1f);
+            yield return new WaitForSeconds(1.33f);
+            
+                Debug.Log("애니메이션 'Die'가 성공적으로 시작되었습니다.");
+        
         }
         // 애니메이션
-        else if (unitData.UnitID != 11005&& unitData.UnitID != 11006)
+        if (unitData.UnitID != 11005&& unitData.UnitID != 11006)
         {
             StartAnimation("Die", true, 1f);
         }
