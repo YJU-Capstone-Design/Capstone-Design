@@ -57,13 +57,13 @@ public class PopUp : MonoBehaviour
         }
         else if (type.Equals("Title"))
         {
-            popUp_text.text = "로비로 이동  하시 겠습니까?";
+            popUp_text.text = "로비로 이동\n하시겠습니까?";
             goLobby = true;
             pop.SetActive(true);
         }
         else if (type.Equals("Restart"))
         {
-            popUp_text.text = "게임을 재시작   하시겠습니까?";
+            popUp_text.text = "게임을 재시작\n하시겠습니까?";
             goLobby = false;
             pop.SetActive(true);
         }

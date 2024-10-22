@@ -244,19 +244,19 @@ public class CollectionManager : MonoBehaviour
                 SetUIEffect(buffUIEffects, 0);
                 break;
             case 22002:
-                SetUIEffect(buffUIEffects, 1);
+                SetUIEffect(buffUIEffects, 0);
                 break;
             case 22004:
                 SetUIEffect(buffUIEffects, 2);
                 break;
             case 22005:
-                SetUIEffect(buffUIEffects, 3);
+                SetUIEffect(buffUIEffects, 1);
                 break;
             case 22006:
-                SetUIEffect(buffUIEffects, 4);
+                SetUIEffect(buffUIEffects, 2);
                 break;
             case 22007:
-                SetUIEffect(buffUIEffects, 5);
+                SetUIEffect(buffUIEffects, 3);
                 break;
             case 23001:
                 SetUIEffect(deBuffUIEffects, 0);

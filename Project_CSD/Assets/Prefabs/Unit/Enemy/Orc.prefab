@@ -620,7 +620,7 @@ MonoBehaviour:
   unitData: {fileID: 11400000, guid: 304f6292a5165e14c933a0b1d904dd1e, type: 2}
   attackRayUpPos: 0.7
   attackRayDownPos: 0.3
-  attackRayPos: {x: -0.6, y: 0, z: 0}
+  attackRayPos: {x: 0.6, y: 0, z: 0}
   attackRaySize: {x: 1, y: 0.7}
   allChildren: []
   nearestAttackTarget: {fileID: 0}

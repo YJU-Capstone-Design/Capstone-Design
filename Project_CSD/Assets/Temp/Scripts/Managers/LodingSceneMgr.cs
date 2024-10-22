@@ -14,6 +14,7 @@ public class LodingSceneMgr : MonoBehaviour
     [SerializeField] Image bg_Obj;
     private void Start()
     {
+        Time.timeScale = 1;
         StartCoroutine(LoadScene());
         
         bg_Obj.sprite = bg[Random.Range(0,bg.Length)];
