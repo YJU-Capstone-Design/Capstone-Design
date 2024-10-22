@@ -257,7 +257,7 @@ public class BattleManager : Singleton<BattleManager>
             //int minutes = Mathf.FloorToInt(endTime / 60);
             //int seconds = Mathf.FloorToInt(endTime % 60);
             //result_Time.text = string.Format("{0:00} : {1:00}", minutes, seconds);
-            Invoke("Stop_Anim", 3f);
+            Invoke("Stop_Anim", 5f);
         }
         else if (whether == "Lose")
         {
@@ -270,7 +270,7 @@ public class BattleManager : Singleton<BattleManager>
             //int minutes = Mathf.FloorToInt(endTime / 60);
             //int seconds = Mathf.FloorToInt(endTime % 60);
             //result_Time.text = string.Format("{0:00} : {1:00}", minutes, seconds);
-            Invoke("Stop_Anim", 3f);
+            Invoke("Stop_Anim", 5f);
         }
 
         // 데이터베이스 입력 (userData Table)
