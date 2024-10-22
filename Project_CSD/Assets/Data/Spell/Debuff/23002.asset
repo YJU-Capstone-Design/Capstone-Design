@@ -15,7 +15,7 @@ MonoBehaviour:
   spellType: 2
   spellID: 23002
   spellName: "\uADF8\uB300\uB85C \uBA48\uCDB0\uB77C !"
-  cost: 15
+  cost: 5
   duration: 1
   damage: 0
   maxHpUp: 0
