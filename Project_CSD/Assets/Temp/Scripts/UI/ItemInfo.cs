@@ -88,13 +88,13 @@ public class ItemInfo : MonoBehaviour
             else if (data.MaxHpUp != 0 && spellitem[4].text.Equals("")) { spellitem[4].text = "적 최대체력 감소 " + data.MaxHpUp.ToString() + "%"; }
             else if (data.MaxHpUp != 0 && spellitem[5].text.Equals("")) { spellitem[5].text = "적 최대체력 감소 " + data.MaxHpUp.ToString() + "%"; }
 
-            if (data.MoveSpeedUp != 0 && spellitem[3].text.Equals("")) { spellitem[3].text = "적 스피드 감소 " + data.MoveSpeedUp.ToString() + "%"; }
-            else if (data.MoveSpeedUp != 0 && spellitem[4].text.Equals("")) { spellitem[4].text = "적 스피드 감소 " + data.MoveSpeedUp.ToString() + "%"; }
-            else if (data.MoveSpeedUp != 0 && spellitem[5].text.Equals("")) { spellitem[5].text = "적 스피드 감소 " + data.MoveSpeedUp.ToString() + "%"; }
+            if (data.MoveSpeedUp != 0 && spellitem[3].text.Equals("")) { spellitem[3].text = "적 이동속도 감소 " + data.MoveSpeedUp.ToString() + "%"; }
+            else if (data.MoveSpeedUp != 0 && spellitem[4].text.Equals("")) { spellitem[4].text = "적 이동 속도 감소 " + data.MoveSpeedUp.ToString() + "%"; }
+            else if (data.MoveSpeedUp != 0 && spellitem[5].text.Equals("")) { spellitem[5].text = "적 이동 속도 감소 " + data.MoveSpeedUp.ToString() + "%"; }
 
-            if (data.AttackTimeDown != 0 && spellitem[3].text.Equals("")) { spellitem[3].text = "적 공격속도 감소 " + data.AttackTimeDown.ToString() + "%"; }
-            else if (data.AttackTimeDown != 0 && spellitem[4].text.Equals("")) { spellitem[4].text = "적 공격속도 감소 " + data.AttackTimeDown.ToString() + "%"; }
-            else if (data.AttackTimeDown != 0 && spellitem[5].text.Equals("")) { spellitem[5].text = "적 공격속도 감소 " + data.AttackTimeDown.ToString() + "%"; }
+            if (data.AttackTimeDown != 0 && spellitem[3].text.Equals("")) { spellitem[3].text = "적 공격 속도 감소 " + data.AttackTimeDown.ToString() + "%"; }
+            else if (data.AttackTimeDown != 0 && spellitem[4].text.Equals("")) { spellitem[4].text = "적 공격 속도 감소 " + data.AttackTimeDown.ToString() + "%"; }
+            else if (data.AttackTimeDown != 0 && spellitem[5].text.Equals("")) { spellitem[5].text = "적 공격 속도 감소 " + data.AttackTimeDown.ToString() + "%"; }
         }
         else
         {
@@ -106,9 +106,9 @@ public class ItemInfo : MonoBehaviour
             else if (data.MaxHpUp != 0 && spellitem[4].text.Equals("")) { spellitem[4].text = "최대 체력 증가 " + data.MaxHpUp.ToString() + "%"; }
             else if (data.MaxHpUp != 0 && spellitem[5].text.Equals("")) { spellitem[5].text = "최대 체력 증가 " + data.MaxHpUp.ToString() + "%"; }
 
-            if (data.MoveSpeedUp != 0 && spellitem[3].text.Equals("")) { spellitem[3].text = "스피드 증가 " + data.MoveSpeedUp.ToString() + "%"; }
-            else if (data.MoveSpeedUp != 0 && spellitem[4].text.Equals("")) { spellitem[4].text = "스피드 증가 " + data.MoveSpeedUp.ToString() + "%"; }
-            else if (data.MoveSpeedUp != 0 && spellitem[5].text.Equals("")) { spellitem[5].text = "스피드 증가 " + data.MoveSpeedUp.ToString() + "%"; }
+            if (data.MoveSpeedUp != 0 && spellitem[3].text.Equals("")) { spellitem[3].text = "이동속도 증가 " + data.MoveSpeedUp.ToString() + "%"; }
+            else if (data.MoveSpeedUp != 0 && spellitem[4].text.Equals("")) { spellitem[4].text = "이동 속도 증가 " + data.MoveSpeedUp.ToString() + "%"; }
+            else if (data.MoveSpeedUp != 0 && spellitem[5].text.Equals("")) { spellitem[5].text = "이동 속도 증가 " + data.MoveSpeedUp.ToString() + "%"; }
 
             if (data.AttackTimeDown != 0 && spellitem[3].text.Equals("")) { spellitem[3].text = "공격 속도 증가 " + data.AttackTimeDown.ToString() + "%"; }
             else if (data.AttackTimeDown != 0 && spellitem[4].text.Equals("")) { spellitem[4].text = "공격 속도 증가 " + data.AttackTimeDown.ToString() + "%"; }
