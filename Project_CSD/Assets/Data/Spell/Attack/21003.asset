@@ -15,7 +15,7 @@ MonoBehaviour:
   spellType: 0
   spellID: 21003
   spellName: "\uCCB4\uC778 \uB77C\uC774\uD2B8\uB2DD"
-  cost: 15
+  cost: 5
   duration: 0
   damage: 250
   maxHpUp: 0
@@ -24,3 +24,4 @@ MonoBehaviour:
   attackTimeDown: 0
   item_Type: 2
   spell_CardImg: {fileID: 21300000, guid: 47c3af21b00d62245bbdaf1143d73ca3, type: 3}
+  spell_Effect: 
