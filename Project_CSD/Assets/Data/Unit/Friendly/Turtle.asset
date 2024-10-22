@@ -17,7 +17,7 @@ MonoBehaviour:
   unitName: "\uAC70\uBD81\uB860\uBE75"
   cost: 12
   health: 2000
-  power: 150
+  power: 250
   moveSpeed: 0.7
   attackTime: 1.2
   item_Type: 1
