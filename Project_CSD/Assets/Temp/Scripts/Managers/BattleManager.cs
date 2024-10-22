@@ -182,7 +182,8 @@ public class BattleManager :Singleton<BattleManager>
         {
             battleState = BattleState.Lose;
             unitSpawnRange.SetActive(false);
-            EndGame("Lose");
+            HpDamage(curHealth);
+
             //지금 10분을 버텨내면 승리 조건 10분안에 클리어 못하면 패배하는걸로 바꿔야 될까?
         }
         if (limite_time >= 0)
@@ -256,7 +257,7 @@ public class BattleManager :Singleton<BattleManager>
             //int minutes = Mathf.FloorToInt(endTime / 60);
             //int seconds = Mathf.FloorToInt(endTime % 60);
             //result_Time.text = string.Format("{0:00} : {1:00}", minutes, seconds);
-            Invoke("Stop_Anim", 5f);
+            Invoke("Stop_Anim", 3f);
         }
         else if(whether == "Lose")
         {
@@ -269,7 +270,7 @@ public class BattleManager :Singleton<BattleManager>
             //int minutes = Mathf.FloorToInt(endTime / 60);
             //int seconds = Mathf.FloorToInt(endTime % 60);
             //result_Time.text = string.Format("{0:00} : {1:00}", minutes, seconds);
-            Invoke("Stop_Anim", 5f);
+            Invoke("Stop_Anim", 3f);
         }
 
         // 데이터베이스 입력 (userData Table)

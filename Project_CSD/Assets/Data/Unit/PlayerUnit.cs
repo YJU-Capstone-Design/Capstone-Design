@@ -76,11 +76,11 @@ public class PlayerUnit : UnitBase
         initialMoveSpeed = unitData.MoveSpeed;
         initialPower = unitData.Power;
         initialAttackTime = unitData.AttackTime;
-        if (unitData.UnitID == 11006)
+        /*if (unitData.UnitID == 11006)
         {
             StartAnimation("Walk", false, 1f);
             //yield return new WaitForSeconds(1f);
-        }
+        }*/
 
     }
 
