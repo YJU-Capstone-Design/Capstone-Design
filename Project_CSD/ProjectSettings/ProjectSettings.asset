@@ -12,8 +12,8 @@ PlayerSettings:
   targetDevice: 2
   useOnDemandResources: 0
   accelerometerFrequency: 60
-  companyName: DefaultCompany
-  productName: Project_CSD
+  companyName: YJU-3SGB-Ppangtasy
+  productName: Ppangtasy
   defaultCursor: {fileID: 2800000, guid: 61c828c77656b0849bd8110e58543b29, type: 3}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
@@ -286,7 +286,7 @@ PlayerSettings:
   - m_BuildTarget: 
     m_Icons:
     - serializedVersion: 2
-      m_Icon: {fileID: 2800000, guid: 61c828c77656b0849bd8110e58543b29, type: 3}
+      m_Icon: {fileID: 2800000, guid: 9228bdea9a4159c4cb082266b5ebbe85, type: 3}
       m_Width: 128
       m_Height: 128
       m_Kind: 0
@@ -842,8 +842,8 @@ PlayerSettings:
   apiCompatibilityLevelPerPlatform: {}
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
-  metroPackageName: Project_CSD
-  metroPackageVersion: 
+  metroPackageName: ProjectCSD
+  metroPackageVersion: 1.0.0.0
   metroCertificatePath: 
   metroCertificatePassword: 
   metroCertificateSubject: 
@@ -851,7 +851,7 @@ PlayerSettings:
   metroCertificateNotAfter: 0000000000000000
   metroApplicationDescription: Project_CSD
   wsaImages: {}
-  metroTileShortName: 
+  metroTileShortName: Project_CSD
   metroTileShowName: 0
   metroMediumTileShowName: 0
   metroLargeTileShowName: 0
