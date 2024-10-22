@@ -39,5 +39,6 @@ public class AnimationController : MonoBehaviour
         {
             animator.enabled = false; // Animator를 비활성화하여 애니메이션 정지
         }
+        Time.timeScale = 0;
     }
 }

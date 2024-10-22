@@ -313,31 +313,23 @@ public class BattleManager :Singleton<BattleManager>
     // 게임 종료 후 유저의 게임 결과를 저장하는 함수 (userData Table)
     void SaveUserData(string whether, int wave)
     {
-        // 데이터베이스 입력 (userData Table)
-        XmlNodeList selectedData = DBConnect.Select("userData", $"WHERE userName = '{UserRankingData.instance.playerName}'");
+        if (playerScore <= 0)
+            return;
+
+        // 데이터베이스 입력
+        XmlNodeList selectedData = DBConnect.Select("ranking", $"WHERE userName = '{UserRankingData.instance.playerName}'");
 
         if (selectedData == null)
         {
-            if (whether == "Win")
-            {
-                DBConnect.UserDataInsert(UserRankingData.instance.playerName, wave + 1);
-            }
-            else if (whether == "Lose")
-            {
-                DBConnect.UserDataInsert(UserRankingData.instance.playerName, wave);
-            }
+            DBConnect.Insert("ranking", $"'{UserRankingData.instance.playerName}', {playerScore}");
         }
         else
         {
-            if (whether == "Win")
-            {
-                DBConnect.UserDataUpdate(UserRankingData.instance.playerName, wave + 1);
-            }
-            else if (whether == "Lose")
-            {
-                DBConnect.UserDataUpdate(UserRankingData.instance.playerName, wave);
-            }
+            DBConnect.UpdateRanking("ranking", "score", playerScore, $"userName = '{UserRankingData.instance.playerName}'");
         }
+
+        // 랭킹 등록 UI 비활성화
+        rank_Obj.SetActive(false);
     }
 
     IEnumerator ResultUI(int second)
