@@ -334,11 +334,7 @@ public class PlayerUnit : UnitBase
         if (nearestAttackTarget == null) {
             if (smash != null) { StopCoroutine(smash); smash = null; }
         }
-        if(unitData.UnitID == 11007)
-        {
-            StartAnimation("Attack", false, 1f);
-            yield return new WaitForSeconds(1.167f); // 애니메이션 시간
-        }
+        
             // 터틀 공격 시작 
             if (unitData.UnitID == 11006 && !attack_ing) 
         {
@@ -377,7 +373,7 @@ public class PlayerUnit : UnitBase
         }
 
         // 일반 유닛 공격 애니메이션
-        if (unitData.UnitID != 11005 && unitData.UnitID != 11006 && unitData.UnitID != 11007)
+        if (unitData.UnitID != 11005 && unitData.UnitID != 11006 )
         {
             Debug.Log(unitData.UnitID + " 공격");
             StartAnimation("Attack", false, 1f);
@@ -425,7 +421,7 @@ public class PlayerUnit : UnitBase
         }
 
         // 일반 유닛 애니메이션
-        if (unitData.UnitID != 11005 && unitData.UnitID != 11006 && unitData.UnitID != 11007)
+        if (unitData.UnitID != 11005 && unitData.UnitID != 11006)
         {
             // 공격 애니메이션 대기 (0.4초, 0.59초 두번으로 나눔)
             yield return new WaitForSeconds(0.59f);
