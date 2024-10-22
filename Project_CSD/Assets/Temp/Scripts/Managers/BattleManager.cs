@@ -67,7 +67,7 @@ public class BattleManager : Singleton<BattleManager>
     [SerializeField] TextMeshProUGUI time;
     [SerializeField] TextMeshProUGUI result_Time;
     public float timer = 180;
-    private float limite_time = 600f;
+    private float limite_time = 900f;
     [SerializeField] Image waveImg;
     [SerializeField] Image waveImg2;
     public float endTime = 0f;

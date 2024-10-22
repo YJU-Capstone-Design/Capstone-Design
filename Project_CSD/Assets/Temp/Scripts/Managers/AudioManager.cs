@@ -52,22 +52,23 @@ public class AudioManager : MonoBehaviour
     {
 
         MainSound();
-       if(soundBtn == null)
+        // ÃÊ±â º¼·ý ¼³Á¤
+        ChangeBgmSound(25);
+        ChangeSfxSound(25);
+        if (soundBtn == null)
         {
             soundBtn = GameObject.Find("SoundBtn");
             Button btn = soundBtn.GetComponent<Button>();
             btn.onClick.AddListener(OpenAudioBox);
         }
-        if(endBtn == null)
+        if (endBtn == null)
         {
             endBtn = GameObject.Find("EndBtn");
             Button btn = endBtn.GetComponent<Button>();
             btn.onClick.AddListener(EndGame);
         }
-           
-        
-    }
 
+    }
     public void GachaSound() {audioSource_Bg.clip = audioClip_Bg[1]; audioSource_Bg.Play();}//°¡Ã­·ë »ç¿îµå
     public void BattleSound() { audioSource_Bg.clip = audioClip_Bg[2]; audioSource_Bg.Play(); }
 
