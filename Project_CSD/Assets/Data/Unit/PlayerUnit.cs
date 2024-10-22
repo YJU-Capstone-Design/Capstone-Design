@@ -50,6 +50,10 @@ public class PlayerUnit : UnitBase
         bodySprite = GetComponent<MeshRenderer>();
         attack_ing = false;
         targetLayer = scanner.targetLayer;
+        if (unitData.UnitID == 11006)
+        {
+            StartAnimation("Idle", true, 1f);
+        }
     }
 
     void OnEnable()
@@ -196,7 +200,7 @@ public class PlayerUnit : UnitBase
             {
                 StartAnimation("Attack_ing", true, 1f);
             }
-            else if (unitData.UnitID != 11005 && unitData.UnitID != 11006)
+            else if (unitData.UnitID != 11005 )
             {
                 StartAnimation("Walk", true, 1.2f);
             }
@@ -575,8 +579,13 @@ public class PlayerUnit : UnitBase
         {
             StartAnimation("die_1unit", true, 1f);
         }
+        if(unitData.UnitID == 11006)
+        {
+            StartAnimation("Die", true, 1f);
+            yield return new WaitForSeconds(1.3f);
+        }
         // 애니메이션
-        if (unitData.UnitID != 11005)
+        else if (unitData.UnitID != 11005&& unitData.UnitID != 11006)
         {
             StartAnimation("Die", true, 1f);
         }
