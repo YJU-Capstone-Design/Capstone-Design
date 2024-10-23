@@ -8,6 +8,7 @@ using static SpellBase;
 using Spine.Unity;
 using static UnityEngine.GraphicsBuffer;
 using UnityEngine.SocialPlatforms;
+using System.Linq;
 
 public class PlayerUnit : UnitBase
 {
@@ -321,8 +322,17 @@ public class PlayerUnit : UnitBase
         }
         else
         {
-            // AttackRay 에 인식되는 오브젝트가 없는 경우, 다시 스캔 시작
-            Scanner();
+            // 공격 애니메이션 중에는 스캐너 사용 X, attackTime 초기화 X
+            string[] attackAnimations = { "Attack", "attack_3unit", "attack_2unit", "attack_1unit" };
+
+            if (!attackAnimations.Contains(skeletonAnimation.AnimationName))
+            {
+                // AttackRay 에 인식되는 오브젝트가 없는 경우, 다시 스캔 시작
+                Scanner();
+
+                // 다음에 attackRay 에 적 인식시, 바로 공격 가능하게 attackTime 초기화
+                attackTime = unitData.AttackTime - 0.2f;
+            }
         }
     }
 
@@ -441,6 +451,8 @@ public class PlayerUnit : UnitBase
         }
         yield return new WaitForSeconds(1f);
         Debug.Log("현재 공격 대상 존재 여부 판별: ");
+
+
         // 타겟이 존재할 때의 동작
 
 
