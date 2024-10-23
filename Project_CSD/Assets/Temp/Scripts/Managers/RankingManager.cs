@@ -19,12 +19,8 @@ public class RankingManager : MonoBehaviour
     private void Update()
     {
         time += Time.deltaTime;
-        if(time >= 180)
+        if(time >= 60)
         {
-            foreach (Transform child in creatRanking_Tr)
-            {
-                Destroy(child.gameObject);
-            }
             RankingSystem();
             time = 0f;
         }
