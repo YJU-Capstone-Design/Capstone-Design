@@ -208,8 +208,8 @@ MonoBehaviour:
   - {fileID: 7812418327822481071}
   scanner: {fileID: 0}
   unitData: {fileID: 11400000, guid: 5c555b720eee4eb4fbcc373caaa241b4, type: 2}
-  attackRayPos: {x: 0.8, y: 0.35, z: 0}
-  attackRaySize: {x: 1, y: 0.35}
+  attackRayPos: {x: 0.65, y: 0.35, z: 0}
+  attackRaySize: {x: 1.2, y: 0.35}
   nearestAttackTarget: {fileID: 0}
   multipleAttackTargets: []
   firstPos: {x: 0, y: 0, z: 0}
