@@ -191,7 +191,7 @@ public class CollectionManager : MonoBehaviour
         unitGraphic.SetActive(true);
 
         // 버튼 텍스트 변경
-        if (unitData.UnitName == "빵게" || unitData.UnitName == "팬케이크") { attackAnimText.text = "방어"; }
+        if (unitData.UnitName == "소랑" || unitData.UnitName == "팬 케이크") { attackAnimText.text = "방어"; }
         else { attackAnimText.text = "공격"; }
     }
 
@@ -298,8 +298,8 @@ public class CollectionManager : MonoBehaviour
         // 다른 애니메이션을 가진 unit 수정
         switch ((unitNameText.text, animName))
         {
-            case ("빵게", "Attack"):
-            case ("팬케이크", "Attack"):
+            case ("소랑", "Attack"):
+            case ("팬 케이크", "Attack"):
                 startDefenseAnim = true;
                 break;
             case ("에그볼", "Idle"):
@@ -341,8 +341,8 @@ public class CollectionManager : MonoBehaviour
         unitSkeletonGraphic.startingAnimation = "Defense_start";
         unitSkeletonGraphic.Initialize(true);
 
-        if(unitNameText.text == "빵게") { yield return new WaitForSeconds(0.9f); }
-        else if(unitNameText.text == "팬케이크") { yield return new WaitForSeconds(1.9f); }
+        if(unitNameText.text == "소랑") { yield return new WaitForSeconds(0.9f); }
+        else if(unitNameText.text == "팬 케이크") { yield return new WaitForSeconds(1.9f); }
 
         unitSkeletonGraphic.startingAnimation = "Defense_ing";
         unitSkeletonGraphic.Initialize(true);
@@ -352,8 +352,8 @@ public class CollectionManager : MonoBehaviour
         unitSkeletonGraphic.startingAnimation = "Defense_end";
         unitSkeletonGraphic.Initialize(true);
 
-        if (unitNameText.text == "빵게") { yield return new WaitForSeconds(0.9f); }
-        else if (unitNameText.text == "팬케이크") { yield return new WaitForSeconds(1.9f); }
+        if (unitNameText.text == "소랑") { yield return new WaitForSeconds(0.9f); }
+        else if (unitNameText.text == "팬 케이크") { yield return new WaitForSeconds(1.9f); }
 
         if (defenseAnim != null) { StopCoroutine(defenseAnim); defenseAnim = null; startDefenseAnim = true; }
     }
