@@ -42,6 +42,7 @@ public class BattleManager : Singleton<BattleManager>
     float nextSpawnDelay;
     public GameObject unitSpawnRange; // 유닛 스폰 범위 (canvas 오브젝트)
     public int totalEnemyCount; // 스폰될 적의 총 수
+    public int enemyCnt;
 
     [Header("# UI")]
     [SerializeField] GameObject waveUI;
@@ -67,7 +68,7 @@ public class BattleManager : Singleton<BattleManager>
     [SerializeField] TextMeshProUGUI time;
     [SerializeField] TextMeshProUGUI result_Time;
     public float timer = 180;
-    private float limite_time = 900f;
+    public float limite_time = 900f;
     [SerializeField] Image waveImg;
     [SerializeField] Image waveImg2;
     public float endTime = 0f;
@@ -487,7 +488,7 @@ public class BattleManager : Singleton<BattleManager>
 
         // 적의 수 초기화
         totalEnemyCount = 0;
-
+        enemyCnt = 0;
         // 리스폰 파일 읽기
         TextAsset textFile = Resources.Load(enemySpawnFile[waveCount].name) as TextAsset;
         StringReader reader = new StringReader(textFile.text);
@@ -509,6 +510,7 @@ public class BattleManager : Singleton<BattleManager>
 
             // 적 수 카운트 증가
             totalEnemyCount++;
+            enemyCnt++;
         }
 
         // 텍스트 파일 닫기
@@ -543,7 +545,7 @@ public class BattleManager : Singleton<BattleManager>
 
     void UpdateEnemyCountUI()
     {
-        enemyCountText.text = totalEnemyCount.ToString();
+        enemyCountText.text = totalEnemyCount.ToString()+"/"+enemyCnt;
     }
     public void AddRanking()
     {

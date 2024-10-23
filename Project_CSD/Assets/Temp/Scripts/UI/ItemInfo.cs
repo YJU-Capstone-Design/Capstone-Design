@@ -63,7 +63,7 @@ public class ItemInfo : MonoBehaviour
         unititem[1].text =  data.Cost.ToString();
         unititem[2].text = "체력 " + data.Health.ToString();
         unititem[3].text = "공격력 " + data.Power.ToString();
-        unititem[4].text = "스피드 " + data.MoveSpeed.ToString();
+        unititem[4].text = "이동 속도 " + data.MoveSpeed.ToString();
         unititem[5].text = "공격 속도 " + data.AttackTime.ToString();
     }
 
@@ -73,7 +73,7 @@ public class ItemInfo : MonoBehaviour
 
         spellitem[0].text =data.SpellName;
         spellitem[1].text = data.Cost.ToString();
-        spellitem[2].text = "지속시간 "+data.Duration.ToString();
+        spellitem[2].text = "지속시간 "+data.Duration.ToString()+"s";
         if (data.SpellID == 23002)
         {
             spellitem[3].text = "적 유닛 일시 정지 ";

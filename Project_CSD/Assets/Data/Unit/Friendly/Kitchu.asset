@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unitType: 0
   unitID: 11001
-  unitName: "\uD0B7\uCE04"
+  unitName: "\uD0A4\uCE04"
   cost: 2
   health: 450
   power: 150

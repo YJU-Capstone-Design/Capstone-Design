@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unitType: 0
   unitID: 12003
-  unitName: "\uD32C\uCF00\uC774\uD06C"
+  unitName: "\uD32C \uCF00\uC774\uD06C"
   cost: 18
   health: 4000
   power: 0

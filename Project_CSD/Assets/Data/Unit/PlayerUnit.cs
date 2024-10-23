@@ -381,8 +381,9 @@ public class PlayerUnit : UnitBase
         }
         if(unitData.UnitID == 11007)//개구리
         {
-            StartAnimation("Attack", false, 1f);
+            StartAnimation("Attack", true, 1f);
             yield return new WaitForSeconds(1.167f);
+            
         }
         // 일반 유닛 공격 애니메이션
         if (unitData.UnitID != 11005 && unitData.UnitID != 11006 && unitData.UnitID != 11007)
