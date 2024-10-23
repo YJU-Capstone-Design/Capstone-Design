@@ -323,9 +323,6 @@ public class PlayerUnit : UnitBase
         {
             // AttackRay 에 인식되는 오브젝트가 없는 경우, 다시 스캔 시작
             Scanner();
-
-            // 다음에 attackRay 에 적 인식시, 바로 공격 가능하게 attackTime 초기화
-            attackTime = unitData.AttackTime - 0.2f;
         }
     }
 
