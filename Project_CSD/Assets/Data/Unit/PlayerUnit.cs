@@ -342,7 +342,7 @@ public class PlayerUnit : UnitBase
         Gizmos.DrawWireCube(transform.position + new Vector3(attackRayPos.x * Mathf.Sign(moveVec.x), attackRayPos.y, attackRayPos.z), attackRaySize);
     }
 
-    // 일반 근접 공격 함수
+    // 일반 근접 공격 함수 (공격 애니메이션(초중반) -> 공격 -> 공격 애니메이션(후반) -> Idle 애니메이션)
     protected virtual IEnumerator Attack()
     {
         if (nearestAttackTarget == null)
@@ -386,14 +386,15 @@ public class PlayerUnit : UnitBase
 
             yield return new WaitForSeconds(0.4f);
         }
-        if(unitData.UnitID == 11007)//개구리
+        else if(unitData.UnitID == 11007)//개구리
         {
             StartAnimation("Attack", true, 1f);
-            yield return new WaitForSeconds(1.167f);
+            Debug.Log("개구리 AttackAnim 실행");
+            yield return new WaitForSeconds(0.9f);
             
         }
         // 일반 유닛 공격 애니메이션
-        if (unitData.UnitID != 11005 && unitData.UnitID != 11006 && unitData.UnitID != 11007)
+        else if (unitData.UnitID != 11005 && unitData.UnitID != 11006 && unitData.UnitID != 11007)
         {
             Debug.Log(unitData.UnitID + " 공격");
             StartAnimation("Attack", false, 1f);
@@ -426,6 +427,9 @@ public class PlayerUnit : UnitBase
         {
             float healthPercentage = health / unitData.Health; // 현재 체력 비율
 
+            // 공격 애니메이션 대기 (0.4초, 0.59초 두번으로 나눔)
+            yield return new WaitForSeconds(0.59f);
+
             if (healthPercentage > 0.66f) // 67% 이상
             {
                 StartAnimation("idle_3unit", true, 1.5f);
@@ -439,9 +443,13 @@ public class PlayerUnit : UnitBase
                 StartAnimation("idle_1unit", true, 1.5f);
             }
         }
-
-        // 일반 유닛 애니메이션
-        if (unitData.UnitID != 11005 && unitData.UnitID != 11006)
+        else if(unitData.UnitID == 11007) // 개구리
+        {
+            // 공격 애니메이션 대기 (0.9초, 0.266초 두번으로 나눔)
+            yield return new WaitForSeconds(0.266f);
+            StartAnimation("Idle", true, 1.5f);
+        }
+        else if (unitData.UnitID != 11005 && unitData.UnitID != 11006 && unitData.UnitID != 11007) // 일반 유닛 애니메이션
         {
             // 공격 애니메이션 대기 (0.4초, 0.59초 두번으로 나눔)
             yield return new WaitForSeconds(0.59f);
@@ -449,6 +457,7 @@ public class PlayerUnit : UnitBase
             StartAnimation("Idle", true, 1.5f);
 
         }
+
         yield return new WaitForSeconds(1f);
         Debug.Log("현재 공격 대상 존재 여부 판별: ");
 
