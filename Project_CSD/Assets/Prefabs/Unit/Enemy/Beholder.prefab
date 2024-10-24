@@ -1630,8 +1630,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52279921ff6dbe14f88026711e89ae42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scannerPos: {x: -5, y: 0, z: 0}
-  scanRange: {x: 30, y: 6}
+  scannerPos: {x: 0, y: 0, z: 0}
+  scanRange: {x: 20, y: 1.5}
   targetLayer:
     serializedVersion: 2
     m_Bits: 64
