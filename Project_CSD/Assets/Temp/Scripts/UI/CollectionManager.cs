@@ -6,6 +6,7 @@ using UnityEditor;
 using UnityEngine;
 using System.Xml;
 using System;
+using UnityEngine.UI;
 using System.Reflection;
 
 public class CollectionManager : MonoBehaviour
@@ -22,6 +23,8 @@ public class CollectionManager : MonoBehaviour
     [SerializeField] GameObject unitGraphic;
     [SerializeField] GameObject animButtons;
     [SerializeField] TextMeshProUGUI attackAnimText;
+    [SerializeField] Image unit_ATK_Type;
+    [SerializeField] Sprite basic_ATK_Type;
     Coroutine defenseAnim;
     Coroutine attackAnim;
     [SerializeField] bool startDefenseAnim = false;
@@ -126,7 +129,7 @@ public class CollectionManager : MonoBehaviour
         attackAnimText.text = "°ø°Ý";
         animButtons.SetActive(false);
         unitGraphic.SetActive(false);
-
+        unit_ATK_Type.sprite = basic_ATK_Type;
         if (unitGraphic.GetComponent<SkeletonGraphic>().SkeletonDataAsset != null)
         {
             unitGraphic.GetComponent<SkeletonGraphic>().SkeletonDataAsset.Clear();
@@ -160,8 +163,17 @@ public class CollectionManager : MonoBehaviour
         { unitGraphic.gameObject.transform.localScale = new Vector3(0.6f, 0.6f,1.3f); } //ÆÒÄÉÀÌÅ©, °ÅºÏ
         else 
         { unitGraphic.gameObject.transform.localScale = new Vector3(1.3f, 1.3f, 1.3f); }*/
-
-        unitNameText.text = unitData.UnitName;
+    
+        if (unitData.UnitID == 11004|| unitData.UnitID == 12001)
+        {
+            unitNameText.text = unitData.UnitName + "(¹üÀ§)";
+        }
+        else
+        {
+            unitNameText.text = unitData.UnitName;
+        }
+     
+        unit_ATK_Type.sprite = unitData.Unit_Atk_Type;
         unitHPText.text = unitData.Health.ToString();
         unitPowerText.text = unitData.Power.ToString();
         unitCostText.text = unitData.Cost.ToString();

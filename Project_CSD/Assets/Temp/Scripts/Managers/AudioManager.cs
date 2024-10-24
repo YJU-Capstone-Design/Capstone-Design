@@ -53,7 +53,7 @@ public class AudioManager : MonoBehaviour
 
         MainSound();
         // 초기 볼륨 설정
-        MaserSound(0.25f);
+        MaserSound(0.5f);
         if (soundBtn == null)
         {
             soundBtn = GameObject.Find("SoundBtn");

@@ -58,7 +58,9 @@ public class UnitData : ScriptableObject
     private SkeletonDataAsset unit_skeletonData;
     public SkeletonDataAsset Unit_skeletonData { get { return unit_skeletonData; } }
 
-
+    [SerializeField] // 유닛 공격 타입
+    private Sprite unit_Atk_Type;
+    public Sprite Unit_Atk_Type { get { return unit_Atk_Type; } }
 
     //[Header("# Level State")]
 
