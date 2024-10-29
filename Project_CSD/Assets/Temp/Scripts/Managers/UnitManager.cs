@@ -1,3 +1,4 @@
+using Spine.Unity;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
@@ -15,6 +16,8 @@ public class UnitManager : MonoBehaviour
 
     public Button reRoll;
 
+ 
+
     private void Awake()
     {
         unit = GetComponent<Unit>();
@@ -25,11 +28,26 @@ public class UnitManager : MonoBehaviour
         unitSpawnRangeButton = BattleManager.Instance.unitSpawnRange.GetComponentInChildren<Button>();
 
         reRoll = BattleManager.Instance.reRoll;
+
+      
     }
+   
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Escape)&& Input.GetKeyDown(KeyCode.A))
+        {
+            UiManager.Instance.cost += 30;
+        }
+     
+       
+    }
+
+
     public void UsingCard()
     {
         if (!BattleManager.Instance.unitSpawnRange.activeSelf)
         {
+            
             // 해당 카드를 제외한 카드의 버튼 컴포넌트를 비활성화 처리
             foreach (GameObject card in BattleManager.Instance.cardObj)
             {
@@ -61,6 +79,11 @@ public class UnitManager : MonoBehaviour
             Debug.Log(unit.unitID);
             /*        unitSpawnRangeButton.onClick.AddListener(() => UnitSpawn(unit.unitID));*/
             unitSpawnRangeButton.onClick.AddListener(() => Buy(unit.cost));
+            SummonUnit.instance.ClearCursor(true);
+            SummonUnit.instance.GetSkeletonData(unit);
+
+            
+            
         }
         else
         {
@@ -74,6 +97,9 @@ public class UnitManager : MonoBehaviour
             }
             reRoll.enabled = true;
             BattleManager.Instance.unitSpawnRange.SetActive(false);
+            SummonUnit.instance.GetSkeletonData(null);
+            SummonUnit.instance.ClearCursor(false);
+
         }
     }
 
@@ -82,7 +108,7 @@ public class UnitManager : MonoBehaviour
         // 마우스 좌클릭 한 곳의 위치값
         BattleManager.Instance.point = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x,
             Input.mousePosition.y, -Camera.main.transform.position.z));
-
+        
         switch (unitID)
         {
             case 11001: // Kitchu
@@ -125,7 +151,8 @@ public class UnitManager : MonoBehaviour
 
         BattleManager.Instance.unitSpawnRange.SetActive(false);
         BattleManager.Instance.CardShuffle(false);
-
+ 
+ 
         // usingCount 테이블에 해당 ID 의 컬럼에 count 값에 +1, 해당 ID 컬럼이 없으면 먼저 추가
         XmlNodeList cardData = DBConnect.Select("usingCount", $"WHERE cardID = {unitID}");
 
@@ -150,6 +177,8 @@ public class UnitManager : MonoBehaviour
             // 코스트를 차감하고 유닛을 스폰
             UiManager.Instance.cost -= unitCost;
             UnitSpawn(unit.unitID);
+            SummonUnit.instance.GetSkeletonData(null);
+            SummonUnit.instance.ClearCursor(false);
         }
         else
         {

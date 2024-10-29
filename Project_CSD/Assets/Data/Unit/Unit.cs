@@ -1,3 +1,4 @@
+using Spine.Unity;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -12,6 +13,7 @@ public class Unit : UnitBase, IPointerEnterHandler, IPointerExitHandler
     public List<UnitData> units = new List<UnitData>();
     public UnitData data;
     public Image cardImg;
+    public SkeletonDataAsset unit_anim;
     public TextMeshProUGUI unitCost;
     public TextMeshProUGUI unitText;
 
@@ -20,7 +22,7 @@ public class Unit : UnitBase, IPointerEnterHandler, IPointerExitHandler
         System.Random random = new System.Random();
         CallUnitData(random.Next(0, units.Count));
     }
-
+    
     public void CallUnitData(int index)
     {
         // Unit Type
@@ -39,6 +41,7 @@ public class Unit : UnitBase, IPointerEnterHandler, IPointerExitHandler
         cardImg.sprite = units[index].Unit_CardImg;
         unitCost.text = units[index].Cost.ToString();
         unitText.text = units[index].UnitName;
+        unit_anim = units[index].Unit_skeletonData;
     }
 
     public void SetItemInfo()
