@@ -21,7 +21,7 @@ public class DBConnect : Singleton<DBConnect>
     public bool Connection()
     {
         string conStr = string.Format("Server={0};Database={1};Uid={2};Pwd={3};Port={4};SslMode=none;",
-         "34.64.201.214", "cst", "root", "yju123", "3306"); // IP 주소, DB 이름, ID, 비밀번호, 포트 번호
+         "34.64.217.22", "cst", "root", "yju123", "3306"); // IP 주소, DB 이름, ID, 비밀번호, 포트 번호
 
         try
         {
@@ -62,7 +62,7 @@ public class DBConnect : Singleton<DBConnect>
                 try
                 {
                     string formatSql = string.Format("Server={0};Database={1};Uid={2};Pwd={3};Port={4};SslMode=none;",
-                                                        "34.64.201.214", "cst", "root", "yju123", "3306");
+                                                        "34.64.217.22", "cst", "root", "yju123", "3306");
                     _connection = new MySqlConnection(formatSql);
                 }
                 catch (MySqlException e)
