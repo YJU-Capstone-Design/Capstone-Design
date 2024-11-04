@@ -367,6 +367,11 @@ public class BattleManager : Singleton<BattleManager>
 
             resultBtn.enabled = true;
         }
+
+        yield return new WaitForSeconds(1);
+
+        // 랭킹 UI 자동 활성화
+        rank_Obj.SetActive(true);
     }
 
     // 유닛 스폰 버튼
