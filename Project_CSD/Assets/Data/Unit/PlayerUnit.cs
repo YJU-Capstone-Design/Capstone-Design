@@ -475,7 +475,7 @@ public class PlayerUnit : UnitBase
             yield return new WaitForSeconds(3.9f); // 애니메이션 시간
 
             Debug.Log("거북론빵 공격 종료 2");
-            StartAnimation("Idle", true, 1.5f);
+            //StartAnimation("Idle", true, 1.5f);
             attack_ing = false;
         }
     }
@@ -699,9 +699,9 @@ public class PlayerUnit : UnitBase
     {
         //동일한 애니메이션을 재생하려고 한다면 아래 코드 구문 실행 X
         if (animName.Equals(CurrentAnimation))
-        {
             return;
-        }
+
+        Debug.Log(this.gameObject.name + " " + animName);
 
         //해당 애니메이션으로 변경한다.
         skeletonAnimation.state.SetAnimation(0, animName, loop).TimeScale = timeScale;
