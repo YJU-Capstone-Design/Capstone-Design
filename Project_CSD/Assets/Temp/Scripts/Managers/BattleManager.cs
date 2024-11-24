@@ -42,7 +42,7 @@ public class BattleManager : Singleton<BattleManager>
     float nextSpawnDelay;
     public GameObject unitSpawnRange; // 유닛 스폰 범위 (canvas 오브젝트)
     public int totalEnemyCount; // 스폰될 적의 총 수
-    public int enemyCnt;
+    private int enemyCnt;
 
     [Header("# UI")]
     [SerializeField] GameObject waveUI;
