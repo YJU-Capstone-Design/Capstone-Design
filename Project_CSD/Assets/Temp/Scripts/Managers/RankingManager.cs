@@ -1,14 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Xml;
+using TMPro;
 using UnityEngine;
-
+using UnityEngine.UI;
 public class RankingManager : MonoBehaviour
 {
     [SerializeField] Transform creatRanking_Tr; // 랭킹 프리팹 생성 위치
     [SerializeField] GameObject ranking_Obj; // 랭킹 아이템 프리팹
     [SerializeField] RankItem[] rankItems;
-
+    [SerializeField] GameObject noNetwork;
     float time;
 
     private void Start()
@@ -34,7 +35,8 @@ public class RankingManager : MonoBehaviour
         if (rankingData != null)
         {
             int rank = 0;
-
+            ranking_Obj.SetActive(true);
+            noNetwork.SetActive(false);
             foreach (XmlNode data in rankingData)
             {
                 rankItems[rank].SetRankingData(data["userName"].InnerText, int.Parse(data["score"].InnerText));
@@ -44,6 +46,8 @@ public class RankingManager : MonoBehaviour
         else
         {
             Debug.Log("랭킹 데이터를 가져오지 못했습니다.");
+            noNetwork.SetActive(true);
+            ranking_Obj.SetActive(false);
         }
     }
 }
