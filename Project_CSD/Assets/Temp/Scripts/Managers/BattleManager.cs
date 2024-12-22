@@ -80,6 +80,8 @@ public class BattleManager : Singleton<BattleManager>
     public TextMeshProUGUI playerScoreText;
     public int playerScore;
     [SerializeField] TextMeshProUGUI percentageText;
+    public PlayerInfoDB testdb;
+    public TMP_InputField player_name;
 
     [Header("# percentData")]
     public float percent = 0.0f;
@@ -275,19 +277,19 @@ public class BattleManager : Singleton<BattleManager>
         }
 
         // 데이터베이스 입력 (userData Table)
-        SaveUserData(whether, waveCount);
+        //SaveUserData(whether, waveCount);
 
         // 상위 퍼센트 출력 (Wave 도달로 판단)
-        Debug.Log("Get Wave Reach Percentage");
+        //Debug.Log("Get Wave Reach Percentage");
 
-        if (whether == "Win" && waveCount == 10)
+        /*if (whether == "Win" && waveCount == 10)
         {
             GetWaveReachPercentage(waveCount + 1);
         }
         else
         {
             GetWaveReachPercentage(waveCount);
-        }
+        }*/
     }
     public void Stop_Anim()
     {
@@ -371,7 +373,7 @@ public class BattleManager : Singleton<BattleManager>
         yield return new WaitForSeconds(1);
 
         // 랭킹 UI 자동 활성화
-        rank_Obj.SetActive(true);
+        //rank_Obj.SetActive(true);
     }
 
     // 유닛 스폰 버튼
@@ -593,5 +595,17 @@ public class BattleManager : Singleton<BattleManager>
 
         // 텍스트 입력
         percentageText.text = $"전체 유저 중 {percent}%가\r\n동일한 웨이브에 도달했습니다.";
+    }
+
+    void RocalRankSystem()
+    {
+        string name = player_name.text;
+        int score = playerScore;
+
+
+
+
+
+
     }
 }

@@ -179,7 +179,7 @@ public class CollectionManager : MonoBehaviour
         unitCostText.text = unitData.Cost.ToString();
         unitSpeedText.text = unitData.MoveSpeed.ToString();
         unitAtkSpeedText.text = unitData.AttackTime.ToString() + "s";
-        usePercentText.text = GetUsePercentage(unitData.UnitID);
+        //usePercentText.text = GetUsePercentage(unitData.UnitID);
         animButtons.SetActive(true);
 
         if (defenseAnim != null) { StopCoroutine(defenseAnim); defenseAnim = null; startDefenseAnim = false; Debug.Log("Strop DefenseAnim"); }
@@ -212,7 +212,7 @@ public class CollectionManager : MonoBehaviour
     {
         spellNameText.text = spellData.SpellName.ToString();
         spellCostText.text = spellData.Cost.ToString();
-        spellPercentText.text = GetUsePercentage(spellData.SpellID);
+        //spellPercentText.text = GetUsePercentage(spellData.SpellID);
         durationTimeText.text = spellData.Duration.ToString() + "s";
         spellEffectText.text = spellData.Spell_Effect;
         unit_BG.SetActive(true);

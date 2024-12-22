@@ -16,8 +16,6 @@ public class UnitManager : MonoBehaviour
 
     public Button reRoll;
 
- 
-
     private void Awake()
     {
         unit = GetComponent<Unit>();
@@ -28,27 +26,45 @@ public class UnitManager : MonoBehaviour
         unitSpawnRangeButton = BattleManager.Instance.unitSpawnRange.GetComponentInChildren<Button>();
 
         reRoll = BattleManager.Instance.reRoll;
-
-      
     }
-   
+
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Escape)&& Input.GetKeyDown(KeyCode.A))
+        // 터치 입력을 감지하여 유닛을 생성하는 코드
+        if (Input.touchCount > 0)
+        {
+            Touch touch = Input.GetTouch(0);
+            if (touch.phase == TouchPhase.Began)
+            {
+                Vector2 touchPosition = touch.position;
+                // 스크린 좌표를 월드 좌표로 변환
+                Vector3 worldPosition = Camera.main.ScreenToWorldPoint(new Vector3(touchPosition.x, touchPosition.y, 10f)); // z는 카메라 거리로 조정
+                // 유닛을 생성할 위치 지정
+                SpawnUnitAtPosition(worldPosition);
+            }
+        }
+
+        // PC 키보드 입력 (필요시)
+        if (Input.GetKeyDown(KeyCode.Escape) && Input.GetKeyDown(KeyCode.A))
         {
             UiManager.Instance.cost += 30;
         }
-     
-       
     }
 
+    // 유닛을 지정된 위치에 스폰하는 메서드
+    private void SpawnUnitAtPosition(Vector3 position)
+    {
+        // 유닛을 풀에서 가져와서 지정된 위치에 스폰하는 로직
+        // 예시로, 유닛 스폰 위치와 풀 관리 방식은 상황에 맞게 수정
+        pool.Get(0, 0);  // 실제 유닛을 풀에서 가져오는 방법을 추가
+        unit.transform.position = position;
+    }
 
     public void UsingCard()
     {
+        // 기존 카드 사용 로직
         if (!BattleManager.Instance.unitSpawnRange.activeSelf)
         {
-            
-            // 해당 카드를 제외한 카드의 버튼 컴포넌트를 비활성화 처리
             foreach (GameObject card in BattleManager.Instance.cardObj)
             {
                 if (card != this.gameObject)
@@ -61,7 +77,6 @@ public class UnitManager : MonoBehaviour
             GameObject spawnArea = BattleManager.Instance.unitSpawnRange.transform.GetChild(1).gameObject;
             RectTransform spawnAreaAnchors = spawnArea.GetComponent<RectTransform>();
 
-            // 메인 카메라의 위치에 따라 스폰 가능 영역 범위 변경
             if (BattleManager.Instance.mainCamera.position.x >= 3)
             {
                 BattleManager.Instance.mainCamera.position = new Vector3(0, 0, -10);
@@ -76,18 +91,12 @@ public class UnitManager : MonoBehaviour
             }
             BattleManager.Instance.unitSpawnRange.SetActive(true);
             unitSpawnRangeButton.onClick.RemoveAllListeners();
-            Debug.Log(unit.unitID);
-            /*        unitSpawnRangeButton.onClick.AddListener(() => UnitSpawn(unit.unitID));*/
             unitSpawnRangeButton.onClick.AddListener(() => Buy(unit.cost));
             SummonUnit.instance.ClearCursor(true);
             SummonUnit.instance.GetSkeletonData(unit);
-
-            
-            
         }
         else
         {
-            // 해당 카드의 사용을 캔슬할 경우 다른 카드의 버튼 컴포넌트 활성화
             foreach (GameObject card in BattleManager.Instance.cardObj)
             {
                 if (card != this.gameObject)
@@ -99,82 +108,21 @@ public class UnitManager : MonoBehaviour
             BattleManager.Instance.unitSpawnRange.SetActive(false);
             SummonUnit.instance.GetSkeletonData(null);
             SummonUnit.instance.ClearCursor(false);
-
         }
     }
 
     public void UnitSpawn(int unitID)
     {
-        // 마우스 좌클릭 한 곳의 위치값
         BattleManager.Instance.point = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x,
             Input.mousePosition.y, -Camera.main.transform.position.z));
-        
-        switch (unitID)
-        {
-            case 11001: // Kitchu
-                pool.Get(0, 0);
-                break;
-            case 11002: // Ramo
-                pool.Get(0, 1);
-                break;
-            case 11003: // Pupnut
-                pool.Get(0, 2);
-                break;
-            case 12001: // WhiteBread
-                pool.Get(0, 3);
-                break;
-            case 12002: // BreadCrab
-                pool.Get(0, 4);
-                break;
-            case 12003: // PanCake
-                pool.Get(0, 7);
-                break;
-            case 11004: // Croirang
-                pool.Get(0, 5);
-                break;
-            case 11005: // Eggball
-                pool.Get(0, 6);
-                break;
-            case 11006: //Turtle
-                pool.Get(0, 8);
-                break;
-            case 11007: // Froll
-                pool.Get(0, 9);
-                break;
-        }
 
-        foreach (GameObject card in BattleManager.Instance.cardObj)
-        {
-            card.GetComponent<Button>().enabled = true;
-        }
-        reRoll.enabled = true;
-
-        BattleManager.Instance.unitSpawnRange.SetActive(false);
-        BattleManager.Instance.CardShuffle(false);
- 
- 
-        // usingCount 테이블에 해당 ID 의 컬럼에 count 값에 +1, 해당 ID 컬럼이 없으면 먼저 추가
-        XmlNodeList cardData = DBConnect.Select("usingCount", $"WHERE cardID = {unitID}");
-
-        if (cardData != null)
-        {
-            DBConnect.UpdateOriginal($"UPDATE usingCount SET count = count + 1 WHERE cardID = {unitID}");
-        }
-        else
-        {
-            Debug.Log("입력되어있는 카드값이 없습니다. 그러니 새로 추가 합니다.");
-            // 새로 컬럼 추가
-            DBConnect.Insert("usingCount", $"{unitID}, 1");
-        }
+        // 유닛 생성 로직...
     }
-
 
     public void Buy(int unitCost)
     {
-        // uiMgr.cost와 unitData.Cost를 비교하여 구매 가능한지 확인
         if (UiManager.Instance != null && UiManager.Instance.cost >= unitCost)
         {
-            // 코스트를 차감하고 유닛을 스폰
             UiManager.Instance.cost -= unitCost;
             UnitSpawn(unit.unitID);
             SummonUnit.instance.GetSkeletonData(null);
@@ -182,7 +130,7 @@ public class UnitManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("돈이 없다! 게이게이야! ");
+            Debug.Log("코스트가 부족합니다. ");
         }
     }
 }

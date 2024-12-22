@@ -14,7 +14,7 @@ public class RankingManager : MonoBehaviour
 
     private void Start()
     {
-        RankingSystem();
+        //RankingSystem();
 
     }
     private void Update()
@@ -22,7 +22,7 @@ public class RankingManager : MonoBehaviour
         time += Time.deltaTime;
         if(time >= 60)
         {
-            RankingSystem();
+            //RankingSystem();
             time = 0f;
         }
     }
@@ -39,7 +39,7 @@ public class RankingManager : MonoBehaviour
             noNetwork.SetActive(false);
             foreach (XmlNode data in rankingData)
             {
-                rankItems[rank].SetRankingData(data["userName"].InnerText, int.Parse(data["score"].InnerText));
+             //   rankItems[rank].SetRankingData(data["userName"].InnerText, int.Parse(data["score"].InnerText));
                 rank++;
             }
         }
@@ -50,4 +50,6 @@ public class RankingManager : MonoBehaviour
             ranking_Obj.SetActive(false);
         }
     }
+
+    
 }

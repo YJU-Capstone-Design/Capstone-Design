@@ -13,13 +13,6 @@ MonoBehaviour:
   m_Name: PlayerInfoDB
   m_EditorClassIdentifier: 
   sheet1:
-  - Player_No: 8000100
-    NAME: Player
-    ID: Admin
-    PASS: 1234
-    Lv: 1
-    Char: 0
-    Spell: 0
   - Player_No: 0
     NAME: 0
     ID: 0
@@ -27,3 +20,76 @@ MonoBehaviour:
     Lv: 0
     Char: 0
     Spell: 0
+    Score: 0
+  - Player_No: 0
+    NAME: 0
+    ID: 0
+    PASS: 0
+    Lv: 0
+    Char: 0
+    Spell: 0
+    Score: 0
+  - Player_No: 0
+    NAME: 0
+    ID: 0
+    PASS: 0
+    Lv: 0
+    Char: 0
+    Spell: 0
+    Score: 0
+  - Player_No: 0
+    NAME: 0
+    ID: 0
+    PASS: 0
+    Lv: 0
+    Char: 0
+    Spell: 0
+    Score: 0
+  - Player_No: 0
+    NAME: 0
+    ID: 0
+    PASS: 0
+    Lv: 0
+    Char: 0
+    Spell: 0
+    Score: 0
+  - Player_No: 0
+    NAME: 0
+    ID: 0
+    PASS: 0
+    Lv: 0
+    Char: 0
+    Spell: 0
+    Score: 0
+  - Player_No: 0
+    NAME: 0
+    ID: 0
+    PASS: 0
+    Lv: 0
+    Char: 0
+    Spell: 0
+    Score: 0
+  - Player_No: 0
+    NAME: 0
+    ID: 0
+    PASS: 0
+    Lv: 0
+    Char: 0
+    Spell: 0
+    Score: 0
+  - Player_No: 0
+    NAME: 0
+    ID: 0
+    PASS: 0
+    Lv: 0
+    Char: 0
+    Spell: 0
+    Score: 0
+  - Player_No: 0
+    NAME: 0
+    ID: 0
+    PASS: 0
+    Lv: 0
+    Char: 0
+    Spell: 0
+    Score: 0

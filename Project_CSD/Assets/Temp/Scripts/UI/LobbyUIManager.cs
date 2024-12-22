@@ -86,10 +86,10 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
         }
     }
 
-    void GameStart()
+    public void GameStart()
     {
         if (AudioManager.instance != null) { AudioManager.instance.ButtonSound(); }
-        UserRankingData.instance.playerName = playerNameInput.text;
+        //UserRankingData.instance.playerName = playerNameInput.text;
 
         SceneMgr.Instance.GoSceneSelect("NomalMode");
        // SceneManager.LoadScene("NormalBattle");

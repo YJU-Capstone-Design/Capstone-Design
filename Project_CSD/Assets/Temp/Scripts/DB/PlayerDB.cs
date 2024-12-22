@@ -11,4 +11,5 @@ public class PlayerDB
     public int Lv;
     public int Char;
     public int Spell;
+    public int Score;
 }
