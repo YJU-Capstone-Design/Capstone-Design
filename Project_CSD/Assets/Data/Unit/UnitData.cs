@@ -15,7 +15,7 @@ public class UnitData : ScriptableObject
 
     [Header("# Unit State")]
     [SerializeField] // À¯´Ö ¾ÆÀÌµð
-    private int unitID;
+    public int unitID;
     public int UnitID { get { return unitID; } }
 
     [SerializeField] // Unit Name

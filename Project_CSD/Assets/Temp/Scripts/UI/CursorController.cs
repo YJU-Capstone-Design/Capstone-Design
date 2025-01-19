@@ -1,33 +1,35 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+// using UnityEditor.Experimental.GraphView;  // ì´ ë¶€ë¶„ì„ ì‚­ì œí•˜ê±°ë‚˜ ë³€ê²½í•©ë‹ˆë‹¤.
+using UnityEngine.UIElements;  // UIElementsë¥¼ ì—¬ê¸°ì—ì„œ ì‚¬ìš©
+
 
 public class CursorController : MonoBehaviour
 {
     [SerializeField] Vector2 center;    // 0, 0
-    [SerializeField] Vector2 mapSize;   // ¹è°æ ³Êºñ, ³ôÀÌ
+    [SerializeField] Vector2 mapSize;   // ï¿½ï¿½ï¿½ ï¿½Êºï¿½, ï¿½ï¿½ï¿½ï¿½
     [SerializeField] Transform tf_cursor;
-    [SerializeField] float dragSpeed = 10.0f;   // È­¸é ¿òÁ÷ÀÓ ¼Óµµ
+    [SerializeField] float dragSpeed = 10.0f;   // È­ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Óµï¿½
 
-    private float camWidth , camHeight;  // Ä«¸Ş¶ó ³Êºñ/2, ³ôÀÌ/2
+    private float camWidth , camHeight;  // Ä«ï¿½Ş¶ï¿½ ï¿½Êºï¿½/2, ï¿½ï¿½ï¿½ï¿½/2
     private float firstClickPointX;
-    private RectTransform tf_background;    // ¹è°æ ³Êºñ, ³ôÀÌ¸¦ °¡Á®¿À±â À§ÇÑ º¯¼ö
+    private RectTransform tf_background;    // ï¿½ï¿½ï¿½ ï¿½Êºï¿½, ï¿½ï¿½ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
     public bool modeCheck = true;
     void Start()
     {
-        camHeight = Camera.main.orthographicSize;   // Ä«¸Ş¶óÀÇ ³ôÀÌ / 2
-        camWidth = camHeight * Screen.width / Screen.height;    // Ä«¸Ş¶óÀÇ ³Êºñ / 2
+        camHeight = Camera.main.orthographicSize;   // Ä«ï¿½Ş¶ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ / 2
+        camWidth = camHeight * Screen.width / Screen.height;    // Ä«ï¿½Ş¶ï¿½ï¿½ï¿½ ï¿½Êºï¿½ / 2
 
         tf_background = GameObject.Find("Background").GetComponent<RectTransform>();
 
-        mapSize.x = tf_background.rect.width;   // ¹è°æÀÇ ³Êºñ
-        mapSize.y = tf_background.rect.height;  // ¹è°æÀÇ ³ôÀÌ
+        mapSize.x = tf_background.rect.width;   // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Êºï¿½
+        mapSize.y = tf_background.rect.height;  // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     }
     void Update()
     {
-        if (BattleManager.Instance.unitSpawnRange.activeSelf == false) //unitSpawnRange°¡ È°¼ºÈ­µÇ¸é ¾Æ·¡ ÇÔ¼öµéÀÌ ÀÛµ¿À» ¸ØÃá´Ù °ÔÀÌ¾ß
+        if (BattleManager.Instance.unitSpawnRange.activeSelf == false) //unitSpawnRangeï¿½ï¿½ È°ï¿½ï¿½È­ï¿½Ç¸ï¿½ ï¿½Æ·ï¿½ ï¿½Ô¼ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ûµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¾ï¿½
         {
             ViewMoving();
             CursorMoving();
@@ -39,12 +41,12 @@ public class CursorController : MonoBehaviour
     {
         if (modeCheck)
         {
-            // ¸¶¿ì½º ÀÌµ¿
+            // ï¿½ï¿½ï¿½ì½º ï¿½Ìµï¿½
             float x = Input.mousePosition.x - (Screen.width / 2);
             float y = Input.mousePosition.y - (Screen.height / 2);
             tf_cursor.localPosition = new Vector2(x, y);
 
-            // ¸¶¿ì½º °¡µÎ±â (¹üÀ§ ÁöÁ¤)
+            // ï¿½ï¿½ï¿½ì½º ï¿½ï¿½ï¿½Î±ï¿½ (ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
             float tmp_cursorPosX = tf_cursor.localPosition.x;
             float tmp_cursorPosY = tf_cursor.localPosition.y;
 
@@ -52,7 +54,7 @@ public class CursorController : MonoBehaviour
             float max_width = Screen.width / 2;
             float min_height = -Screen.height / 2;
             float max_height = Screen.height / 2;
-            int padding = 20;   // °ªÀº ÀÚÀ¯
+            int padding = 20;   // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
             tmp_cursorPosX = Mathf.Clamp(tmp_cursorPosX, min_width + padding, max_width - padding);
             tmp_cursorPosY = Mathf.Clamp(tmp_cursorPosY, min_height + padding, max_height - padding);
@@ -62,7 +64,7 @@ public class CursorController : MonoBehaviour
        
        else{
            
-                // ¸¶¿ì½º ÀÌµ¿ (PC¿¡¼­´Â ¸¶¿ì½º, ¸ğ¹ÙÀÏ¿¡¼­´Â Ã¹ ¹øÂ° ÅÍÄ¡ÀÇ À§Ä¡¸¦ »ç¿ë)
+                // ï¿½ï¿½ï¿½ì½º ï¿½Ìµï¿½ (PCï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ì½º, ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ï¿½ï¿½ï¿½ï¿½ Ã¹ ï¿½ï¿½Â° ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½)
                 float x = 0, y = 0;
                 if (Input.touchCount > 0)
                 {
@@ -77,7 +79,7 @@ public class CursorController : MonoBehaviour
 
                 tf_cursor.localPosition = new Vector2(x, y);
 
-                // ¸¶¿ì½º/ÅÍÄ¡ °¡µÎ±â (¹üÀ§ ÁöÁ¤)
+                // ï¿½ï¿½ï¿½ì½º/ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½Î±ï¿½ (ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
                 float tmp_cursorPosX = tf_cursor.localPosition.x;
                 float tmp_cursorPosY = tf_cursor.localPosition.y;
 
@@ -85,7 +87,7 @@ public class CursorController : MonoBehaviour
                 float max_width = Screen.width / 2;
                 float min_height = -Screen.height / 2;
                 float max_height = Screen.height / 2;
-                int padding = 20; // °ªÀº ÀÚÀ¯
+                int padding = 20; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
                 tmp_cursorPosX = Mathf.Clamp(tmp_cursorPosX, min_width + padding, max_width - padding);
                 tmp_cursorPosY = Mathf.Clamp(tmp_cursorPosY, min_height + padding, max_height - padding);
@@ -100,7 +102,7 @@ public class CursorController : MonoBehaviour
     {
         if (modeCheck)
         {
-            // ¸¶¿ì½º ÃÖÃÊ Å¬¸¯ ½ÃÀÇ À§Ä¡ ±â¾ï
+            // ï¿½ï¿½ï¿½ì½º ï¿½ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½
             if (Input.GetMouseButtonDown(0))
             {
                 firstClickPointX = tf_cursor.localPosition.x;
@@ -110,7 +112,7 @@ public class CursorController : MonoBehaviour
             {
                 if (Camera.main.transform.position.x >= 0)
                 {
-                    // (ÇöÀç ¸¶¿ì½º À§Ä¡ - ÃÖÃÊ À§Ä¡)ÀÇ À½ÀÇ ¹æÇâÀ¸·Î Ä«¸Ş¶ó ÀÌµ¿
+                    // (ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ì½º ï¿½ï¿½Ä¡ - ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡)ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ä«ï¿½Ş¶ï¿½ ï¿½Ìµï¿½
                     Vector2 position = Camera.main.ScreenToViewportPoint(-new Vector3(tf_cursor.localPosition.x - firstClickPointX, 0, 0));
                     Vector2 move = position * (Time.deltaTime * dragSpeed);
 
@@ -136,7 +138,7 @@ public class CursorController : MonoBehaviour
         }
         else
         {
-            // ÅÍÄ¡ ½ÃÀÛ ½ÃÀÇ À§Ä¡ ±â¾ï
+            // ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½
             if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
             {
                 firstClickPointX = tf_cursor.localPosition.x;
@@ -144,7 +146,7 @@ public class CursorController : MonoBehaviour
 
             if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)
             {
-                // Ã¹ ¹øÂ° ÅÍÄ¡ÀÇ À§Ä¡ º¯È­¿¡ µû¶ó Ä«¸Ş¶ó ÀÌµ¿
+                // Ã¹ ï¿½ï¿½Â° ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½Ä¡ ï¿½ï¿½È­ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ä«ï¿½Ş¶ï¿½ ï¿½Ìµï¿½
                 float touchDeltaX = Input.GetTouch(0).deltaPosition.x;
                 Vector2 position = Camera.main.ScreenToViewportPoint(-new Vector3(touchDeltaX, 0, 0));
                 Vector2 move = position * (Time.deltaTime * dragSpeed);
