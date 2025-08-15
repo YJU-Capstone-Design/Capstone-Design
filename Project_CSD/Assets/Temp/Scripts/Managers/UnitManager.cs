@@ -154,7 +154,7 @@ public class UnitManager : MonoBehaviour
  
  
         // usingCount 테이블에 해당 ID 의 컬럼에 count 값에 +1, 해당 ID 컬럼이 없으면 먼저 추가
-        XmlNodeList cardData = DBConnect.Select("usingCount", $"WHERE cardID = {unitID}");
+        /*XmlNodeList cardData = DBConnect.Select("usingCount", $"WHERE cardID = {unitID}");
 
         if (cardData != null)
         {
@@ -165,7 +165,7 @@ public class UnitManager : MonoBehaviour
             Debug.Log("입력되어있는 카드값이 없습니다. 그러니 새로 추가 합니다.");
             // 새로 컬럼 추가
             DBConnect.Insert("usingCount", $"{unitID}, 1");
-        }
+        }*/
     }
 
 
@@ -182,7 +182,7 @@ public class UnitManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("돈이 없다! 게이게이야! ");
+            Debug.Log("잔액 부족!! ");
         }
     }
 }

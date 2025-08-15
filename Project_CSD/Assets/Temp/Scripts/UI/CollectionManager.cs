@@ -179,7 +179,7 @@ public class CollectionManager : MonoBehaviour
         unitCostText.text = unitData.Cost.ToString();
         unitSpeedText.text = unitData.MoveSpeed.ToString();
         unitAtkSpeedText.text = unitData.AttackTime.ToString() + "s";
-        usePercentText.text = GetUsePercentage(unitData.UnitID);
+        //usePercentText.text = GetUsePercentage(unitData.UnitID);
         animButtons.SetActive(true);
 
         if (defenseAnim != null) { StopCoroutine(defenseAnim); defenseAnim = null; startDefenseAnim = false; Debug.Log("Strop DefenseAnim"); }
@@ -212,7 +212,7 @@ public class CollectionManager : MonoBehaviour
     {
         spellNameText.text = spellData.SpellName.ToString();
         spellCostText.text = spellData.Cost.ToString();
-        spellPercentText.text = GetUsePercentage(spellData.SpellID);
+        //spellPercentText.text = GetUsePercentage(spellData.SpellID);
         durationTimeText.text = spellData.Duration.ToString() + "s";
         spellEffectText.text = spellData.Spell_Effect;
         unit_BG.SetActive(true);
@@ -397,7 +397,7 @@ public class CollectionManager : MonoBehaviour
     }
 
     // 카드 사용 퍼센트 출력 함수
-    string GetUsePercentage(int id)
+    /*string GetUsePercentage(int id)
     {
         float allUseCount = 0; // 모든 카드의 사용 횟수
         float useCount = 0; // 선택한 카드의 사용 횟수
@@ -429,5 +429,5 @@ public class CollectionManager : MonoBehaviour
 
         // 텍스트 return
         return $"{percent}%";
-    }
+    }*/
 }

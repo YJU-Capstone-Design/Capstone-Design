@@ -5,8 +5,9 @@ using UnityEngine.UI;
 using System.IO;
 using System.Drawing;
 using TMPro;
-using System.Xml;
+// using System.Xml; // XML 관련 사용하지 않으므로 주석 처리
 using System;
+
 public class BattleManager : Singleton<BattleManager>
 {
     public enum BattleState { Start, Win, Lose, BreakTime }
@@ -275,18 +276,18 @@ public class BattleManager : Singleton<BattleManager>
         }
 
         // 데이터베이스 입력 (userData Table)
-        SaveUserData(whether, waveCount);
+        // SaveUserData(whether, waveCount);
 
         // 상위 퍼센트 출력 (Wave 도달로 판단)
         Debug.Log("Get Wave Reach Percentage");
 
         if (whether == "Win" && waveCount == 10)
         {
-            GetWaveReachPercentage(waveCount + 1);
+            // GetWaveReachPercentage(waveCount + 1);
         }
         else
         {
-            GetWaveReachPercentage(waveCount);
+            // GetWaveReachPercentage(waveCount);
         }
     }
     public void Stop_Anim()
@@ -299,17 +300,17 @@ public class BattleManager : Singleton<BattleManager>
         if (playerScore <= 0)
             return;
 
-        // 데이터베이스 입력
-        XmlNodeList selectedData = DBConnect.Select("ranking", $"WHERE userName = '{UserRankingData.instance.playerName}'");
+        // 데이터베이스 입력 주석 처리
+        // XmlNodeList selectedData = DBConnect.Select("ranking", $"WHERE userName = '{UserRankingData.instance.playerName}'");
 
-        if (selectedData == null)
-        {
-            DBConnect.Insert("ranking", $"'{UserRankingData.instance.playerName}', {playerScore}");
-        }
-        else
-        {
-            DBConnect.UpdateRanking("ranking", "score", playerScore, $"userName = '{UserRankingData.instance.playerName}'");
-        }
+        // if (selectedData == null)
+        // {
+        //     DBConnect.Insert("ranking", $"'{UserRankingData.instance.playerName}', {playerScore}");
+        // }
+        // else
+        // {
+        //     DBConnect.UpdateRanking("ranking", "score", playerScore, $"userName = '{UserRankingData.instance.playerName}'");
+        // }
 
         // 랭킹 등록 UI 비활성화
         rank_Obj.SetActive(false);
@@ -318,31 +319,31 @@ public class BattleManager : Singleton<BattleManager>
     // 게임 종료 후 유저의 게임 결과를 저장하는 함수 (userData Table)
     void SaveUserData(string whether, int wave)
     {
-        // 유저 데이터 저장 (userData Table)
-        XmlNodeList selectedData = DBConnect.Select("userData", $"WHERE userName = '{UserRankingData.instance.playerName}'");
+        // 유저 데이터 저장 (userData Table) 주석 처리
+        // XmlNodeList selectedData = DBConnect.Select("userData", $"WHERE userName = '{UserRankingData.instance.playerName}'");
 
-        if (selectedData == null)
-        {
-            if (whether == "Win")
-            {
-                DBConnect.UserDataInsert(UserRankingData.instance.playerName, wave + 1);
-            }
-            else if (whether == "Lose")
-            {
-                DBConnect.UserDataInsert(UserRankingData.instance.playerName, wave);
-            }
-        }
-        else
-        {
-            if (whether == "Win")
-            {
-                DBConnect.UserDataUpdate(UserRankingData.instance.playerName, wave + 1);
-            }
-            else if (whether == "Lose")
-            {
-                DBConnect.UserDataUpdate(UserRankingData.instance.playerName, wave);
-            }
-        }
+        // if (selectedData == null)
+        // {
+        //     if (whether == "Win")
+        //     {
+        //         DBConnect.UserDataInsert(UserRankingData.instance.playerName, wave + 1);
+        //     }
+        //     else if (whether == "Lose")
+        //     {
+        //         DBConnect.UserDataInsert(UserRankingData.instance.playerName, wave);
+        //     }
+        // }
+        // else
+        // {
+        //     if (whether == "Win")
+        //     {
+        //         DBConnect.UserDataUpdate(UserRankingData.instance.playerName, wave + 1);
+        //     }
+        //     else if (whether == "Lose")
+        //     {
+        //         DBConnect.UserDataUpdate(UserRankingData.instance.playerName, wave);
+        //     }
+        // }
     }
 
     IEnumerator ResultUI(int second)
@@ -371,7 +372,7 @@ public class BattleManager : Singleton<BattleManager>
         yield return new WaitForSeconds(1);
 
         // 랭킹 UI 자동 활성화
-        rank_Obj.SetActive(true);
+        //rank_Obj.SetActive(true);
     }
 
     // 유닛 스폰 버튼
@@ -550,7 +551,7 @@ public class BattleManager : Singleton<BattleManager>
 
     void UpdateEnemyCountUI()
     {
-        enemyCountText.text = totalEnemyCount.ToString()+"/"+enemyCnt;
+        enemyCountText.text = totalEnemyCount.ToString() + "/" + enemyCnt;
     }
     public void AddRanking()
     {
@@ -559,39 +560,39 @@ public class BattleManager : Singleton<BattleManager>
     public void RankingOpen()
     {
         if (AudioManager.instance != null) { AudioManager.instance.BattleSound(); }
-        rank_Obj.SetActive(true);
+        //rank_Obj.SetActive(true);
     }
     public void RankingCloser()
     {
         if (AudioManager.instance != null) { AudioManager.instance.BattleSound(); }
-        rank_Obj.SetActive(false);
+        //rank_Obj.SetActive(false);
     }
 
 
     void GetWaveReachPercentage(int wave)
     {
-        // 상위 퍼센트 출력 (도달 웨이브로 판단)
+        // 상위 퍼센트 출력 (도달 웨이브로 판단) 주석 처리
 
-        XmlNodeList allUser = DBConnect.SelectOriginal("userData", "SELECT * FROM userData");
-        allUserCount = allUser.Count;
+        // XmlNodeList allUser = DBConnect.SelectOriginal("userData", "SELECT * FROM userData");
+        // allUserCount = allUser.Count;
 
-        if (wave == 11)
-        {
-            XmlNodeList selectUser = DBConnect.SelectOriginal("userData", "SELECT * FROM userData WHERE stage_clear = 1;");
-            selectUserCount = selectUser.Count;
-        }
-        else
-        {
-            XmlNodeList selectUser = DBConnect.SelectOriginal("userData", $"SELECT * FROM userData WHERE stage_{wave} = 1;");
-            selectUserCount = selectUser.Count;
-        }
+        // if (wave == 11)
+        // {
+        //     XmlNodeList selectUser = DBConnect.SelectOriginal("userData", "SELECT * FROM userData WHERE stage_clear = 1;");
+        //     selectUserCount = selectUser.Count;
+        // }
+        // else
+        // {
+        //     XmlNodeList selectUser = DBConnect.SelectOriginal("userData", $"SELECT * FROM userData WHERE stage_{wave} = 1;");
+        //     selectUserCount = selectUser.Count;
+        // }
 
-        percent = (selectUserCount / allUserCount) * 100;
-        percent = (float)Math.Round(percent, 2); // 소수점 2자리 반올림
+        // percent = (selectUserCount / allUserCount) * 100;
+        // percent = (float)Math.Round(percent, 2); // 소수점 2자리 반올림
 
-        Debug.Log($"allUserCount : {allUserCount}, selectUserCount : {selectUserCount}, percent : {percent}, wave : {wave}");
+        // Debug.Log($"allUserCount : {allUserCount}, selectUserCount : {selectUserCount}, percent : {percent}, wave : {wave}");
 
         // 텍스트 입력
-        percentageText.text = $"전체 유저 중 {percent}%가\r\n동일한 웨이브에 도달했습니다.";
+        // percentageText.text = $"전체 유저 중 {percent}%가\r\n동일한 웨이브에 도달했습니다.";
     }
 }
