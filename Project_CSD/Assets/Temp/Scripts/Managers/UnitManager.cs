@@ -1,22 +1,44 @@
 using Spine.Unity;
 using System.Collections;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Xml;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
-public class UnitManager : MonoBehaviour
+// UnitCardDragBlocker »èÁ¦ ÈÄ ÀÎÅÍÆäÀÌ½º Á÷Á¢ ±¸ÇöÀ¸·Î º¹±¸
+public class UnitManager : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
 {
     [SerializeField] private UnitData unitData;
 
     Unit unit;
     private PoolManager pool;
-    public Button unitSpawnRangeButton;
-
     public Button reRoll;
 
- 
+    public static bool isDraggingAny = false;
+
+    private GameObject dragPreview;
+    private bool isDragging = false;
+    private bool isInSpawnArea = false;
+
+    private RectTransform spawnAreaRect;
+    private Camera uiCamera;
+
+    // ¦¡¦¡¦¡ ÇÁ¸®ºä Àü¿ë ¿À¹ö·¹ÀÌ Äµ¹ö½º (static: ¾À¿¡ ÇÏ³ª¸¸) ¦¡¦¡¦¡
+    private static Canvas _overlayCanvas;
+
+    private static Canvas GetOrCreateOverlayCanvas()
+    {
+        if (_overlayCanvas != null) return _overlayCanvas;
+
+        GameObject go = new GameObject("DragOverlayCanvas");
+        Canvas c = go.AddComponent<Canvas>();
+        c.renderMode = RenderMode.ScreenSpaceOverlay;
+        c.sortingOrder = 9999;
+        go.AddComponent<CanvasScaler>();
+        go.AddComponent<GraphicRaycaster>();
+        _overlayCanvas = c;
+        return _overlayCanvas;
+    }
 
     private void Awake()
     {
@@ -25,164 +47,232 @@ public class UnitManager : MonoBehaviour
         GameObject go = GameObject.Find("PoolManager");
         pool = go.GetComponent<PoolManager>();
 
-        unitSpawnRangeButton = BattleManager.Instance.unitSpawnRange.GetComponentInChildren<Button>();
-
         reRoll = BattleManager.Instance.reRoll;
 
-      
+        GameObject uiCamObj = GameObject.Find("UI Canvas Camera");
+        if (uiCamObj != null)
+            uiCamera = uiCamObj.GetComponent<Camera>();
+
+        GetOrCreateOverlayCanvas();
     }
-   
-    private void Update()
+
+    // ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
+    // Ä«µå ÅÍÄ¡ ½ÃÀÛ
+    // ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
+    public void OnPointerDown(PointerEventData eventData)
     {
-        if(Input.GetKeyDown(KeyCode.Escape)&& Input.GetKeyDown(KeyCode.A))
+        if (UiManager.Instance == null || UiManager.Instance.cost < unit.cost)
         {
-            UiManager.Instance.cost += 30;
+            Debug.Log("ÀÜ¾× ºÎÁ·!");
+            return;
         }
-     
-       
+
+        isDraggingAny = true;
+        isDragging = true;
+        isInSpawnArea = false;
+
+        BattleManager.Instance.unitSpawnRange.SetActive(true);
+
+        Transform spawnAreaTf = BattleManager.Instance.unitSpawnRange.transform.GetChild(1);
+        if (spawnAreaTf == null)
+        {
+            Debug.LogError("unitSpawnRangeÀÇ ÀÚ½Ä(1)ÀÌ ¾ø½À´Ï´Ù.");
+            isDragging = false;
+            isDraggingAny = false;
+            BattleManager.Instance.unitSpawnRange.SetActive(false);
+            return;
+        }
+        spawnAreaRect = spawnAreaTf.GetComponent<RectTransform>();
+
+        SetCardsInteractable(false);
+        CreateDragPreview(eventData.position);
+
+        SummonUnit.instance.ClearCursor(true);
+        SummonUnit.instance.GetSkeletonData(unit);
     }
 
-
-    public void UsingCard()
+    // ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
+    // µå·¡±× Áß
+    // ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
+    public void OnDrag(PointerEventData eventData)
     {
-        if (!BattleManager.Instance.unitSpawnRange.activeSelf)
+        if (!isDragging) return;
+
+        if (dragPreview != null)
+            dragPreview.GetComponent<RectTransform>().position = eventData.position;
+
+        MoveSummonUnitToScreenPos(eventData.position);
+
+        isInSpawnArea = spawnAreaRect != null &&
+            RectTransformUtility.RectangleContainsScreenPoint(
+                spawnAreaRect, eventData.position, uiCamera);
+
+        if (dragPreview != null)
         {
-            
-            // ÇØ´ç Ä«µå¸¦ Á¦¿ÜÇÑ Ä«µåÀÇ ¹öÆ° ÄÄÆ÷³ÍÆ®¸¦ ºñÈ°¼ºÈ­ Ã³¸®
-            foreach (GameObject card in BattleManager.Instance.cardObj)
-            {
-                if (card != this.gameObject)
-                {
-                    card.GetComponent<Button>().enabled = false;
-                }
-            }
-            reRoll.enabled = false;
+            Image img = dragPreview.GetComponent<Image>();
+            if (img != null)
+                img.color = isInSpawnArea
+                    ? new Color(1f, 1f, 1f, 0.8f)
+                    : new Color(1f, 0.3f, 0.3f, 0.6f);
+        }
+    }
 
-            GameObject spawnArea = BattleManager.Instance.unitSpawnRange.transform.GetChild(1).gameObject;
-            RectTransform spawnAreaAnchors = spawnArea.GetComponent<RectTransform>();
+    // ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
+    // ¼Õ ¶À
+    // ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        isDraggingAny = false;
 
-            // ¸ÞÀÎ Ä«¸Þ¶óÀÇ À§Ä¡¿¡ µû¶ó ½ºÆù °¡´É ¿µ¿ª ¹üÀ§ º¯°æ
-            if (BattleManager.Instance.mainCamera.position.x >= 3)
-            {
-                BattleManager.Instance.mainCamera.position = new Vector3(0, 0, -10);
-                spawnAreaAnchors.anchorMin = new Vector2(0.15f, 0.43f);
-                spawnAreaAnchors.anchorMax = new Vector2(1, 0.66f);
-            }
-            else
-            {
-                BattleManager.Instance.mainCamera.position = new Vector3(0, 0, -10);
-                spawnAreaAnchors.anchorMin = new Vector2(0.15f, 0.43f);
-                spawnAreaAnchors.anchorMax = new Vector2(1, 0.66f);
-            }
-            BattleManager.Instance.unitSpawnRange.SetActive(true);
-            unitSpawnRangeButton.onClick.RemoveAllListeners();
-            Debug.Log(unit.unitID);
-            /*        unitSpawnRangeButton.onClick.AddListener(() => UnitSpawn(unit.unitID));*/
-            unitSpawnRangeButton.onClick.AddListener(() => Buy(unit.cost));
-            SummonUnit.instance.ClearCursor(true);
-            SummonUnit.instance.GetSkeletonData(unit);
+        if (!isDragging)
+        {
+            SetCardsInteractable(true);
+            BattleManager.Instance.unitSpawnRange.SetActive(false);
+            return;
+        }
 
-            
-            
+        isDragging = false;
+        DestroyDragPreview();
+
+        if (isInSpawnArea)
+        {
+            Vector3 worldPos = Camera.main.ScreenToWorldPoint(
+                new Vector3(eventData.position.x, eventData.position.y,
+                    -Camera.main.transform.position.z));
+            worldPos.z = 0f;
+            BattleManager.Instance.point = worldPos;
+
+            UiManager.Instance.cost -= unit.cost;
+            UnitSpawn(unit.unitID);
+
+            SummonUnit.instance.ClearCursor(false);
+            SummonUnit.instance.GetSkeletonData(null);
         }
         else
         {
-            // ÇØ´ç Ä«µåÀÇ »ç¿ëÀ» Äµ½½ÇÒ °æ¿ì ´Ù¸¥ Ä«µåÀÇ ¹öÆ° ÄÄÆ÷³ÍÆ® È°¼ºÈ­
-            foreach (GameObject card in BattleManager.Instance.cardObj)
-            {
-                if (card != this.gameObject)
-                {
-                    card.GetComponent<Button>().enabled = true;
-                }
-            }
-            reRoll.enabled = true;
-            BattleManager.Instance.unitSpawnRange.SetActive(false);
-            SummonUnit.instance.GetSkeletonData(null);
-            SummonUnit.instance.ClearCursor(false);
-
+            Debug.Log("¼ÒÈ¯ Ãë¼Ò (¹üÀ§ ¹Û)");
+            CancelSpawn();
         }
     }
 
-    public void UnitSpawn(int unitID)
+    // ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
+    // ½ÇÁ¦ À¯´Ö ¼ÒÈ¯
+    // ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
+    private void UnitSpawn(int unitID)
     {
-        // ¸¶¿ì½º ÁÂÅ¬¸¯ ÇÑ °÷ÀÇ À§Ä¡°ª
-        BattleManager.Instance.point = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x,
-            Input.mousePosition.y, -Camera.main.transform.position.z));
-        
-        switch (unitID)
-        {
-            case 11001: // Kitchu
-                pool.Get(0, 0);
-                break;
-            case 11002: // Ramo
-                pool.Get(0, 1);
-                break;
-            case 11003: // Pupnut
-                pool.Get(0, 2);
-                break;
-            case 12001: // WhiteBread
-                pool.Get(0, 3);
-                break;
-            case 12002: // BreadCrab
-                pool.Get(0, 4);
-                break;
-            case 12003: // PanCake
-                pool.Get(0, 7);
-                break;
-            case 11004: // Croirang
-                pool.Get(0, 5);
-                break;
-            case 11005: // Eggball
-                pool.Get(0, 6);
-                break;
-            case 11006: //Turtle
-                pool.Get(0, 8);
-                break;
-            case 11007: // Froll
-                pool.Get(0, 9);
-                break;
-        }
+        int index = GetPoolIndex(unitID);
+        if (index >= 0)
+            pool.GetAtPoint(0, index);
+        else
+            Debug.LogWarning($"¾Ë ¼ö ¾ø´Â unitID: {unitID}");
 
-        foreach (GameObject card in BattleManager.Instance.cardObj)
-        {
-            card.GetComponent<Button>().enabled = true;
-        }
-        reRoll.enabled = true;
-
+        SetCardsInteractable(true);
         BattleManager.Instance.unitSpawnRange.SetActive(false);
         BattleManager.Instance.CardShuffle(false);
- 
- 
-        // usingCount Å×ÀÌºí¿¡ ÇØ´ç ID ÀÇ ÄÃ·³¿¡ count °ª¿¡ +1, ÇØ´ç ID ÄÃ·³ÀÌ ¾øÀ¸¸é ¸ÕÀú Ãß°¡
-        /*XmlNodeList cardData = DBConnect.Select("usingCount", $"WHERE cardID = {unitID}");
-
-        if (cardData != null)
-        {
-            DBConnect.UpdateOriginal($"UPDATE usingCount SET count = count + 1 WHERE cardID = {unitID}");
-        }
-        else
-        {
-            Debug.Log("ÀÔ·ÂµÇ¾îÀÖ´Â Ä«µå°ªÀÌ ¾ø½À´Ï´Ù. ±×·¯´Ï »õ·Î Ãß°¡ ÇÕ´Ï´Ù.");
-            // »õ·Î ÄÃ·³ Ãß°¡
-            DBConnect.Insert("usingCount", $"{unitID}, 1");
-        }*/
     }
 
-
-    public void Buy(int unitCost)
+    // ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
+    // ¼ÒÈ¯ Ãë¼Ò
+    // ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
+    private void CancelSpawn()
     {
-        // uiMgr.cost¿Í unitData.Cost¸¦ ºñ±³ÇÏ¿© ±¸¸Å °¡´ÉÇÑÁö È®ÀÎ
-        if (UiManager.Instance != null && UiManager.Instance.cost >= unitCost)
+        SetCardsInteractable(true);
+        BattleManager.Instance.unitSpawnRange.SetActive(false);
+        SummonUnit.instance.GetSkeletonData(null);
+        SummonUnit.instance.ClearCursor(false);
+    }
+
+    // ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
+    // µå·¡±× ÇÁ¸®ºä »ý¼º / Á¦°Å
+    // ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
+    private void CreateDragPreview(Vector2 screenPos)
+    {
+        Canvas overlay = GetOrCreateOverlayCanvas();
+
+        dragPreview = new GameObject("DragPreview");
+        dragPreview.transform.SetParent(overlay.transform, false);
+        dragPreview.transform.SetAsLastSibling();
+
+        Image img = dragPreview.AddComponent<Image>();
+        img.sprite = unit.data.Unit_CardImg;
+        img.color = new Color(1f, 1f, 1f, 0.8f);
+        img.raycastTarget = false;
+
+        RectTransform rt = dragPreview.GetComponent<RectTransform>();
+        rt.sizeDelta = new Vector2(100, 140);
+        rt.anchorMin = new Vector2(0, 0);
+        rt.anchorMax = new Vector2(0, 0);
+        rt.pivot = new Vector2(0.5f, 0.5f);
+        rt.position = screenPos;
+    }
+
+    private void DestroyDragPreview()
+    {
+        if (dragPreview != null)
         {
-            // ÄÚ½ºÆ®¸¦ Â÷°¨ÇÏ°í À¯´ÖÀ» ½ºÆù
-            UiManager.Instance.cost -= unitCost;
-            UnitSpawn(unit.unitID);
-            SummonUnit.instance.GetSkeletonData(null);
-            SummonUnit.instance.ClearCursor(false);
-        }
-        else
-        {
-            Debug.Log("ÀÜ¾× ºÎÁ·!! ");
+            Destroy(dragPreview);
+            dragPreview = null;
         }
     }
+
+    // ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
+    // ½ºÄÌ·¹Åæ ÇÁ¸®ºä ¿ùµå ÁÂÇ¥ ÀÌµ¿
+    // ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
+    private void MoveSummonUnitToScreenPos(Vector2 screenPos)
+    {
+        if (SummonUnit.instance == null) return;
+
+        Camera cam = Camera.main;
+        Vector3 worldPos = cam.ScreenToWorldPoint(
+            new Vector3(screenPos.x, screenPos.y, -cam.transform.position.z));
+        worldPos.z = 0f;
+
+        SummonUnit.instance.transform.position = worldPos;
+    }
+
+    // ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
+    // Ä«µå & ¸®·Ñ ÀÎÅÍ·¢¼Ç ÀÏ°ý Á¦¾î
+    // ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
+    private void SetCardsInteractable(bool interactable)
+    {
+        foreach (GameObject card in BattleManager.Instance.cardObj)
+        {
+            if (card == null) continue;
+            if (!interactable && card == this.gameObject) continue;
+
+            Button btn = card.GetComponent<Button>();
+            if (btn != null) btn.enabled = interactable;
+        }
+
+        if (reRoll != null) reRoll.enabled = interactable;
+    }
+
+    // ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
+    // unitID ¡æ PoolManager ÀÎµ¦½º º¯È¯
+    // ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
+    private int GetPoolIndex(int unitID)
+    {
+        switch (unitID)
+        {
+            case 11001: return 0;
+            case 11002: return 1;
+            case 11003: return 2;
+            case 12001: return 3;
+            case 12002: return 4;
+            case 12003: return 7;
+            case 11004: return 5;
+            case 11005: return 6;
+            case 11006: return 8;
+            case 11007: return 9;
+            default: return -1;
+        }
+    }
+
+#if UNITY_EDITOR
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape) && Input.GetKeyDown(KeyCode.A))
+            UiManager.Instance.cost += 30;
+    }
+#endif
 }

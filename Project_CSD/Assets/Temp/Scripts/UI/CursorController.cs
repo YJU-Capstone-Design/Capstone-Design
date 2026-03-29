@@ -4,91 +4,156 @@ using UnityEngine;
 
 public class CursorController : MonoBehaviour
 {
-    [SerializeField] Vector2 center;    // 0, 0
-    [SerializeField] Vector2 mapSize;   // 배경 너비, 높이
+    [SerializeField] Vector2 center;
+    [SerializeField] Vector2 mapSize;
     [SerializeField] Transform tf_cursor;
-    [SerializeField] float dragSpeed = 10.0f;   // 화면 움직임 속도
+    [SerializeField] float dragSpeed = 10.0f;
 
-    private float camWidth , camHeight;  // 카메라 너비/2, 높이/2
+    private float camWidth, camHeight;
     private float firstClickPointX;
-    private RectTransform tf_background;    // 배경 너비, 높이를 가져오기 위한 변수
+    private RectTransform tf_background;
+
     void Start()
     {
-        camHeight = Camera.main.orthographicSize;   // 카메라의 높이 / 2
-        camWidth = camHeight * Screen.width / Screen.height;    // 카메라의 너비 / 2
-
+        camHeight = Camera.main.orthographicSize;
+        camWidth = camHeight * Screen.width / Screen.height;
         tf_background = GameObject.Find("Background").GetComponent<RectTransform>();
+        mapSize.x = tf_background.rect.width;
+        mapSize.y = tf_background.rect.height;
 
-        mapSize.x = tf_background.rect.width;   // 배경의 너비
-        mapSize.y = tf_background.rect.height;  // 배경의 높이
+        // 모바일 실기기에서는 커서 UI 숨김
+        if (Input.touchSupported)
+            tf_cursor.gameObject.SetActive(false);
     }
+
     void Update()
     {
-        if (BattleManager.Instance.unitSpawnRange.activeSelf == false) //unitSpawnRange가 활성화되면 아래 함수들이 작동을 멈춘다 게이야
+        if (BattleManager.Instance.unitSpawnRange.activeSelf == false)
         {
-            ViewMoving();
-            CursorMoving();
+            if (Input.touchSupported && Input.touchCount > 0)
+            {
+                // 실기기 터치
+                TouchViewMoving();
+            }
+            else if (!Input.touchSupported)
+            {
+                // 순수 PC (터치 미지원) 에서만 마우스 로직 실행
+                CursorMoving();
+                ViewMoving();
+            }
+            else
+            {
+                // 시뮬레이터 모드: touchSupported=true지만 터치 없음
+                // → 마우스 위치가 유효할 때만 실행
+                Vector3 mPos = Input.mousePosition;
+                if (!float.IsInfinity(mPos.x) && !float.IsInfinity(mPos.y)
+                    && !float.IsNaN(mPos.x) && !float.IsNaN(mPos.y)
+                    && Screen.width > 0 && Screen.height > 0)
+                {
+                    CursorMoving();
+                    ViewMoving();
+                }
+            }
         }
-
     }
 
+    // ────────────────────────────────────────────
+    // PC: 마우스 커서 이동
+    // ────────────────────────────────────────────
     void CursorMoving()
     {
-        // 마우스 이동
-        float x = Input.mousePosition.x - (Screen.width / 2);
-        float y = Input.mousePosition.y - (Screen.height / 2);
+        Vector3 mPos = Input.mousePosition;
+
+        float x = mPos.x - (Screen.width * 0.5f);
+        float y = mPos.y - (Screen.height * 0.5f);
+
+        // Infinity / NaN 방어
+        if (float.IsInfinity(x) || float.IsInfinity(y) ||
+            float.IsNaN(x) || float.IsNaN(y))
+            return;
+
         tf_cursor.localPosition = new Vector2(x, y);
 
-        // 마우스 가두기 (범위 지정)
         float tmp_cursorPosX = tf_cursor.localPosition.x;
         float tmp_cursorPosY = tf_cursor.localPosition.y;
-
-        float min_width = -Screen.width / 2;
-        float max_width = Screen.width / 2;
-        float min_height = -Screen.height / 2;
-        float max_height = Screen.height / 2;
-        int padding = 20;   // 값은 자유
+        float min_width = -Screen.width * 0.5f;
+        float max_width = Screen.width * 0.5f;
+        float min_height = -Screen.height * 0.5f;
+        float max_height = Screen.height * 0.5f;
+        int padding = 20;
 
         tmp_cursorPosX = Mathf.Clamp(tmp_cursorPosX, min_width + padding, max_width - padding);
         tmp_cursorPosY = Mathf.Clamp(tmp_cursorPosY, min_height + padding, max_height - padding);
-
         tf_cursor.localPosition = new Vector2(tmp_cursorPosX, tmp_cursorPosY);
     }
 
+    // ────────────────────────────────────────────
+    // PC: 마우스 드래그 카메라 이동
+    // ────────────────────────────────────────────
     void ViewMoving()
     {
-        // 마우스 최초 클릭 시의 위치 기억
         if (Input.GetMouseButtonDown(0))
-        {
             firstClickPointX = tf_cursor.localPosition.x;
-        }
 
         if (Input.GetMouseButton(0))
         {
             if (Camera.main.transform.position.x >= 0)
             {
-                // (현재 마우스 위치 - 최초 위치)의 음의 방향으로 카메라 이동
-                Vector2 position = Camera.main.ScreenToViewportPoint(-new Vector3(tf_cursor.localPosition.x - firstClickPointX, 0, 0));
+                Vector2 position = Camera.main.ScreenToViewportPoint(
+                    -new Vector3(tf_cursor.localPosition.x - firstClickPointX, 0, 0));
                 Vector2 move = position * (Time.deltaTime * dragSpeed);
-
                 Camera.main.transform.Translate(move);
 
                 float dx = mapSize.x;
-                float clampX = Mathf.Clamp(Camera.main.transform.position.x, -dx + center.x, dx + center.x);
-
-                //float dy = mapSize.y - camHeight;
-                //float clampY = Mathf.Clamp(Camera.main.transform.position.y, -dy + center.y, dy + center.y);
-
-                Camera.main.transform.position = new Vector3(clampX, 0, Camera.main.transform.position.z);
+                float clampX = Mathf.Clamp(Camera.main.transform.position.x,
+                                           -dx + center.x, dx + center.x);
+                Camera.main.transform.position =
+                    new Vector3(clampX, 0, Camera.main.transform.position.z);
             }
+
             if (Camera.main.transform.position.x < 0)
-            {
                 Camera.main.transform.position = new Vector3(0, 0, -10);
-            }
+
             if (Camera.main.transform.position.x > 20)
-            {
                 Camera.main.transform.position = new Vector3(20, 0, -10);
+        }
+    }
+
+    // ────────────────────────────────────────────
+    // 모바일: 터치 드래그 카메라 이동
+    // ────────────────────────────────────────────
+    void TouchViewMoving()
+    {
+        Touch touch = Input.GetTouch(0);
+
+        if (touch.phase == TouchPhase.Began)
+        {
+            firstClickPointX = touch.position.x - (Screen.width * 0.5f);
+        }
+
+        if (touch.phase == TouchPhase.Moved)
+        {
+            float currentTouchX = touch.position.x - (Screen.width * 0.5f);
+
+            if (Camera.main.transform.position.x >= 0)
+            {
+                Vector2 position = Camera.main.ScreenToViewportPoint(
+                    -new Vector3(currentTouchX - firstClickPointX, 0, 0));
+                Vector2 move = position * (Time.deltaTime * dragSpeed);
+                Camera.main.transform.Translate(move);
+
+                float dx = mapSize.x;
+                float clampX = Mathf.Clamp(Camera.main.transform.position.x,
+                                           -dx + center.x, dx + center.x);
+                Camera.main.transform.position =
+                    new Vector3(clampX, 0, Camera.main.transform.position.z);
             }
+
+            if (Camera.main.transform.position.x < 0)
+                Camera.main.transform.position = new Vector3(0, 0, -10);
+
+            if (Camera.main.transform.position.x > 20)
+                Camera.main.transform.position = new Vector3(20, 0, -10);
         }
     }
 }

@@ -17,23 +17,26 @@ public class Unit : UnitBase, IPointerEnterHandler, IPointerExitHandler
     public TextMeshProUGUI unitCost;
     public TextMeshProUGUI unitText;
 
+    private Vector3 originalScale; // 원래 스케일 저장
+
+    private void Start()
+    {
+        originalScale = transform.localScale;
+    }
+
     public void OnEnable()
     {
         System.Random random = new System.Random();
         CallUnitData(random.Next(0, units.Count));
     }
-    
+
     public void CallUnitData(int index)
     {
-        // Unit Type
         unitType = (UnitTypes)units[index].UnitType;
         data = units[index];
-        // Unit Info
         unitID = units[index].UnitID;
         unitName = units[index].UnitName;
         cost = units[index].Cost;
-
-        // Unit Status
         health = units[index].Health;
         power = units[index].Power;
         attackTime = units[index].AttackTime;
@@ -50,32 +53,25 @@ public class Unit : UnitBase, IPointerEnterHandler, IPointerExitHandler
         ItemInfo.instance.OpenInfoUnit(data);
     }
 
-    // Implement IPointerEnterHandler's OnPointerEnter method
     public void OnPointerEnter(PointerEventData eventData)
     {
+        // 드래그 중이면 스케일 변경 무시
+        if (UnitManager.isDraggingAny) return;
+
         Debug.Log("Pointer entered");
         ItemInfo.instance.OpenInfoUnit(data);
-        Vector3 currentScale = transform.localScale;
 
-        // 가로와 세로를 0.2씩 증가시킴
-        Vector3 newScale = new Vector3(currentScale.x + 0.2f, currentScale.y + 0.2f, currentScale.z);
-
-        // 새로운 스케일을 적용
+        Vector3 newScale = new Vector3(
+            originalScale.x + 0.2f,
+            originalScale.y + 0.2f,
+            originalScale.z);
         transform.localScale = newScale;
     }
 
-    // Implement IPointerExitHandler's OnPointerExit method
     public void OnPointerExit(PointerEventData eventData)
     {
         Debug.Log("Pointer exited");
-        Vector3 currentScale = transform.localScale;
-
-        // 가로와 세로를 0.2씩 증가시킴
-        Vector3 newScale = new Vector3(currentScale.x - 0.2f, currentScale.y - 0.2f, currentScale.z);
-
-        // 새로운 스케일을 적용
-        transform.localScale = newScale;
+        // 현재값 기준이 아닌 원래 스케일로 정확히 복구
+        transform.localScale = originalScale;
     }
-
-
 }

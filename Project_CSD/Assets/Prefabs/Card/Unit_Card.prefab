@@ -127,19 +127,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 239527638786203014}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8074906876845180572}
-        m_TargetAssemblyTypeName: UnitManager, Assembly-CSharp
-        m_MethodName: UsingCard
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &8074906876845180572
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -152,6 +140,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aed32c7a2a7f8c8488ab71c4b96e0d6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  unitData: {fileID: 0}
+  reRoll: {fileID: 0}
 --- !u!114 &212317160910575987
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -167,7 +157,7 @@ MonoBehaviour:
   initialHealth: 0
   initialMoveSpeed: 0
   initialPower: 0
-  initialAttackSpeed: 0
+  initialAttackTime: 0
   unitType: 0
   unitState: 0
   unitID: 0
@@ -175,13 +165,19 @@ MonoBehaviour:
   cost: 0
   health: 0
   power: 0
-  attackSpeed: 0
   moveSpeed: 0
+  attackTime: 0
+  unit_CardImg: {fileID: 0}
   units:
   - {fileID: 11400000, guid: 30d37853b7fea784faf7413667f05d18, type: 2}
   - {fileID: 11400000, guid: 3432d7c5b5226954187957314341727e, type: 2}
   - {fileID: 11400000, guid: ffd2baf915980a94a89f459f8f2c0a1b, type: 2}
   - {fileID: 11400000, guid: 5c555b720eee4eb4fbcc373caaa241b4, type: 2}
+  data: {fileID: 0}
+  cardImg: {fileID: 0}
+  unit_anim: {fileID: 0}
+  unitCost: {fileID: 0}
+  unitText: {fileID: 0}
 --- !u!1 &2854145661760163395
 GameObject:
   m_ObjectHideFlags: 0
@@ -367,7 +363,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.1, y: 0.7}
   m_AnchorMax: {x: 0.3, y: 0.9}
-  m_AnchoredPosition: {x: 0, y: -0.000015258789}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0.0000009536743, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3277625621569341838

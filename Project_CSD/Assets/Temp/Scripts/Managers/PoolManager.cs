@@ -5,21 +5,18 @@ using UnityEngine;
 
 public class PoolManager : Singleton<PoolManager>
 {
-    // 프리팹
     public GameObject[][] prefabs;
     public GameObject[] unitPrefabs;
     public GameObject[] spellPrefabs;
     public GameObject[] enemyPrefabs;
     public GameObject[] weaponPrefabs;
 
-    // 풀 담당을 하는 리스트들
     List<GameObject>[] pools;
 
     void Awake()
     {
         prefabs = new GameObject[4][];
         pools = new List<GameObject>[prefabs.Length];
-
         prefabs[0] = unitPrefabs;
         prefabs[1] = spellPrefabs;
         prefabs[2] = enemyPrefabs;
@@ -31,34 +28,30 @@ public class PoolManager : Singleton<PoolManager>
         }
     }
 
-    // 기본 Pool
+    // ─────────────────────────────────────────────
+    // 기본 Pool (unitSpawnPoint[0] 고정 스폰)
+    // ─────────────────────────────────────────────
     public GameObject Get(int prefabIndex, int objIndex)
     {
         GameObject select = null;
 
-        // 선택한 풀이 놀고 (비활성화 된) 있는 게임 오브젝트 접근
         foreach (GameObject item in pools[prefabIndex])
         {
-            if (!item.activeInHierarchy && item.name == prefabs[prefabIndex][objIndex].name+"(Clone)")
+            if (!item.activeInHierarchy &&
+                item.name == prefabs[prefabIndex][objIndex].name + "(Clone)")
             {
-                // 발견하면 select 변수에 할당
                 select = item;
                 select.SetActive(true);
                 break;
             }
         }
 
-        // 모든 오브젝트 사용 중일 시 (못 찾았을 때) 오브젝트를 새로 생성해서 select 변수에 할당
         if (select == null)
         {
             select = Instantiate(prefabs[prefabIndex][objIndex], transform);
-            // transform -> 오브젝트 생성위치 (= 부모 오브젝트 -> 자기자신(PoolManager))
-
-            // 생성된 오브젝트는 해당 오브젝트 풀 리스트에 추가
             pools[prefabIndex].Add(select);
         }
 
-        // 스폰 포인트
         switch (prefabIndex)
         {
             case 0:
@@ -74,24 +67,53 @@ public class PoolManager : Singleton<PoolManager>
         return select;
     }
 
-    // 시작 포지션 값이 다른 아이템 Pool    ex) 화살
+    // ─────────────────────────────────────────────
+    // 시작 포지션이 다른 아이템 Pool (ex: 화살)
+    // ─────────────────────────────────────────────
     public GameObject Get(int prefabIndex, int objIndex, Vector3 startPos)
     {
         GameObject select = Get(prefabIndex, objIndex);
-
-        // 스폰 포인트
         select.transform.position = startPos;
-
         return select;
     }
 
+    // ─────────────────────────────────────────────
     // Enemy Unit 생성 Pool
+    // ─────────────────────────────────────────────
     public GameObject Get(int prefabIndex, int objIndex, int spawnPoint)
     {
         GameObject select = Get(prefabIndex, objIndex);
-
-        // 스폰 포인트
         select.transform.position = BattleManager.Instance.unitSpawnPoint[spawnPoint + 1].position;
+        return select;
+    }
+
+    // ─────────────────────────────────────────────
+    // 드래그 소환 전용: BattleManager.point 위치에 스폰
+    // ─────────────────────────────────────────────
+    public GameObject GetAtPoint(int prefabIndex, int objIndex)
+    {
+        GameObject select = null;
+
+        foreach (GameObject item in pools[prefabIndex])
+        {
+            if (!item.activeInHierarchy &&
+                item.name == prefabs[prefabIndex][objIndex].name + "(Clone)")
+            {
+                select = item;
+                select.SetActive(true);
+                break;
+            }
+        }
+
+        if (select == null)
+        {
+            select = Instantiate(prefabs[prefabIndex][objIndex], transform);
+            pools[prefabIndex].Add(select);
+        }
+
+        Vector3 spawnPos = BattleManager.Instance.point;
+        spawnPos.z = 0f;
+        select.transform.position = spawnPos;
 
         return select;
     }

@@ -33,7 +33,7 @@ public class BattleManager : Singleton<BattleManager>
 
     [Header("Spawn")]
     public PoolManager pool;
-    public Vector3 point; // 마우스 클릭 포인트
+    public Vector3 point; // 터치 / 클릭 포인트
     public Transform[] unitSpawnPoint; // 기본 spawn point
     [SerializeField] List<TextAsset> enemySpawnFile; // Enemy Spawn 이 적혀있는 Text File
     [SerializeField] List<Spawn> spawnList; // Text File 에서 읽어들인 값을 저장시키긴 위한 List
@@ -110,7 +110,6 @@ public class BattleManager : Singleton<BattleManager>
         ReadSpawnFile(wave); // 적 유닛 스폰 파일 가져오기
 
         unitType = UnitType.Bread; // 테스트(제작)용
-
     }
 
     void Update()
@@ -123,7 +122,7 @@ public class BattleManager : Singleton<BattleManager>
         if (battleState != BattleState.Start)
             return;
 
-        if (!spawnEnd) { curSpawnTime += Time.deltaTime; } // 스폰이 끝났을 경우 스폰 타임은 증가 X
+        if (!spawnEnd) { curSpawnTime += Time.deltaTime; }
 
         // 몬스터 스폰
         if (curSpawnTime > nextSpawnDelay && !spawnEnd)
@@ -136,57 +135,41 @@ public class BattleManager : Singleton<BattleManager>
         if (spawnEnd && CardManager.Instance.enemys.Count == 0 && curHealth > 0)
         {
             Debug.Log("End Wave");
-            // 모든 enemySpawnFile 을 다 처리했을 경우 Win
             if (wave + 1 == enemySpawnFile.Count)
             {
                 battleState = BattleState.Win;
                 unitSpawnRange.SetActive(false);
                 EndGame("Win");
             }
-            // 아직 처리하지 못한 enemySpawnFile 이 남아있을 경우 다음 Wave 실행
             else if (wave + 1 < enemySpawnFile.Count && battleState == BattleState.Start)
             {
                 Debug.Log("Next Wave");
 
                 battleState = BattleState.BreakTime;
                 wave++;
-                ReadSpawnFile(wave); // 적 유닛 스폰 파일 가져오기
+                ReadSpawnFile(wave);
                 battleState = BattleState.Start;
 
                 StartCoroutine(Wave());
             }
         }
 
-        // 적 처치 후 남은 적의 수 업데이트
-        if (/*!spawnEnd &&*/ CardManager.Instance.enemys.Count >= 0)
+        if (CardManager.Instance.enemys.Count >= 0)
         {
             UpdateEnemyCountUI();
         }
 
-        //Invoke("BattleTimer", 2f);
         BattleTimer();
     }
 
-    void BattleTimer()//타이머
+    void BattleTimer()
     {
-        //클리어까지의 시간
-
-        /*
-        limite_time += Time.deltaTime;
-        int minutes = Mathf.FloorToInt(limite_time / 60);
-        int seconds = Mathf.FloorToInt(limite_time % 60);
-
-        time.text = string.Format("{0:00} : {1:00}", minutes, seconds);*/
-
-        //타임 어택
         limite_time -= Time.deltaTime;
         if (limite_time <= 0)
         {
             battleState = BattleState.Lose;
             unitSpawnRange.SetActive(false);
             HpDamage(curHealth);
-
-            //지금 10분을 버텨내면 승리 조건 10분안에 클리어 못하면 패배하는걸로 바꿔야 될까?
         }
         if (limite_time >= 0)
         {
@@ -195,18 +178,14 @@ public class BattleManager : Singleton<BattleManager>
 
             time.text = string.Format("{0:00} : {1:00}", minutes, seconds);
         }
-
-
     }
 
     IEnumerator Wave()
     {
-        // Wave UI 활성화
         waveUI.SetActive(true);
 
         int waveCount = wave + 1;
 
-        // 숫자 이미지 변경
         int ten = waveCount / 10 > 0 ? waveCount / 10 : 0;
         int one = waveCount % 10;
 
@@ -214,7 +193,7 @@ public class BattleManager : Singleton<BattleManager>
         battleWaveImg[1].sprite = waveNumImg[ten];
         waveImg.sprite = waveNumImg[ten];
         waveImg2.sprite = waveNumImg[one];
-        // Wave 애니메이션
+
         foreach (Animator waveAnim in waveUIChild)
         {
             waveAnim.SetBool("next", true);
@@ -222,7 +201,6 @@ public class BattleManager : Singleton<BattleManager>
 
         yield return new WaitForSeconds(2.2f);
 
-        // Wave UI 비활성화
         waveUI.SetActive(false);
     }
 
@@ -234,17 +212,16 @@ public class BattleManager : Singleton<BattleManager>
 
         int waveCount = wave + 1;
 
-        // 숫자 이미지 변경
         int ten = waveCount / 10 > 0 ? waveCount / 10 : 0;
         int one = waveCount % 10;
 
-        // 랭킹 등록 UI 에 Player 점수 최신화
         playerScoreText.text = playerScore.ToString();
 
         resultWaveImg[0].sprite = waveNumImg[one];
         resultWaveImg[1].sprite = waveNumImg[ten];
         waveImg.sprite = waveNumImg[ten];
         waveImg2.sprite = waveNumImg[one];
+
         if (whether == "Win")
         {
             resultPanel.sprite = resultImg[0];
@@ -255,10 +232,6 @@ public class BattleManager : Singleton<BattleManager>
             if (PlayerData.instance != null) { PlayerData.instance.Lv++; }
             victory = true;
             StartCoroutine(ResultUI(2));
-            //endTime = limite_time;
-            //int minutes = Mathf.FloorToInt(endTime / 60);
-            //int seconds = Mathf.FloorToInt(endTime % 60);
-            //result_Time.text = string.Format("{0:00} : {1:00}", minutes, seconds);
             Invoke("Stop_Anim", 5f);
         }
         else if (whether == "Lose")
@@ -268,17 +241,9 @@ public class BattleManager : Singleton<BattleManager>
             if (AudioManager.instance != null) { AudioManager.instance.BattleEndSound(false); }
             Debug.Log("Lose");
             StartCoroutine(ResultUI(0));
-            //endTime = limite_time;
-            //int minutes = Mathf.FloorToInt(endTime / 60);
-            //int seconds = Mathf.FloorToInt(endTime % 60);
-            //result_Time.text = string.Format("{0:00} : {1:00}", minutes, seconds);
             Invoke("Stop_Anim", 5f);
         }
 
-        // 데이터베이스 입력 (userData Table)
-        // SaveUserData(whether, waveCount);
-
-        // 상위 퍼센트 출력 (Wave 도달로 판단)
         Debug.Log("Get Wave Reach Percentage");
 
         if (whether == "Win" && waveCount == 10)
@@ -290,60 +255,23 @@ public class BattleManager : Singleton<BattleManager>
             // GetWaveReachPercentage(waveCount);
         }
     }
+
     public void Stop_Anim()
     {
-        AnimationController.instance.StopAllAnimations();///승리 패배 시 모든 애니메이션, 파티클, 스켈렙톤 정지
+        AnimationController.instance.StopAllAnimations();
     }
-    // 게임 후, 데이터베이스에 데이터 입력 버튼 함수 (ranking Table)
+
     public void SaveUserRanking()
     {
         if (playerScore <= 0)
             return;
 
-        // 데이터베이스 입력 주석 처리
-        // XmlNodeList selectedData = DBConnect.Select("ranking", $"WHERE userName = '{UserRankingData.instance.playerName}'");
-
-        // if (selectedData == null)
-        // {
-        //     DBConnect.Insert("ranking", $"'{UserRankingData.instance.playerName}', {playerScore}");
-        // }
-        // else
-        // {
-        //     DBConnect.UpdateRanking("ranking", "score", playerScore, $"userName = '{UserRankingData.instance.playerName}'");
-        // }
-
-        // 랭킹 등록 UI 비활성화
         rank_Obj.SetActive(false);
     }
 
-    // 게임 종료 후 유저의 게임 결과를 저장하는 함수 (userData Table)
     void SaveUserData(string whether, int wave)
     {
-        // 유저 데이터 저장 (userData Table) 주석 처리
-        // XmlNodeList selectedData = DBConnect.Select("userData", $"WHERE userName = '{UserRankingData.instance.playerName}'");
-
-        // if (selectedData == null)
-        // {
-        //     if (whether == "Win")
-        //     {
-        //         DBConnect.UserDataInsert(UserRankingData.instance.playerName, wave + 1);
-        //     }
-        //     else if (whether == "Lose")
-        //     {
-        //         DBConnect.UserDataInsert(UserRankingData.instance.playerName, wave);
-        //     }
-        // }
-        // else
-        // {
-        //     if (whether == "Win")
-        //     {
-        //         DBConnect.UserDataUpdate(UserRankingData.instance.playerName, wave + 1);
-        //     }
-        //     else if (whether == "Lose")
-        //     {
-        //         DBConnect.UserDataUpdate(UserRankingData.instance.playerName, wave);
-        //     }
-        // }
+        // 주석 처리된 DB 로직 유지
     }
 
     IEnumerator ResultUI(int second)
@@ -352,11 +280,9 @@ public class BattleManager : Singleton<BattleManager>
 
         yield return new WaitForSeconds(second);
 
-        // 애니메이션
         for (int i = 0; i < resultObjsAnim.Length; i++)
         {
             Animator anim = resultObjsAnim[i];
-
             anim.SetBool("end", true);
         }
 
@@ -365,22 +291,24 @@ public class BattleManager : Singleton<BattleManager>
         for (int i = 0; i < resultButtons.Length; i++)
         {
             Button resultBtn = resultButtons[i];
-
             resultBtn.enabled = true;
         }
 
         yield return new WaitForSeconds(1);
-
-        // 랭킹 UI 자동 활성화
-        //rank_Obj.SetActive(true);
     }
 
-    // 유닛 스폰 버튼
+    // ────────────────────────────────────────────
+    // 유닛 스폰 - 터치 / 마우스 자동 분기
+    // ────────────────────────────────────────────
     public void UnitSpawn()
     {
-        // 마우스 좌클릭 한 곳의 위치값
-        point = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x,
-            Input.mousePosition.y, -Camera.main.transform.position.z));
+        // 터치 지원 기기면 터치 위치, 아니면 마우스 위치 사용
+        Vector2 inputPos = (Input.touchSupported && Input.touchCount > 0)
+            ? Input.GetTouch(0).position
+            : (Vector2)Input.mousePosition;
+
+        point = Camera.main.ScreenToWorldPoint(
+            new Vector3(inputPos.x, inputPos.y, -Camera.main.transform.position.z));
 
         switch (unitType)
         {
@@ -413,24 +341,21 @@ public class BattleManager : Singleton<BattleManager>
         curHealth -= damage;
         text_Health.text = curHealth.ToString() + " / " + maxHealth;
         UpdateHealthBar();
-
     }
 
     private void CardMake()
     {
-
-
         for (int i = 0; i < 3; i++)
         {
             int ran_card = UnityEngine.Random.Range(0, card.Length);
-            GameObject myInstance;
-
-            myInstance = Instantiate(card[ran_card], shopParent);
-
+            GameObject myInstance = Instantiate(card[ran_card], shopParent);
             cardObj.Add(myInstance);
         }
 
-
+        // 카드 생성 후 RoundUI 강제 리셋
+        RoundUI roundUI = shopParent.GetComponent<RoundUI>();
+        if (roundUI != null)
+            roundUI.ReActivate();
     }
 
     public void CardShuffle(bool Recost)
@@ -459,12 +384,10 @@ public class BattleManager : Singleton<BattleManager>
             CardMake();
             Debug.Log("Shuffle");
         }
-
     }
 
     void UpdateHealthBar()
     {
-
         float sliderValue = curHealth / maxHealth;
         HpBarSlider.value = sliderValue;
 
@@ -473,7 +396,7 @@ public class BattleManager : Singleton<BattleManager>
             Time.timeScale = 1f;
             if (!resultUI.activeInHierarchy)
             {
-                EndGame("Lose"); // 결과창 UI 활성화
+                EndGame("Lose");
             }
             Invoke("Test_GameOver", 3f);
         }
@@ -485,21 +408,19 @@ public class BattleManager : Singleton<BattleManager>
         battle.SetActive(false);
         gameEnd.SetActive(true);
     }
+
     void ReadSpawnFile(int waveCount)
     {
-        // 변수 초기화
         spawnList.Clear();
         spawnIndex = 0;
         spawnEnd = false;
 
-        // 적의 수 초기화
         totalEnemyCount = 0;
         enemyCnt = 0;
-        // 리스폰 파일 읽기
+
         TextAsset textFile = Resources.Load(enemySpawnFile[waveCount].name) as TextAsset;
         StringReader reader = new StringReader(textFile.text);
 
-        // 한 줄씩 데이터 저장
         while (reader != null)
         {
             string line = reader.ReadLine();
@@ -514,18 +435,14 @@ public class BattleManager : Singleton<BattleManager>
             spawnData.spawnPoint = int.Parse(line.Split(',')[3]);
             spawnList.Add(spawnData);
 
-            // 적 수 카운트 증가
             totalEnemyCount++;
             enemyCnt++;
         }
 
-        // 텍스트 파일 닫기
         reader.Close();
 
-        // 미리 첫 번째 스폰 딜레이 적용
         nextSpawnDelay = spawnList[0].spawnDelay;
 
-        // 적의 수를 UI에 업데이트
         UpdateEnemyCountUI();
     }
 
@@ -535,7 +452,6 @@ public class BattleManager : Singleton<BattleManager>
 
         PoolManager.Instance.Get(list.unitType, list.unitIndex, list.spawnPoint);
 
-        // 리스폰 인덱스 증가
         spawnIndex++;
         if (spawnIndex == spawnList.Count)
         {
@@ -545,7 +461,6 @@ public class BattleManager : Singleton<BattleManager>
             return;
         }
 
-        // 다음 리스폰 딜레이 갱신
         nextSpawnDelay = spawnList[spawnIndex].spawnDelay;
     }
 
@@ -553,46 +468,21 @@ public class BattleManager : Singleton<BattleManager>
     {
         enemyCountText.text = totalEnemyCount.ToString() + "/" + enemyCnt;
     }
-    public void AddRanking()
-    {
 
-    }
+    public void AddRanking() { }
+
     public void RankingOpen()
     {
         if (AudioManager.instance != null) { AudioManager.instance.BattleSound(); }
-        //rank_Obj.SetActive(true);
     }
+
     public void RankingCloser()
     {
         if (AudioManager.instance != null) { AudioManager.instance.BattleSound(); }
-        //rank_Obj.SetActive(false);
     }
-
 
     void GetWaveReachPercentage(int wave)
     {
-        // 상위 퍼센트 출력 (도달 웨이브로 판단) 주석 처리
-
-        // XmlNodeList allUser = DBConnect.SelectOriginal("userData", "SELECT * FROM userData");
-        // allUserCount = allUser.Count;
-
-        // if (wave == 11)
-        // {
-        //     XmlNodeList selectUser = DBConnect.SelectOriginal("userData", "SELECT * FROM userData WHERE stage_clear = 1;");
-        //     selectUserCount = selectUser.Count;
-        // }
-        // else
-        // {
-        //     XmlNodeList selectUser = DBConnect.SelectOriginal("userData", $"SELECT * FROM userData WHERE stage_{wave} = 1;");
-        //     selectUserCount = selectUser.Count;
-        // }
-
-        // percent = (selectUserCount / allUserCount) * 100;
-        // percent = (float)Math.Round(percent, 2); // 소수점 2자리 반올림
-
-        // Debug.Log($"allUserCount : {allUserCount}, selectUserCount : {selectUserCount}, percent : {percent}, wave : {wave}");
-
-        // 텍스트 입력
-        // percentageText.text = $"전체 유저 중 {percent}%가\r\n동일한 웨이브에 도달했습니다.";
+        // DB 연동 주석 처리 유지
     }
 }
