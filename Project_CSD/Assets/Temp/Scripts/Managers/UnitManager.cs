@@ -61,6 +61,7 @@ public class UnitManager : MonoBehaviour, IPointerDownHandler, IDragHandler, IPo
     // 式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式
     public void OnPointerDown(PointerEventData eventData)
     {
+        eventData.Use();
         if (UiManager.Instance == null || UiManager.Instance.cost < unit.cost)
         {
             Debug.Log("濤擋 睡褶!");
@@ -96,6 +97,8 @@ public class UnitManager : MonoBehaviour, IPointerDownHandler, IDragHandler, IPo
     // 式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式
     public void OnDrag(PointerEventData eventData)
     {
+        eventData.Use();
+
         if (!isDragging) return;
 
         if (dragPreview != null)
@@ -122,6 +125,7 @@ public class UnitManager : MonoBehaviour, IPointerDownHandler, IDragHandler, IPo
     // 式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式
     public void OnPointerUp(PointerEventData eventData)
     {
+        eventData.Use();
         isDraggingAny = false;
 
         if (!isDragging)
