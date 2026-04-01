@@ -1,49 +1,91 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Xml;
+using System.IO;
 using UnityEngine;
+
+[System.Serializable]
+public class RankEntry
+{
+    public string name;
+    public int score;
+}
+
+[System.Serializable]
+public class RankData
+{
+    public List<RankEntry> entries = new List<RankEntry>();
+}
 
 public class RankingManager : MonoBehaviour
 {
-    [SerializeField] Transform creatRanking_Tr; // 랭킹 프리팹 생성 위치
-    [SerializeField] GameObject ranking_Obj; // 랭킹 아이템 프리팹
+    public static RankingManager Instance;
+
     [SerializeField] RankItem[] rankItems;
 
-    float time;
+    private const string FILE_NAME = "ranking.json";
+    private const int MAX_RANK = 10;
+    private RankData rankData = new RankData();
+    private string FilePath => Path.Combine(Application.persistentDataPath, FILE_NAME);
 
-    private void Start()
+    void Awake()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else Destroy(gameObject);
+    }
+
+    void Start()
+    {
+        LoadRanking();
         RankingSystem();
-
     }
-    private void Update()
+
+    // 랭킹 UI 갱신
+    public void RankingSystem()
     {
-        time += Time.deltaTime;
-        if(time >= 60)
+        for (int i = 0; i < rankItems.Length; i++)
         {
-            RankingSystem();
-            time = 0f;
+            if (i < rankData.entries.Count)
+                rankItems[i].SetRankingData(rankData.entries[i].name, rankData.entries[i].score);
+            else
+                rankItems[i].SetRankingData("-", 0); // 빈 슬롯
         }
     }
 
-    void RankingSystem()
+    // 10위 안에 드는 점수인지 확인
+    public bool IsRankable(int score)
     {
-        // 데이터베이스에서 1위부터 10위까지의 랭킹 데이터를 가져옴
-        XmlNodeList rankingData = DBConnect.Select("ranking", "ORDER BY score DESC LIMIT 10");
-        
-        if (rankingData != null)
-        {
-            int rank = 0;
+        if (rankData.entries.Count < MAX_RANK) return true;
+        return score > rankData.entries[MAX_RANK - 1].score;
+    }
 
-            foreach (XmlNode data in rankingData)
-            {
-                rankItems[rank].SetRankingData(data["userName"].InnerText, int.Parse(data["score"].InnerText));
-                rank++;
-            }
-        }
-        else
+    // 랭킹 등록
+    public void AddRanking(string playerName, int score)
+    {
+        rankData.entries.Add(new RankEntry { name = playerName, score = score });
+        rankData.entries.Sort((a, b) => b.score.CompareTo(a.score));
+
+        if (rankData.entries.Count > MAX_RANK)
+            rankData.entries.RemoveRange(MAX_RANK, rankData.entries.Count - MAX_RANK);
+
+        SaveRanking();
+        RankingSystem(); // UI 즉시 갱신
+    }
+
+    private void SaveRanking()
+    {
+        string json = JsonUtility.ToJson(rankData, true);
+        File.WriteAllText(FilePath, json);
+    }
+
+    private void LoadRanking()
+    {
+        if (File.Exists(FilePath))
         {
-            Debug.Log("랭킹 데이터를 가져오지 못했습니다.");
+            string json = File.ReadAllText(FilePath);
+            rankData = JsonUtility.FromJson<RankData>(json);
         }
     }
 }

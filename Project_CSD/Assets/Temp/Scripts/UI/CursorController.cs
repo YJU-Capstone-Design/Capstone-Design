@@ -128,32 +128,20 @@ public class CursorController : MonoBehaviour
 
         if (touch.phase == TouchPhase.Began)
         {
-            firstClickPointX = touch.position.x - (Screen.width * 0.5f);
+            firstClickPointX = touch.position.x;
         }
 
         if (touch.phase == TouchPhase.Moved)
         {
-            float currentTouchX = touch.position.x - (Screen.width * 0.5f);
+            float delta = touch.position.x - firstClickPointX;
+            firstClickPointX = touch.position.x; // ← 매 프레임 갱신이 핵심
 
-            if (Camera.main.transform.position.x >= 0)
-            {
-                Vector2 position = Camera.main.ScreenToViewportPoint(
-                    -new Vector3(currentTouchX - firstClickPointX, 0, 0));
-                Vector2 move = position * (Time.deltaTime * dragSpeed);
-                Camera.main.transform.Translate(move);
+            // 뷰포트 1단위 = 화면 전체 너비이므로 Screen.width로 나눠서 정규화
+            float move = -(delta / Screen.width) * dragSpeed;
+            Camera.main.transform.Translate(move * Time.deltaTime, 0, 0);
 
-                float dx = mapSize.x;
-                float clampX = Mathf.Clamp(Camera.main.transform.position.x,
-                                           -dx + center.x, dx + center.x);
-                Camera.main.transform.position =
-                    new Vector3(clampX, 0, Camera.main.transform.position.z);
-            }
-
-            if (Camera.main.transform.position.x < 0)
-                Camera.main.transform.position = new Vector3(0, 0, -10);
-
-            if (Camera.main.transform.position.x > 20)
-                Camera.main.transform.position = new Vector3(20, 0, -10);
+            float clampX = Mathf.Clamp(Camera.main.transform.position.x, 0, 20);
+            Camera.main.transform.position = new Vector3(clampX, 0, -10);
         }
     }
 }
