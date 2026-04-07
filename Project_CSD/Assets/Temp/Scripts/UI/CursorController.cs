@@ -22,29 +22,30 @@ public class CursorController : MonoBehaviour
         mapSize.y = tf_background.rect.height;
 
         // 모바일 실기기에서는 커서 UI 숨김
+#if UNITY_ANDROID || UNITY_IOS
+        tf_cursor.gameObject.SetActive(false);
+#else
         if (Input.touchSupported)
             tf_cursor.gameObject.SetActive(false);
+#endif
     }
 
     void Update()
     {
         if (BattleManager.Instance.unitSpawnRange.activeSelf == false)
         {
-            if (Input.touchSupported && Input.touchCount > 0)
-            {
-                // 실기기 터치
+#if UNITY_ANDROID || UNITY_IOS
+            // 빌드된 모바일에서는 무조건 터치
+            if (Input.touchCount > 0)
                 TouchViewMoving();
-            }
-            else if (!Input.touchSupported)
+#else
+            // PC / 에디터 시뮬레이터
+            if (Input.touchCount > 0)
             {
-                // 순수 PC (터치 미지원) 에서만 마우스 로직 실행
-                CursorMoving();
-                ViewMoving();
+                TouchViewMoving();
             }
             else
             {
-                // 시뮬레이터 모드: touchSupported=true지만 터치 없음
-                // → 마우스 위치가 유효할 때만 실행
                 Vector3 mPos = Input.mousePosition;
                 if (!float.IsInfinity(mPos.x) && !float.IsInfinity(mPos.y)
                     && !float.IsNaN(mPos.x) && !float.IsNaN(mPos.y)
@@ -54,6 +55,7 @@ public class CursorController : MonoBehaviour
                     ViewMoving();
                 }
             }
+#endif
         }
     }
 
@@ -67,7 +69,6 @@ public class CursorController : MonoBehaviour
         float x = mPos.x - (Screen.width * 0.5f);
         float y = mPos.y - (Screen.height * 0.5f);
 
-        // Infinity / NaN 방어
         if (float.IsInfinity(x) || float.IsInfinity(y) ||
             float.IsNaN(x) || float.IsNaN(y))
             return;
@@ -127,18 +128,15 @@ public class CursorController : MonoBehaviour
         Touch touch = Input.GetTouch(0);
 
         if (touch.phase == TouchPhase.Began)
-        {
             firstClickPointX = touch.position.x;
-        }
 
         if (touch.phase == TouchPhase.Moved)
         {
             float delta = touch.position.x - firstClickPointX;
-            firstClickPointX = touch.position.x; // ← 매 프레임 갱신이 핵심
+            firstClickPointX = touch.position.x;
 
-            // 뷰포트 1단위 = 화면 전체 너비이므로 Screen.width로 나눠서 정규화
             float move = -(delta / Screen.width) * dragSpeed;
-            Camera.main.transform.Translate(move * Time.deltaTime, 0, 0);
+            Camera.main.transform.Translate(move, 0, 0); // Time.deltaTime 제거
 
             float clampX = Mathf.Clamp(Camera.main.transform.position.x, 0, 20);
             Camera.main.transform.position = new Vector3(clampX, 0, -10);

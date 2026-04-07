@@ -86,7 +86,7 @@ public class UnitManager : MonoBehaviour, IPointerDownHandler, IDragHandler, IPo
         spawnAreaRect = spawnAreaTf.GetComponent<RectTransform>();
 
         SetCardsInteractable(false);
-        CreateDragPreview(eventData.position);
+        //CreateDragPreview(eventData.position);
 
         SummonUnit.instance.ClearCursor(true);
         SummonUnit.instance.GetSkeletonData(unit);
@@ -136,7 +136,7 @@ public class UnitManager : MonoBehaviour, IPointerDownHandler, IDragHandler, IPo
         }
 
         isDragging = false;
-        DestroyDragPreview();
+        //DestroyDragPreview();
 
         if (isInSpawnArea)
         {
