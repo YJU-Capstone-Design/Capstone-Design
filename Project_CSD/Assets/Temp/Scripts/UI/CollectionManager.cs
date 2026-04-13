@@ -15,9 +15,12 @@ public class CollectionManager : MonoBehaviour
     [SerializeField] GameObject unitCollectionUI;
     [SerializeField] TextMeshProUGUI unitNameText;
     [SerializeField] TextMeshProUGUI unitHPText;
+    [SerializeField] TextMeshProUGUI unitHPText_Break;
     [SerializeField] TextMeshProUGUI unitPowerText;
+    [SerializeField] TextMeshProUGUI unitPowerText_Break;
     [SerializeField] TextMeshProUGUI unitCostText;
     [SerializeField] TextMeshProUGUI unitSpeedText;
+    [SerializeField] TextMeshProUGUI unitSpeedText_Break;
     [SerializeField] TextMeshProUGUI unitAtkSpeedText;
     [SerializeField] TextMeshProUGUI usePercentText;
     [SerializeField] GameObject unitGraphic;
@@ -130,6 +133,9 @@ public class CollectionManager : MonoBehaviour
         animButtons.SetActive(false);
         unitGraphic.SetActive(false);
         unit_ATK_Type.sprite = basic_ATK_Type;
+        unitHPText_Break.text = "";
+        unitPowerText_Break.text = "";
+        unitSpeedText_Break.text = "";
         if (unitGraphic.GetComponent<SkeletonGraphic>().SkeletonDataAsset != null)
         {
             unitGraphic.GetComponent<SkeletonGraphic>().SkeletonDataAsset.Clear();
@@ -174,10 +180,47 @@ public class CollectionManager : MonoBehaviour
         }
      
         unit_ATK_Type.sprite = unitData.Unit_Atk_Type;
+
+        // BreakRack 버프 추가
         unitHPText.text = unitData.Health.ToString();
         unitPowerText.text = unitData.Power.ToString();
         unitCostText.text = unitData.Cost.ToString();
         unitSpeedText.text = unitData.MoveSpeed.ToString();
+
+        // _Break 초기화
+        unitHPText_Break.text = "";
+        unitPowerText_Break.text = "";
+        unitSpeedText_Break.text = "";
+
+        if (PlayerData.instance != null)
+        {
+            if (PlayerData.instance.unitHp_Stu != 1)
+            {
+                float hpMult = PlayerData.instance.unitHp_Stu * PlayerData.instance.unitHp_Stu;
+                unitHPText_Break.text = " / " + (unitData.Health * hpMult).ToString("F0");
+            }
+            else
+            {
+                unitHPText_Break.text = "";
+            }
+            if (PlayerData.instance.atk_Stu != 1)
+            {
+                unitPowerText_Break.text = " / " + (unitData.Power * PlayerData.instance.atk_Stu).ToString("F0");
+            }
+            else
+            {
+                unitHPText_Break.text = "";
+            }
+            if (PlayerData.instance.speed_Stu != 1)
+            {
+                unitSpeedText_Break.text = " / " + (unitData.MoveSpeed * PlayerData.instance.speed_Stu).ToString("F0");
+            }
+            else
+            {
+                unitHPText_Break.text = "";
+            }
+        }
+
         unitAtkSpeedText.text = unitData.AttackTime.ToString() + "s";
         //usePercentText.text = GetUsePercentage(unitData.UnitID);
         animButtons.SetActive(true);
