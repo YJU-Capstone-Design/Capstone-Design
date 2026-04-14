@@ -181,43 +181,37 @@ public class CollectionManager : MonoBehaviour
      
         unit_ATK_Type.sprite = unitData.Unit_Atk_Type;
 
-        // BreakRack 버프 추가
-        unitHPText.text = unitData.Health.ToString();
-        unitPowerText.text = unitData.Power.ToString();
-        unitCostText.text = unitData.Cost.ToString();
-        unitSpeedText.text = unitData.MoveSpeed.ToString();
-
-        // _Break 초기화
-        unitHPText_Break.text = "";
-        unitPowerText_Break.text = "";
-        unitSpeedText_Break.text = "";
+        // 1. 기본 수치 표시
+        unitHPText.text = unitData.Health.ToString("F0");
+        unitPowerText.text = unitData.Power.ToString("F0");
+        unitCostText.text = unitData.Cost.ToString("F0");
+        unitSpeedText.text = unitData.MoveSpeed.ToString("F1"); // 스피드는 소수점 한 자리
 
         if (PlayerData.instance != null)
         {
+            // --- 체력 (HP) ---
+            // 배율이 1이 아닐 때만 계산하고 표시
             if (PlayerData.instance.unitHp_Stu != 1)
             {
                 float hpMult = PlayerData.instance.unitHp_Stu * PlayerData.instance.unitHp_Stu;
-                unitHPText_Break.text = " / " + (unitData.Health * hpMult).ToString("F0");
+                int finalHP = Mathf.RoundToInt(unitData.Health * hpMult);
+                unitHPText.text += $" / <color=red>{finalHP}</color>";
             }
-            else
-            {
-                unitHPText_Break.text = "";
-            }
+
+            // --- 공격력 (Power) ---
             if (PlayerData.instance.atk_Stu != 1)
             {
-                unitPowerText_Break.text = " / " + (unitData.Power * PlayerData.instance.atk_Stu).ToString("F0");
+                int finalPower = Mathf.RoundToInt(unitData.Power * PlayerData.instance.atk_Stu);
+                unitPowerText.text += $" / <color=red>{finalPower}</color>";
             }
-            else
-            {
-                unitHPText_Break.text = "";
-            }
+
+            // --- 이동 속도 (Speed) ---
+            // 배율이 정확히 1이 아닐 때만 표시 (가장 확실한 조건)
             if (PlayerData.instance.speed_Stu != 1)
             {
-                unitSpeedText_Break.text = " / " + (unitData.MoveSpeed * PlayerData.instance.speed_Stu).ToString("F0");
-            }
-            else
-            {
-                unitHPText_Break.text = "";
+                float finalSpeed = unitData.MoveSpeed * PlayerData.instance.speed_Stu;
+                // 표시할 때도 소수점 형식을 맞춰줍니다.
+                unitSpeedText.text += $" / <color=red>{finalSpeed.ToString("F1")}</color>";
             }
         }
 
