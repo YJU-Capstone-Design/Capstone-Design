@@ -16,7 +16,15 @@ public class Info : MonoBehaviour
 
     private Vector3 originPosition;   // 원래 위치 저장용
     private bool isJumping = false;   // 중복 클릭 방지
+    [Header("Background Image")]
+    public List<Sprite> bgImages;     // 배경 이미지 리스트
+    public GameObject bgImage; // 실제 출력할 UI 이미지
+    int currentIndex = 0;
 
+    [Header("info Settings")]
+    public GameObject info;
+    public GameObject bg;
+    public GameObject sound;
     void Start()
     {
         // 시작할 때 아이콘의 초기 위치를 저장합니다.
@@ -25,7 +33,8 @@ public class Info : MonoBehaviour
 
     public void OpenInfo() => infomation.SetActive(true);
     public void CloseInfo() => infomation.SetActive(false);
-
+    public void Closebg() => bg.SetActive(false);
+    public void Closesound() => sound.SetActive(false);
     public void PopUpAndPlaySound()
     {
         if (isJumping) return; // 이미 뛰고 있다면 무시
@@ -72,5 +81,51 @@ public class Info : MonoBehaviour
         // 정확히 원래 위치로 고정
         icon.transform.localPosition = originPosition;
         isJumping = false;
+    }
+
+
+    public void ChangeBg(bool isRight)
+    {
+        if (bgImages == null || bgImages.Count == 0) return;
+
+  
+         
+
+        if (isRight)
+        {
+            currentIndex++;
+            if (currentIndex >= bgImages.Count)
+                currentIndex = 0;
+        }
+        else
+        {
+            currentIndex--;
+            if (currentIndex < 0)
+                currentIndex = bgImages.Count - 1;
+        }
+
+        bgImage.GetComponent<UnityEngine.UI.Image>().sprite = bgImages[currentIndex];
+    }
+
+    public void SelectMenu(string type)
+    {
+        info.SetActive(false);
+        bg.SetActive(false);
+        sound.SetActive(false);
+
+        switch (type)
+        {
+            case "info":
+                info.SetActive(true);
+                break;
+
+            case "bg":
+                bg.SetActive(true);
+                break;
+
+            case "sound":
+                sound.SetActive(true);
+                break;
+        }
     }
 }

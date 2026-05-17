@@ -8,6 +8,7 @@ public class AudioManager : MonoBehaviour
     //배경음
     [SerializeField] AudioSource audioSource_Bg;
     [SerializeField] AudioClip[] audioClip_Bg;
+    [SerializeField] AudioClip mainBg;
     //버튼음
     [SerializeField] AudioSource audioSource_Btn;
     [SerializeField] AudioClip[] audioClip_Btn;
@@ -166,4 +167,27 @@ public class AudioManager : MonoBehaviour
             Debug.Log("빌드된 파일에서 게임 종료");
         #endif
     }
+
+
+    public void PlayBackgroundByIndex(int index)
+    {
+        if(audioClip_Bg == null || audioClip_Bg.Length == 0) return;
+        if (index < 0 || index >= audioClip_Bg.Length) return;
+
+        // 같은거 다시 누르면 메인 배경음으로 복귀
+        if (audioSource_Bg.clip == audioClip_Bg[index])
+        {
+            audioSource_Bg.Stop();
+            audioSource_Bg.clip = mainBg;
+            audioSource_Bg.loop = true;
+            audioSource_Bg.Play();
+            return;
+        }
+
+        audioSource_Bg.Stop(); // 기존 메인 배경음 정지
+        audioSource_Bg.clip = audioClip_Bg[index];
+        audioSource_Bg.loop = true; // 배경음이면 보통 루프
+        audioSource_Bg.Play();
+    }
 }
+

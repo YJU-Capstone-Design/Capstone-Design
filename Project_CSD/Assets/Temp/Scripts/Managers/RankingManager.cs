@@ -61,17 +61,37 @@ public class RankingManager : MonoBehaviour
         return score > rankData.entries[MAX_RANK - 1].score;
     }
 
-    // 랭킹 등록
+    // 진열대 쓰면 붙음
+    private string ProcessPlayerName(string playerName)
+    {
+        if (PlayerData.instance == null) return playerName;
+
+        float atk = PlayerData.instance.atk_Stu;
+        float speed = PlayerData.instance.speed_Stu;
+        float mainHp = PlayerData.instance.mainHp_Stu;
+        float unitHp = PlayerData.instance.unitHp_Stu;
+
+        float total = atk + speed + mainHp + unitHp;
+        bool allOne = (atk == 1f && speed == 1f && mainHp == 1f && unitHp == 1f);
+        bool allZero = (total == 0f);
+
+        if (allZero || allOne)
+            return playerName;
+        else
+            return playerName + "(허접)";
+    }
+
+    // 기존 AddRanking
     public void AddRanking(string playerName, int score)
     {
-        rankData.entries.Add(new RankEntry { name = playerName, score = score });
-        rankData.entries.Sort((a, b) => b.score.CompareTo(a.score));
+        string finalName = ProcessPlayerName(playerName); // 이름 가공
 
+        rankData.entries.Add(new RankEntry { name = finalName, score = score });
+        rankData.entries.Sort((a, b) => b.score.CompareTo(a.score));
         if (rankData.entries.Count > MAX_RANK)
             rankData.entries.RemoveRange(MAX_RANK, rankData.entries.Count - MAX_RANK);
-
         SaveRanking();
-        RankingSystem(); // UI 즉시 갱신
+        RankingSystem();
     }
 
     private void SaveRanking()

@@ -5,6 +5,7 @@ using System.Xml;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class LobbyUIManager : Singleton<LobbyUIManager>
 {
@@ -18,13 +19,24 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
     [Header("# etc UI")]
     [SerializeField] GameObject helpUI;
 
+    [SerializeField] private Button openButton;      // 메인씬 버튼
+
     private void Awake()
     {
         loginUI.SetActive(false);
         alertUI.SetActive(false);
         helpUI.SetActive(false);
     }
-
+    private void Start()
+    {
+        openButton.onClick.RemoveAllListeners();
+        openButton.onClick.AddListener(() =>
+        {
+            GameObject br = GameObject.Find("Br");
+            if (br != null)
+                br.GetComponent<BreakRack>().OpenTopBox();
+        });
+    }
     public void LoginButton()//로그인 창 id글자는 5개 제한 번호는 숫자만으로 제한됨
     {
         if (!string.IsNullOrEmpty(playerNameInput.text) && !string.IsNullOrEmpty(playerPwdInput.text))
